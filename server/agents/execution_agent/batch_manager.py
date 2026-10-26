@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import asyncio
 import uuid
+from contextlib import asynccontextmanager
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import AsyncIterator, Dict, List, Optional
 
 from .runtime import ExecutionAgentRuntime, ExecutionResult
 from ...logging_config import logger
+from ...services.execution.ids import agent_id_for
 from ...services.execution.routing import refresh_agent_profile
 
 
@@ -32,6 +34,50 @@ class _BatchState:
     created_at: datetime = field(default_factory=datetime.now)
     pending: int = 0
     results: List[ExecutionResult] = field(default_factory=list)
+
+
+class AgentRunLocks:
+    """One run at a time per agent.
+
+    Without this, two quick follow-ups to the same agent (or a trigger firing while the
+    user is talking to that agent) start two runs that read the same history and can
+    both act, e.g. two drafts for one reply. The second run now waits and then sees the
+    first run's result in its history. Different agents still run in parallel.
+    Locks are dropped once nobody holds or waits on them, so the map stays small.
+    """
+
+    def __init__(self) -> None:
+        self._locks: Dict[str, asyncio.Lock] = {}
+        self._users: Dict[str, int] = {}
+
+    @asynccontextmanager
+    async def hold(self, agent_name: str) -> AsyncIterator[bool]:
+        """Hold the agent's lock; yields whether this run had to wait for another one."""
+
+        key = agent_id_for(agent_name)
+        lock = self._locks.setdefault(key, asyncio.Lock())
+        self._users[key] = self._users.get(key, 0) + 1
+        waited = lock.locked()
+        try:
+            async with lock:
+                yield waited
+        finally:
+            self._users[key] -= 1
+            if not self._users[key]:
+                del self._users[key]
+                del self._locks[key]
+
+    def is_running(self, agent_name: str) -> bool:
+        lock = self._locks.get(agent_id_for(agent_name))
+        return bool(lock and lock.locked())
+
+
+# Shared by every batch manager: chat turns and the trigger scheduler each create their own
+_AGENT_RUN_LOCKS = AgentRunLocks()
+
+
+def get_agent_run_locks() -> AgentRunLocks:
+    return _AGENT_RUN_LOCKS
 
 
 class ExecutionBatchManager:
@@ -58,6 +104,18 @@ class ExecutionBatchManager:
 
         batch_id = await self._register_pending_execution(agent_name, instructions, request_id)
 
+        async with get_agent_run_locks().hold(agent_name) as waited:
+            if waited:
+                logger.info(f"[{agent_name}] Waiting for the agent's previous run to finish")
+            result = await self._run_agent(agent_name, instructions, request_id)
+            # Keep the agent's summary and entities current so it can be found next time
+            refresh_agent_profile(agent_name)
+
+        await self._complete_execution(batch_id, result, agent_name)
+        return result
+
+    # Run one agent with the timeout (the timeout starts after any wait for the agent's lock)
+    async def _run_agent(self, agent_name: str, instructions: str, request_id: str) -> ExecutionResult:
         try:
             logger.info(f"[{agent_name}] Execution started")
             runtime = ExecutionAgentRuntime(agent_name=agent_name)
@@ -85,11 +143,6 @@ class ExecutionBatchManager:
             )
         finally:
             self._pending.pop(request_id, None)
-
-        # Keep the agent's summary and entities current so it can be found next time
-        refresh_agent_profile(agent_name)
-
-        await self._complete_execution(batch_id, result, agent_name)
         return result
 
     # Add execution request to current batch or create new batch if none exists
