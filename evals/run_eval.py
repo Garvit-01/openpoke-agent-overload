@@ -1,7 +1,7 @@
 """Run the routing evaluation and write evals/results/results.md and results.json.
 
     python -m evals.run_eval               # full run: 3 seeds, roster sizes 50..800, threshold sweep
-    python -m evals.run_eval --quick       # one seed, 300 agents
+    python -m evals.run_eval --quick       # one seed, 300 agents (writes results_quick.*)
     python -m evals.run_eval --router llm  # same cases through a real model (needs OPENROUTER_API_KEY)
 
 Offline runs are deterministic: the same seed gives the same numbers.
@@ -170,8 +170,10 @@ def run_offline(args) -> None:
         md.append(f"| {decision['category']} | {messages[decision['case_id']]} | {right} | {chosen} |")
 
     md += ["", f"Run time: {time.perf_counter() - started:.0f}s."]
-    (RESULTS_DIR / "results.md").write_text("\n".join(md) + "\n", encoding="utf-8")
-    (RESULTS_DIR / "results.json").write_text(
+    # Quick runs get their own files so they never overwrite the committed full results
+    stem = "results_quick" if args.quick else "results"
+    (RESULTS_DIR / f"{stem}.md").write_text("\n".join(md) + "\n", encoding="utf-8")
+    (RESULTS_DIR / f"{stem}.json").write_text(
         json.dumps(
             {
                 "agents": args.agents,
@@ -196,7 +198,7 @@ def run_offline(args) -> None:
         encoding="utf-8",
     )
     print("\n".join(md))
-    print(f"\nWrote {RESULTS_DIR / 'results.md'}")
+    print(f"\nWrote {RESULTS_DIR / (stem + '.md')}")
 
 
 def parse_args(argv=None):
