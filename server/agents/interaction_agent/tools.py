@@ -7,7 +7,8 @@ from typing import Any, Optional
 
 from ...logging_config import logger
 from ...services.conversation import get_conversation_log
-from ...services.execution import get_agent_roster, get_execution_agent_logs
+from ...services.execution import AgentRetriever, get_agent_registry, get_execution_agent_logs
+from ...services.execution.routing import route_to_agent
 from ..execution_agent.batch_manager import ExecutionBatchManager
 
 
@@ -26,7 +27,7 @@ TOOL_SCHEMAS = [
         "type": "function",
         "function": {
             "name": "send_message_to_agent",
-            "description": "Deliver instructions to a specific execution agent. Creates a new agent if the name doesn't exist in the roster, or reuses an existing one.",
+            "description": "Deliver instructions to a specific execution agent. Reuses an existing agent when the name matches, or when the instructions mention the same email thread or contact as an existing agent; otherwise creates a new agent. The result says which agent was actually used.",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -37,6 +38,24 @@ TOOL_SCHEMAS = [
                     "instructions": {"type": "string", "description": "Instructions for the agent to execute."},
                 },
                 "required": ["agent_name", "instructions"],
+                "additionalProperties": False,
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "search_agents",
+            "description": "Search all existing execution agents, including dormant and archived ones, by person, email address, company or topic. Use this when the agents shown in <active_agents> don't include the one this request belongs to, before creating a new agent.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "Who or what the task is about, e.g. 'Sarah Chen invoice' or 'sarah.chen@acme.com'.",
+                    },
+                },
+                "required": ["query"],
                 "additionalProperties": False,
             },
         },
@@ -108,21 +127,18 @@ TOOL_SCHEMAS = [
 _EXECUTION_BATCH_MANAGER = ExecutionBatchManager()
 
 
-# Create or reuse execution agent and dispatch instructions asynchronously
+# Resolve the right agent (dedup on name, thread, or contact), then dispatch instructions asynchronously
 def send_message_to_agent(agent_name: str, instructions: str) -> ToolResult:
     """Send instructions to an execution agent."""
-    roster = get_agent_roster()
-    roster.load()
-    existing_agents = set(roster.get_agents())
-    is_new = agent_name not in existing_agents
-
-    if is_new:
-        roster.add_agent(agent_name)
+    resolution = route_to_agent(agent_name, instructions)
+    requested_name = agent_name
+    agent_name = resolution.agent_name
+    is_new = resolution.created
 
     get_execution_agent_logs().record_request(agent_name, instructions)
 
     action = "Created" if is_new else "Reused"
-    logger.info(f"{action} agent: {agent_name}")
+    logger.info(f"{action} agent: {agent_name} ({resolution.reason})")
 
     async def _execute_async() -> None:
         try:
@@ -140,12 +156,39 @@ def send_message_to_agent(agent_name: str, instructions: str) -> ToolResult:
 
     loop.create_task(_execute_async())
 
+    payload: dict = {
+        "status": "submitted",
+        "agent_name": agent_name,
+        "new_agent_created": is_new,
+        "match_reason": resolution.reason,
+    }
+    if resolution.redirected:
+        payload["requested_agent_name"] = requested_name
+        payload["note"] = f"Routed to existing agent '{agent_name}' instead of creating '{requested_name}'. Use this name for follow-ups."
+    if resolution.possible_duplicates:
+        payload["possible_duplicates"] = resolution.possible_duplicates
+    return ToolResult(success=True, payload=payload)
+
+
+# Search every agent (including dormant/archived) so the model is not limited to the shortlist
+def search_agents(query: str) -> ToolResult:
+    """Return the best matching agents for a query, with why they matched."""
+    registry = get_agent_registry()
+    matches = AgentRetriever(registry).search(query, limit=8)
     return ToolResult(
         success=True,
         payload={
-            "status": "submitted",
-            "agent_name": agent_name,
-            "new_agent_created": is_new,
+            "total_agents": registry.count(),
+            "matches": [
+                {
+                    "agent_name": item.name,
+                    "status": item.record.status,
+                    "last_active": item.record.last_active_at[:10],
+                    "matched": "; ".join(item.reasons),
+                    "summary": item.record.summary[:300],
+                }
+                for item in matches
+            ],
         },
     )
 
@@ -227,6 +270,8 @@ def handle_tool_call(name: str, arguments: Any) -> ToolResult:
 
         if name == "send_message_to_agent":
             return send_message_to_agent(**args)
+        if name == "search_agents":
+            return search_agents(**args)
         if name == "send_message_to_user":
             return send_message_to_user(**args)
         if name == "send_draft":

@@ -3,7 +3,7 @@
 from pathlib import Path
 from typing import List, Optional, Dict, Any
 
-from ...services.execution import get_execution_agent_logs
+from ...services.execution import get_agent_registry, get_execution_agent_logs
 from ...logging_config import logger
 
 
@@ -49,10 +49,17 @@ class ExecutionAgent:
         self.conversation_limit = conversation_limit
         self._log_store = get_execution_agent_logs()
 
-    # Generate system prompt template with agent name and purpose derived from name
+    # Generate system prompt with agent name and purpose (registry summary when there is one)
     def build_system_prompt(self) -> str:
         """Build the system prompt for this agent."""
         agent_purpose = f"Handle tasks related to: {self.name}"
+        try:
+            record = get_agent_registry().get(self.name)
+        except Exception as exc:  # pragma: no cover - defensive
+            logger.warning(f"Could not load registry profile for {self.name}: {exc}")
+            record = None
+        if record and record.summary:
+            agent_purpose += f"\nWhat this agent has done so far: {record.summary}"
 
         return SYSTEM_PROMPT_TEMPLATE.format(
             agent_name=self.name,
@@ -89,7 +96,11 @@ class ExecutionAgent:
                             if kept_requests == self.conversation_limit:
                                 cutoff_index = i
                                 break
-                    transcript = '\n'.join(lines[cutoff_index:])
+                    omitted = request_count - self.conversation_limit
+                    transcript = (
+                        f"({omitted} earlier requests omitted; the Purpose above summarises them.)\n"
+                        + '\n'.join(lines[cutoff_index:])
+                    )
 
             return f"{base_prompt}\n\n# Execution History\n\n{transcript}"
 

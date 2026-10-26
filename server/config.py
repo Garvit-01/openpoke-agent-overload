@@ -50,12 +50,27 @@ class Settings(BaseModel):
     server_host: str = Field(default=os.getenv("OPENPOKE_HOST", "0.0.0.0"))
     server_port: int = Field(default=_env_int("OPENPOKE_PORT", 8001))
 
-    # LLM model selection
-    interaction_agent_model: str = Field(default="anthropic/claude-sonnet-4")
-    execution_agent_model: str = Field(default="anthropic/claude-sonnet-4")
-    execution_agent_search_model: str = Field(default="anthropic/claude-sonnet-4")
-    summarizer_model: str = Field(default="anthropic/claude-sonnet-4")
-    email_classifier_model: str = Field(default="anthropic/claude-sonnet-4")
+    # LLM model selection (each role can be overridden, e.g. a smaller model for the classifier)
+    interaction_agent_model: str = Field(default=os.getenv("OPENPOKE_INTERACTION_MODEL", "anthropic/claude-sonnet-4"))
+    execution_agent_model: str = Field(default=os.getenv("OPENPOKE_EXECUTION_MODEL", "anthropic/claude-sonnet-4"))
+    execution_agent_search_model: str = Field(default=os.getenv("OPENPOKE_SEARCH_MODEL", "anthropic/claude-sonnet-4"))
+    summarizer_model: str = Field(default=os.getenv("OPENPOKE_SUMMARIZER_MODEL", "anthropic/claude-sonnet-4"))
+    email_classifier_model: str = Field(default=os.getenv("OPENPOKE_CLASSIFIER_MODEL", "anthropic/claude-sonnet-4"))
+
+    # Agent routing: how many agents the interaction agent sees per turn (fixed, not the whole roster)
+    agent_shortlist_retrieved: int = Field(default=_env_int("OPENPOKE_AGENT_SHORTLIST", 8))
+    agent_shortlist_recent: int = Field(default=_env_int("OPENPOKE_AGENT_RECENT", 4))
+    agent_summary_chars: int = Field(default=_env_int("OPENPOKE_AGENT_SUMMARY_CHARS", 200))
+
+    # Agent lifecycle (idle days before an agent is demoted; agents with active triggers are never demoted)
+    agent_dormant_after_days: int = Field(default=_env_int("OPENPOKE_AGENT_DORMANT_DAYS", 14))
+    agent_archive_after_days: int = Field(default=_env_int("OPENPOKE_AGENT_ARCHIVE_DAYS", 45))
+
+    # How many past requests an execution agent sees from its own log (0 = all, the old behaviour)
+    execution_agent_history_limit: int = Field(default=_env_int("OPENPOKE_EXECUTION_HISTORY_LIMIT", 10))
+
+    # Outbound email guard: "enforce" blocks sends the user has not seen as a draft, "off" disables it
+    outbound_guard_mode: str = Field(default=os.getenv("OPENPOKE_OUTBOUND_GUARD", "enforce"))
 
     # Credentials / integrations
     openrouter_api_key: Optional[str] = Field(default=os.getenv("OPENROUTER_API_KEY"))

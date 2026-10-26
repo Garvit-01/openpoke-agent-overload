@@ -10,6 +10,7 @@ from typing import Dict, List, Optional
 
 from .runtime import ExecutionAgentRuntime, ExecutionResult
 from ...logging_config import logger
+from ...services.execution.routing import refresh_agent_profile
 
 
 @dataclass
@@ -84,6 +85,9 @@ class ExecutionBatchManager:
             )
         finally:
             self._pending.pop(request_id, None)
+
+        # Keep the agent's summary and entities current so it can be found next time
+        refresh_agent_profile(agent_name)
 
         await self._complete_execution(batch_id, result, agent_name)
         return result

@@ -30,7 +30,11 @@ class ExecutionAgentRuntime:
     # Initialize execution agent runtime with settings, tools, and agent instance
     def __init__(self, agent_name: str):
         settings = get_settings()
-        self.agent = ExecutionAgent(agent_name)
+        # Bound the agent's own history; older requests are covered by its registry summary
+        self.agent = ExecutionAgent(
+            agent_name,
+            conversation_limit=settings.execution_agent_history_limit or None,
+        )
         self.api_key = settings.openrouter_api_key
         self.model = settings.execution_agent_model
         self.tool_registry = get_tool_registry(agent_name=agent_name)

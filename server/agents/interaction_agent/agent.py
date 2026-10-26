@@ -2,9 +2,12 @@
 
 from html import escape
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Sequence
 
-from ...services.execution import get_agent_roster
+from ...config import get_settings
+from ...services.execution import AgentRetriever, ScoredAgent, get_agent_registry
+from ...services.execution.lifecycle import LifecyclePolicy
+from ...services.execution.routing import maybe_apply_lifecycle
 
 _prompt_path = Path(__file__).parent / "system_prompt.md"
 SYSTEM_PROMPT = _prompt_path.read_text(encoding="utf-8").strip()
@@ -26,7 +29,7 @@ def prepare_message_with_history(
     sections: List[str] = []
 
     sections.append(_render_conversation_history(transcript))
-    sections.append(f"<active_agents>\n{_render_active_agents()}\n</active_agents>")
+    sections.append(_render_active_agents(latest_text))
     sections.append(_render_current_turn(latest_text, message_type))
 
     content = "\n\n".join(sections)
@@ -41,21 +44,56 @@ def _render_conversation_history(transcript: str) -> str:
     return f"<conversation_history>\n{history}\n</conversation_history>"
 
 
-# Format currently active execution agents into XML tags for LLM awareness
-def _render_active_agents() -> str:
-    roster = get_agent_roster()
-    roster.load()
-    agents = roster.get_agents()
+# Show a fixed-size shortlist of agents relevant to this turn instead of the whole roster
+def _render_active_agents(latest_text: str) -> str:
+    settings = get_settings()
+    registry = get_agent_registry()
+    maybe_apply_lifecycle(
+        registry=registry,
+        policy=LifecyclePolicy(
+            dormant_after_days=settings.agent_dormant_after_days,
+            archive_after_days=settings.agent_archive_after_days,
+        ),
+    )
 
-    if not agents:
-        return "None"
+    total = registry.count()
+    if not total:
+        return render_agent_shortlist([], total=0)
 
-    rendered: List[str] = []
-    for agent_name in agents:
-        name = escape(agent_name or "agent", quote=True)
-        rendered.append(f'<agent name="{name}" />')
+    shortlist = AgentRetriever(registry).shortlist(
+        latest_text,
+        retrieved=settings.agent_shortlist_retrieved,
+        recent=settings.agent_shortlist_recent,
+    )
+    return render_agent_shortlist(shortlist, total=total, summary_chars=settings.agent_summary_chars)
 
-    return "\n".join(rendered)
+
+# Render shortlisted agents with status, last use, why they matched, and a short summary
+def render_agent_shortlist(
+    shortlist: Sequence[ScoredAgent],
+    *,
+    total: int,
+    summary_chars: int = 200,
+) -> str:
+    if not shortlist:
+        body = "None"
+    else:
+        rendered: List[str] = []
+        for item in shortlist:
+            record = item.record
+            summary = " ".join(record.summary.split())
+            if len(summary) > summary_chars:
+                summary = summary[: summary_chars - 3].rstrip() + "..."
+            attributes = [
+                f'name="{escape(record.name or "agent", quote=True)}"',
+                f'status="{record.status}"',
+                f'last_active="{record.last_active_at[:10]}"',
+            ]
+            if item.reasons:
+                attributes.append(f'matched="{escape("; ".join(item.reasons), quote=True)}"')
+            rendered.append(f"<agent {' '.join(attributes)}>{escape(summary, quote=False)}</agent>")
+        body = "\n".join(rendered)
+    return f'<active_agents total="{total}" shown="{len(shortlist)}">\n{body}\n</active_agents>'
 
 
 # Wrap the current message in appropriate XML tags based on sender type

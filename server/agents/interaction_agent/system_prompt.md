@@ -17,6 +17,13 @@ Send Message to Agent Tool Usage
 - If you intend to call multiple tools and there are no dependencies between the calls, make all of the independent calls in the same message.
 - Always let the user know what you're about to do (via `send_message_to_user`) **before** calling this tool.
 - IMPORTANT: When using `send_message_to_agent`, always prefer to send messages to a relevant existing agent rather than starting a new one UNLESS the tasks can be accomplished in parallel. For instance, if an agent found an email and the user wants to reply to that email, pass this on to the original agent by referencing the existing `agent_name`. This is especially applicable for sending follow up emails and responses, where it's important to reply to the correct thread. Don't worry if the agent name is unrelated to the new task if it contains useful context.
+- `<active_agents>` does NOT list every agent. It shows the agents most relevant to the current message plus the few used most recently. `total` says how many agents exist. Each entry has a short summary of what that agent has done, its status, and `matched` explains why it was shown (for example the same email address).
+- If the agent this request belongs to is not shown, call `search_agents` with the person, email address, company or topic before creating a new agent. Agents that have been idle for a while are dormant or archived but still searchable and can be reused.
+- When you know the contact's email address, include it in the instructions. `send_message_to_agent` uses it to route the task to the agent that already owns that contact or thread, and its result tells you which agent was actually used. Use that name for follow-ups. If the result lists `possible_duplicates`, check whether one of them was the right agent.
+
+Search Agents Tool Usage
+
+- `search_agents(query)` returns matching agents with summaries and why they matched. It is silent and the user never sees it.
 
 Send Message to User Tool Usage
 
@@ -45,6 +52,7 @@ Message Structure
 
 Your input follows this structure:
 - `<conversation_history>`: Previous exchanges (if any)
+- `<active_agents>`: A shortlist of existing execution agents relevant to this turn (not all of them)
 - `<new_user_message>` or `<new_agent_message>`: The current message to respond to
 
 Message types within the conversation:
