@@ -9,6 +9,7 @@ from ...logging_config import logger
 from ...services.conversation import get_conversation_log
 from ...services.execution import AgentRetriever, get_agent_registry, get_execution_agent_logs
 from ...services.execution.routing import route_to_agent
+from ...services.safety import get_outbound_guard
 from ..execution_agent.batch_manager import ExecutionBatchManager
 
 
@@ -219,6 +220,8 @@ def send_draft(
     message = f"To: {to}\nSubject: {subject}\n\n{body}"
 
     log.record_reply(message)
+    # The outbound guard only lets execution agents send to recipients the user has seen in a draft
+    get_outbound_guard().note_draft_shown(to)
     logger.info(f"Draft recorded for: {to}")
 
     return ToolResult(

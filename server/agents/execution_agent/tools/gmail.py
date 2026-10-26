@@ -7,8 +7,18 @@ from typing import Any, Callable, Dict, List, Optional
 
 from server.services.execution import get_execution_agent_logs
 from server.services.gmail import execute_gmail_tool, get_active_gmail_user_id
+from server.services.safety import get_outbound_guard
 
 _GMAIL_AGENT_NAME = "gmail-execution-agent"
+
+
+# Block sends the user has not confirmed (see server/services/safety/outbound.py); None means allowed
+def _outbound_block(tool_name: str, recipients: List[Optional[str]]) -> Optional[Dict[str, Any]]:
+    decision = get_outbound_guard().check(tool_name, recipients)
+    if decision.allowed:
+        return None
+    _LOG_STORE.record_action(_GMAIL_AGENT_NAME, description=f"{tool_name} blocked | {decision.reason}")
+    return {"error": decision.reason}
 
 _SCHEMAS: List[Dict[str, Any]] = [
     {
@@ -380,6 +390,9 @@ def gmail_execute_draft(
     composio_user_id = get_active_gmail_user_id()
     if not composio_user_id:
         return {"error": "Gmail not connected. Please connect Gmail in settings first."}
+    blocked = _outbound_block("gmail_execute_draft", [])
+    if blocked:
+        return blocked
     return _execute("GMAIL_SEND_DRAFT", composio_user_id, arguments)
 
 
@@ -397,6 +410,9 @@ def gmail_forward_email(
     composio_user_id = get_active_gmail_user_id()
     if not composio_user_id:
         return {"error": "Gmail not connected. Please connect Gmail in settings first."}
+    blocked = _outbound_block("gmail_forward_email", [recipient_email])
+    if blocked:
+        return blocked
     return _execute("GMAIL_FORWARD_MESSAGE", composio_user_id, arguments)
 
 
@@ -424,6 +440,12 @@ def gmail_reply_to_thread(
     composio_user_id = get_active_gmail_user_id()
     if not composio_user_id:
         return {"error": "Gmail not connected. Please connect Gmail in settings first."}
+    blocked = _outbound_block(
+        "gmail_reply_to_thread",
+        [recipient_email, *(cc or []), *(bcc or []), *(extra_recipients or [])],
+    )
+    if blocked:
+        return blocked
     return _execute("GMAIL_REPLY_TO_THREAD", composio_user_id, arguments)
 
 

@@ -8,6 +8,7 @@ from .agent import build_system_prompt, prepare_message_with_history
 from .tools import ToolResult, get_tool_schemas, handle_tool_call
 from ...config import get_settings
 from ...services.conversation import get_conversation_log, get_working_memory_log
+from ...services.safety import get_outbound_guard
 from ...openrouter_client import request_chat_completion
 from ...logging_config import logger
 
@@ -68,6 +69,8 @@ class InteractionAgentRuntime:
         try:
             transcript_before = self._load_conversation_transcript()
             self.conversation_log.record_user_message(user_message)
+            # Only real user turns count as confirmation for drafts already shown
+            get_outbound_guard().note_user_message()
 
             system_prompt = build_system_prompt()
             messages = prepare_message_with_history(
