@@ -7,7 +7,7 @@ from typing import Any, Optional
 
 from ...logging_config import logger
 from ...services.conversation import get_conversation_log
-from ...services.execution import AgentRetriever, get_agent_registry, get_execution_agent_logs
+from ...services.execution import AgentRetriever, agent_id_for, get_agent_registry, get_execution_agent_logs
 from ...services.execution.routing import route_to_agent
 from ...services.safety import get_outbound_guard
 from ..execution_agent.batch_manager import ExecutionBatchManager
@@ -37,6 +37,10 @@ TOOL_SCHEMAS = [
                         "description": "Human-readable agent name describing its purpose (e.g., 'Vercel Job Offer', 'Email to Sharanjeet'). This name will be used to identify and potentially reuse the agent."
                     },
                     "instructions": {"type": "string", "description": "Instructions for the agent to execute."},
+                    "new_task": {
+                        "type": "boolean",
+                        "description": "Set to true only when the user asks for something new with a contact or topic that already has an agent, e.g. a new email to Sarah about a different subject. Then a new agent is always created. Leave it out for follow-ups.",
+                    },
                 },
                 "required": ["agent_name", "instructions"],
                 "additionalProperties": False,
@@ -129,9 +133,9 @@ _EXECUTION_BATCH_MANAGER = ExecutionBatchManager()
 
 
 # Resolve the right agent (dedup on name, thread, or contact), then dispatch instructions asynchronously
-def send_message_to_agent(agent_name: str, instructions: str) -> ToolResult:
+def send_message_to_agent(agent_name: str, instructions: str, new_task: bool = False) -> ToolResult:
     """Send instructions to an execution agent."""
-    resolution = route_to_agent(agent_name, instructions)
+    resolution = route_to_agent(agent_name, instructions, new_task=bool(new_task))
     requested_name = agent_name
     agent_name = resolution.agent_name
     is_new = resolution.created
@@ -160,12 +164,19 @@ def send_message_to_agent(agent_name: str, instructions: str) -> ToolResult:
     payload: dict = {
         "status": "submitted",
         "agent_name": agent_name,
+        "agent_id": agent_id_for(agent_name),
         "new_agent_created": is_new,
         "match_reason": resolution.reason,
     }
     if resolution.redirected:
         payload["requested_agent_name"] = requested_name
-        payload["note"] = f"Routed to existing agent '{agent_name}' instead of creating '{requested_name}'. Use this name for follow-ups."
+        payload["note"] = (
+            f"Routed to existing agent '{agent_name}' instead of creating '{requested_name}'. Use this name for follow-ups. "
+            "If the user asked for something new, call again with new_task set to true."
+        )
+    elif agent_name != requested_name:
+        payload["requested_agent_name"] = requested_name
+        payload["note"] = f"'{requested_name}' is another agent's name, so this one is called '{agent_name}'. Use this name for follow-ups."
     if resolution.possible_duplicates:
         payload["possible_duplicates"] = resolution.possible_duplicates
     return ToolResult(success=True, payload=payload)

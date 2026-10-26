@@ -77,3 +77,26 @@ def test_completely_new_task_creates_an_agent(two_sarahs):
     resolution = resolve_agent("Dentist appointment", "book a cleaning next week", two_sarahs)
     assert resolution.created and resolution.reason == "new"
     assert resolution.possible_duplicates == []
+
+
+def test_known_email_alone_still_folds_a_new_topic_into_the_old_thread(two_sarahs):
+    # Documents the limit that new_task exists for: the address decides, the topic cannot
+    resolution = resolve_agent("Sarah Chen audit findings", "Email sarah.chen@acme.com about the audit findings", two_sarahs)
+    assert resolution.agent_name == "Email to Sarah"
+
+
+def test_new_task_creates_an_agent_even_for_a_known_contact(two_sarahs):
+    resolution = resolve_agent(
+        "Sarah Chen audit findings", "Email sarah.chen@acme.com about the audit findings", two_sarahs, new_task=True
+    )
+    assert resolution.created
+    assert resolution.agent_name == "Sarah Chen audit findings"
+    assert resolution.reason == "new_task"
+
+
+def test_new_task_with_a_taken_name_gets_a_free_name(two_sarahs):
+    resolution = resolve_agent("Email to Sarah", "Write to Sarah Chen about the audit", two_sarahs, new_task=True)
+    assert resolution.created
+    assert resolution.agent_name == "Email to Sarah (2)"
+    assert resolution.reason == "new_task (name taken)"
+    assert "Email to Sarah" in resolution.possible_duplicates

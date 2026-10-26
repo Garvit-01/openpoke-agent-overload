@@ -7,6 +7,7 @@ the OpenPoke explainer describes once agents pile up:
 - the same contact on more than one thread
 - old threads that come back after weeks of silence
 - genuinely new requests that look a lot like old ones
+- short multi-turn conversations where later turns only say "send it" or "the first one"
 
 Each agent's summary and entities are produced by the real digest code from a synthetic log,
 so the evaluator exercises the same profile-building path the server uses.
@@ -141,12 +142,29 @@ class Case:
 
 
 @dataclass
+class Turn:
+    message: str
+    gold: str  # an agent name, or NEW
+    # When set, the right agent is whichever one the arm created at that turn (1-based),
+    # e.g. "Ok, send it." after "Email a new person". Errors in earlier turns carry over.
+    gold_from_turn: Optional[int] = None
+
+
+@dataclass
+class Conversation:
+    id: str
+    kind: str
+    turns: List[Turn]
+
+
+@dataclass
 class Scenario:
     seed: int
     now: datetime
     agents: List[SyntheticAgent]
     cases: List[Case]
     vocabulary: Set[str] = field(default_factory=set)
+    conversations: List[Conversation] = field(default_factory=list)
 
     def agent(self, name: str) -> SyntheticAgent:
         return next(agent for agent in self.agents if agent.name == name)
@@ -275,7 +293,11 @@ def build_scenario(n_agents: int = 300, seed: int = 7, now: datetime = DEFAULT_N
 
     agents.sort(key=lambda agent: agent.created_days_ago, reverse=True)  # creation order
     cases = _build_cases(rng, agents, contacts)
-    return Scenario(seed=seed, now=now, agents=agents, cases=cases, vocabulary=_vocabulary())
+    # A separate generator, so adding conversations never changes the single-turn cases
+    conversations = _build_conversations(random.Random(seed * 1009 + 1), agents, contacts)
+    return Scenario(
+        seed=seed, now=now, agents=agents, cases=cases, vocabulary=_vocabulary(), conversations=conversations
+    )
 
 
 def _vocabulary() -> Set[str]:
@@ -364,13 +386,117 @@ def _build_cases(rng: random.Random, agents: Sequence[SyntheticAgent], contacts:
     return cases
 
 
+def _build_conversations(
+    rng: random.Random, agents: Sequence[SyntheticAgent], contacts: Sequence[Contact]
+) -> List[Conversation]:
+    """Short conversations. Later turns lean on what was said before, the way people talk.
+
+    - switch_and_return: talk about A, switch to B, then "go back to the first one"
+    - correction: the first guess is wrong for a shared first name, the user corrects it
+    - new_then_follow_up: a new contact, then "ok, send it" and "did they reply?"
+    - same_person_new_topic: a known contact, then a new email to them on a new topic, which
+      needs its own agent, then back to the old topic
+    """
+
+    threads = [agent for agent in agents if agent.kind == "thread"]
+    conversations: List[Conversation] = []
+
+    def count_by(key) -> Dict[Tuple, int]:
+        counts: Dict[Tuple, int] = {}
+        for agent in threads:
+            counts[key(agent)] = counts.get(key(agent), 0) + 1
+        return counts
+
+    first_counts: Dict[str, int] = {}
+    for contact in contacts:
+        first_counts[contact.first] = first_counts.get(contact.first, 0) + 1
+    by_first_topic = count_by(lambda a: (a.contact.first, a.topic))
+    by_company_topic = count_by(lambda a: (a.contact.company, a.topic))
+    by_email = count_by(lambda a: (a.contact.email,))
+
+    # Same pools as the single-turn cases, so every label has exactly one right answer
+    shared_first = [a for a in threads if by_first_topic[(a.contact.first, a.topic)] == 1 and first_counts[a.contact.first] > 1]
+    company_topic = [a for a in threads if by_company_topic[(a.contact.company, a.topic)] == 1]
+    single_thread = [a for a in threads if by_email[(a.contact.email,)] == 1]
+
+    def add(kind: str, turns: List[Turn]) -> None:
+        conversations.append(Conversation(id=f"{kind}-{len(conversations):02d}", kind=kind, turns=turns))
+
+    # Each conversation opens on a different agent, so no two conversations test the same thing
+    pool = list(shared_first)
+    rng.shuffle(pool)
+    opened: Set[str] = set()
+    for first_agent in pool[:8]:
+        opened.add(first_agent.name)
+        others = [a for a in company_topic if a.contact.full_name != first_agent.contact.full_name]
+        if not others:
+            continue
+        second = rng.choice(others)
+        add("switch_and_return", [
+            Turn(f"Any update from {first_agent.contact.first} on the {first_agent.topic}?", first_agent.name),
+            Turn("Ok, draft a reply saying Thursday works.", first_agent.name),
+            Turn(f"Also, what's the latest on the {second.contact.company} {second.topic}?", second.name),
+            Turn("Go back to the first one and send that draft.", first_agent.name),
+        ])
+
+    pool = [agent for agent in shared_first if agent.name not in opened]
+    rng.shuffle(pool)
+    made = 0
+    for guess in pool:
+        if made == 6:
+            break
+        meant = [
+            a for a in single_thread
+            if a.contact.first == guess.contact.first and a.contact.full_name != guess.contact.full_name
+        ]
+        if not meant:
+            continue
+        target = rng.choice(meant)
+        opened.add(guess.name)
+        add("correction", [
+            Turn(f"Any update from {guess.contact.first} on the {guess.topic}?", guess.name),
+            Turn(f"Not that one. I meant {target.contact.full_name} at {target.contact.company}.", target.name),
+            Turn("Tell them Thursday works.", target.name),
+        ])
+        made += 1
+
+    shared_names = sorted(first for first, count in first_counts.items() if count > 1) or ["Sarah"]
+    for index in range(6):
+        newcomer = Contact(shared_names[index % len(shared_names)], NEW_LAST_NAMES[index % len(NEW_LAST_NAMES)], rng.choice(COMPANIES))
+        add("new_then_follow_up", [
+            Turn(f"Email {newcomer.full_name} ({newcomer.email}) about the {rng.choice(TOPICS)}.", NEW),
+            Turn("Ok, send it.", NEW, gold_from_turn=1),
+            Turn("Did they reply yet?", NEW, gold_from_turn=1),
+        ])
+
+    pool = [agent for agent in single_thread if agent.name not in opened]
+    rng.shuffle(pool)
+    for index, known in enumerate(pool[:6]):
+        new_topic = NEW_TOPICS[index % len(NEW_TOPICS)]
+        add("same_person_new_topic", [
+            Turn(f"Did {known.contact.full_name} reply about the {known.topic}?", known.name),
+            Turn(
+                f"Also start a new email to {known.contact.full_name}"
+                + (f" ({known.contact.email})" if index % 2 == 0 else "")
+                + f" about the {new_topic}.",
+                NEW,
+            ),
+            Turn("Ok, send it.", NEW, gold_from_turn=2),
+            Turn(f"And did they answer on the {known.topic}?", known.name),
+        ])
+
+    return conversations
+
+
 __all__ = [
     "Case",
     "Contact",
+    "Conversation",
     "DEFAULT_NOW",
     "NEW",
     "PARAPHRASES",
     "Scenario",
     "SyntheticAgent",
+    "Turn",
     "build_scenario",
 ]

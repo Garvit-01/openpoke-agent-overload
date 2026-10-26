@@ -20,6 +20,7 @@ Send Message to Agent Tool Usage
 - `<active_agents>` does NOT list every agent. It shows the agents most relevant to the current message plus the few used most recently. `total` says how many agents exist. Each entry has a short summary of what that agent has done, its status, and `matched` explains why it was shown (for example the same email address).
 - If the agent this request belongs to is not shown, call `search_agents` with the person, email address, company or topic before creating a new agent. Agents that have been idle for a while are dormant or archived but still searchable and can be reused.
 - When you know the contact's email address, include it in the instructions. `send_message_to_agent` uses it to route the task to the agent that already owns that contact or thread, and its result tells you which agent was actually used. Use that name for follow-ups. If the result lists `possible_duplicates`, check whether one of them was the right agent.
+- Same contact does not always mean same agent. If the user asks for something new with someone who already has an agent (a new email on a different subject), set `new_task` to true and give the agent a name that says what the new task is.
 
 Search Agents Tool Usage
 

@@ -15,8 +15,8 @@
       "wrong_agent_rate": 0.36551724137931035,
       "false_reuse_rate": 0.1,
       "roster_tokens_mean": 3135.0,
-      "latency_ms_p50": 0.6759000243619084,
-      "latency_ms_p95": 1.2516999850049615,
+      "latency_ms_p50": 0.6791000487282872,
+      "latency_ms_p95": 0.8974999655038118,
       "recall_shortlist": null,
       "recall_search": null,
       "search_rate": null,
@@ -41,8 +41,8 @@
       "wrong_agent_rate": 0.08275862068965517,
       "false_reuse_rate": 0.025,
       "roster_tokens_mean": 909.2054054054054,
-      "latency_ms_p50": 15.64130000770092,
-      "latency_ms_p95": 39.573000045493245,
+      "latency_ms_p50": 16.7111000046134,
+      "latency_ms_p95": 41.915099951438606,
       "recall_shortlist": 0.9586206896551724,
       "recall_search": 0.9586206896551724,
       "search_rate": 0.21081081081081082,
@@ -79,8 +79,8 @@
         "wrong_agent_rate": 0.36551724137931035,
         "false_reuse_rate": 0.1,
         "roster_tokens_mean": 3135.0,
-        "latency_ms_p50": 0.6759000243619084,
-        "latency_ms_p95": 1.2516999850049615,
+        "latency_ms_p50": 0.6791000487282872,
+        "latency_ms_p95": 0.8974999655038118,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -105,8 +105,8 @@
         "wrong_agent_rate": 0.08275862068965517,
         "false_reuse_rate": 0.025,
         "roster_tokens_mean": 909.2054054054054,
-        "latency_ms_p50": 15.64130000770092,
-        "latency_ms_p95": 39.573000045493245,
+        "latency_ms_p50": 16.7111000046134,
+        "latency_ms_p95": 41.915099951438606,
         "recall_shortlist": 0.9586206896551724,
         "recall_search": 0.9586206896551724,
         "search_rate": 0.21081081081081082,
@@ -142,8 +142,8 @@
         "wrong_agent_rate": 0.41379310344827586,
         "false_reuse_rate": 0.075,
         "roster_tokens_mean": 3138.0,
-        "latency_ms_p50": 0.6713999900966883,
-        "latency_ms_p95": 0.7789999945089221,
+        "latency_ms_p50": 0.6433000089600682,
+        "latency_ms_p95": 0.8433000184595585,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -168,8 +168,8 @@
         "wrong_agent_rate": 0.0896551724137931,
         "false_reuse_rate": 0.025,
         "roster_tokens_mean": 898.0918918918919,
-        "latency_ms_p50": 15.405199956148863,
-        "latency_ms_p95": 38.814299972727895,
+        "latency_ms_p50": 16.59710006788373,
+        "latency_ms_p95": 41.27409995999187,
         "recall_shortlist": 0.9655172413793104,
         "recall_search": 0.9655172413793104,
         "search_rate": 0.21081081081081082,
@@ -205,8 +205,8 @@
         "wrong_agent_rate": 0.36551724137931035,
         "false_reuse_rate": 0.1,
         "roster_tokens_mean": 3133.0,
-        "latency_ms_p50": 0.7038000039756298,
-        "latency_ms_p95": 0.9768999880179763,
+        "latency_ms_p50": 0.6511000683531165,
+        "latency_ms_p95": 1.2343000853434205,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -231,8 +231,8 @@
         "wrong_agent_rate": 0.09655172413793103,
         "false_reuse_rate": 0.025,
         "roster_tokens_mean": 877.172972972973,
-        "latency_ms_p50": 15.717100002802908,
-        "latency_ms_p95": 41.1174000473693,
+        "latency_ms_p50": 16.572799999266863,
+        "latency_ms_p95": 40.749600040726364,
         "recall_shortlist": 0.9793103448275862,
         "recall_search": 0.9793103448275862,
         "search_rate": 0.21081081081081082,
@@ -270,8 +270,8 @@
         "wrong_agent_rate": 0.3564356435643564,
         "false_reuse_rate": 0.05,
         "roster_tokens_mean": 518.0,
-        "latency_ms_p50": 0.31619996298104525,
-        "latency_ms_p95": 0.3852000227198005,
+        "latency_ms_p50": 0.19099994096904993,
+        "latency_ms_p95": 0.23530004546046257,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -296,8 +296,8 @@
         "wrong_agent_rate": 0.12871287128712872,
         "false_reuse_rate": 0.0,
         "roster_tokens_mean": 792.5035460992908,
-        "latency_ms_p50": 4.0339999832212925,
-        "latency_ms_p95": 9.526500012725592,
+        "latency_ms_p50": 4.269000026397407,
+        "latency_ms_p95": 10.625499999150634,
         "recall_shortlist": 0.9801980198019802,
         "recall_search": 0.9801980198019802,
         "search_rate": 0.28368794326241137,
@@ -333,8 +333,8 @@
         "wrong_agent_rate": 0.3880597014925373,
         "false_reuse_rate": 0.125,
         "roster_tokens_mean": 1044.0,
-        "latency_ms_p50": 0.2598999999463558,
-        "latency_ms_p95": 0.44929992873221636,
+        "latency_ms_p50": 0.332699972204864,
+        "latency_ms_p95": 0.443600001744926,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -359,8 +359,8 @@
         "wrong_agent_rate": 0.08955223880597014,
         "false_reuse_rate": 0.025,
         "roster_tokens_mean": 848.2528735632184,
-        "latency_ms_p50": 6.3807000406086445,
-        "latency_ms_p95": 15.638499986380339,
+        "latency_ms_p50": 7.046199985779822,
+        "latency_ms_p95": 16.421800013631582,
         "recall_shortlist": 0.9850746268656716,
         "recall_search": 0.9850746268656716,
         "search_rate": 0.22413793103448276,
@@ -396,8 +396,8 @@
         "wrong_agent_rate": 0.3586206896551724,
         "false_reuse_rate": 0.1,
         "roster_tokens_mean": 2066.0,
-        "latency_ms_p50": 0.4776000278070569,
-        "latency_ms_p95": 1.8825000151991844,
+        "latency_ms_p50": 0.5121000576764345,
+        "latency_ms_p95": 0.9856999386101961,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -422,8 +422,8 @@
         "wrong_agent_rate": 0.0896551724137931,
         "false_reuse_rate": 0.025,
         "roster_tokens_mean": 867.3837837837838,
-        "latency_ms_p50": 11.127099976874888,
-        "latency_ms_p95": 27.781000011600554,
+        "latency_ms_p50": 11.823799926787615,
+        "latency_ms_p95": 30.859300051815808,
         "recall_shortlist": 0.993103448275862,
         "recall_search": 0.993103448275862,
         "search_rate": 0.21081081081081082,
@@ -459,8 +459,8 @@
         "wrong_agent_rate": 0.41379310344827586,
         "false_reuse_rate": 0.15,
         "roster_tokens_mean": 4183.0,
-        "latency_ms_p50": 0.8842999814078212,
-        "latency_ms_p95": 1.6374000115320086,
+        "latency_ms_p50": 0.8860999951139092,
+        "latency_ms_p95": 1.3833000557497144,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -485,8 +485,8 @@
         "wrong_agent_rate": 0.09655172413793103,
         "false_reuse_rate": 0.025,
         "roster_tokens_mean": 881.7135135135135,
-        "latency_ms_p50": 20.333899999968708,
-        "latency_ms_p95": 50.65889994148165,
+        "latency_ms_p50": 22.01810001861304,
+        "latency_ms_p95": 55.73219992220402,
         "recall_shortlist": 0.9793103448275862,
         "recall_search": 0.9793103448275862,
         "search_rate": 0.21081081081081082,
@@ -522,8 +522,8 @@
         "wrong_agent_rate": 0.42758620689655175,
         "false_reuse_rate": 0.125,
         "roster_tokens_mean": 8508.0,
-        "latency_ms_p50": 1.815900090150535,
-        "latency_ms_p95": 2.1407000022009015,
+        "latency_ms_p50": 1.838600030168891,
+        "latency_ms_p95": 2.701799967326224,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -548,8 +548,8 @@
         "wrong_agent_rate": 0.09655172413793103,
         "false_reuse_rate": 0.025,
         "roster_tokens_mean": 878.372972972973,
-        "latency_ms_p50": 41.32660001050681,
-        "latency_ms_p95": 120.96179998479784,
+        "latency_ms_p50": 43.70119993109256,
+        "latency_ms_p95": 128.45860002562404,
         "recall_shortlist": 0.9517241379310345,
         "recall_search": 0.9517241379310345,
         "search_rate": 0.21081081081081082,
@@ -587,8 +587,8 @@
         "wrong_agent_rate": 0.36551724137931035,
         "false_reuse_rate": 0.275,
         "roster_tokens_mean": 3135.0,
-        "latency_ms_p50": 0.7069000275805593,
-        "latency_ms_p95": 1.875600079074502,
+        "latency_ms_p50": 0.6358000682666898,
+        "latency_ms_p95": 0.8292000275105238,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -613,8 +613,8 @@
         "wrong_agent_rate": 0.08275862068965517,
         "false_reuse_rate": 0.2,
         "roster_tokens_mean": 909.2054054054054,
-        "latency_ms_p50": 15.774100087583065,
-        "latency_ms_p95": 40.960999904200435,
+        "latency_ms_p50": 16.66830002795905,
+        "latency_ms_p95": 44.21860002912581,
         "recall_shortlist": 0.9586206896551724,
         "recall_search": 0.9586206896551724,
         "search_rate": 0.17297297297297298,
@@ -650,8 +650,8 @@
         "wrong_agent_rate": 0.36551724137931035,
         "false_reuse_rate": 0.1,
         "roster_tokens_mean": 3135.0,
-        "latency_ms_p50": 0.636399956420064,
-        "latency_ms_p95": 0.750300008803606,
+        "latency_ms_p50": 0.9485000045970082,
+        "latency_ms_p95": 1.9117000047117472,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -676,8 +676,8 @@
         "wrong_agent_rate": 0.08275862068965517,
         "false_reuse_rate": 0.025,
         "roster_tokens_mean": 909.2054054054054,
-        "latency_ms_p50": 15.606799977831542,
-        "latency_ms_p95": 39.03270000591874,
+        "latency_ms_p50": 16.8472999939695,
+        "latency_ms_p95": 45.535999932326376,
         "recall_shortlist": 0.9586206896551724,
         "recall_search": 0.9586206896551724,
         "search_rate": 0.21081081081081082,
@@ -713,8 +713,8 @@
         "wrong_agent_rate": 0.2620689655172414,
         "false_reuse_rate": 0.075,
         "roster_tokens_mean": 3135.0,
-        "latency_ms_p50": 0.686399987898767,
-        "latency_ms_p95": 1.4091999037191272,
+        "latency_ms_p50": 0.6591000128537416,
+        "latency_ms_p95": 0.9496000129729509,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -739,8 +739,8 @@
         "wrong_agent_rate": 0.08275862068965517,
         "false_reuse_rate": 0.0,
         "roster_tokens_mean": 909.2054054054054,
-        "latency_ms_p50": 15.622899984009564,
-        "latency_ms_p95": 41.860700002871454,
+        "latency_ms_p50": 16.463500098325312,
+        "latency_ms_p95": 43.15290006343275,
         "recall_shortlist": 0.9586206896551724,
         "recall_search": 0.9586206896551724,
         "search_rate": 0.21621621621621623,
@@ -776,7 +776,7 @@
         "chosen": "Reply to Alex re podcast interview",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.3821999309584498,
+        "latency_ms": 0.8431999012827873,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -788,7 +788,7 @@
         "chosen": "Q3 Invoice with Priya",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2864000163972378,
+        "latency_ms": 0.624899985268712,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -800,7 +800,7 @@
         "chosen": "Email to Michael Turner",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2701000086963177,
+        "latency_ms": 0.5990000208839774,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -812,7 +812,7 @@
         "chosen": "Email to Leah Dubois",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2518999865278602,
+        "latency_ms": 0.5943001015111804,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -824,7 +824,7 @@
         "chosen": "Email to Zane Park",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2516999850049615,
+        "latency_ms": 0.5969000048935413,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -836,7 +836,7 @@
         "chosen": "Design Review with Wei",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2505999766290188,
+        "latency_ms": 0.5939999828115106,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -848,7 +848,7 @@
         "chosen": "Email to Vera Kaur",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.242700032889843,
+        "latency_ms": 0.5928000900894403,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -860,7 +860,7 @@
         "chosen": "Vendor Quote with Vera",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.3652000343427062,
+        "latency_ms": 0.5984000163152814,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -872,7 +872,7 @@
         "chosen": "Reply to David re tax documents",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2625999515876174,
+        "latency_ms": 0.5797999911010265,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -884,7 +884,7 @@
         "chosen": "Email to Mila Dimitrov",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2380999978631735,
+        "latency_ms": 0.5915999645367265,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -896,7 +896,7 @@
         "chosen": "Reply to Ravi re launch timeline",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2349000899121165,
+        "latency_ms": 0.591800082474947,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -908,7 +908,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 1.2858000118285418,
+        "latency_ms": 0.6124998908489943,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -920,7 +920,7 @@
         "chosen": "Budget Approval with Isaac",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2419000267982483,
+        "latency_ms": 0.5777999758720398,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -932,7 +932,7 @@
         "chosen": "Email to Emma Schmidt",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2432000366970897,
+        "latency_ms": 0.5814000032842159,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -944,7 +944,7 @@
         "chosen": "Reply to Leah re venue contract",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2305999407544732,
+        "latency_ms": 0.5728000542148948,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -956,7 +956,7 @@
         "chosen": "Podcast Interview with Noah",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2389000039547682,
+        "latency_ms": 0.5781999789178371,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -968,7 +968,7 @@
         "chosen": "Email to Kofi Patel",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2299999361857772,
+        "latency_ms": 0.575499958358705,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -980,7 +980,7 @@
         "chosen": "Email to David Park",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.241200021468103,
+        "latency_ms": 0.6024000467732549,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -992,7 +992,7 @@
         "chosen": "Email to Umar Dimitrov",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2388000031933188,
+        "latency_ms": 0.5947001045569777,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1004,7 +1004,7 @@
         "chosen": "Board Deck with Kai",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2356999795883894,
+        "latency_ms": 0.5869000451639295,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1016,7 +1016,7 @@
         "chosen": "Reply to Michael re job offer",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.3280999846756458,
+        "latency_ms": 1.449699979275465,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1028,7 +1028,7 @@
         "chosen": "Job Offer with Priya",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2774000642821193,
+        "latency_ms": 0.7858999306336045,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1040,7 +1040,7 @@
         "chosen": "Email to Isaac Chen",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2540000025182962,
+        "latency_ms": 0.6127000087872148,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1052,7 +1052,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 1.027100021019578,
+        "latency_ms": 0.6402001017704606,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1064,7 +1064,7 @@
         "chosen": "Reply to Emma re contract redlines",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.573099940083921,
+        "latency_ms": 0.6050000665709376,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1076,7 +1076,7 @@
         "chosen": "Security Audit with Amara",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5723000504076481,
+        "latency_ms": 0.6412999937310815,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1088,7 +1088,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.5902999546378851,
+        "latency_ms": 0.6441000150516629,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1100,7 +1100,7 @@
         "chosen": "Email to Rosa Turner",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5709999240934849,
+        "latency_ms": 0.600899918936193,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1112,7 +1112,7 @@
         "chosen": "Reply to Alex re travel itinerary",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.606900081038475,
+        "latency_ms": 0.5975000094622374,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1124,7 +1124,7 @@
         "chosen": "Reply to Sarah re design review",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5683000199496746,
+        "latency_ms": 0.5861000390723348,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1136,7 +1136,7 @@
         "chosen": "Launch Timeline with Fatima",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5698000313714147,
+        "latency_ms": 0.5905000725761056,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1148,7 +1148,7 @@
         "chosen": "Reply to Fatima re Q3 invoice",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5650999955832958,
+        "latency_ms": 0.6127000087872148,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1160,7 +1160,7 @@
         "chosen": "Reply to Noah re lease renewal",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5704999202862382,
+        "latency_ms": 0.5935000954195857,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1172,7 +1172,7 @@
         "chosen": "Launch Timeline with Fatima",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5707000382244587,
+        "latency_ms": 0.5918999668210745,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1184,7 +1184,7 @@
         "chosen": "Email to Paige Lopez",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5653999978676438,
+        "latency_ms": 0.5899999523535371,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1196,7 +1196,7 @@
         "chosen": "Reply to David re travel itinerary",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6124000065028667,
+        "latency_ms": 0.5922999698668718,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1208,7 +1208,7 @@
         "chosen": "Job Offer with Kofi",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5685000214725733,
+        "latency_ms": 0.5900000687688589,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1220,7 +1220,7 @@
         "chosen": "Board Deck with Kai",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5698000313714147,
+        "latency_ms": 0.5854000337421894,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1232,7 +1232,7 @@
         "chosen": "Launch Timeline with Fatima",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5698999157175422,
+        "latency_ms": 0.5982000147923827,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1244,7 +1244,7 @@
         "chosen": "Launch Timeline with Noah",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5673000123351812,
+        "latency_ms": 0.5843000253662467,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1256,7 +1256,7 @@
         "chosen": "Email to Julia",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5903000710532069,
+        "latency_ms": 0.5589000647887588,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1268,7 +1268,7 @@
         "chosen": "Reply to Isaac re venue contract",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5670000100508332,
+        "latency_ms": 0.5896999500691891,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1280,7 +1280,7 @@
         "chosen": "Email to David Park",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6582000060006976,
+        "latency_ms": 0.5774999735876918,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1292,7 +1292,7 @@
         "chosen": "Reply to David re tax documents",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5694000283256173,
+        "latency_ms": 0.5798999918624759,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1304,7 +1304,7 @@
         "chosen": "Reply to Sarah re design review",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7834999123588204,
+        "latency_ms": 0.556600047275424,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1316,7 +1316,7 @@
         "chosen": "Email to David Park",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6180000491440296,
+        "latency_ms": 0.560999964363873,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1328,7 +1328,7 @@
         "chosen": "Onboarding Plan with Paige",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5681999027729034,
+        "latency_ms": 1.3417999725788832,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1340,7 +1340,7 @@
         "chosen": "Job Offer with Rosa",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5698000313714147,
+        "latency_ms": 0.6957999430596828,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1352,7 +1352,7 @@
         "chosen": "Visa Paperwork with Noah",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5695000290870667,
+        "latency_ms": 0.6361999548971653,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1364,7 +1364,7 @@
         "chosen": "Reply to Zara re lease renewal",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5638999864459038,
+        "latency_ms": 0.6341999396681786,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1376,7 +1376,7 @@
         "chosen": "Email to Umar",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.62369997613132,
+        "latency_ms": 0.6887000054121017,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1388,7 +1388,7 @@
         "chosen": "Email to Umar",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5646999925374985,
+        "latency_ms": 0.6431000074371696,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1400,7 +1400,7 @@
         "chosen": "Job Offer with Rosa",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5672000115737319,
+        "latency_ms": 0.6092999828979373,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1412,7 +1412,7 @@
         "chosen": "Email to Sven",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5614999681711197,
+        "latency_ms": 0.5950001068413258,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1424,7 +1424,7 @@
         "chosen": "Insurance Claim with Emma",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5716999294236302,
+        "latency_ms": 0.697100069373846,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1436,7 +1436,7 @@
         "chosen": "Reply to Grace re Q3 invoice",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5655999993905425,
+        "latency_ms": 0.631700037047267,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1448,7 +1448,7 @@
         "chosen": "Board Deck with Vera",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5663000047206879,
+        "latency_ms": 0.6235999753698707,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1460,7 +1460,7 @@
         "chosen": "Email to Paige Lopez",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6568999961018562,
+        "latency_ms": 0.5762999644502997,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1472,7 +1472,7 @@
         "chosen": "Reply to Emma re contract redlines",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5665000062435865,
+        "latency_ms": 0.5969000048935413,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1484,7 +1484,7 @@
         "chosen": "Email to David Park",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5692000268027186,
+        "latency_ms": 0.6298000225797296,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1496,7 +1496,7 @@
         "chosen": "Launch Timeline with Fatima",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5889000603929162,
+        "latency_ms": 0.6046000635251403,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1508,7 +1508,7 @@
         "chosen": "Board Deck with Vera",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5669000092893839,
+        "latency_ms": 0.5772999720647931,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1520,7 +1520,7 @@
         "chosen": "Contract Redlines with Priya",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6098999874666333,
+        "latency_ms": 0.573399942368269,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1532,7 +1532,7 @@
         "chosen": "Launch Timeline with Fatima",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5663000047206879,
+        "latency_ms": 0.6526999641209841,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1544,7 +1544,7 @@
         "chosen": "Contract Redlines with Priya",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5738999461755157,
+        "latency_ms": 0.6039000581949949,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1556,7 +1556,7 @@
         "chosen": "Board Deck with Vera",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5686000222340226,
+        "latency_ms": 0.6575000006705523,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1568,7 +1568,7 @@
         "chosen": "Launch Timeline with Fatima",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5680999020114541,
+        "latency_ms": 0.6037000566720963,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1580,7 +1580,7 @@
         "chosen": "Job Offer with Rosa",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6312000332400203,
+        "latency_ms": 0.6452000234276056,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1592,7 +1592,7 @@
         "chosen": "Budget Approval with Isaac",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5630999803543091,
+        "latency_ms": 0.6183000514283776,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1604,7 +1604,7 @@
         "chosen": "Email to Michael Kim",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5709000397473574,
+        "latency_ms": 0.5966000026091933,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1616,7 +1616,7 @@
         "chosen": "Podcast Interview with Noah",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5864999257028103,
+        "latency_ms": 0.6534000858664513,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1628,7 +1628,7 @@
         "chosen": "Board Deck with Kai",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6464000325649977,
+        "latency_ms": 1.4485999708995223,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1640,7 +1640,7 @@
         "chosen": "Email to Sven",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5737999454140663,
+        "latency_ms": 0.8822999661788344,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1652,7 +1652,7 @@
         "chosen": "Reply to Alex re podcast interview",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5647999932989478,
+        "latency_ms": 0.6235999753698707,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1664,7 +1664,7 @@
         "chosen": "Board Deck with Quinn",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6171000422909856,
+        "latency_ms": 0.8974999655038118,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1676,7 +1676,7 @@
         "chosen": "Soylent Reference Check",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6784999277442694,
+        "latency_ms": 0.7319999858736992,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1688,7 +1688,7 @@
         "chosen": "Acme Travel Itinerary",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6717999931424856,
+        "latency_ms": 0.74970000423491,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1700,7 +1700,7 @@
         "chosen": "Northwind Onboarding Plan",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.671899993903935,
+        "latency_ms": 0.7100000511854887,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1712,7 +1712,7 @@
         "chosen": "Job Offer with Kofi",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6844999734312296,
+        "latency_ms": 0.7088000420480967,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1724,7 +1724,7 @@
         "chosen": "Northwind Onboarding Plan",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7018999895080924,
+        "latency_ms": 0.709500047378242,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1736,7 +1736,7 @@
         "chosen": "Monarch Contract Redlines",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6749000167474151,
+        "latency_ms": 0.7042000070214272,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1748,7 +1748,7 @@
         "chosen": "Board Deck with Vera",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6669999565929174,
+        "latency_ms": 0.6974000716581941,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1760,7 +1760,7 @@
         "chosen": "Wayne Lease Renewal",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6704999832436442,
+        "latency_ms": 0.6927999202162027,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1772,7 +1772,7 @@
         "chosen": "Oscorp Contract Redlines",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6748000159859657,
+        "latency_ms": 0.6924000335857272,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1784,7 +1784,7 @@
         "chosen": "Oscorp Offsite Agenda",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7330999942496419,
+        "latency_ms": 0.6867999909445643,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1796,7 +1796,7 @@
         "chosen": "Pied Piper Contract Redlines",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6782999262213707,
+        "latency_ms": 0.6968999514356256,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1808,7 +1808,7 @@
         "chosen": "Monarch Contract Redlines",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.672499998472631,
+        "latency_ms": 0.6907000206410885,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1820,7 +1820,7 @@
         "chosen": "Find reference check emails",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6730000022798777,
+        "latency_ms": 0.6856999825686216,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1832,7 +1832,7 @@
         "chosen": "Tyrell Budget Approval",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6676000775769353,
+        "latency_ms": 0.6874999962747097,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1844,7 +1844,7 @@
         "chosen": "Find design review emails",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7111000595614314,
+        "latency_ms": 0.689899898134172,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1856,7 +1856,7 @@
         "chosen": "Job Offer with Kofi",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6739000091329217,
+        "latency_ms": 0.6824000738561153,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1868,7 +1868,7 @@
         "chosen": "Launch Timeline with Fatima",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6693999748677015,
+        "latency_ms": 0.7227999158203602,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1880,7 +1880,7 @@
         "chosen": "Find design review emails",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6699999794363976,
+        "latency_ms": 0.7000999758020043,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1892,7 +1892,7 @@
         "chosen": "Find pricing proposal emails",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7125999545678496,
+        "latency_ms": 1.511499984189868,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1904,7 +1904,7 @@
         "chosen": "Oscorp Offsite Agenda",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6686999695375562,
+        "latency_ms": 0.9188000112771988,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1916,7 +1916,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.8226999780163169,
+        "latency_ms": 0.8461000397801399,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1928,7 +1928,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7299999706447124,
+        "latency_ms": 0.7795001147314906,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1940,7 +1940,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7287000771611929,
+        "latency_ms": 0.7548000430688262,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1952,7 +1952,7 @@
         "chosen": "Email to Olivia Weber",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7059999043121934,
+        "latency_ms": 0.7610999746248126,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1964,7 +1964,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7826000219210982,
+        "latency_ms": 0.7458999752998352,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1976,7 +1976,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7211000192910433,
+        "latency_ms": 0.7430999539792538,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1988,7 +1988,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7206000154837966,
+        "latency_ms": 0.7290999637916684,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2000,7 +2000,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7157000945881009,
+        "latency_ms": 0.7195000071078539,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2012,7 +2012,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7619000971317291,
+        "latency_ms": 0.7751999655738473,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2024,7 +2024,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7184999994933605,
+        "latency_ms": 0.74819999281317,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2036,7 +2036,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.721000018529594,
+        "latency_ms": 0.7715999381616712,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2048,7 +2048,7 @@
         "chosen": "Email to Emma Murphy",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7037000032141805,
+        "latency_ms": 0.7179999956861138,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2060,7 +2060,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.763599993661046,
+        "latency_ms": 0.735500012524426,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2072,7 +2072,7 @@
         "chosen": "Email to Emma Evans",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7261999417096376,
+        "latency_ms": 0.7208000170066953,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2084,7 +2084,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7387000368908048,
+        "latency_ms": 0.7327001076191664,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2096,7 +2096,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7146999705582857,
+        "latency_ms": 0.7298000855371356,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2108,7 +2108,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7780999876558781,
+        "latency_ms": 0.7279999554157257,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2120,7 +2120,7 @@
         "chosen": "Email to Michael Turner",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7270999485626817,
+        "latency_ms": 0.7215000223368406,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2132,7 +2132,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7318999851122499,
+        "latency_ms": 0.7811998948454857,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2144,7 +2144,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7264000596478581,
+        "latency_ms": 1.5858999686315656,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2156,7 +2156,7 @@
         "chosen": "Reminder: schedule annual physical",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6973999552428722,
+        "latency_ms": 1.0261000134050846,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2168,7 +2168,7 @@
         "chosen": "Reminder: check visa status",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7812000112608075,
+        "latency_ms": 0.7697000401094556,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2180,7 +2180,7 @@
         "chosen": "Reminder: check flight prices",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6755000213161111,
+        "latency_ms": 0.7186000002548099,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2192,7 +2192,7 @@
         "chosen": "Reminder: order new glasses",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7167001022025943,
+        "latency_ms": 0.697100069373846,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2204,7 +2204,7 @@
         "chosen": "Reminder: book team dinner",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6885000038892031,
+        "latency_ms": 0.6967999506741762,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2216,7 +2216,7 @@
         "chosen": "Reminder: call the bank",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6547999801114202,
+        "latency_ms": 0.6776000373065472,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2228,7 +2228,7 @@
         "chosen": "Reminder: renew parking permit",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7112000603228807,
+        "latency_ms": 0.6908000214025378,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2240,7 +2240,7 @@
         "chosen": "Reminder: dentist appointment",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.678699929267168,
+        "latency_ms": 0.6717999931424856,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2252,7 +2252,7 @@
         "chosen": "Reminder: pay credit card",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6891000084578991,
+        "latency_ms": 0.7306999759748578,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2264,7 +2264,7 @@
         "chosen": "Reminder: quarterly tax payment",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6691999733448029,
+        "latency_ms": 0.7028999971225858,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2276,7 +2276,7 @@
         "chosen": "Reminder: pay rent",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7178999949246645,
+        "latency_ms": 0.6810999475419521,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2288,7 +2288,7 @@
         "chosen": "Reminder: update resume",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7178999949246645,
+        "latency_ms": 0.6778000388294458,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2300,7 +2300,7 @@
         "chosen": "Reminder: send invoice to landlord",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6709999870508909,
+        "latency_ms": 0.691999914124608,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2312,7 +2312,7 @@
         "chosen": "Reminder: schedule car service",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7146999705582857,
+        "latency_ms": 0.6791000487282872,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2324,7 +2324,7 @@
         "chosen": "Reminder: vet appointment",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6759000243619084,
+        "latency_ms": 0.7532999152317643,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2336,7 +2336,7 @@
         "chosen": "Email to David Park",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5723999347537756,
+        "latency_ms": 0.6095999851822853,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2348,7 +2348,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6518000736832619,
+        "latency_ms": 0.6153000285848975,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2360,7 +2360,7 @@
         "chosen": "Email to Fatima Kim",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5928999744355679,
+        "latency_ms": 0.6212999578565359,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2372,7 +2372,7 @@
         "chosen": "Email to Noah Patel",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5716999294236302,
+        "latency_ms": 0.5975000094622374,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2384,7 +2384,7 @@
         "chosen": "Email to Lena Tanaka",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5888000596314669,
+        "latency_ms": 0.5856000352650881,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2396,7 +2396,7 @@
         "chosen": "Job Offer with Rosa",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5691999103873968,
+        "latency_ms": 0.6155000301077962,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2408,7 +2408,7 @@
         "chosen": "Email to Umar Okafor",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.606600078754127,
+        "latency_ms": 0.5982000147923827,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2420,7 +2420,7 @@
         "chosen": "Contract Redlines with Priya",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.569900032132864,
+        "latency_ms": 1.5275999903678894,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2432,7 +2432,7 @@
         "chosen": "Email to Zara Fischer",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5858000367879868,
+        "latency_ms": 0.6601999048143625,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2444,7 +2444,7 @@
         "chosen": "Email to Ethan Mendes",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5885999416932464,
+        "latency_ms": 0.5998000269755721,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2456,7 +2456,7 @@
         "chosen": "Launch Timeline with Fatima",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5700000328943133,
+        "latency_ms": 0.5970000056549907,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2468,7 +2468,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6766999140381813,
+        "latency_ms": 0.623999978415668,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2480,7 +2480,7 @@
         "chosen": "Email to Zara Fischer",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5764999659731984,
+        "latency_ms": 0.6262999959290028,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2492,7 +2492,7 @@
         "chosen": "Email to Amara Zhang",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5942999850958586,
+        "latency_ms": 0.6028000498190522,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2504,7 +2504,7 @@
         "chosen": "Job Offer with Kofi",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5929000908508897,
+        "latency_ms": 0.5879999371245503,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2516,7 +2516,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.722800032235682,
+        "latency_ms": 0.7471999851986766,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2528,7 +2528,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.5892000626772642,
+        "latency_ms": 0.6135000148788095,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2540,7 +2540,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.763599993661046,
+        "latency_ms": 0.7836999138817191,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2552,7 +2552,7 @@
         "chosen": "Onboarding Plan with Emma",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5725000519305468,
+        "latency_ms": 0.6050999509170651,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2564,7 +2564,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.722200027666986,
+        "latency_ms": 0.7468999829143286,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2576,7 +2576,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.5819000070914626,
+        "latency_ms": 0.6229000864550471,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2588,7 +2588,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7187000010162592,
+        "latency_ms": 0.7588000735267997,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2600,7 +2600,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6203000666573644,
+        "latency_ms": 0.6486999336630106,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2612,7 +2612,7 @@
         "chosen": "Board Deck with Isaac",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7035000016912818,
+        "latency_ms": 0.7970000151544809,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2624,7 +2624,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.5822000093758106,
+        "latency_ms": 0.619900063611567,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2636,7 +2636,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7205000147223473,
+        "latency_ms": 0.7463999791070819,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2648,7 +2648,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.5836000200361013,
+        "latency_ms": 0.6126000080257654,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2660,7 +2660,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7218999089673162,
+        "latency_ms": 0.7412999402731657,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2672,7 +2672,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6473000394180417,
+        "latency_ms": 0.6730000022798777,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2684,7 +2684,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7254999363794923,
+        "latency_ms": 0.7459999760612845,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2696,7 +2696,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.5789999850094318,
+        "latency_ms": 0.6067999638617039,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2708,7 +2708,7 @@
         "chosen": "Launch Timeline with Noah",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7121000671759248,
+        "latency_ms": 1.918399939313531,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2720,7 +2720,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6442999001592398,
+        "latency_ms": 0.6618000334128737,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2732,7 +2732,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.721900025382638,
+        "latency_ms": 0.8153000380843878,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2744,7 +2744,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.8619000436738133,
+        "latency_ms": 0.6665000692009926,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2756,7 +2756,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 1.0589000303298235,
+        "latency_ms": 0.7173999911174178,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2768,7 +2768,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7134999614208937,
+        "latency_ms": 0.7319999858736992,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2780,7 +2780,7 @@
         "chosen": "Reminder: renew driver license",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.714799971319735,
+        "latency_ms": 0.7061000214889646,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2792,7 +2792,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7076000329107046,
+        "latency_ms": 0.6939999293535948,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2804,7 +2804,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.721300020813942,
+        "latency_ms": 0.707700033672154,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2816,7 +2816,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7149000884965062,
+        "latency_ms": 0.7425999501720071,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2828,7 +2828,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7036000024527311,
+        "latency_ms": 0.6882000016048551,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2840,7 +2840,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7019001059234142,
+        "latency_ms": 0.6877999985590577,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2852,7 +2852,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7171001052483916,
+        "latency_ms": 0.7004999788478017,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2864,7 +2864,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7075000321492553,
+        "latency_ms": 0.6881000008434057,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2876,7 +2876,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6979999598115683,
+        "latency_ms": 0.7097999332472682,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2888,7 +2888,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7117000641301274,
+        "latency_ms": 0.7512000156566501,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2900,7 +2900,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7009999826550484,
+        "latency_ms": 0.6880000000819564,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2912,7 +2912,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7128999568521976,
+        "latency_ms": 0.6854000966995955,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2924,7 +2924,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6957999430596828,
+        "latency_ms": 0.7483001099899411,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2936,7 +2936,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7235000375658274,
+        "latency_ms": 0.6979000754654408,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2948,7 +2948,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7016999879851937,
+        "latency_ms": 0.8336000610142946,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2960,7 +2960,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6658999482169747,
+        "latency_ms": 1.6959999920800328,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2972,7 +2972,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6622000364586711,
+        "latency_ms": 0.7945999968796968,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2984,7 +2984,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.727499951608479,
+        "latency_ms": 0.7154999766498804,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2998,7 +2998,7 @@
         "chosen": "Reply to Alex re podcast interview",
         "reason": "exact_name",
         "roster_tokens": 965,
-        "latency_ms": 15.96140000037849,
+        "latency_ms": 18.240700010210276,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3010,7 +3010,7 @@
         "chosen": "Q3 Invoice with Priya",
         "reason": "exact_name",
         "roster_tokens": 941,
-        "latency_ms": 14.40109999384731,
+        "latency_ms": 16.767699969932437,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3022,7 +3022,7 @@
         "chosen": "Email to Michael Turner",
         "reason": "exact_name",
         "roster_tokens": 957,
-        "latency_ms": 15.62510000076145,
+        "latency_ms": 16.485300031490624,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3034,7 +3034,7 @@
         "chosen": "Email to Leah Dubois",
         "reason": "exact_name",
         "roster_tokens": 956,
-        "latency_ms": 15.510199940763414,
+        "latency_ms": 16.537199961021543,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3046,7 +3046,7 @@
         "chosen": "Email to Zane Park",
         "reason": "exact_name",
         "roster_tokens": 929,
-        "latency_ms": 15.254099969752133,
+        "latency_ms": 16.857000067830086,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3058,7 +3058,7 @@
         "chosen": "Design Review with Wei",
         "reason": "exact_name",
         "roster_tokens": 966,
-        "latency_ms": 15.284399967640638,
+        "latency_ms": 16.42990007530898,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3070,7 +3070,7 @@
         "chosen": "Email to Vera Kaur",
         "reason": "exact_name",
         "roster_tokens": 942,
-        "latency_ms": 15.694199944846332,
+        "latency_ms": 16.72160008456558,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3082,7 +3082,7 @@
         "chosen": "Vendor Quote with Vera",
         "reason": "exact_name",
         "roster_tokens": 941,
-        "latency_ms": 14.42060002591461,
+        "latency_ms": 15.31529997009784,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3094,7 +3094,7 @@
         "chosen": "Reply to David re tax documents",
         "reason": "exact_name",
         "roster_tokens": 941,
-        "latency_ms": 16.42800006084144,
+        "latency_ms": 17.4266000976786,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3106,7 +3106,7 @@
         "chosen": "Email to Mila",
         "reason": "exact_name",
         "roster_tokens": 957,
-        "latency_ms": 34.92160001769662,
+        "latency_ms": 35.55969998706132,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3118,7 +3118,7 @@
         "chosen": "Reply to Ravi re launch timeline",
         "reason": "exact_name",
         "roster_tokens": 950,
-        "latency_ms": 15.660500037483871,
+        "latency_ms": 18.40579998679459,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3130,7 +3130,7 @@
         "chosen": "Wayne Travel Itinerary",
         "reason": "exact_name",
         "roster_tokens": 955,
-        "latency_ms": 17.491099890321493,
+        "latency_ms": 16.08879992272705,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3142,7 +3142,7 @@
         "chosen": "Budget Approval with Isaac",
         "reason": "exact_name",
         "roster_tokens": 957,
-        "latency_ms": 19.523399998433888,
+        "latency_ms": 17.065799911506474,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3154,7 +3154,7 @@
         "chosen": "Email to Emma Schmidt",
         "reason": "exact_name",
         "roster_tokens": 979,
-        "latency_ms": 17.206299933604896,
+        "latency_ms": 16.530600027181208,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3166,7 +3166,7 @@
         "chosen": "Pied Piper Venue Contract",
         "reason": "exact_name",
         "roster_tokens": 974,
-        "latency_ms": 15.982800046913326,
+        "latency_ms": 17.059899982996285,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3178,7 +3178,7 @@
         "chosen": "Podcast Interview with Noah",
         "reason": "exact_name",
         "roster_tokens": 964,
-        "latency_ms": 15.716599998995662,
+        "latency_ms": 16.81920001283288,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3190,7 +3190,7 @@
         "chosen": "Email to Kofi Patel",
         "reason": "exact_name",
         "roster_tokens": 959,
-        "latency_ms": 14.87840001937002,
+        "latency_ms": 15.8740000333637,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3202,7 +3202,7 @@
         "chosen": "Email to David",
         "reason": "exact_name",
         "roster_tokens": 952,
-        "latency_ms": 14.66200000140816,
+        "latency_ms": 15.82039997447282,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3214,7 +3214,7 @@
         "chosen": "Email to Umar Dimitrov",
         "reason": "exact_name",
         "roster_tokens": 961,
-        "latency_ms": 14.592300052754581,
+        "latency_ms": 16.185299959033728,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3226,7 +3226,7 @@
         "chosen": "Board Deck with Kai",
         "reason": "exact_name",
         "roster_tokens": 931,
-        "latency_ms": 14.585700002498925,
+        "latency_ms": 16.0844000056386,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3238,7 +3238,7 @@
         "chosen": "Cyberdyne Job Offer",
         "reason": "exact_name",
         "roster_tokens": 955,
-        "latency_ms": 36.24269994907081,
+        "latency_ms": 38.35699998307973,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3250,7 +3250,7 @@
         "chosen": "Job Offer with Priya",
         "reason": "exact_name",
         "roster_tokens": 942,
-        "latency_ms": 15.780100016854703,
+        "latency_ms": 16.370499972254038,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3262,7 +3262,7 @@
         "chosen": "Tyrell Insurance Claim",
         "reason": "exact_name",
         "roster_tokens": 947,
-        "latency_ms": 14.808100066147745,
+        "latency_ms": 15.635300078429282,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3274,7 +3274,7 @@
         "chosen": "Monarch Hiring Plan",
         "reason": "exact_name",
         "roster_tokens": 937,
-        "latency_ms": 16.067099990323186,
+        "latency_ms": 17.463400028645992,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3286,7 +3286,7 @@
         "chosen": "Reply to Emma re contract redlines",
         "reason": "exact_name",
         "roster_tokens": 979,
-        "latency_ms": 15.333499992266297,
+        "latency_ms": 17.026500077918172,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3298,7 +3298,7 @@
         "chosen": "Security Audit with Amara",
         "reason": "exact_name",
         "roster_tokens": 951,
-        "latency_ms": 15.80860000103712,
+        "latency_ms": 16.516100033186376,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3310,7 +3310,7 @@
         "chosen": "Email to Noah",
         "reason": "exact_name",
         "roster_tokens": 939,
-        "latency_ms": 15.8118000254035,
+        "latency_ms": 16.40600000973791,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3322,7 +3322,7 @@
         "chosen": "Email to Rosa Turner",
         "reason": "exact_name",
         "roster_tokens": 931,
-        "latency_ms": 15.57470008265227,
+        "latency_ms": 16.502899932675064,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3334,7 +3334,7 @@
         "chosen": "Reply to Alex re travel itinerary",
         "reason": "exact_name",
         "roster_tokens": 958,
-        "latency_ms": 14.702900080010295,
+        "latency_ms": 15.891899936832488,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3346,7 +3346,7 @@
         "chosen": "Reply to Sarah re design review",
         "reason": "exact_name",
         "roster_tokens": 944,
-        "latency_ms": 15.464299940504134,
+        "latency_ms": 16.371399979107082,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3358,7 +3358,7 @@
         "chosen": "Email to Fatima Park",
         "reason": "exact_name",
         "roster_tokens": 943,
-        "latency_ms": 14.5819999743253,
+        "latency_ms": 15.543699963018298,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3370,7 +3370,7 @@
         "chosen": "Reply to Fatima re Q3 invoice",
         "reason": "exact_name",
         "roster_tokens": 914,
-        "latency_ms": 35.04009998869151,
+        "latency_ms": 37.91149996686727,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3382,7 +3382,7 @@
         "chosen": "Reply to Noah re lease renewal",
         "reason": "exact_name",
         "roster_tokens": 948,
-        "latency_ms": 14.236100018024445,
+        "latency_ms": 17.781400005333126,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3394,7 +3394,7 @@
         "chosen": "Oscorp Visa Paperwork",
         "reason": "exact_name",
         "roster_tokens": 950,
-        "latency_ms": 14.400599990040064,
+        "latency_ms": 19.86659993417561,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3406,7 +3406,7 @@
         "chosen": "Email to Paige Patel",
         "reason": "exact_name",
         "roster_tokens": 965,
-        "latency_ms": 14.288400067016482,
+        "latency_ms": 21.444299956783652,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3418,7 +3418,7 @@
         "chosen": "Reply to David re travel itinerary",
         "reason": "exact_name",
         "roster_tokens": 957,
-        "latency_ms": 14.452600036747754,
+        "latency_ms": 15.701399999670684,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3430,7 +3430,7 @@
         "chosen": "Email to Kofi",
         "reason": "exact_name",
         "roster_tokens": 952,
-        "latency_ms": 14.320800080895424,
+        "latency_ms": 16.19550003670156,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3442,7 +3442,7 @@
         "chosen": "Email to Kai Haddad",
         "reason": "exact_name",
         "roster_tokens": 921,
-        "latency_ms": 14.420399907976389,
+        "latency_ms": 15.741100069135427,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3454,7 +3454,7 @@
         "chosen": "Launch Timeline with Fatima",
         "reason": "exact_name",
         "roster_tokens": 955,
-        "latency_ms": 14.36420006211847,
+        "latency_ms": 16.088400036096573,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3466,7 +3466,7 @@
         "chosen": "Launch Timeline with Noah",
         "reason": "exact_name",
         "roster_tokens": 954,
-        "latency_ms": 16.00130007136613,
+        "latency_ms": 15.676500042900443,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3478,7 +3478,7 @@
         "chosen": "Email to Julia Gupta",
         "reason": "exact_name",
         "roster_tokens": 949,
-        "latency_ms": 14.782299986109138,
+        "latency_ms": 15.759800095111132,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3490,7 +3490,7 @@
         "chosen": "Reply to Isaac re venue contract",
         "reason": "exact_name",
         "roster_tokens": 925,
-        "latency_ms": 14.373400015756488,
+        "latency_ms": 16.724799992516637,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3502,7 +3502,7 @@
         "chosen": "Email to David",
         "reason": "exact_name",
         "roster_tokens": 951,
-        "latency_ms": 15.99390001501888,
+        "latency_ms": 15.475799911655486,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3514,7 +3514,7 @@
         "chosen": "Reply to David re tax documents",
         "reason": "exact_name",
         "roster_tokens": 886,
-        "latency_ms": 35.08029994554818,
+        "latency_ms": 38.83149998728186,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3526,7 +3526,7 @@
         "chosen": "Reply to Sarah re design review",
         "reason": "exact_name",
         "roster_tokens": 942,
-        "latency_ms": 14.37429990619421,
+        "latency_ms": 15.704900026321411,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3538,7 +3538,7 @@
         "chosen": "Email to David Park",
         "reason": "exact_name",
         "roster_tokens": 939,
-        "latency_ms": 14.863999909721315,
+        "latency_ms": 15.770899946801364,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3550,7 +3550,7 @@
         "chosen": "Onboarding Plan with Paige",
         "reason": "exact_name",
         "roster_tokens": 923,
-        "latency_ms": 15.023100073449314,
+        "latency_ms": 15.532199991866946,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3562,7 +3562,7 @@
         "chosen": "Umbrella Budget Approval",
         "reason": "exact_name",
         "roster_tokens": 952,
-        "latency_ms": 14.772700029425323,
+        "latency_ms": 16.21169992722571,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3574,7 +3574,7 @@
         "chosen": "Visa Paperwork with Noah",
         "reason": "exact_name",
         "roster_tokens": 951,
-        "latency_ms": 14.508899999782443,
+        "latency_ms": 15.687900013290346,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3586,7 +3586,7 @@
         "chosen": "Reply to Zara re lease renewal",
         "reason": "exact_name",
         "roster_tokens": 948,
-        "latency_ms": 14.476399985142052,
+        "latency_ms": 15.59530000668019,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3598,7 +3598,7 @@
         "chosen": "Email to Umar Dimitrov",
         "reason": "exact_name",
         "roster_tokens": 966,
-        "latency_ms": 14.538299990817904,
+        "latency_ms": 15.982399927452207,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3610,7 +3610,7 @@
         "chosen": "Email to Umar",
         "reason": "exact_name",
         "roster_tokens": 947,
-        "latency_ms": 14.556100009940565,
+        "latency_ms": 15.346899977885187,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3622,7 +3622,7 @@
         "chosen": "Globex Launch Timeline",
         "reason": "exact_name",
         "roster_tokens": 954,
-        "latency_ms": 14.504999970085919,
+        "latency_ms": 15.499499975703657,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3634,7 +3634,7 @@
         "chosen": "Wayne Budget Approval",
         "reason": "exact_name",
         "roster_tokens": 952,
-        "latency_ms": 14.406300033442676,
+        "latency_ms": 15.53749991580844,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3646,7 +3646,7 @@
         "chosen": "Email to Emma Murphy",
         "reason": "exact_name",
         "roster_tokens": 949,
-        "latency_ms": 14.841800089925528,
+        "latency_ms": 18.988800002261996,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3658,7 +3658,7 @@
         "chosen": "Email to Grace Ali",
         "reason": "exact_name",
         "roster_tokens": 939,
-        "latency_ms": 34.3255999032408,
+        "latency_ms": 37.69319993443787,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3670,7 +3670,7 @@
         "chosen": "Email to Vera Kaur",
         "reason": "exact_name",
         "roster_tokens": 939,
-        "latency_ms": 14.589299913495779,
+        "latency_ms": 15.871500014327466,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3682,7 +3682,7 @@
         "chosen": "Email to Paige Lopez",
         "reason": "exact_name",
         "roster_tokens": 929,
-        "latency_ms": 14.518100069835782,
+        "latency_ms": 16.342799994163215,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3694,7 +3694,7 @@
         "chosen": "Reply to Emma re contract redlines",
         "reason": "exact_name",
         "roster_tokens": 944,
-        "latency_ms": 14.825300080701709,
+        "latency_ms": 16.046799952164292,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3706,7 +3706,7 @@
         "chosen": "Email to David Schmidt",
         "reason": "exact_name",
         "roster_tokens": 908,
-        "latency_ms": 14.34039999730885,
+        "latency_ms": 16.084000002592802,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3718,7 +3718,7 @@
         "chosen": "Reply to Fatima re Q3 invoice",
         "reason": "exact_name",
         "roster_tokens": 875,
-        "latency_ms": 14.547000057063997,
+        "latency_ms": 14.263099990785122,
         "in_shortlist": false,
         "in_search": false,
         "used_search": false
@@ -3730,7 +3730,7 @@
         "chosen": "Email to Vera",
         "reason": "exact_name",
         "roster_tokens": 938,
-        "latency_ms": 14.189600013196468,
+        "latency_ms": 15.597399906255305,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3742,7 +3742,7 @@
         "chosen": "Job Offer with Priya",
         "reason": "exact_name",
         "roster_tokens": 937,
-        "latency_ms": 14.492799993604422,
+        "latency_ms": 15.574899967759848,
         "in_shortlist": false,
         "in_search": false,
         "used_search": false
@@ -3754,7 +3754,7 @@
         "chosen": "Reply to Fatima re Q3 invoice",
         "reason": "exact_name",
         "roster_tokens": 915,
-        "latency_ms": 14.608299941755831,
+        "latency_ms": 15.697799972258508,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3766,7 +3766,7 @@
         "chosen": "Job Offer with Priya",
         "reason": "exact_name",
         "roster_tokens": 871,
-        "latency_ms": 14.701100066304207,
+        "latency_ms": 15.825700014829636,
         "in_shortlist": false,
         "in_search": false,
         "used_search": false
@@ -3778,7 +3778,7 @@
         "chosen": "Email to Vera",
         "reason": "exact_name",
         "roster_tokens": 868,
-        "latency_ms": 14.745500055141747,
+        "latency_ms": 16.29299996420741,
         "in_shortlist": false,
         "in_search": false,
         "used_search": false
@@ -3790,7 +3790,7 @@
         "chosen": "Reply to Fatima re Q3 invoice",
         "reason": "exact_name",
         "roster_tokens": 942,
-        "latency_ms": 14.972400036640465,
+        "latency_ms": 15.634199953638017,
         "in_shortlist": false,
         "in_search": false,
         "used_search": false
@@ -3802,7 +3802,7 @@
         "chosen": "Email to Rosa",
         "reason": "exact_name",
         "roster_tokens": 931,
-        "latency_ms": 34.590600058436394,
+        "latency_ms": 38.13359991181642,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3814,7 +3814,7 @@
         "chosen": "Email to Isaac",
         "reason": "exact_name",
         "roster_tokens": 944,
-        "latency_ms": 14.405599911697209,
+        "latency_ms": 15.818399959243834,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3826,7 +3826,7 @@
         "chosen": "Pricing Proposal with Michael",
         "reason": "exact_name",
         "roster_tokens": 928,
-        "latency_ms": 14.185800100676715,
+        "latency_ms": 15.737900044769049,
         "in_shortlist": false,
         "in_search": false,
         "used_search": false
@@ -3838,7 +3838,7 @@
         "chosen": "Email to Noah",
         "reason": "exact_name",
         "roster_tokens": 948,
-        "latency_ms": 14.279499999247491,
+        "latency_ms": 16.224400023929775,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3850,7 +3850,7 @@
         "chosen": "Email to Kai",
         "reason": "exact_name",
         "roster_tokens": 749,
-        "latency_ms": 14.436100027523935,
+        "latency_ms": 15.106000006198883,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3862,7 +3862,7 @@
         "chosen": "Email to Sven",
         "reason": "exact_name",
         "roster_tokens": 621,
-        "latency_ms": 15.006499947048724,
+        "latency_ms": 15.510500059463084,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3874,7 +3874,7 @@
         "chosen": "Email to Alex",
         "reason": "exact_name",
         "roster_tokens": 899,
-        "latency_ms": 14.57470003515482,
+        "latency_ms": 15.607799985446036,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3886,7 +3886,7 @@
         "chosen": "Pied Piper Contract Redlines",
         "reason": "exact_name",
         "roster_tokens": 630,
-        "latency_ms": 14.355499995872378,
+        "latency_ms": 15.594300115481019,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3898,7 +3898,7 @@
         "chosen": "Soylent Reference Check",
         "reason": "exact_name",
         "roster_tokens": 949,
-        "latency_ms": 15.64130000770092,
+        "latency_ms": 17.086799954995513,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3910,7 +3910,7 @@
         "chosen": "Acme Travel Itinerary",
         "reason": "exact_name",
         "roster_tokens": 957,
-        "latency_ms": 15.577799989841878,
+        "latency_ms": 17.454199958592653,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3922,7 +3922,7 @@
         "chosen": "Email to Ava",
         "reason": "exact_name",
         "roster_tokens": 946,
-        "latency_ms": 16.080299974419177,
+        "latency_ms": 16.561000025831163,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3934,7 +3934,7 @@
         "chosen": "Email to Ibrahim",
         "reason": "exact_name",
         "roster_tokens": 911,
-        "latency_ms": 15.613900031894445,
+        "latency_ms": 16.991700045764446,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3946,7 +3946,7 @@
         "chosen": "Email to Kai Haddad",
         "reason": "exact_name",
         "roster_tokens": 954,
-        "latency_ms": 15.821699984371662,
+        "latency_ms": 17.370599904097617,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3958,7 +3958,7 @@
         "chosen": "Email to Zane",
         "reason": "exact_name",
         "roster_tokens": 978,
-        "latency_ms": 16.164999920874834,
+        "latency_ms": 17.129700048826635,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3970,7 +3970,7 @@
         "chosen": "Board Deck with David",
         "reason": "exact_name",
         "roster_tokens": 929,
-        "latency_ms": 15.569600043818355,
+        "latency_ms": 16.93619997240603,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3982,7 +3982,7 @@
         "chosen": "Wayne Lease Renewal",
         "reason": "exact_name",
         "roster_tokens": 948,
-        "latency_ms": 15.985999954864383,
+        "latency_ms": 17.82950002234429,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3994,7 +3994,7 @@
         "chosen": "Oscorp Contract Redlines",
         "reason": "exact_name",
         "roster_tokens": 960,
-        "latency_ms": 15.73310000821948,
+        "latency_ms": 16.564000048674643,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4006,7 +4006,7 @@
         "chosen": "Email to Kai",
         "reason": "exact_name",
         "roster_tokens": 940,
-        "latency_ms": 16.316600027494133,
+        "latency_ms": 17.166799982078373,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4018,7 +4018,7 @@
         "chosen": "Pied Piper Contract Redlines",
         "reason": "exact_name",
         "roster_tokens": 957,
-        "latency_ms": 15.917600016109645,
+        "latency_ms": 17.078100005164742,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4030,7 +4030,7 @@
         "chosen": "Reply to Julia re contract redlines",
         "reason": "exact_name",
         "roster_tokens": 960,
-        "latency_ms": 15.795100014656782,
+        "latency_ms": 17.171300016343594,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4042,7 +4042,7 @@
         "chosen": "Email to Julia Gupta",
         "reason": "exact_name",
         "roster_tokens": 950,
-        "latency_ms": 16.065399977378547,
+        "latency_ms": 16.91860007122159,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4054,7 +4054,7 @@
         "chosen": "Email to Kofi",
         "reason": "exact_name",
         "roster_tokens": 953,
-        "latency_ms": 15.818699961528182,
+        "latency_ms": 16.764599946327507,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4066,7 +4066,7 @@
         "chosen": "Design Review with Diego",
         "reason": "exact_name",
         "roster_tokens": 942,
-        "latency_ms": 35.4698000010103,
+        "latency_ms": 17.415300011634827,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4078,7 +4078,7 @@
         "chosen": "Email to Nadia Dimitrov",
         "reason": "exact_name",
         "roster_tokens": 914,
-        "latency_ms": 15.989899984560907,
+        "latency_ms": 17.36290007829666,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4090,7 +4090,7 @@
         "chosen": "Email to Michael Turner",
         "reason": "exact_name",
         "roster_tokens": 955,
-        "latency_ms": 15.45920001808554,
+        "latency_ms": 17.636500066146255,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4102,7 +4102,7 @@
         "chosen": "Design Review with Michael",
         "reason": "exact_name",
         "roster_tokens": 943,
-        "latency_ms": 15.944799990393221,
+        "latency_ms": 17.34840008430183,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4114,7 +4114,7 @@
         "chosen": "Reply to Vera re pricing proposal",
         "reason": "exact_name",
         "roster_tokens": 956,
-        "latency_ms": 15.854500001296401,
+        "latency_ms": 17.105499980971217,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4126,7 +4126,7 @@
         "chosen": "Email to Vera Kaur",
         "reason": "exact_name",
         "roster_tokens": 939,
-        "latency_ms": 15.60280006378889,
+        "latency_ms": 16.850000014528632,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4138,7 +4138,7 @@
         "chosen": "Vendor Quote with Vera",
         "reason": "exact_name",
         "roster_tokens": 948,
-        "latency_ms": 15.166299999691546,
+        "latency_ms": 17.179699963890016,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4150,7 +4150,7 @@
         "chosen": "Reply to Zara re lease renewal",
         "reason": "exact_name",
         "roster_tokens": 962,
-        "latency_ms": 15.355200041085482,
+        "latency_ms": 17.19839998986572,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4162,7 +4162,7 @@
         "chosen": "Email to Emma",
         "reason": "exact_name",
         "roster_tokens": 947,
-        "latency_ms": 15.544599969871342,
+        "latency_ms": 16.7111000046134,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4174,7 +4174,7 @@
         "chosen": "Email to Olivia Weber",
         "reason": "exact_name",
         "roster_tokens": 911,
-        "latency_ms": 15.256299986504018,
+        "latency_ms": 16.476600081659853,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4186,7 +4186,7 @@
         "chosen": "Wayne Contract Redlines",
         "reason": "exact_name",
         "roster_tokens": 963,
-        "latency_ms": 36.15239995997399,
+        "latency_ms": 40.23759998381138,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4198,7 +4198,7 @@
         "chosen": "Acme Pricing Proposal",
         "reason": "exact_name",
         "roster_tokens": 955,
-        "latency_ms": 15.806399984285235,
+        "latency_ms": 16.582400072366,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4210,7 +4210,7 @@
         "chosen": "Reply to Michael re hiring plan",
         "reason": "exact_name",
         "roster_tokens": 971,
-        "latency_ms": 15.676000039093196,
+        "latency_ms": 16.975900041870773,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4222,7 +4222,7 @@
         "chosen": "Job Offer with Sarah",
         "reason": "exact_name",
         "roster_tokens": 957,
-        "latency_ms": 15.40109992492944,
+        "latency_ms": 16.678799991495907,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4234,7 +4234,7 @@
         "chosen": "Monarch Hiring Plan",
         "reason": "exact_name",
         "roster_tokens": 927,
-        "latency_ms": 15.030500013381243,
+        "latency_ms": 16.474099946208298,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4246,7 +4246,7 @@
         "chosen": "Reply to Julia re visa paperwork",
         "reason": "exact_name",
         "roster_tokens": 959,
-        "latency_ms": 15.391599969007075,
+        "latency_ms": 16.02059998549521,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4258,7 +4258,7 @@
         "chosen": "Email to Alex",
         "reason": "exact_name",
         "roster_tokens": 932,
-        "latency_ms": 15.093600028194487,
+        "latency_ms": 17.70810002926737,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4270,7 +4270,7 @@
         "chosen": "Email to Emma Murphy",
         "reason": "exact_name",
         "roster_tokens": 948,
-        "latency_ms": 15.732200001366436,
+        "latency_ms": 17.22779998090118,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4282,7 +4282,7 @@
         "chosen": "Email to Sarah",
         "reason": "exact_name",
         "roster_tokens": 961,
-        "latency_ms": 15.333499992266297,
+        "latency_ms": 17.7467999747023,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4294,7 +4294,7 @@
         "chosen": "Email to Emma Evans",
         "reason": "exact_name",
         "roster_tokens": 950,
-        "latency_ms": 15.465499949641526,
+        "latency_ms": 16.698600025847554,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4306,7 +4306,7 @@
         "chosen": "Oscorp Offsite Agenda",
         "reason": "exact_name",
         "roster_tokens": 961,
-        "latency_ms": 34.70169997308403,
+        "latency_ms": 39.679600042290986,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4318,7 +4318,7 @@
         "chosen": "Email to Ibrahim",
         "reason": "exact_name",
         "roster_tokens": 925,
-        "latency_ms": 15.655099996365607,
+        "latency_ms": 16.305999946780503,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4330,7 +4330,7 @@
         "chosen": "Reply to Noah re lease renewal",
         "reason": "exact_name",
         "roster_tokens": 962,
-        "latency_ms": 15.331700094975531,
+        "latency_ms": 16.72449999023229,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4342,7 +4342,7 @@
         "chosen": "Email to Michael Turner",
         "reason": "exact_name",
         "roster_tokens": 968,
-        "latency_ms": 15.56890003848821,
+        "latency_ms": 16.36579993646592,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4354,7 +4354,7 @@
         "chosen": "Monarch Reference Check",
         "reason": "exact_name",
         "roster_tokens": 957,
-        "latency_ms": 15.69439994636923,
+        "latency_ms": 16.227399930357933,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4366,7 +4366,7 @@
         "chosen": "Email to Michael",
         "reason": "exact_name",
         "roster_tokens": 970,
-        "latency_ms": 16.060899943113327,
+        "latency_ms": 16.66650001425296,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4378,7 +4378,7 @@
         "chosen": "Reminder: schedule annual physical",
         "reason": "exact_name",
         "roster_tokens": 748,
-        "latency_ms": 16.482600010931492,
+        "latency_ms": 16.408899915404618,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4390,7 +4390,7 @@
         "chosen": "Reminder: check visa status",
         "reason": "exact_name",
         "roster_tokens": 905,
-        "latency_ms": 17.904000007547438,
+        "latency_ms": 15.691300039179623,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4402,7 +4402,7 @@
         "chosen": "Reminder: check flight prices",
         "reason": "exact_name",
         "roster_tokens": 887,
-        "latency_ms": 26.776199927553535,
+        "latency_ms": 16.208899905905128,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4414,7 +4414,7 @@
         "chosen": "Reminder: order new glasses",
         "reason": "exact_name",
         "roster_tokens": 734,
-        "latency_ms": 19.016000092960894,
+        "latency_ms": 15.895599965006113,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4426,7 +4426,7 @@
         "chosen": "Reminder: book team dinner",
         "reason": "exact_name",
         "roster_tokens": 742,
-        "latency_ms": 16.670600045472383,
+        "latency_ms": 15.893899952061474,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4438,7 +4438,7 @@
         "chosen": "Reminder: call the bank",
         "reason": "exact_name",
         "roster_tokens": 728,
-        "latency_ms": 40.00400006771088,
+        "latency_ms": 36.67569998651743,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4450,7 +4450,7 @@
         "chosen": "Reminder: renew parking permit",
         "reason": "exact_name",
         "roster_tokens": 748,
-        "latency_ms": 16.72580000013113,
+        "latency_ms": 15.94070007558912,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4462,7 +4462,7 @@
         "chosen": "Reminder: dentist appointment",
         "reason": "exact_name",
         "roster_tokens": 739,
-        "latency_ms": 16.938800108619034,
+        "latency_ms": 16.250599990598857,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4474,7 +4474,7 @@
         "chosen": "Reminder: pay credit card",
         "reason": "exact_name",
         "roster_tokens": 743,
-        "latency_ms": 16.16600004490465,
+        "latency_ms": 15.747400000691414,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4486,7 +4486,7 @@
         "chosen": "Reminder: quarterly tax payment",
         "reason": "exact_name",
         "roster_tokens": 878,
-        "latency_ms": 15.028599998913705,
+        "latency_ms": 15.852099983021617,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4498,7 +4498,7 @@
         "chosen": "Reminder: pay rent",
         "reason": "exact_name",
         "roster_tokens": 723,
-        "latency_ms": 14.822500059381127,
+        "latency_ms": 15.053400071337819,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4510,7 +4510,7 @@
         "chosen": "Reminder: update resume",
         "reason": "exact_name",
         "roster_tokens": 729,
-        "latency_ms": 14.508599997498095,
+        "latency_ms": 15.268199960701168,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4522,7 +4522,7 @@
         "chosen": "Reminder: send invoice to landlord",
         "reason": "exact_name",
         "roster_tokens": 853,
-        "latency_ms": 14.711600029841065,
+        "latency_ms": 16.05879992712289,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4534,7 +4534,7 @@
         "chosen": "Reminder: schedule car service",
         "reason": "exact_name",
         "roster_tokens": 754,
-        "latency_ms": 14.574000029824674,
+        "latency_ms": 15.573800075799227,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4546,7 +4546,7 @@
         "chosen": "Reminder: vet appointment",
         "reason": "exact_name",
         "roster_tokens": 738,
-        "latency_ms": 14.457100071012974,
+        "latency_ms": 15.680899959988892,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4558,7 +4558,7 @@
         "chosen": "Email to David Park",
         "reason": "exact_name",
         "roster_tokens": 937,
-        "latency_ms": 14.520399970933795,
+        "latency_ms": 15.59379999525845,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4570,7 +4570,7 @@
         "chosen": "Email to Ravi",
         "reason": "exact_name",
         "roster_tokens": 948,
-        "latency_ms": 14.530400047078729,
+        "latency_ms": 15.634499955922365,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4582,7 +4582,7 @@
         "chosen": "Oscorp Visa Paperwork",
         "reason": "exact_name",
         "roster_tokens": 964,
-        "latency_ms": 34.31570006068796,
+        "latency_ms": 38.113699993118644,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4594,7 +4594,7 @@
         "chosen": "Email to Noah Patel",
         "reason": "exact_name",
         "roster_tokens": 954,
-        "latency_ms": 14.716800069436431,
+        "latency_ms": 16.086700023151934,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4606,7 +4606,7 @@
         "chosen": "Email to Lena Tanaka",
         "reason": "exact_name",
         "roster_tokens": 948,
-        "latency_ms": 14.498199918307364,
+        "latency_ms": 16.164900036528707,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4618,7 +4618,7 @@
         "chosen": "Job Offer with Rosa",
         "reason": "exact_name",
         "roster_tokens": 915,
-        "latency_ms": 14.588300022296607,
+        "latency_ms": 15.821199980564415,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4630,7 +4630,7 @@
         "chosen": "Wonka Launch Timeline",
         "reason": "exact_name",
         "roster_tokens": 949,
-        "latency_ms": 14.632700011134148,
+        "latency_ms": 16.06690010521561,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4642,7 +4642,7 @@
         "chosen": "Contract Redlines with Priya",
         "reason": "exact_name",
         "roster_tokens": 977,
-        "latency_ms": 14.730899943970144,
+        "latency_ms": 15.868899994529784,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4654,7 +4654,7 @@
         "chosen": "Northwind Conference Talk",
         "reason": "exact_name",
         "roster_tokens": 957,
-        "latency_ms": 14.517599949613214,
+        "latency_ms": 15.796400024555624,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4666,7 +4666,7 @@
         "chosen": "Email to Ethan Mendes",
         "reason": "exact_name",
         "roster_tokens": 938,
-        "latency_ms": 14.640599954873323,
+        "latency_ms": 14.699800056405365,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4678,7 +4678,7 @@
         "chosen": "Launch Timeline with Fatima",
         "reason": "exact_name",
         "roster_tokens": 956,
-        "latency_ms": 14.334900071844459,
+        "latency_ms": 16.13150001503527,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4690,7 +4690,7 @@
         "chosen": "Wayne Partnership Proposal",
         "reason": "exact_name",
         "roster_tokens": 959,
-        "latency_ms": 14.579900074750185,
+        "latency_ms": 17.294500023126602,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4702,7 +4702,7 @@
         "chosen": "Email to Zara Fischer",
         "reason": "exact_name",
         "roster_tokens": 952,
-        "latency_ms": 14.849600032903254,
+        "latency_ms": 14.93030006531626,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4714,7 +4714,7 @@
         "chosen": "Monarch Contract Redlines",
         "reason": "exact_name",
         "roster_tokens": 973,
-        "latency_ms": 14.996499987319112,
+        "latency_ms": 15.826800023205578,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4726,7 +4726,7 @@
         "chosen": "Job Offer with Kofi",
         "reason": "exact_name",
         "roster_tokens": 927,
-        "latency_ms": 14.63079999666661,
+        "latency_ms": 37.900199997238815,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4738,7 +4738,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 953,
-        "latency_ms": 39.496000041253865,
+        "latency_ms": 40.81959999166429,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4750,7 +4750,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 946,
-        "latency_ms": 37.777199991978705,
+        "latency_ms": 41.65409994311631,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4762,7 +4762,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 935,
-        "latency_ms": 38.559400010854006,
+        "latency_ms": 41.4686999283731,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4774,7 +4774,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 950,
-        "latency_ms": 38.55880000628531,
+        "latency_ms": 41.053300024941564,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4786,7 +4786,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 955,
-        "latency_ms": 42.393699986860156,
+        "latency_ms": 40.42450000997633,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4798,7 +4798,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 942,
-        "latency_ms": 37.85089997109026,
+        "latency_ms": 38.68799994233996,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4810,7 +4810,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 949,
-        "latency_ms": 39.80289993342012,
+        "latency_ms": 49.4126999983564,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4822,7 +4822,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 953,
-        "latency_ms": 58.89660003595054,
+        "latency_ms": 81.21269999537617,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4834,7 +4834,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 927,
-        "latency_ms": 40.11289996560663,
+        "latency_ms": 46.32870003115386,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4846,7 +4846,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 943,
-        "latency_ms": 38.10690005775541,
+        "latency_ms": 44.57579995505512,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4858,7 +4858,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 949,
-        "latency_ms": 39.19250005856156,
+        "latency_ms": 44.69739994965494,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4870,7 +4870,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 952,
-        "latency_ms": 37.415900034829974,
+        "latency_ms": 44.16689998470247,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4882,7 +4882,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 960,
-        "latency_ms": 39.13349995855242,
+        "latency_ms": 40.55389994755387,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4894,7 +4894,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 949,
-        "latency_ms": 37.34220005571842,
+        "latency_ms": 41.45769996102899,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4906,7 +4906,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 963,
-        "latency_ms": 39.69209990464151,
+        "latency_ms": 41.39879997819662,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4918,7 +4918,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 954,
-        "latency_ms": 58.262000093236566,
+        "latency_ms": 61.48270005360246,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4930,7 +4930,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 956,
-        "latency_ms": 39.07889989204705,
+        "latency_ms": 41.915099951438606,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4942,7 +4942,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 972,
-        "latency_ms": 37.58350003045052,
+        "latency_ms": 39.89599994383752,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4954,7 +4954,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 948,
-        "latency_ms": 39.573000045493245,
+        "latency_ms": 41.04759998153895,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4966,7 +4966,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 928,
-        "latency_ms": 37.34719997737557,
+        "latency_ms": 41.13110003527254,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4978,7 +4978,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 720,
-        "latency_ms": 36.605500034056604,
+        "latency_ms": 38.02710003219545,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4990,7 +4990,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 815,
-        "latency_ms": 37.92709996923804,
+        "latency_ms": 41.69970005750656,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5002,7 +5002,7 @@
         "chosen": "Reminder: renew driver license",
         "reason": "exact_name",
         "roster_tokens": 742,
-        "latency_ms": 14.49589990079403,
+        "latency_ms": 15.733900014311075,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -5014,7 +5014,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 810,
-        "latency_ms": 37.8597000380978,
+        "latency_ms": 39.19490007683635,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5026,7 +5026,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 726,
-        "latency_ms": 56.549500091932714,
+        "latency_ms": 60.30280003324151,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5038,7 +5038,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 811,
-        "latency_ms": 37.465799949131906,
+        "latency_ms": 40.6813999870792,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5050,7 +5050,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 734,
-        "latency_ms": 35.65630002412945,
+        "latency_ms": 38.48999994806945,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5062,7 +5062,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 813,
-        "latency_ms": 37.74840000551194,
+        "latency_ms": 40.88149999734014,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5074,7 +5074,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 724,
-        "latency_ms": 40.82429991103709,
+        "latency_ms": 38.749400060623884,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5086,7 +5086,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 813,
-        "latency_ms": 37.04280010424554,
+        "latency_ms": 41.95290000643581,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5098,7 +5098,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 720,
-        "latency_ms": 35.565400030463934,
+        "latency_ms": 39.35690002981573,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5110,7 +5110,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 815,
-        "latency_ms": 37.39099996164441,
+        "latency_ms": 41.25669994391501,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5122,7 +5122,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 720,
-        "latency_ms": 56.60480004735291,
+        "latency_ms": 61.412000097334385,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5134,7 +5134,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 810,
-        "latency_ms": 37.47900004964322,
+        "latency_ms": 41.408399934880435,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5146,7 +5146,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 727,
-        "latency_ms": 36.001999978907406,
+        "latency_ms": 38.75449998304248,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5158,7 +5158,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 811,
-        "latency_ms": 37.50209999270737,
+        "latency_ms": 39.577400078997016,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5170,7 +5170,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 876,
-        "latency_ms": 36.30489995703101,
+        "latency_ms": 40.48800002783537,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5182,7 +5182,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 813,
-        "latency_ms": 36.76849999465048,
+        "latency_ms": 40.3087999438867,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5194,7 +5194,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 720,
-        "latency_ms": 36.110299988649786,
+        "latency_ms": 41.61700000986457,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5206,10 +5206,2132 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 813,
-        "latency_ms": 36.81189997587353,
+        "latency_ms": 40.84519995376468,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
+      }
+    ]
+  },
+  "conversations": {
+    "baseline": {
+      "arm": "baseline",
+      "conversations": 26,
+      "turns": 92,
+      "turn_accuracy": 0.5978260869565217,
+      "later_turn_accuracy": 0.5909090909090909,
+      "conversation_success": 0.34615384615384615,
+      "by_kind": {
+        "correction": {
+          "conversations": 6,
+          "turn_accuracy": 0.2222222222222222,
+          "conversation_success": 0.16666666666666666
+        },
+        "new_then_follow_up": {
+          "conversations": 6,
+          "turn_accuracy": 0.6666666666666666,
+          "conversation_success": 0.6666666666666666
+        },
+        "same_person_new_topic": {
+          "conversations": 6,
+          "turn_accuracy": 0.75,
+          "conversation_success": 0.3333333333333333
+        },
+        "switch_and_return": {
+          "conversations": 8,
+          "turn_accuracy": 0.65625,
+          "conversation_success": 0.25
+        }
+      }
+    },
+    "solution": {
+      "arm": "solution",
+      "conversations": 26,
+      "turns": 92,
+      "turn_accuracy": 1.0,
+      "later_turn_accuracy": 1.0,
+      "conversation_success": 1.0,
+      "by_kind": {
+        "correction": {
+          "conversations": 6,
+          "turn_accuracy": 1.0,
+          "conversation_success": 1.0
+        },
+        "new_then_follow_up": {
+          "conversations": 6,
+          "turn_accuracy": 1.0,
+          "conversation_success": 1.0
+        },
+        "same_person_new_topic": {
+          "conversations": 6,
+          "turn_accuracy": 1.0,
+          "conversation_success": 1.0
+        },
+        "switch_and_return": {
+          "conversations": 8,
+          "turn_accuracy": 1.0,
+          "conversation_success": 1.0
+        }
+      }
+    },
+    "solution_without_new_task": {
+      "arm": "solution_without_new_task",
+      "conversations": 26,
+      "turns": 92,
+      "turn_accuracy": 0.9347826086956522,
+      "later_turn_accuracy": 0.9090909090909091,
+      "conversation_success": 0.8846153846153846,
+      "by_kind": {
+        "correction": {
+          "conversations": 6,
+          "turn_accuracy": 1.0,
+          "conversation_success": 1.0
+        },
+        "new_then_follow_up": {
+          "conversations": 6,
+          "turn_accuracy": 1.0,
+          "conversation_success": 1.0
+        },
+        "same_person_new_topic": {
+          "conversations": 6,
+          "turn_accuracy": 0.75,
+          "conversation_success": 0.5
+        },
+        "switch_and_return": {
+          "conversations": 8,
+          "turn_accuracy": 1.0,
+          "conversation_success": 1.0
+        }
+      }
+    }
+  },
+  "conversation_turns": {
+    "baseline": [
+      {
+        "conversation_id": "switch_and_return-00",
+        "kind": "switch_and_return",
+        "turn": 1,
+        "message": "Any update from Emma on the insurance claim?",
+        "expected": "Insurance Claim with Emma",
+        "chosen": "Insurance Claim with Emma",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-00",
+        "kind": "switch_and_return",
+        "turn": 2,
+        "message": "Ok, draft a reply saying Thursday works.",
+        "expected": "Insurance Claim with Emma",
+        "chosen": "Insurance Claim with Emma",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-00",
+        "kind": "switch_and_return",
+        "turn": 3,
+        "message": "Also, what's the latest on the Monarch budget approval?",
+        "expected": "Budget Approval with Isaac",
+        "chosen": "Tyrell Budget Approval",
+        "created": false,
+        "correct": false,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-00",
+        "kind": "switch_and_return",
+        "turn": 4,
+        "message": "Go back to the first one and send that draft.",
+        "expected": "Insurance Claim with Emma",
+        "chosen": "Insurance Claim with Emma",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-01",
+        "kind": "switch_and_return",
+        "turn": 1,
+        "message": "Any update from David on the venue contract?",
+        "expected": "Reply to David re venue contract",
+        "chosen": "Reply to David re venue contract",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-01",
+        "kind": "switch_and_return",
+        "turn": 2,
+        "message": "Ok, draft a reply saying Thursday works.",
+        "expected": "Reply to David re venue contract",
+        "chosen": "Reply to David re venue contract",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-01",
+        "kind": "switch_and_return",
+        "turn": 3,
+        "message": "Also, what's the latest on the Hooli visa paperwork?",
+        "expected": "Hooli Visa Paperwork",
+        "chosen": "Hooli Visa Paperwork",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-01",
+        "kind": "switch_and_return",
+        "turn": 4,
+        "message": "Go back to the first one and send that draft.",
+        "expected": "Reply to David re venue contract",
+        "chosen": "Reply to David re venue contract",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-02",
+        "kind": "switch_and_return",
+        "turn": 1,
+        "message": "Any update from Emma on the venue contract?",
+        "expected": "Email to Emma Schmidt",
+        "chosen": "Reply to Emma re contract redlines",
+        "created": false,
+        "correct": false,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-02",
+        "kind": "switch_and_return",
+        "turn": 2,
+        "message": "Ok, draft a reply saying Thursday works.",
+        "expected": "Email to Emma Schmidt",
+        "chosen": "Reply to Emma re contract redlines",
+        "created": false,
+        "correct": false,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-02",
+        "kind": "switch_and_return",
+        "turn": 3,
+        "message": "Also, what's the latest on the Tyrell travel itinerary?",
+        "expected": "Email to Isaac Chen",
+        "chosen": "Reply to Alex re travel itinerary",
+        "created": false,
+        "correct": false,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-02",
+        "kind": "switch_and_return",
+        "turn": 4,
+        "message": "Go back to the first one and send that draft.",
+        "expected": "Email to Emma Schmidt",
+        "chosen": "Reply to Emma re contract redlines",
+        "created": false,
+        "correct": false,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-03",
+        "kind": "switch_and_return",
+        "turn": 1,
+        "message": "Any update from Quinn on the budget approval?",
+        "expected": "Pied Piper Budget Approval",
+        "chosen": "Board Deck with Quinn",
+        "created": false,
+        "correct": false,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-03",
+        "kind": "switch_and_return",
+        "turn": 2,
+        "message": "Ok, draft a reply saying Thursday works.",
+        "expected": "Pied Piper Budget Approval",
+        "chosen": "Board Deck with Quinn",
+        "created": false,
+        "correct": false,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-03",
+        "kind": "switch_and_return",
+        "turn": 3,
+        "message": "Also, what's the latest on the Oscorp visa paperwork?",
+        "expected": "Oscorp Visa Paperwork",
+        "chosen": "Oscorp Visa Paperwork",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-03",
+        "kind": "switch_and_return",
+        "turn": 4,
+        "message": "Go back to the first one and send that draft.",
+        "expected": "Pied Piper Budget Approval",
+        "chosen": "Board Deck with Quinn",
+        "created": false,
+        "correct": false,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-04",
+        "kind": "switch_and_return",
+        "turn": 1,
+        "message": "Any update from Paige on the onboarding plan?",
+        "expected": "Onboarding Plan with Paige",
+        "chosen": "Onboarding Plan with Paige",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-04",
+        "kind": "switch_and_return",
+        "turn": 2,
+        "message": "Ok, draft a reply saying Thursday works.",
+        "expected": "Onboarding Plan with Paige",
+        "chosen": "Onboarding Plan with Paige",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-04",
+        "kind": "switch_and_return",
+        "turn": 3,
+        "message": "Also, what's the latest on the Aperture conference talk?",
+        "expected": "Email to Mila Dimitrov",
+        "chosen": "Northwind Conference Talk",
+        "created": false,
+        "correct": false,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-04",
+        "kind": "switch_and_return",
+        "turn": 4,
+        "message": "Go back to the first one and send that draft.",
+        "expected": "Onboarding Plan with Paige",
+        "chosen": "Onboarding Plan with Paige",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-05",
+        "kind": "switch_and_return",
+        "turn": 1,
+        "message": "Any update from David on the offsite agenda?",
+        "expected": "Email to David Park",
+        "chosen": "Email to David Park",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-05",
+        "kind": "switch_and_return",
+        "turn": 2,
+        "message": "Ok, draft a reply saying Thursday works.",
+        "expected": "Email to David Park",
+        "chosen": "Email to David Park",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-05",
+        "kind": "switch_and_return",
+        "turn": 3,
+        "message": "Also, what's the latest on the Initech board deck?",
+        "expected": "Board Deck with Vera",
+        "chosen": "Board Deck with Vera",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-05",
+        "kind": "switch_and_return",
+        "turn": 4,
+        "message": "Go back to the first one and send that draft.",
+        "expected": "Email to David Park",
+        "chosen": "Email to David Park",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-06",
+        "kind": "switch_and_return",
+        "turn": 1,
+        "message": "Any update from Emma on the onboarding plan?",
+        "expected": "Onboarding Plan with Emma",
+        "chosen": "Onboarding Plan with Emma",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-06",
+        "kind": "switch_and_return",
+        "turn": 2,
+        "message": "Ok, draft a reply saying Thursday works.",
+        "expected": "Onboarding Plan with Emma",
+        "chosen": "Onboarding Plan with Emma",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-06",
+        "kind": "switch_and_return",
+        "turn": 3,
+        "message": "Also, what's the latest on the Wayne visa paperwork?",
+        "expected": "Visa Paperwork with Marco",
+        "chosen": "Oscorp Visa Paperwork",
+        "created": false,
+        "correct": false,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-06",
+        "kind": "switch_and_return",
+        "turn": 4,
+        "message": "Go back to the first one and send that draft.",
+        "expected": "Onboarding Plan with Emma",
+        "chosen": "Onboarding Plan with Emma",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-07",
+        "kind": "switch_and_return",
+        "turn": 1,
+        "message": "Any update from Ibrahim on the job offer?",
+        "expected": "Email to Ibrahim",
+        "chosen": "Email to Ibrahim",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-07",
+        "kind": "switch_and_return",
+        "turn": 2,
+        "message": "Ok, draft a reply saying Thursday works.",
+        "expected": "Email to Ibrahim",
+        "chosen": "Email to Ibrahim",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-07",
+        "kind": "switch_and_return",
+        "turn": 3,
+        "message": "Also, what's the latest on the Tyrell hiring plan?",
+        "expected": "Email to Noah",
+        "chosen": "Hiring Plan with Michael",
+        "created": false,
+        "correct": false,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-07",
+        "kind": "switch_and_return",
+        "turn": 4,
+        "message": "Go back to the first one and send that draft.",
+        "expected": "Email to Ibrahim",
+        "chosen": "Email to Ibrahim",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "correction-08",
+        "kind": "correction",
+        "turn": 1,
+        "message": "Any update from Michael on the lease renewal?",
+        "expected": "Initech Lease Renewal",
+        "chosen": "Email to Michael Kim",
+        "created": false,
+        "correct": false,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "correction-08",
+        "kind": "correction",
+        "turn": 2,
+        "message": "Not that one. I meant Michael Gupta at Aperture.",
+        "expected": "Email to Michael",
+        "chosen": "Email to Michael Gupta",
+        "created": true,
+        "correct": false,
+        "reason": "new"
+      },
+      {
+        "conversation_id": "correction-08",
+        "kind": "correction",
+        "turn": 3,
+        "message": "Tell them Thursday works.",
+        "expected": "Email to Michael",
+        "chosen": "Email to Michael Gupta",
+        "created": false,
+        "correct": false,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "correction-09",
+        "kind": "correction",
+        "turn": 1,
+        "message": "Any update from Sarah on the job offer?",
+        "expected": "Job Offer with Sarah",
+        "chosen": "Job Offer with Sarah",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "correction-09",
+        "kind": "correction",
+        "turn": 2,
+        "message": "Not that one. I meant Sarah Murphy at Vandelay.",
+        "expected": "Email to Sarah",
+        "chosen": "Email to Sarah Murphy",
+        "created": true,
+        "correct": false,
+        "reason": "new"
+      },
+      {
+        "conversation_id": "correction-09",
+        "kind": "correction",
+        "turn": 3,
+        "message": "Tell them Thursday works.",
+        "expected": "Email to Sarah",
+        "chosen": "Email to Sarah Murphy",
+        "created": false,
+        "correct": false,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "correction-10",
+        "kind": "correction",
+        "turn": 1,
+        "message": "Any update from Priya on the lease renewal?",
+        "expected": "Wayne Lease Renewal",
+        "chosen": "Contract Redlines with Priya",
+        "created": false,
+        "correct": false,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "correction-10",
+        "kind": "correction",
+        "turn": 2,
+        "message": "Not that one. I meant Priya Chen at Vandelay.",
+        "expected": "Contract Redlines with Priya",
+        "chosen": "Email to Priya Chen",
+        "created": true,
+        "correct": false,
+        "reason": "new"
+      },
+      {
+        "conversation_id": "correction-10",
+        "kind": "correction",
+        "turn": 3,
+        "message": "Tell them Thursday works.",
+        "expected": "Contract Redlines with Priya",
+        "chosen": "Email to Priya Chen",
+        "created": false,
+        "correct": false,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "correction-11",
+        "kind": "correction",
+        "turn": 1,
+        "message": "Any update from Vera on the onboarding plan?",
+        "expected": "Onboarding Plan with Vera",
+        "chosen": "Onboarding Plan with Vera",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "correction-11",
+        "kind": "correction",
+        "turn": 2,
+        "message": "Not that one. I meant Vera Garcia at Globex.",
+        "expected": "Email to Vera Garcia",
+        "chosen": "Email to Vera Garcia",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "correction-11",
+        "kind": "correction",
+        "turn": 3,
+        "message": "Tell them Thursday works.",
+        "expected": "Email to Vera Garcia",
+        "chosen": "Email to Vera Garcia",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "correction-12",
+        "kind": "correction",
+        "turn": 1,
+        "message": "Any update from David on the vendor quote?",
+        "expected": "Email to David Schmidt",
+        "chosen": "Email to David Park",
+        "created": false,
+        "correct": false,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "correction-12",
+        "kind": "correction",
+        "turn": 2,
+        "message": "Not that one. I meant David Sato at Pied Piper.",
+        "expected": "Pied Piper Job Offer",
+        "chosen": "Email to David Sato",
+        "created": true,
+        "correct": false,
+        "reason": "new"
+      },
+      {
+        "conversation_id": "correction-12",
+        "kind": "correction",
+        "turn": 3,
+        "message": "Tell them Thursday works.",
+        "expected": "Pied Piper Job Offer",
+        "chosen": "Email to David Sato",
+        "created": false,
+        "correct": false,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "correction-13",
+        "kind": "correction",
+        "turn": 1,
+        "message": "Any update from Michael on the offsite agenda?",
+        "expected": "Email to Michael Brown",
+        "chosen": "Email to Michael Kim",
+        "created": false,
+        "correct": false,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "correction-13",
+        "kind": "correction",
+        "turn": 2,
+        "message": "Not that one. I meant Michael Bianchi at Aperture.",
+        "expected": "Reply to Michael re hiring plan",
+        "chosen": "Email to Michael Bianchi",
+        "created": true,
+        "correct": false,
+        "reason": "new"
+      },
+      {
+        "conversation_id": "correction-13",
+        "kind": "correction",
+        "turn": 3,
+        "message": "Tell them Thursday works.",
+        "expected": "Reply to Michael re hiring plan",
+        "chosen": "Email to Michael Bianchi",
+        "created": false,
+        "correct": false,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-14",
+        "kind": "new_then_follow_up",
+        "turn": 1,
+        "message": "Email Alex Achebe (alex.achebe@tyrell.com) about the lease renewal.",
+        "expected": "new agent",
+        "chosen": "Email to Alex Achebe",
+        "created": true,
+        "correct": true,
+        "reason": "new"
+      },
+      {
+        "conversation_id": "new_then_follow_up-14",
+        "kind": "new_then_follow_up",
+        "turn": 2,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 1",
+        "chosen": "Email to Alex Achebe",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-14",
+        "kind": "new_then_follow_up",
+        "turn": 3,
+        "message": "Did they reply yet?",
+        "expected": "agent created in turn 1",
+        "chosen": "Email to Alex Achebe",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-15",
+        "kind": "new_then_follow_up",
+        "turn": 1,
+        "message": "Email David Bergstrom (david.bergstrom@wayne.com) about the tax documents.",
+        "expected": "new agent",
+        "chosen": "Reply to David re tax documents",
+        "created": false,
+        "correct": false,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "new_then_follow_up-15",
+        "kind": "new_then_follow_up",
+        "turn": 2,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 1",
+        "chosen": "Reply to David re tax documents",
+        "created": false,
+        "correct": false,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-15",
+        "kind": "new_then_follow_up",
+        "turn": 3,
+        "message": "Did they reply yet?",
+        "expected": "agent created in turn 1",
+        "chosen": "Reply to David re tax documents",
+        "created": false,
+        "correct": false,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-16",
+        "kind": "new_then_follow_up",
+        "turn": 1,
+        "message": "Email Diego Castellanos (diego.castellanos@aperture.com) about the launch timeline.",
+        "expected": "new agent",
+        "chosen": "Reply to Diego re launch timeline",
+        "created": false,
+        "correct": false,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "new_then_follow_up-16",
+        "kind": "new_then_follow_up",
+        "turn": 2,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 1",
+        "chosen": "Reply to Diego re launch timeline",
+        "created": false,
+        "correct": false,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-16",
+        "kind": "new_then_follow_up",
+        "turn": 3,
+        "message": "Did they reply yet?",
+        "expected": "agent created in turn 1",
+        "chosen": "Reply to Diego re launch timeline",
+        "created": false,
+        "correct": false,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-17",
+        "kind": "new_then_follow_up",
+        "turn": 1,
+        "message": "Email Emma Delacroix (emma.delacroix@aperture.com) about the offsite agenda.",
+        "expected": "new agent",
+        "chosen": "Email to Emma Delacroix",
+        "created": true,
+        "correct": true,
+        "reason": "new"
+      },
+      {
+        "conversation_id": "new_then_follow_up-17",
+        "kind": "new_then_follow_up",
+        "turn": 2,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 1",
+        "chosen": "Email to Emma Delacroix",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-17",
+        "kind": "new_then_follow_up",
+        "turn": 3,
+        "message": "Did they reply yet?",
+        "expected": "agent created in turn 1",
+        "chosen": "Email to Emma Delacroix",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-18",
+        "kind": "new_then_follow_up",
+        "turn": 1,
+        "message": "Email Fatima Esposito (fatima.esposito@aperture.com) about the board deck.",
+        "expected": "new agent",
+        "chosen": "Email to Fatima Esposito",
+        "created": true,
+        "correct": true,
+        "reason": "new"
+      },
+      {
+        "conversation_id": "new_then_follow_up-18",
+        "kind": "new_then_follow_up",
+        "turn": 2,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 1",
+        "chosen": "Email to Fatima Esposito",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-18",
+        "kind": "new_then_follow_up",
+        "turn": 3,
+        "message": "Did they reply yet?",
+        "expected": "agent created in turn 1",
+        "chosen": "Email to Fatima Esposito",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-19",
+        "kind": "new_then_follow_up",
+        "turn": 1,
+        "message": "Email Grace Farouk (grace.farouk@globex.com) about the pricing proposal.",
+        "expected": "new agent",
+        "chosen": "Email to Grace Farouk",
+        "created": true,
+        "correct": true,
+        "reason": "new"
+      },
+      {
+        "conversation_id": "new_then_follow_up-19",
+        "kind": "new_then_follow_up",
+        "turn": 2,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 1",
+        "chosen": "Email to Grace Farouk",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-19",
+        "kind": "new_then_follow_up",
+        "turn": 3,
+        "message": "Did they reply yet?",
+        "expected": "agent created in turn 1",
+        "chosen": "Email to Grace Farouk",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "same_person_new_topic-20",
+        "kind": "same_person_new_topic",
+        "turn": 1,
+        "message": "Did Noah Haddad reply about the reference check?",
+        "expected": "Monarch Reference Check",
+        "chosen": "Email to Noah Haddad",
+        "created": true,
+        "correct": false,
+        "reason": "new"
+      },
+      {
+        "conversation_id": "same_person_new_topic-20",
+        "kind": "same_person_new_topic",
+        "turn": 2,
+        "message": "Also start a new email to Noah Haddad (noah.haddad@monarch.com) about the sponsorship deck.",
+        "expected": "new agent",
+        "chosen": "Email to Noah Haddad re monarch sponsorship deck",
+        "created": true,
+        "correct": true,
+        "reason": "new"
+      },
+      {
+        "conversation_id": "same_person_new_topic-20",
+        "kind": "same_person_new_topic",
+        "turn": 3,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 2",
+        "chosen": "Email to Noah Haddad re monarch sponsorship deck",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "same_person_new_topic-20",
+        "kind": "same_person_new_topic",
+        "turn": 4,
+        "message": "And did they answer on the reference check?",
+        "expected": "Monarch Reference Check",
+        "chosen": "Find reference check emails",
+        "created": false,
+        "correct": false,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "same_person_new_topic-21",
+        "kind": "same_person_new_topic",
+        "turn": 1,
+        "message": "Did Michael Mendes reply about the venue contract?",
+        "expected": "Reply to Michael re venue contract",
+        "chosen": "Reply to Michael re venue contract",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "same_person_new_topic-21",
+        "kind": "same_person_new_topic",
+        "turn": 2,
+        "message": "Also start a new email to Michael Mendes about the warehouse lease.",
+        "expected": "new agent",
+        "chosen": "Email to Michael Mendes re warehouse lease",
+        "created": true,
+        "correct": true,
+        "reason": "new"
+      },
+      {
+        "conversation_id": "same_person_new_topic-21",
+        "kind": "same_person_new_topic",
+        "turn": 3,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 2",
+        "chosen": "Email to Michael Mendes re warehouse lease",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "same_person_new_topic-21",
+        "kind": "same_person_new_topic",
+        "turn": 4,
+        "message": "And did they answer on the venue contract?",
+        "expected": "Reply to Michael re venue contract",
+        "chosen": "Reply to Michael re venue contract",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "same_person_new_topic-22",
+        "kind": "same_person_new_topic",
+        "turn": 1,
+        "message": "Did Emma Murphy reply about the lease renewal?",
+        "expected": "Email to Emma Murphy",
+        "chosen": "Email to Emma Murphy",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "same_person_new_topic-22",
+        "kind": "same_person_new_topic",
+        "turn": 2,
+        "message": "Also start a new email to Emma Murphy (emma.murphy@vandelay.com) about the audit findings.",
+        "expected": "new agent",
+        "chosen": "Email to Emma Murphy re vandelay audit findings",
+        "created": true,
+        "correct": true,
+        "reason": "new"
+      },
+      {
+        "conversation_id": "same_person_new_topic-22",
+        "kind": "same_person_new_topic",
+        "turn": 3,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 2",
+        "chosen": "Email to Emma Murphy re vandelay audit findings",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "same_person_new_topic-22",
+        "kind": "same_person_new_topic",
+        "turn": 4,
+        "message": "And did they answer on the lease renewal?",
+        "expected": "Email to Emma Murphy",
+        "chosen": "Reply to Amara re lease renewal",
+        "created": false,
+        "correct": false,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "same_person_new_topic-23",
+        "kind": "same_person_new_topic",
+        "turn": 1,
+        "message": "Did Noah Ivanova reply about the lease renewal?",
+        "expected": "Reply to Noah re lease renewal",
+        "chosen": "Reply to Noah re lease renewal",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "same_person_new_topic-23",
+        "kind": "same_person_new_topic",
+        "turn": 2,
+        "message": "Also start a new email to Noah Ivanova about the speaker lineup.",
+        "expected": "new agent",
+        "chosen": "Email to Noah Ivanova re speaker lineup",
+        "created": true,
+        "correct": true,
+        "reason": "new"
+      },
+      {
+        "conversation_id": "same_person_new_topic-23",
+        "kind": "same_person_new_topic",
+        "turn": 3,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 2",
+        "chosen": "Email to Noah Ivanova re speaker lineup",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "same_person_new_topic-23",
+        "kind": "same_person_new_topic",
+        "turn": 4,
+        "message": "And did they answer on the lease renewal?",
+        "expected": "Reply to Noah re lease renewal",
+        "chosen": "Reply to Noah re lease renewal",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "same_person_new_topic-24",
+        "kind": "same_person_new_topic",
+        "turn": 1,
+        "message": "Did Umar Dimitrov reply about the podcast interview?",
+        "expected": "Email to Umar Dimitrov",
+        "chosen": "Email to Umar Dimitrov",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "same_person_new_topic-24",
+        "kind": "same_person_new_topic",
+        "turn": 2,
+        "message": "Also start a new email to Umar Dimitrov (umar.dimitrov@tyrell.com) about the grant application.",
+        "expected": "new agent",
+        "chosen": "Email to Umar Dimitrov re tyrell grant application",
+        "created": true,
+        "correct": true,
+        "reason": "new"
+      },
+      {
+        "conversation_id": "same_person_new_topic-24",
+        "kind": "same_person_new_topic",
+        "turn": 3,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 2",
+        "chosen": "Email to Umar Dimitrov re tyrell grant application",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "same_person_new_topic-24",
+        "kind": "same_person_new_topic",
+        "turn": 4,
+        "message": "And did they answer on the podcast interview?",
+        "expected": "Email to Umar Dimitrov",
+        "chosen": "Podcast Interview with Noah",
+        "created": false,
+        "correct": false,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "same_person_new_topic-25",
+        "kind": "same_person_new_topic",
+        "turn": 1,
+        "message": "Did Michael Gupta reply about the tax documents?",
+        "expected": "Email to Michael",
+        "chosen": "Email to Michael Gupta",
+        "created": true,
+        "correct": false,
+        "reason": "new"
+      },
+      {
+        "conversation_id": "same_person_new_topic-25",
+        "kind": "same_person_new_topic",
+        "turn": 2,
+        "message": "Also start a new email to Michael Gupta about the sponsorship deck.",
+        "expected": "new agent",
+        "chosen": "Email to Michael Gupta re sponsorship deck",
+        "created": true,
+        "correct": true,
+        "reason": "new"
+      },
+      {
+        "conversation_id": "same_person_new_topic-25",
+        "kind": "same_person_new_topic",
+        "turn": 3,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 2",
+        "chosen": "Email to Michael Gupta re sponsorship deck",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "same_person_new_topic-25",
+        "kind": "same_person_new_topic",
+        "turn": 4,
+        "message": "And did they answer on the tax documents?",
+        "expected": "Email to Michael",
+        "chosen": "Find tax documents emails",
+        "created": false,
+        "correct": false,
+        "reason": "exact_name"
+      }
+    ],
+    "solution": [
+      {
+        "conversation_id": "switch_and_return-00",
+        "kind": "switch_and_return",
+        "turn": 1,
+        "message": "Any update from Emma on the insurance claim?",
+        "expected": "Insurance Claim with Emma",
+        "chosen": "Insurance Claim with Emma",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-00",
+        "kind": "switch_and_return",
+        "turn": 2,
+        "message": "Ok, draft a reply saying Thursday works.",
+        "expected": "Insurance Claim with Emma",
+        "chosen": "Insurance Claim with Emma",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-00",
+        "kind": "switch_and_return",
+        "turn": 3,
+        "message": "Also, what's the latest on the Monarch budget approval?",
+        "expected": "Budget Approval with Isaac",
+        "chosen": "Budget Approval with Isaac",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-00",
+        "kind": "switch_and_return",
+        "turn": 4,
+        "message": "Go back to the first one and send that draft.",
+        "expected": "Insurance Claim with Emma",
+        "chosen": "Insurance Claim with Emma",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-01",
+        "kind": "switch_and_return",
+        "turn": 1,
+        "message": "Any update from David on the venue contract?",
+        "expected": "Reply to David re venue contract",
+        "chosen": "Reply to David re venue contract",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-01",
+        "kind": "switch_and_return",
+        "turn": 2,
+        "message": "Ok, draft a reply saying Thursday works.",
+        "expected": "Reply to David re venue contract",
+        "chosen": "Reply to David re venue contract",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-01",
+        "kind": "switch_and_return",
+        "turn": 3,
+        "message": "Also, what's the latest on the Hooli visa paperwork?",
+        "expected": "Hooli Visa Paperwork",
+        "chosen": "Hooli Visa Paperwork",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-01",
+        "kind": "switch_and_return",
+        "turn": 4,
+        "message": "Go back to the first one and send that draft.",
+        "expected": "Reply to David re venue contract",
+        "chosen": "Reply to David re venue contract",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-02",
+        "kind": "switch_and_return",
+        "turn": 1,
+        "message": "Any update from Emma on the venue contract?",
+        "expected": "Email to Emma Schmidt",
+        "chosen": "Email to Emma Schmidt",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-02",
+        "kind": "switch_and_return",
+        "turn": 2,
+        "message": "Ok, draft a reply saying Thursday works.",
+        "expected": "Email to Emma Schmidt",
+        "chosen": "Email to Emma Schmidt",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-02",
+        "kind": "switch_and_return",
+        "turn": 3,
+        "message": "Also, what's the latest on the Tyrell travel itinerary?",
+        "expected": "Email to Isaac Chen",
+        "chosen": "Email to Isaac Chen",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-02",
+        "kind": "switch_and_return",
+        "turn": 4,
+        "message": "Go back to the first one and send that draft.",
+        "expected": "Email to Emma Schmidt",
+        "chosen": "Email to Emma Schmidt",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-03",
+        "kind": "switch_and_return",
+        "turn": 1,
+        "message": "Any update from Quinn on the budget approval?",
+        "expected": "Pied Piper Budget Approval",
+        "chosen": "Pied Piper Budget Approval",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-03",
+        "kind": "switch_and_return",
+        "turn": 2,
+        "message": "Ok, draft a reply saying Thursday works.",
+        "expected": "Pied Piper Budget Approval",
+        "chosen": "Pied Piper Budget Approval",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-03",
+        "kind": "switch_and_return",
+        "turn": 3,
+        "message": "Also, what's the latest on the Oscorp visa paperwork?",
+        "expected": "Oscorp Visa Paperwork",
+        "chosen": "Oscorp Visa Paperwork",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-03",
+        "kind": "switch_and_return",
+        "turn": 4,
+        "message": "Go back to the first one and send that draft.",
+        "expected": "Pied Piper Budget Approval",
+        "chosen": "Pied Piper Budget Approval",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-04",
+        "kind": "switch_and_return",
+        "turn": 1,
+        "message": "Any update from Paige on the onboarding plan?",
+        "expected": "Onboarding Plan with Paige",
+        "chosen": "Onboarding Plan with Paige",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-04",
+        "kind": "switch_and_return",
+        "turn": 2,
+        "message": "Ok, draft a reply saying Thursday works.",
+        "expected": "Onboarding Plan with Paige",
+        "chosen": "Onboarding Plan with Paige",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-04",
+        "kind": "switch_and_return",
+        "turn": 3,
+        "message": "Also, what's the latest on the Aperture conference talk?",
+        "expected": "Email to Mila Dimitrov",
+        "chosen": "Email to Mila Dimitrov",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-04",
+        "kind": "switch_and_return",
+        "turn": 4,
+        "message": "Go back to the first one and send that draft.",
+        "expected": "Onboarding Plan with Paige",
+        "chosen": "Onboarding Plan with Paige",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-05",
+        "kind": "switch_and_return",
+        "turn": 1,
+        "message": "Any update from David on the offsite agenda?",
+        "expected": "Email to David Park",
+        "chosen": "Email to David Park",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-05",
+        "kind": "switch_and_return",
+        "turn": 2,
+        "message": "Ok, draft a reply saying Thursday works.",
+        "expected": "Email to David Park",
+        "chosen": "Email to David Park",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-05",
+        "kind": "switch_and_return",
+        "turn": 3,
+        "message": "Also, what's the latest on the Initech board deck?",
+        "expected": "Board Deck with Vera",
+        "chosen": "Board Deck with Vera",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-05",
+        "kind": "switch_and_return",
+        "turn": 4,
+        "message": "Go back to the first one and send that draft.",
+        "expected": "Email to David Park",
+        "chosen": "Email to David Park",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-06",
+        "kind": "switch_and_return",
+        "turn": 1,
+        "message": "Any update from Emma on the onboarding plan?",
+        "expected": "Onboarding Plan with Emma",
+        "chosen": "Onboarding Plan with Emma",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-06",
+        "kind": "switch_and_return",
+        "turn": 2,
+        "message": "Ok, draft a reply saying Thursday works.",
+        "expected": "Onboarding Plan with Emma",
+        "chosen": "Onboarding Plan with Emma",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-06",
+        "kind": "switch_and_return",
+        "turn": 3,
+        "message": "Also, what's the latest on the Wayne visa paperwork?",
+        "expected": "Visa Paperwork with Marco",
+        "chosen": "Visa Paperwork with Marco",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-06",
+        "kind": "switch_and_return",
+        "turn": 4,
+        "message": "Go back to the first one and send that draft.",
+        "expected": "Onboarding Plan with Emma",
+        "chosen": "Onboarding Plan with Emma",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-07",
+        "kind": "switch_and_return",
+        "turn": 1,
+        "message": "Any update from Ibrahim on the job offer?",
+        "expected": "Email to Ibrahim",
+        "chosen": "Email to Ibrahim",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-07",
+        "kind": "switch_and_return",
+        "turn": 2,
+        "message": "Ok, draft a reply saying Thursday works.",
+        "expected": "Email to Ibrahim",
+        "chosen": "Email to Ibrahim",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "switch_and_return-07",
+        "kind": "switch_and_return",
+        "turn": 3,
+        "message": "Also, what's the latest on the Tyrell hiring plan?",
+        "expected": "Email to Noah",
+        "chosen": "Email to Noah",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "switch_and_return-07",
+        "kind": "switch_and_return",
+        "turn": 4,
+        "message": "Go back to the first one and send that draft.",
+        "expected": "Email to Ibrahim",
+        "chosen": "Email to Ibrahim",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "correction-08",
+        "kind": "correction",
+        "turn": 1,
+        "message": "Any update from Michael on the lease renewal?",
+        "expected": "Initech Lease Renewal",
+        "chosen": "Initech Lease Renewal",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "correction-08",
+        "kind": "correction",
+        "turn": 2,
+        "message": "Not that one. I meant Michael Gupta at Aperture.",
+        "expected": "Email to Michael",
+        "chosen": "Email to Michael",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "correction-08",
+        "kind": "correction",
+        "turn": 3,
+        "message": "Tell them Thursday works.",
+        "expected": "Email to Michael",
+        "chosen": "Email to Michael",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "correction-09",
+        "kind": "correction",
+        "turn": 1,
+        "message": "Any update from Sarah on the job offer?",
+        "expected": "Job Offer with Sarah",
+        "chosen": "Job Offer with Sarah",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "correction-09",
+        "kind": "correction",
+        "turn": 2,
+        "message": "Not that one. I meant Sarah Murphy at Vandelay.",
+        "expected": "Email to Sarah",
+        "chosen": "Email to Sarah",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "correction-09",
+        "kind": "correction",
+        "turn": 3,
+        "message": "Tell them Thursday works.",
+        "expected": "Email to Sarah",
+        "chosen": "Email to Sarah",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "correction-10",
+        "kind": "correction",
+        "turn": 1,
+        "message": "Any update from Priya on the lease renewal?",
+        "expected": "Wayne Lease Renewal",
+        "chosen": "Wayne Lease Renewal",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "correction-10",
+        "kind": "correction",
+        "turn": 2,
+        "message": "Not that one. I meant Priya Chen at Vandelay.",
+        "expected": "Contract Redlines with Priya",
+        "chosen": "Contract Redlines with Priya",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "correction-10",
+        "kind": "correction",
+        "turn": 3,
+        "message": "Tell them Thursday works.",
+        "expected": "Contract Redlines with Priya",
+        "chosen": "Contract Redlines with Priya",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "correction-11",
+        "kind": "correction",
+        "turn": 1,
+        "message": "Any update from Vera on the onboarding plan?",
+        "expected": "Onboarding Plan with Vera",
+        "chosen": "Onboarding Plan with Vera",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "correction-11",
+        "kind": "correction",
+        "turn": 2,
+        "message": "Not that one. I meant Vera Garcia at Globex.",
+        "expected": "Email to Vera Garcia",
+        "chosen": "Email to Vera Garcia",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "correction-11",
+        "kind": "correction",
+        "turn": 3,
+        "message": "Tell them Thursday works.",
+        "expected": "Email to Vera Garcia",
+        "chosen": "Email to Vera Garcia",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "correction-12",
+        "kind": "correction",
+        "turn": 1,
+        "message": "Any update from David on the vendor quote?",
+        "expected": "Email to David Schmidt",
+        "chosen": "Email to David Schmidt",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "correction-12",
+        "kind": "correction",
+        "turn": 2,
+        "message": "Not that one. I meant David Sato at Pied Piper.",
+        "expected": "Pied Piper Job Offer",
+        "chosen": "Pied Piper Job Offer",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "correction-12",
+        "kind": "correction",
+        "turn": 3,
+        "message": "Tell them Thursday works.",
+        "expected": "Pied Piper Job Offer",
+        "chosen": "Pied Piper Job Offer",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "correction-13",
+        "kind": "correction",
+        "turn": 1,
+        "message": "Any update from Michael on the offsite agenda?",
+        "expected": "Email to Michael Brown",
+        "chosen": "Email to Michael Brown",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "correction-13",
+        "kind": "correction",
+        "turn": 2,
+        "message": "Not that one. I meant Michael Bianchi at Aperture.",
+        "expected": "Reply to Michael re hiring plan",
+        "chosen": "Reply to Michael re hiring plan",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "correction-13",
+        "kind": "correction",
+        "turn": 3,
+        "message": "Tell them Thursday works.",
+        "expected": "Reply to Michael re hiring plan",
+        "chosen": "Reply to Michael re hiring plan",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-14",
+        "kind": "new_then_follow_up",
+        "turn": 1,
+        "message": "Email Alex Achebe (alex.achebe@tyrell.com) about the lease renewal.",
+        "expected": "new agent",
+        "chosen": "Email to Alex Achebe",
+        "created": true,
+        "correct": true,
+        "reason": "new"
+      },
+      {
+        "conversation_id": "new_then_follow_up-14",
+        "kind": "new_then_follow_up",
+        "turn": 2,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 1",
+        "chosen": "Email to Alex Achebe",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-14",
+        "kind": "new_then_follow_up",
+        "turn": 3,
+        "message": "Did they reply yet?",
+        "expected": "agent created in turn 1",
+        "chosen": "Email to Alex Achebe",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-15",
+        "kind": "new_then_follow_up",
+        "turn": 1,
+        "message": "Email David Bergstrom (david.bergstrom@wayne.com) about the tax documents.",
+        "expected": "new agent",
+        "chosen": "Email to David Bergstrom",
+        "created": true,
+        "correct": true,
+        "reason": "new"
+      },
+      {
+        "conversation_id": "new_then_follow_up-15",
+        "kind": "new_then_follow_up",
+        "turn": 2,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 1",
+        "chosen": "Email to David Bergstrom",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-15",
+        "kind": "new_then_follow_up",
+        "turn": 3,
+        "message": "Did they reply yet?",
+        "expected": "agent created in turn 1",
+        "chosen": "Email to David Bergstrom",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-16",
+        "kind": "new_then_follow_up",
+        "turn": 1,
+        "message": "Email Diego Castellanos (diego.castellanos@aperture.com) about the launch timeline.",
+        "expected": "new agent",
+        "chosen": "Email to Diego Castellanos",
+        "created": true,
+        "correct": true,
+        "reason": "new"
+      },
+      {
+        "conversation_id": "new_then_follow_up-16",
+        "kind": "new_then_follow_up",
+        "turn": 2,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 1",
+        "chosen": "Email to Diego Castellanos",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-16",
+        "kind": "new_then_follow_up",
+        "turn": 3,
+        "message": "Did they reply yet?",
+        "expected": "agent created in turn 1",
+        "chosen": "Email to Diego Castellanos",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-17",
+        "kind": "new_then_follow_up",
+        "turn": 1,
+        "message": "Email Emma Delacroix (emma.delacroix@aperture.com) about the offsite agenda.",
+        "expected": "new agent",
+        "chosen": "Email to Emma Delacroix",
+        "created": true,
+        "correct": true,
+        "reason": "new"
+      },
+      {
+        "conversation_id": "new_then_follow_up-17",
+        "kind": "new_then_follow_up",
+        "turn": 2,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 1",
+        "chosen": "Email to Emma Delacroix",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-17",
+        "kind": "new_then_follow_up",
+        "turn": 3,
+        "message": "Did they reply yet?",
+        "expected": "agent created in turn 1",
+        "chosen": "Email to Emma Delacroix",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-18",
+        "kind": "new_then_follow_up",
+        "turn": 1,
+        "message": "Email Fatima Esposito (fatima.esposito@aperture.com) about the board deck.",
+        "expected": "new agent",
+        "chosen": "Email to Fatima Esposito",
+        "created": true,
+        "correct": true,
+        "reason": "new"
+      },
+      {
+        "conversation_id": "new_then_follow_up-18",
+        "kind": "new_then_follow_up",
+        "turn": 2,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 1",
+        "chosen": "Email to Fatima Esposito",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-18",
+        "kind": "new_then_follow_up",
+        "turn": 3,
+        "message": "Did they reply yet?",
+        "expected": "agent created in turn 1",
+        "chosen": "Email to Fatima Esposito",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-19",
+        "kind": "new_then_follow_up",
+        "turn": 1,
+        "message": "Email Grace Farouk (grace.farouk@globex.com) about the pricing proposal.",
+        "expected": "new agent",
+        "chosen": "Email to Grace Farouk",
+        "created": true,
+        "correct": true,
+        "reason": "new"
+      },
+      {
+        "conversation_id": "new_then_follow_up-19",
+        "kind": "new_then_follow_up",
+        "turn": 2,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 1",
+        "chosen": "Email to Grace Farouk",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "new_then_follow_up-19",
+        "kind": "new_then_follow_up",
+        "turn": 3,
+        "message": "Did they reply yet?",
+        "expected": "agent created in turn 1",
+        "chosen": "Email to Grace Farouk",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "same_person_new_topic-20",
+        "kind": "same_person_new_topic",
+        "turn": 1,
+        "message": "Did Noah Haddad reply about the reference check?",
+        "expected": "Monarch Reference Check",
+        "chosen": "Monarch Reference Check",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "same_person_new_topic-20",
+        "kind": "same_person_new_topic",
+        "turn": 2,
+        "message": "Also start a new email to Noah Haddad (noah.haddad@monarch.com) about the sponsorship deck.",
+        "expected": "new agent",
+        "chosen": "Email to Noah Haddad re monarch sponsorship deck",
+        "created": true,
+        "correct": true,
+        "reason": "new_task"
+      },
+      {
+        "conversation_id": "same_person_new_topic-20",
+        "kind": "same_person_new_topic",
+        "turn": 3,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 2",
+        "chosen": "Email to Noah Haddad re monarch sponsorship deck",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "same_person_new_topic-20",
+        "kind": "same_person_new_topic",
+        "turn": 4,
+        "message": "And did they answer on the reference check?",
+        "expected": "Monarch Reference Check",
+        "chosen": "Monarch Reference Check",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "same_person_new_topic-21",
+        "kind": "same_person_new_topic",
+        "turn": 1,
+        "message": "Did Michael Mendes reply about the venue contract?",
+        "expected": "Reply to Michael re venue contract",
+        "chosen": "Reply to Michael re venue contract",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "same_person_new_topic-21",
+        "kind": "same_person_new_topic",
+        "turn": 2,
+        "message": "Also start a new email to Michael Mendes about the warehouse lease.",
+        "expected": "new agent",
+        "chosen": "Email to Michael Mendes re warehouse lease",
+        "created": true,
+        "correct": true,
+        "reason": "new_task"
+      },
+      {
+        "conversation_id": "same_person_new_topic-21",
+        "kind": "same_person_new_topic",
+        "turn": 3,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 2",
+        "chosen": "Email to Michael Mendes re warehouse lease",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "same_person_new_topic-21",
+        "kind": "same_person_new_topic",
+        "turn": 4,
+        "message": "And did they answer on the venue contract?",
+        "expected": "Reply to Michael re venue contract",
+        "chosen": "Reply to Michael re venue contract",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "same_person_new_topic-22",
+        "kind": "same_person_new_topic",
+        "turn": 1,
+        "message": "Did Emma Murphy reply about the lease renewal?",
+        "expected": "Email to Emma Murphy",
+        "chosen": "Email to Emma Murphy",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "same_person_new_topic-22",
+        "kind": "same_person_new_topic",
+        "turn": 2,
+        "message": "Also start a new email to Emma Murphy (emma.murphy@vandelay.com) about the audit findings.",
+        "expected": "new agent",
+        "chosen": "Email to Emma Murphy re vandelay audit findings",
+        "created": true,
+        "correct": true,
+        "reason": "new_task"
+      },
+      {
+        "conversation_id": "same_person_new_topic-22",
+        "kind": "same_person_new_topic",
+        "turn": 3,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 2",
+        "chosen": "Email to Emma Murphy re vandelay audit findings",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "same_person_new_topic-22",
+        "kind": "same_person_new_topic",
+        "turn": 4,
+        "message": "And did they answer on the lease renewal?",
+        "expected": "Email to Emma Murphy",
+        "chosen": "Email to Emma Murphy",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "same_person_new_topic-23",
+        "kind": "same_person_new_topic",
+        "turn": 1,
+        "message": "Did Noah Ivanova reply about the lease renewal?",
+        "expected": "Reply to Noah re lease renewal",
+        "chosen": "Reply to Noah re lease renewal",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "same_person_new_topic-23",
+        "kind": "same_person_new_topic",
+        "turn": 2,
+        "message": "Also start a new email to Noah Ivanova about the speaker lineup.",
+        "expected": "new agent",
+        "chosen": "Email to Noah Ivanova re speaker lineup",
+        "created": true,
+        "correct": true,
+        "reason": "new_task"
+      },
+      {
+        "conversation_id": "same_person_new_topic-23",
+        "kind": "same_person_new_topic",
+        "turn": 3,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 2",
+        "chosen": "Email to Noah Ivanova re speaker lineup",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "same_person_new_topic-23",
+        "kind": "same_person_new_topic",
+        "turn": 4,
+        "message": "And did they answer on the lease renewal?",
+        "expected": "Reply to Noah re lease renewal",
+        "chosen": "Reply to Noah re lease renewal",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "same_person_new_topic-24",
+        "kind": "same_person_new_topic",
+        "turn": 1,
+        "message": "Did Umar Dimitrov reply about the podcast interview?",
+        "expected": "Email to Umar Dimitrov",
+        "chosen": "Email to Umar Dimitrov",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "same_person_new_topic-24",
+        "kind": "same_person_new_topic",
+        "turn": 2,
+        "message": "Also start a new email to Umar Dimitrov (umar.dimitrov@tyrell.com) about the grant application.",
+        "expected": "new agent",
+        "chosen": "Email to Umar Dimitrov re tyrell grant application",
+        "created": true,
+        "correct": true,
+        "reason": "new_task"
+      },
+      {
+        "conversation_id": "same_person_new_topic-24",
+        "kind": "same_person_new_topic",
+        "turn": 3,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 2",
+        "chosen": "Email to Umar Dimitrov re tyrell grant application",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "same_person_new_topic-24",
+        "kind": "same_person_new_topic",
+        "turn": 4,
+        "message": "And did they answer on the podcast interview?",
+        "expected": "Email to Umar Dimitrov",
+        "chosen": "Email to Umar Dimitrov",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "same_person_new_topic-25",
+        "kind": "same_person_new_topic",
+        "turn": 1,
+        "message": "Did Michael Gupta reply about the tax documents?",
+        "expected": "Email to Michael",
+        "chosen": "Email to Michael",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
+      },
+      {
+        "conversation_id": "same_person_new_topic-25",
+        "kind": "same_person_new_topic",
+        "turn": 2,
+        "message": "Also start a new email to Michael Gupta about the sponsorship deck.",
+        "expected": "new agent",
+        "chosen": "Email to Michael Gupta re sponsorship deck",
+        "created": true,
+        "correct": true,
+        "reason": "new_task"
+      },
+      {
+        "conversation_id": "same_person_new_topic-25",
+        "kind": "same_person_new_topic",
+        "turn": 3,
+        "message": "Ok, send it.",
+        "expected": "agent created in turn 2",
+        "chosen": "Email to Michael Gupta re sponsorship deck",
+        "created": false,
+        "correct": true,
+        "reason": "conversation"
+      },
+      {
+        "conversation_id": "same_person_new_topic-25",
+        "kind": "same_person_new_topic",
+        "turn": 4,
+        "message": "And did they answer on the tax documents?",
+        "expected": "Email to Michael",
+        "chosen": "Email to Michael",
+        "created": false,
+        "correct": true,
+        "reason": "exact_name"
       }
     ]
   }

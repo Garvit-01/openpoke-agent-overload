@@ -12,10 +12,15 @@ in both arms. What differs between arms is only what the system gives it:
 
 So the comparison measures the effect of the code change, not of a smarter model. The
 optional LLM router (evals/llm.py) repeats the comparison with a real model.
+
+Multi-turn conversations run the same way, except that state carries over: agents created
+in turn 1 exist in turn 2, and a wrong pick in turn 1 makes "ok, send it" go to the wrong
+agent too. The solution arm uses the real route_to_agent, so new agents get their profile.
 """
 
 from __future__ import annotations
 
+import shutil
 import statistics
 import tempfile
 import time
@@ -30,9 +35,23 @@ from server.services.execution.lifecycle import LifecyclePolicy, apply_lifecycle
 from server.services.execution.registry import AgentRecord, AgentRegistry, to_iso
 from server.services.execution.resolver import resolve_agent
 from server.services.execution.retrieval import AgentRetriever, ScoredAgent
+from server.services.execution.routing import route_to_agent
 
 from .baseline import original_reuse, render_original_roster
-from .scenarios import COMMON_FIRST, LAST_NAMES, NEW, NEW_LAST_NAMES, OTHER_FIRST, Case, Scenario
+from .scenarios import (
+    COMMON_FIRST,
+    COMPANIES,
+    LAST_NAMES,
+    NEW,
+    NEW_LAST_NAMES,
+    NEW_TOPICS,
+    OTHER_FIRST,
+    TOPICS,
+    Case,
+    Conversation,
+    Scenario,
+    Turn,
+)
 
 SHORTLIST_RETRIEVED = 8
 SHORTLIST_RECENT = 4
@@ -62,6 +81,11 @@ class SimulatedRouter:
     3. No person named: coverage = share of key terms (people, companies, topics, tasks)
        visible for an agent. Use the best agent if coverage >= threshold.
     4. Otherwise propose a new agent name the way a model would ("Email to Sarah Achebe").
+
+    In a conversation, a turn that names nobody and nothing ("ok, send it", "go back to the
+    first one") is resolved from the conversation (refer_back). Other turns check the agents
+    already used in the conversation before the roster, as a model would. A turn that asks
+    for something new ("start a new email to ...") gets a new agent named after its topic.
     """
 
     def __init__(self, vocabulary: Set[str], threshold: float = 0.6):
@@ -69,9 +93,35 @@ class SimulatedRouter:
         self.threshold = threshold
         self.first_names = set(tokenize(" ".join([*COMMON_FIRST, *OTHER_FIRST])))
         self.surnames = set(tokenize(" ".join([*LAST_NAMES, *NEW_LAST_NAMES])))
+        self.subject_words = set(tokenize(" ".join([*COMPANIES, *TOPICS, *NEW_TOPICS])))
 
     def key_terms(self, message: str) -> List[str]:
         return list(dict.fromkeys(term for term in tokenize(message) if term in self.vocabulary))
+
+    @staticmethod
+    def asks_for_new(message: str) -> bool:
+        lowered = message.lower()
+        return any(cue in lowered for cue in ("a new email", "new thread", "separate email"))
+
+    def refer_back(self, message: str, memory: Sequence[str]) -> Optional[str]:
+        """Resolve "send it" / "the first one" from the agents used earlier in this conversation.
+
+        Only for turns that name no person, company, topic or email; task words such as
+        "send" do not count as naming something.
+        """
+
+        if not memory or EMAIL_PATTERN.search(message):
+            return None
+        names = self.first_names | self.surnames | self.subject_words
+        if any(term in names for term in tokenize(message)):
+            return None
+        lowered = message.lower()
+        if "first one" in lowered:
+            return memory[0]
+        if "other one" in lowered:
+            earlier = [name for name in memory if name != memory[-1]]
+            return earlier[-1] if earlier else memory[-1]
+        return memory[-1]
 
     def choose(self, message: str, visible: Sequence[Tuple[str, str]]) -> Optional[str]:
         key = self.key_terms(message)
@@ -118,6 +168,9 @@ class SimulatedRouter:
         if "remind" in message.lower():
             return "Reminder: " + " ".join(key or tokenize(message)[:4])
         people = [term.title() for term in key if term in self.first_names | self.surnames]
+        if people and self.asks_for_new(message):
+            subject = [term for term in key if term in self.subject_words]
+            return "Email to " + " ".join(people[:2]) + (" re " + " ".join(subject) if subject else "")
         if people:
             return "Email to " + " ".join(people[:2])
         return "Task: " + " ".join((key or tokenize(message))[:4])
@@ -216,8 +269,8 @@ class SolutionArm:
     def search(self, query: str) -> List[ScoredAgent]:
         return self.retriever.search(query, limit=8)
 
-    def apply(self, case: Case, requested_name: str, instructions: str) -> Tuple[str, str]:
-        resolution = resolve_agent(requested_name, instructions, self.registry, self.retriever)
+    def apply(self, case: Case, requested_name: str, instructions: str, *, new_task: bool = False) -> Tuple[str, str]:
+        resolution = resolve_agent(requested_name, instructions, self.registry, self.retriever, new_task=new_task)
         return (NEW if resolution.created else resolution.agent_name), resolution.reason
 
     def route(self, case: Case, router: SimulatedRouter) -> Decision:
@@ -242,6 +295,164 @@ class SolutionArm:
             roster_tokens=estimate_tokens(roster), latency_ms=latency_ms,
             in_shortlist=in_shortlist, in_search=in_search, used_search=used_search,
         )
+
+
+# -------------------------------------------------------------------- conversations
+
+
+@dataclass
+class TurnDecision:
+    conversation_id: str
+    kind: str
+    turn: int
+    message: str
+    expected: str  # agent name, "new agent", or "agent created in turn N"
+    chosen: str  # the agent the turn went to
+    created: bool
+    correct: bool
+    reason: str
+
+
+def _turn_correct(turn: Turn, chosen: str, created: bool, created_at: Dict[int, str]) -> bool:
+    if turn.gold_from_turn is not None:
+        target = created_at.get(turn.gold_from_turn)
+        return target is not None and chosen == target and not created
+    if turn.gold == NEW:
+        return created
+    return chosen == turn.gold and not created
+
+
+def _expected_label(turn: Turn) -> str:
+    if turn.gold_from_turn is not None:
+        return f"agent created in turn {turn.gold_from_turn}"
+    return "new agent" if turn.gold == NEW else turn.gold
+
+
+def run_baseline_conversation(scenario: Scenario, conversation: Conversation, router: SimulatedRouter) -> List[TurnDecision]:
+    """Original behaviour over several turns: every name visible, exact-name reuse, new names persist."""
+
+    names = [agent.name for agent in scenario.agents]
+    existing = set(names)
+    memory: List[str] = []
+    created_at: Dict[int, str] = {}
+    decisions: List[TurnDecision] = []
+    for number, turn in enumerate(conversation.turns, start=1):
+        referred = router.refer_back(turn.message, memory)
+        choice = None if router.asks_for_new(turn.message) else (
+            referred
+            or router.choose(turn.message, [(name, name) for name in dict.fromkeys(memory)])
+            or router.choose(turn.message, [(name, name) for name in names])
+        )
+        requested = choice or router.new_agent_name(turn.message)
+        created = not original_reuse(requested, existing)
+        if created:
+            names.append(requested)
+            existing.add(requested)
+            created_at[number] = requested
+        memory.append(requested)
+        decisions.append(TurnDecision(
+            conversation_id=conversation.id, kind=conversation.kind, turn=number, message=turn.message,
+            expected=_expected_label(turn), chosen=requested, created=created,
+            correct=_turn_correct(turn, requested, created, created_at),
+            reason="conversation" if referred else ("new" if created else "exact_name"),
+        ))
+    return decisions
+
+
+def run_solution_conversation(
+    scenario: Scenario,
+    conversation: Conversation,
+    router: SimulatedRouter,
+    template_db: Path,
+    workdir: Path,
+    *,
+    use_new_task: bool = True,
+) -> List[TurnDecision]:
+    """New behaviour over several turns, through the real route_to_agent on a copy of the registry.
+
+    use_new_task=False plays a model that never sets the new_task flag, to show what the
+    resolver alone does with "a new email to a known contact".
+    """
+
+    db_path = workdir / f"{conversation.id}{'' if use_new_task else '-noflag'}.db"
+    shutil.copyfile(template_db, db_path)
+    registry = AgentRegistry(db_path, clock=lambda: scenario.now)
+    retriever = AgentRetriever(registry)
+    memory: List[str] = []
+    created_at: Dict[int, str] = {}
+    decisions: List[TurnDecision] = []
+    for number, turn in enumerate(conversation.turns, start=1):
+        referred = router.refer_back(turn.message, memory)
+        new_task = router.asks_for_new(turn.message)
+        choice = referred
+        if choice is None and memory and not new_task:
+            # Earlier tool results gave the model these agents' names and summaries
+            seen = [registry.get(name) for name in dict.fromkeys(memory)]
+            choice = router.choose(turn.message, [(r.name, f"{r.name} {r.summary}") for r in seen if r])
+        if choice is None and not new_task:
+            shortlist = retriever.shortlist(turn.message, retrieved=SHORTLIST_RETRIEVED, recent=SHORTLIST_RECENT)
+            choice = router.choose(turn.message, [(item.name, visible_text(item)) for item in shortlist])
+        if choice is None and not new_task:
+            found = retriever.search(turn.message, limit=8)
+            choice = router.choose(turn.message, [(item.name, visible_text(item)) for item in found])
+        resolution = route_to_agent(
+            choice or router.new_agent_name(turn.message),
+            turn.message,
+            registry=registry,
+            routing_log_path=workdir / "routing.jsonl",
+            new_task=new_task and use_new_task,
+        )
+        chosen, created = resolution.agent_name, resolution.created
+        if created:
+            created_at[number] = chosen
+        # The tool result names the agent actually used, so that is what the model remembers
+        memory.append(chosen)
+        decisions.append(TurnDecision(
+            conversation_id=conversation.id, kind=conversation.kind, turn=number, message=turn.message,
+            expected=_expected_label(turn), chosen=chosen, created=created,
+            correct=_turn_correct(turn, chosen, created, created_at),
+            reason="conversation" if referred else resolution.reason,
+        ))
+    return decisions
+
+
+@dataclass
+class ConversationMetrics:
+    arm: str
+    conversations: int
+    turns: int
+    turn_accuracy: float
+    later_turn_accuracy: float  # turns 2+, where the conversation matters
+    conversation_success: float  # every turn right
+    by_kind: Dict[str, Dict[str, float]] = field(default_factory=dict)
+
+
+def score_conversations(arm: str, decisions: Sequence[TurnDecision]) -> ConversationMetrics:
+    grouped: Dict[str, List[TurnDecision]] = {}
+    for decision in decisions:
+        grouped.setdefault(decision.conversation_id, []).append(decision)
+    kinds: Dict[str, List[List[TurnDecision]]] = {}
+    for turns in grouped.values():
+        kinds.setdefault(turns[0].kind, []).append(turns)
+    later = [d for d in decisions if d.turn > 1]
+    return ConversationMetrics(
+        arm=arm,
+        conversations=len(grouped),
+        turns=len(decisions),
+        turn_accuracy=_rate(sum(d.correct for d in decisions), len(decisions)),
+        later_turn_accuracy=_rate(sum(d.correct for d in later), len(later)),
+        conversation_success=_rate(sum(all(d.correct for d in turns) for turns in grouped.values()), len(grouped)),
+        by_kind={
+            kind: {
+                "conversations": len(convs),
+                "turn_accuracy": _rate(
+                    sum(d.correct for turns in convs for d in turns), sum(len(turns) for turns in convs)
+                ),
+                "conversation_success": _rate(sum(all(d.correct for d in turns) for turns in convs), len(convs)),
+            }
+            for kind, convs in sorted(kinds.items())
+        },
+    )
 
 
 # -------------------------------------------------------------------------- metrics
@@ -318,6 +529,18 @@ def run_simulated(scenario: Scenario, *, threshold: float = 0.6) -> Dict[str, ob
         solution = SolutionArm(scenario, Path(workdir))
         base_decisions = [baseline.route(case, router) for case in scenario.cases]
         new_decisions = [solution.route(case, router) for case in scenario.cases]
+        # Each conversation starts from the same history; the solution arm gets a fresh copy
+        base_turns: List[TurnDecision] = []
+        new_turns: List[TurnDecision] = []
+        no_flag_turns: List[TurnDecision] = []
+        for conversation in scenario.conversations:
+            base_turns += run_baseline_conversation(scenario, conversation, router)
+            new_turns += run_solution_conversation(
+                scenario, conversation, router, solution.registry.db_path, Path(workdir)
+            )
+            no_flag_turns += run_solution_conversation(
+                scenario, conversation, router, solution.registry.db_path, Path(workdir), use_new_task=False
+            )
     return {
         "agents": len(scenario.agents),
         "threshold": threshold,
@@ -327,17 +550,31 @@ def run_simulated(scenario: Scenario, *, threshold: float = 0.6) -> Dict[str, ob
             "baseline": [asdict(d) for d in base_decisions],
             "solution": [asdict(d) for d in new_decisions],
         },
+        "conversations": {
+            "baseline": score_conversations("baseline", base_turns),
+            "solution": score_conversations("solution", new_turns),
+            "solution_without_new_task": score_conversations("solution_without_new_task", no_flag_turns),
+            "turns": {
+                "baseline": [asdict(d) for d in base_turns],
+                "solution": [asdict(d) for d in new_turns],
+            },
+        },
     }
 
 
 __all__ = [
     "ArmMetrics",
     "BaselineArm",
+    "ConversationMetrics",
     "Decision",
     "SimulatedRouter",
     "SolutionArm",
     "build_registry",
     "estimate_tokens",
+    "TurnDecision",
+    "run_baseline_conversation",
     "run_simulated",
+    "run_solution_conversation",
     "score",
+    "score_conversations",
 ]

@@ -11,6 +11,11 @@ with split context. This module stops that, but only merges on unambiguous evide
 5. otherwise                        -> create, and report look-alikes as possible duplicates
 
 Fuzzy keyword similarity alone never merges. It is only reported back to the model.
+
+Rule 3 is right for "reply to sarah@acme.com" but wrong for "start a new email to Sarah
+about the audit": same contact, different task. Words cannot reliably tell those apart
+("we paid" belongs to the invoice thread without sharing a word with it), so the model
+says so instead: with new_task=True only rule 1 applies, and a taken name gets a suffix.
 """
 
 from __future__ import annotations
@@ -48,12 +53,17 @@ def resolve_agent(
     instructions: str,
     registry: AgentRegistry,
     retriever: Optional[AgentRetriever] = None,
+    *,
+    new_task: bool = False,
 ) -> Resolution:
     """Pick the agent to use. Pure decision: the caller creates or touches the agent."""
 
     requested_name = (requested_name or "").strip() or "agent"
     retriever = retriever or AgentRetriever(registry)
     text = f"{requested_name}\n{instructions or ''}"
+
+    if new_task:
+        return _new_task_resolution(requested_name, text, registry, retriever)
 
     if registry.exists(requested_name):
         return Resolution(requested_name, created=False, reason="exact_name", requested_name=requested_name)
@@ -67,21 +77,47 @@ def resolve_agent(
     if len(same_key) == 1 and not mentions_new_contact:
         return Resolution(same_key[0], created=False, reason="same_name_key", requested_name=requested_name)
 
-    duplicates = list(same_key)
+    return Resolution(
+        requested_name,
+        created=True,
+        reason="new",
+        requested_name=requested_name,
+        possible_duplicates=_possible_duplicates(requested_name, text, retriever, same_key),
+    )
+
+
+# The model said this is a new task: create it even if the contact already has an agent
+def _new_task_resolution(
+    requested_name: str, text: str, registry: AgentRegistry, retriever: AgentRetriever
+) -> Resolution:
+    name = requested_name
+    suffix = 2
+    while registry.exists(name):
+        name = f"{requested_name} ({suffix})"
+        suffix += 1
+    taken = [requested_name] if name != requested_name else []
+    return Resolution(
+        name,
+        created=True,
+        reason="new_task" if not taken else "new_task (name taken)",
+        requested_name=requested_name,
+        possible_duplicates=_possible_duplicates(requested_name, text, retriever, taken),
+    )
+
+
+def _possible_duplicates(
+    requested_name: str, text: str, retriever: AgentRetriever, seed: List[str]
+) -> List[str]:
+    """Existing agents that look like the requested one, for the model to double-check."""
+
+    duplicates = list(seed)
     name_terms = {term for term in tokenize(requested_name) if term not in NAME_FILLER}
     if name_terms:
         for candidate in retriever.search(text, limit=5):
             shared = name_terms & set(agent_document_tokens(candidate.record))
             if len(shared) / len(name_terms) >= POSSIBLE_DUPLICATE_MIN_OVERLAP and candidate.name not in duplicates:
                 duplicates.append(candidate.name)
-
-    return Resolution(
-        requested_name,
-        created=True,
-        reason="new",
-        requested_name=requested_name,
-        possible_duplicates=duplicates[:3],
-    )
+    return duplicates[:3]
 
 
 def _owner_by_entity(

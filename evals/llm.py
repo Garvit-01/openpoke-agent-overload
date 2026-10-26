@@ -34,6 +34,7 @@ from .harness import BaselineArm, SolutionArm
 from .scenarios import NEW, Case, Scenario, build_scenario
 
 NO_ROUTE = "__NO_ROUTE__"
+NEW_TASK_MARK = " [new_task]"
 MAX_STEPS = 4
 Complete = Callable[..., Awaitable[Dict[str, Any]]]
 
@@ -96,7 +97,11 @@ async def ask_model(
     user_content: str,
     search: Optional[Callable[[str], str]] = None,
 ) -> Tuple[Optional[str], str, Optional[int], bool]:
-    """Returns (agent_name, instructions, first-call prompt tokens, used_search)."""
+    """Returns (agent_name, instructions, first-call prompt tokens, used_search).
+
+    The instructions come back with " [new_task]" appended when the model set new_task,
+    so the solution arm can pass the flag on without changing this signature.
+    """
 
     messages: List[Dict[str, Any]] = [{"role": "user", "content": user_content}]
     prompt_tokens: Optional[int] = None
@@ -118,7 +123,10 @@ async def ask_model(
             except json.JSONDecodeError:
                 arguments = {}
             if name == "send_message_to_agent":
-                return arguments.get("agent_name"), arguments.get("instructions", ""), prompt_tokens, used_search
+                instructions = arguments.get("instructions", "")
+                if arguments.get("new_task"):
+                    instructions += NEW_TASK_MARK
+                return arguments.get("agent_name"), instructions, prompt_tokens, used_search
             if name == "search_agents" and search is not None:
                 used_search = True
                 content = search(str(arguments.get("query", "")))
@@ -175,7 +183,9 @@ async def evaluate_llm(
                     tools=solution_tools, user_content=_user_content(solution.roster_section(case.message), case.message),
                     search=lambda query: _search_payload(solution, query),
                 )
-                chosen = solution.apply(case, name, instructions)[0] if name else NO_ROUTE
+                new_task = instructions.endswith(NEW_TASK_MARK)
+                instructions = instructions[: -len(NEW_TASK_MARK)] if new_task else instructions
+                chosen = solution.apply(case, name, instructions, new_task=new_task)[0] if name else NO_ROUTE
         return LLMOutcome(case.id, case.category, arm_label, repeat, case.gold, chosen, name, tokens, used_search)
 
     jobs = [one(case, arm, repeat) for case in cases for arm in ("baseline", "solution") for repeat in range(repeats)]

@@ -69,6 +69,31 @@ def category_table(base: ArmMetrics, new: ArmMetrics, counts: Dict[str, int]) ->
     return lines
 
 
+def conversation_tables(conversations: Dict[str, object]) -> List[str]:
+    base, new, no_flag = (
+        conversations["baseline"], conversations["solution"], conversations["solution_without_new_task"]
+    )
+    lines = [
+        "| Metric | Original OpenPoke | This change | This change, model never sets new_task |",
+        "|---|---|---|---|",
+    ]
+    for label, attr in [("Turn accuracy (all turns)", "turn_accuracy"),
+                        ("Turn accuracy (turns 2+)", "later_turn_accuracy"),
+                        ("Conversations with every turn right", "conversation_success")]:
+        lines.append(f"| {label} | {_pct(getattr(base, attr))} | {_pct(getattr(new, attr))} | {_pct(getattr(no_flag, attr))} |")
+    lines += [
+        "",
+        "| Kind | Conversations | Original: all turns right | New: all turns right | New, no new_task |",
+        "|---|---|---|---|---|",
+    ]
+    for kind, values in new.by_kind.items():
+        lines.append(
+            f"| {kind} | {values['conversations']} | {_pct(base.by_kind[kind]['conversation_success'])} | "
+            f"{_pct(values['conversation_success'])} | {_pct(no_flag.by_kind[kind]['conversation_success'])} |"
+        )
+    return lines
+
+
 def run_offline(args) -> None:
     started = time.perf_counter()
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -118,6 +143,26 @@ def run_offline(args) -> None:
         *category_table(main["baseline"], main["solution"], counts),
     ]
 
+    conversations = main["conversations"]
+    turn_count = conversations["solution"].turns
+    md += [
+        "",
+        f"## Multi-turn conversations: {conversations['solution'].conversations} conversations, {turn_count} turns",
+        "",
+        "State carries over between turns: an agent created in turn 1 exists in turn 2, and a wrong pick early "
+        "on makes \"ok, send it\" go to the wrong agent too. Turns like \"send it\" are resolved from the "
+        "conversation the same way in both arms.",
+        "",
+        *conversation_tables(conversations),
+    ]
+    conversation_failures = [d for d in conversations["turns"]["solution"] if not d["correct"]]
+    if conversation_failures:
+        md += ["", "| Conversation | Turn | Message | Right answer | Chosen |", "|---|---|---|---|---|"]
+        md += [
+            f"| {d['conversation_id']} | {d['turn']} | {d['message']} | {d['expected']} | {d['chosen']} |"
+            for d in conversation_failures
+        ]
+
     if len(runs) > 1:
         md += [
             "",
@@ -131,6 +176,9 @@ def run_offline(args) -> None:
             base_values = [getattr(result["baseline"], attr) for _, result in runs]
             new_values = [getattr(result["solution"], attr) for _, result in runs]
             md.append(f"| {label} | {_mean_range(base_values)} | {_mean_range(new_values)} |")
+        base_values = [result["conversations"]["baseline"].conversation_success for _, result in runs]
+        new_values = [result["conversations"]["solution"].conversation_success for _, result in runs]
+        md.append(f"| Conversations with every turn right | {_mean_range(base_values)} | {_mean_range(new_values)} |")
 
     if scaling:
         md += [
@@ -192,6 +240,11 @@ def run_offline(args) -> None:
                     for threshold, base, new in sweep
                 ],
                 "decisions": main["decisions"],
+                "conversations": {
+                    arm: asdict(main["conversations"][arm])
+                    for arm in ("baseline", "solution", "solution_without_new_task")
+                },
+                "conversation_turns": main["conversations"]["turns"],
             },
             indent=2,
         ),

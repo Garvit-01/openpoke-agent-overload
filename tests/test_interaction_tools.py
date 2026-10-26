@@ -100,3 +100,31 @@ def test_search_agents_returns_matches_with_reasons(two_sarahs, wired):
 def test_search_agents_requires_a_query(wired):
     result = call_tool("search_agents")
     assert not result.success
+
+
+def test_result_carries_the_agent_id(wired):
+    from server.services.execution.ids import agent_id_for
+
+    result = call_tool("send_message_to_agent", agent_name="Vercel Job Offer", instructions="check the offer")
+    assert result.payload["agent_id"] == agent_id_for("Vercel Job Offer")
+
+
+def test_new_task_flag_starts_a_separate_agent_for_a_known_contact(wired):
+    call_tool(
+        "send_message_to_agent",
+        agent_name="Email to Sarah Chen",
+        instructions="Draft a reply to sarah.chen@acme.com about the Q3 invoice",
+    )
+    result = call_tool(
+        "send_message_to_agent",
+        agent_name="Email to Sarah Chen",
+        instructions="Start a new email to sarah.chen@acme.com about the audit findings",
+        new_task=True,
+    )
+
+    assert result.payload["new_agent_created"] is True
+    assert result.payload["agent_name"] == "Email to Sarah Chen (2)"
+    assert "another agent's name" in result.payload["note"]
+    assert wired.registry.count() == 2
+    lines = [json.loads(line) for line in wired.routing_log.read_text(encoding="utf-8").splitlines()]
+    assert lines[-1]["new_task"] is True

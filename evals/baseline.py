@@ -42,6 +42,7 @@ def original_tool_schemas(current: List[Dict[str, Any]]) -> List[Dict[str, Any]]
     for tool in schemas:
         if tool["function"]["name"] == "send_message_to_agent":
             tool["function"]["description"] = ORIGINAL_SEND_DESCRIPTION
+            tool["function"]["parameters"]["properties"].pop("new_task", None)
     return schemas
 
 

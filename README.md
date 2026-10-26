@@ -16,6 +16,7 @@ Same synthetic history (300 agents, 185 labelled follow-up messages), same simul
 | Reused an old agent when a new one was right | 10.0% | 2.5% |
 | Roster tokens in every prompt (approx.) | 3,135 | 909 |
 | Roster tokens at 800 agents | 8,508 | 878 |
+| Multi-turn conversations with every turn right (26 conversations) | 34.6% | 100% |
 
 Over three random seeds the accuracy is 58.0% vs 92.4%. Read the "Limitations" section before quoting these numbers. The data is synthetic and the router is a simulation, and I explain below what that does and does not prove.
 
@@ -43,11 +44,13 @@ The idea: treat "which agent is this about?" as a retrieval problem, not a "read
 2. **A fixed-size shortlist in the prompt** (`retrieval.py`, `interaction_agent/agent.py`). Each turn shows 8 agents retrieved for the message plus the 4 most recently used, so "send it" still resolves. Each entry has its status, last use, a short summary and why it matched. The prompt also says how many agents exist in total.
 3. **Ranking.** An exact email or thread id match ranks first. BM25 over name, summary and entities ranks within that. Status and recency are small multipliers that only break near-ties.
 4. **A `search_agents` tool**, so the model can look past the shortlist, including dormant and archived agents, before creating a new one.
-5. **Dedup when an agent is created** (`resolver.py`). The resolver reuses an existing agent on: the exact name, the same thread id, the same contact email, or the same normalised name ("Email to Sarah Chen" and "Sarah Chen thread" both normalise to "chen sarah"). Keyword similarity alone never merges agents. Look-alikes are only reported back as `possible_duplicates`. A new email address in the instructions blocks a name-based merge, because that's a new person.
+5. **Dedup when an agent is created** (`resolver.py`). The resolver reuses an existing agent on: the exact name, the same thread id, the same contact email, or the same normalised name ("Email to Sarah Chen" and "Sarah Chen thread" both normalise to "chen sarah"). Keyword similarity alone never merges agents. Look-alikes are only reported back as `possible_duplicates`. A new email address in the instructions blocks a name-based merge, because that's a new person. The opposite case, a new task with a known contact ("start a new email to Sarah about the audit"), can't be told apart from a follow-up by words alone. So `send_message_to_agent` has an optional `new_task` flag. When the model sets it, the resolver always creates a new agent, and adds a suffix if the name is taken. The multi-turn eval found this one (see below).
 6. **Profiles kept up to date** (`digest.py`). After each run, the agent's summary and entities are rebuilt from its log. This is deterministic: first request, latest request, latest result. Raw tool output is left out on purpose, because a search result listing 20 senders would tag the agent with all of them.
 7. **Lifecycle** (`lifecycle.py`). Idle agents go dormant after 14 days and are archived after 45. Agents that own an active trigger (a reminder that will fire later) are never demoted, because the scheduler wakes them by name. Using an archived agent makes it active again. Nothing is deleted.
 8. **Routing log.** Every decision (requested name, chosen agent, reason, look-alikes) is appended to `server/data/execution_agents/routing_decisions.jsonl`, so mistakes can be debugged and turned into eval cases.
 9. **Bounded execution history.** Execution agents see their last 10 requests, plus their registry summary in place of everything older.
+10. **Stable agent ids** (`ids.py`). The original log store named each agent's file after a slug of its name. "Email to Sarah", "email to sarah" and "Email-to-Sarah!" all wrote to `email-to-sarah.log`, so different agents read and wrote each other's history. Each agent now has an id made from a hash of its exact name, and its log file is named by that id. The id needs no lookup and stays the same across restarts. Old slug logs are moved to id files once at startup. When two agents shared one old file, the oldest keeps it, because the old store had already mixed the histories and they can't be split. The id also appears in the tool result and the routing log.
+11. **One run at a time per agent** (`batch_manager.py`). Before, two quick follow-ups to the same agent, or a reminder firing while you're talking to that agent, started two runs at once. Both read the same history and both could act, for example two drafts for one reply. Now a second run waits for the first and then sees its result. Different agents still run in parallel. The lock is shared by the chat path and the trigger scheduler, which creates its own batch manager for every trigger. The wait doesn't count against the 90 second timeout.
 
 All of this is configurable in `server/config.py` (see "New settings" below).
 
@@ -55,16 +58,18 @@ All of this is configurable in `server/config.py` (see "New settings" below).
 
 ### Unit and integration tests: `python -m pytest`
 
-77 tests, about 20 seconds, no network, no API keys. They cover:
+99 tests, about 30 seconds, no network, no API keys. They cover:
 
 - registry create, reuse, revive, entity lookup, persistence, and migration from `roster.json`
+- agent ids: the four names that used to share `email-to-sarah.log` now keep separate histories, and old slug logs are carried over without overwriting anything
+- the run lock: two requests to one agent run one after the other and the second sees the first's result, different agents still overlap, chat and trigger managers share the lock, waiting doesn't trip the timeout
 - retrieval: email beats keywords, two Sarahs told apart by topic, archived agents still found, the shortlist size is fixed
-- the resolver: each reuse rule, plus the cases where it must *not* merge (a new contact, an ambiguous name, a common address like the user's own)
+- the resolver: each reuse rule, plus the cases where it must *not* merge (a new contact, an ambiguous name, a common address like the user's own, a new task flagged with `new_task`)
 - lifecycle: thresholds, never demoting trigger owners, revive on use
 - prompt budget: the roster section stays the same size from 20 to 1,000 agents, while the original grows linearly
 - the outbound email guard (see "Other gaps")
 - an end-to-end turn through the real interaction and execution runtimes with only the model calls faked: create an agent, refresh its profile after it runs, route a reworded follow-up back to it, check the next prompt carries its summary
-- the evaluator itself: labels are unambiguous, the simulated router follows its stated rules, the LLM loop works with a fake model
+- the evaluator itself: labels are unambiguous, the simulated router follows its stated rules, a wrong first turn carries over to later turns, the LLM loop works with a fake model
 
 ### The evaluator: `python -m evals.run_eval`
 
@@ -78,6 +83,15 @@ All of this is configurable in `server/config.py` (see "New settings" below).
 
 The 185 follow-up messages are labelled with the right agent, or "a new agent is right". They fall into 9 categories. One is deliberately hard for my approach: the topic is paraphrased ("the event space agreement" for "venue contract").
 
+There are also 26 short conversations (92 turns), because real follow-ups lean on what was just said. There are four kinds:
+
+- **switch and return:** talk about A, switch to B, then "go back to the first one and send that draft"
+- **correction:** "Any update from Michael?" then "Not that one, I meant Michael Mendes at Aperture", then "tell them Thursday works"
+- **new then follow-up:** email someone new, then "ok, send it" and "did they reply yet?"
+- **same person, new topic:** a known contact, then "start a new email to them about something else", then "send it", then back to the old topic
+
+State carries over between turns, so a wrong pick in turn 1 makes "send it" go to the wrong agent as well. The solution arm runs each conversation through the real `route_to_agent` on a fresh copy of the registry.
+
 **Two arms, one router** (`evals/harness.py`). Both arms use the same deterministic router, which stands in for the model choosing an agent. The only thing that differs is what each arm gives it:
 
 - **Original:** every agent name and nothing else. Reuse only on an exact name match. This is copied from upstream commit `5b5f635`, in `evals/baseline.py`.
@@ -88,6 +102,7 @@ The router's rules are written out in `SimulatedRouter`'s docstring. In short:
 1. A visible email address decides.
 2. Otherwise a named person decides. A different surname rules an agent out, and the topic picks between several agents with the same name.
 3. Otherwise keyword coverage has to clear a threshold.
+4. In a conversation, a turn that names nobody and nothing ("ok, send it") goes to the agent the conversation is about. Other turns check the agents already used in the conversation before the roster.
 
 My first version of the router was unfair to the original code. It would create a new agent for "Did Michael Turner reply?" even with "Email to Michael Turner" in the list. I fixed that before taking any numbers, because a strawman baseline would prove nothing.
 
@@ -129,8 +144,22 @@ As the roster grows:
 | 400 | 51.9% | 91.9% | 4,183 | 882 |
 | 800 | 57.3% | 91.9% | 8,508 | 878 |
 
+Multi-turn conversations (300 agents, seed 7):
+
+| Kind | Conversations | Original: every turn right | This change | This change if the model never sets `new_task` |
+|---|---|---|---|---|
+| Switch and return | 8 | 25.0% | 100% | 100% |
+| Correction | 6 | 16.7% | 100% | 100% |
+| New then follow-up | 6 | 66.7% | 100% | 100% |
+| Same person, new topic | 6 | 33.3% | 100% | 50.0% |
+| **All** | 26 | 34.6% | 100% | 88.5% |
+
+Over seeds 7, 11 and 23 the original gets 37.2% of conversations fully right, and this change gets 100%. At 800 agents with seed 23 it drops to 92.3%. Both failures happened the same way: the agent from earlier in the conversation had the same topic with a different company, and the question stayed with it. For example, Julia's conference talk at Soylent caught "what's the latest on the Oscorp conference talk?".
+
 What I take from this:
 
+- **The conversation eval found a bug in my resolver.** Before `new_task`, "start a new email to Emma Murphy (emma.murphy@vandelay.com) about the audit findings" went to Emma's existing lease renewal agent, because the email rule matched. The new draft would have gone out on the wrong thread. The right-hand column shows what happens if a real model never uses the flag: half of those conversations still fail. Only the real-model run can say how often a model sets it.
+- **Early mistakes spread.** In the original, when turn 1 picks the wrong Michael, "tell them Thursday works" goes to the wrong Michael too. Accuracy on turns 2+ is 59.1% for the original and 100% here.
 - **Most of the original's mistakes come from missing information, not a weak router.** "Email to Mila" and "Email to Mila Dimitrov" are the same person on two threads. Nothing in the names says which one is the travel itinerary.
 - **Duplicates went to zero on this set,** mostly because of the resolver.
 - **Paraphrases are the weak spot.** 11 of the 13 failures are paraphrases. Keyword retrieval can't connect "immigration forms" to "visa paperwork". Even here the right agent was in the shortlist 60% of the time, and a real model reading the summaries might make that connection. This is the case for adding embeddings.
@@ -147,16 +176,21 @@ Fixed in code:
 3. **Unbounded execution history.** This is now the last 10 requests (setting 3 above).
 4. **The same model for every role.** Each role can now be set by an env var, for example a smaller model for the email classifier. I have not measured the cost or quality difference.
 5. **No record of routing decisions.** There is now the JSONL log described above.
+6. **Agents could share a log file.** Different names with the same slug read and wrote one history file. Fixed with stable ids (change 10).
+7. **The same agent could run twice at once.** Fixed with the per-agent run lock (change 11). The lock lives in memory, so it covers one server process. Running several workers would need a lock in the database instead.
 
 Not fixed, worth knowing:
 
 - Gmail tools are not scoped per agent (`build_registry` ignores `agent_name`). Any agent can act on any thread.
+- All results from one batch wait for the slowest agent, for up to 90 seconds, before the user hears about any of them.
+- A request is written to the agent's log when it's sent, not when its run starts. So a run can see a request that is still waiting behind it in its history. This was already true before the lock.
 - There were no tests in the original repo. There are now, but only for the parts I touched.
 
 ## Limitations
 
 - **The data is synthetic.** I generated it to contain known failure modes. Real inboxes are messier, and real users paraphrase more than my 15 cases.
 - **The headline numbers use a simulated router.** It measures what each version gives the model and how each reuses agents, not how a real model behaves. The real-model mode exists for that and has not been run yet.
+- **The multi-turn numbers are kind to both versions.** The simulated router always resolves "send it" and "the first one" correctly. A real model can lose track. The real-model mode only runs single-turn cases so far.
 - **Token counts are characters ÷ 4,** and cost uses an assumed $3 per million input tokens. Both are fine for comparing the two versions, not for exact billing.
 - **Retrieval is keyword based,** so paraphrases fail (see above). The BM25 index is rebuilt on each call. That's fine for thousands of agents, but at 100k you'd want SQLite FTS5 or a vector index.
 - **The lifecycle thresholds (14 and 45 days) and the shortlist size (8 + 4) are reasonable defaults,** not tuned values.
@@ -164,7 +198,7 @@ Not fixed, worth knowing:
 
 ## What I'd do next
 
-1. Run the real-model eval and add its numbers here.
+1. Run the real-model eval and add its numbers here, then extend it to the multi-turn conversations, mainly to see whether the model sets `new_task`.
 2. Add embeddings as an optional third signal, used only for ranking and never for merging. The paraphrase category is the metric to move.
 3. Write model-generated summaries for agents with long histories.
 4. Add a merge tool for duplicates that already exist, plus clustering, so related agents share context.
@@ -178,7 +212,7 @@ The same shape shows up anywhere one front agent serves many long-running contex
 
 ```bash
 pip install -r server/requirements.txt pytest
-python -m pytest                       # 77 tests, no keys needed
+python -m pytest                       # 99 tests, no keys needed
 python -m evals.run_eval --quick       # one seed, about 15 seconds
 python -m evals.run_eval               # full run, about 2 minutes, writes evals/results/
 python -m evals.run_eval --router llm --limit 40 --repeats 3   # needs OPENROUTER_API_KEY, costs money
@@ -201,6 +235,7 @@ python -m evals.run_eval --router llm --limit 40 --repeats 3   # needs OPENROUTE
 ```
 server/services/execution/
   registry.py     SQLite agent registry
+  ids.py          stable agent ids (log files are keyed by these)
   entities.py     email / thread / name extraction, tokenising, name normalising
   retrieval.py    BM25 + hard entity matching, shortlist
   resolver.py     dedup when an agent is created
@@ -208,9 +243,10 @@ server/services/execution/
   lifecycle.py    dormant / archived / revive, trigger-aware
   routing.py      glue + routing decision log
   roster.py       migration from roster.json, old interface kept
+server/agents/execution_agent/batch_manager.py   per-agent run lock
 server/services/safety/outbound.py   send confirmation guard
-evals/            scenario generator, baseline copy, harness, real-model mode, results
-tests/            77 tests
+evals/            scenario generator (single-turn + conversations), baseline copy, harness, real-model mode, results
+tests/            99 tests
 ```
 
 ---

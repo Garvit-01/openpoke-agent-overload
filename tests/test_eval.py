@@ -100,3 +100,51 @@ def test_llm_loop_with_a_fake_model(scenario, tmp_path):
     assert summary["solution"]["prompt_tokens_mean"] == 900
     assert summary["baseline"]["no_route_rate"] == 0.0
     assert NO_ROUTE not in {o.chosen for o in outcomes}
+
+
+def test_conversation_labels_are_sound(scenario):
+    names = {agent.name for agent in scenario.agents}
+    kinds = {conversation.kind for conversation in scenario.conversations}
+    assert kinds == {"switch_and_return", "correction", "new_then_follow_up", "same_person_new_topic"}
+    openers = [conversation.turns[0].gold for conversation in scenario.conversations if conversation.turns[0].gold != NEW]
+    assert len(openers) == len(set(openers)), "each conversation should open on a different agent"
+    for conversation in scenario.conversations:
+        for turn in conversation.turns:
+            if turn.gold_from_turn is not None:
+                # It must point back at an earlier turn whose right answer was a new agent
+                assert conversation.turns[turn.gold_from_turn - 1].gold == NEW
+            elif turn.gold != NEW:
+                assert turn.gold in names
+
+
+def test_router_resolves_references_from_the_conversation(scenario):
+    router = SimulatedRouter(scenario.vocabulary)
+    memory = ["Email to Sarah", "Vercel Job Offer"]
+    assert router.refer_back("Ok, send it.", memory) == "Vercel Job Offer"
+    assert router.refer_back("Go back to the first one and send that draft.", memory) == "Email to Sarah"
+    assert router.refer_back("What about the other one?", memory) == "Email to Sarah"
+    # A turn that names someone or something is not a reference, and there is nothing to refer to at first
+    assert router.refer_back("Did Sarah Chen reply?", memory) is None
+    assert router.refer_back("Ok, send it.", []) is None
+
+
+def test_a_wrong_first_turn_carries_over(scenario):
+    from evals.harness import _turn_correct
+    from evals.scenarios import Turn
+
+    follow_up = Turn("Ok, send it.", NEW, gold_from_turn=1)
+    assert _turn_correct(follow_up, "Email to Sarah Achebe", False, {1: "Email to Sarah Achebe"})
+    # Turn 1 reused an old agent instead of creating one, so "send it" cannot be right either
+    assert not _turn_correct(follow_up, "Email to Sarah", False, {})
+
+
+def test_conversation_comparison(scenario):
+    conversations = run_simulated(scenario)["conversations"]
+    base, new, no_flag = conversations["baseline"], conversations["solution"], conversations["solution_without_new_task"]
+    assert new.conversation_success > base.conversation_success + 0.3
+    assert new.later_turn_accuracy >= 0.9
+    # Without the new_task flag, a known contact's email pulls the new topic into the old thread
+    assert (
+        no_flag.by_kind["same_person_new_topic"]["conversation_success"]
+        < new.by_kind["same_person_new_topic"]["conversation_success"]
+    )
