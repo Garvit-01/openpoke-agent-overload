@@ -6,10 +6,11 @@ import re
 import threading
 from html import escape, unescape
 from pathlib import Path
-from typing import Dict, Iterator, List, Tuple
+from typing import Dict, Iterable, Iterator, List, Optional, Tuple
 
 from ...logging_config import logger
 from ...utils.timezones import now_in_user_timezone
+from .ids import agent_id_for
 
 
 _DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
@@ -17,7 +18,10 @@ _EXECUTION_LOG_DIR = _DATA_DIR / "execution_agents"
 
 
 def _slugify(name: str) -> str:
-    """Convert agent name to filesystem-safe slug."""
+    """Convert agent name to the slug the original store used as a file name.
+
+    Kept only to find logs written before agent ids; different names can share a slug.
+    """
     slug = "".join(ch.lower() if ch.isalnum() else "-" for ch in name.strip()).strip("-")
     while "--" in slug:
         slug = slug.replace("--", "-")
@@ -56,15 +60,37 @@ class ExecutionAgentLogStore:
 
     def _lock_for(self, agent_name: str) -> threading.Lock:
         """Get or create a lock for an agent."""
-        slug = _slugify(agent_name)
+        agent_id = agent_id_for(agent_name)
         with self._global_lock:
-            if slug not in self._locks:
-                self._locks[slug] = threading.Lock()
-            return self._locks[slug]
+            if agent_id not in self._locks:
+                self._locks[agent_id] = threading.Lock()
+            return self._locks[agent_id]
 
     def _log_path(self, agent_name: str) -> Path:
-        """Get log file path for an agent."""
-        return self._base_dir / f"{_slugify(agent_name)}.log"
+        """Get log file path for an agent, keyed by its stable id rather than a name slug."""
+        return self._base_dir / f"{agent_id_for(agent_name)}.log"
+
+    # Move logs written under the old name slugs to id-keyed files. Names are taken in the
+    # order given (oldest agent first), so when two names shared one old file, the oldest
+    # agent keeps it; the old store had already mixed their histories, so it cannot be split.
+    def adopt_legacy_logs(self, agent_names: Iterable[str]) -> int:
+        """Rename <slug>.log to <agent id>.log for each agent that has no id-keyed log yet."""
+
+        adopted = 0
+        for name in agent_names:
+            legacy = self._base_dir / f"{_slugify(name)}.log"
+            target = self._log_path(name)
+            if target.exists() or not legacy.exists():
+                continue
+            with self._lock_for(name):
+                try:
+                    legacy.replace(target)
+                    adopted += 1
+                except Exception as exc:  # pragma: no cover - defensive
+                    logger.warning(f"Could not move legacy log for {name}: {exc}")
+        if adopted:
+            logger.info("Moved legacy execution logs to id-keyed files", extra={"logs": adopted})
+        return adopted
 
     def _append(self, agent_name: str, tag: str, payload: str) -> None:
         """Append an entry with the given tag."""
@@ -159,7 +185,7 @@ class ExecutionAgentLogStore:
         return entries[-limit:] if entries else []
 
     def list_agents(self) -> list[str]:
-        """List all agents with logs."""
+        """List the ids (file stems) of all agents with logs."""
         try:
             return sorted(path.stem for path in self._base_dir.glob("*.log"))
         except Exception as exc:

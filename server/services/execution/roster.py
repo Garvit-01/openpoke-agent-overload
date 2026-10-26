@@ -46,6 +46,9 @@ def migrate_legacy_roster(registry: AgentRegistry, roster_path: Path, log_store=
 
     # The old roster has no timestamps, so migrated agents start their idle clock now
     stamp = to_iso(registry.now())
+    if log_store is not None:
+        # Old logs are named by slug; move them to id-keyed files before reading them
+        log_store.adopt_legacy_logs(names)
     records: List[AgentRecord] = []
     for name in names:
         summary, entities = "", {}
@@ -92,11 +95,14 @@ def get_agent_registry() -> AgentRegistry:
     global _registry
     with _registry_lock:
         if _registry is None:
-            _registry = AgentRegistry(_REGISTRY_PATH)
-            if _LEGACY_ROSTER_PATH.exists():
-                from .log_store import get_execution_agent_logs
+            from .log_store import get_execution_agent_logs
 
-                migrate_legacy_roster(_registry, _LEGACY_ROSTER_PATH, get_execution_agent_logs())
+            _registry = AgentRegistry(_REGISTRY_PATH)
+            logs = get_execution_agent_logs()
+            if _LEGACY_ROSTER_PATH.exists():
+                migrate_legacy_roster(_registry, _LEGACY_ROSTER_PATH, logs)
+            # Cheap when there is nothing to move: one exists() check per agent, once per process
+            logs.adopt_legacy_logs(_registry.names())
         return _registry
 
 

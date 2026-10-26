@@ -18,6 +18,7 @@ from typing import Any, Dict, Optional
 from ...logging_config import logger
 from .digest import SUMMARY_MAX_CHARS, build_digest
 from .entities import extract_entities
+from .ids import agent_id_for
 from .lifecycle import LifecyclePolicy, LifecycleReport, apply_lifecycle, trigger_service_counter
 from .log_store import get_execution_agent_logs
 from .registry import AgentRegistry, to_iso
@@ -47,9 +48,12 @@ def route_to_agent(
     *,
     registry: Optional[AgentRegistry] = None,
     routing_log_path: Optional[Path] = None,
+    new_task: bool = False,
 ) -> Resolution:
     registry = registry or get_agent_registry()
-    resolution = resolve_agent(requested_name, instructions, registry, AgentRetriever(registry))
+    resolution = resolve_agent(
+        requested_name, instructions, registry, AgentRetriever(registry), new_task=new_task
+    )
     record, _created = registry.ensure_agent(resolution.agent_name)
 
     if resolution.created:
@@ -64,7 +68,9 @@ def route_to_agent(
             "at": to_iso(registry.now()),
             "requested_name": resolution.requested_name,
             "agent_name": resolution.agent_name,
+            "agent_id": agent_id_for(resolution.agent_name),
             "created": resolution.created,
+            "new_task": new_task,
             "reason": resolution.reason,
             "possible_duplicates": resolution.possible_duplicates,
             "instructions_preview": " ".join(instructions.split())[:200],

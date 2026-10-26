@@ -17,6 +17,7 @@ from typing import Callable, Dict, Iterable, List, Optional, Sequence, Tuple
 
 from ...logging_config import logger
 from .entities import merge_entities, normalize_agent_name
+from .ids import agent_id_for
 
 STATUS_ACTIVE = "active"
 STATUS_DORMANT = "dormant"
@@ -83,6 +84,11 @@ class AgentRecord:
     @property
     def last_active(self) -> datetime:
         return parse_timestamp(self.last_active_at)
+
+    @property
+    def agent_id(self) -> str:
+        """Stable id derived from the exact name; it keys the agent's log file."""
+        return agent_id_for(self.name)
 
 
 class AgentRegistry:
