@@ -63,3 +63,19 @@ def test_recent_slots_skip_dormant_and_archived(registry):
     add_agent(registry, "Active", days_ago=5)
     add_agent(registry, "Dormant", status=STATUS_DORMANT, days_ago=1)
     assert [item.name for item in AgentRetriever(registry).recent(limit=5)] == ["Active"]
+
+
+def test_archived_agent_with_a_clearly_better_match_still_wins(registry):
+    # Regression: a multiplicative archive penalty used to push the only "Acme" agent below weaker matches
+    add_agent(registry, "Q3 Invoice with Omar", summary="Q3 invoice for Omar at Acme", status=STATUS_ARCHIVED, days_ago=60)
+    for index in range(5):
+        add_agent(registry, f"Q3 invoice {index}", summary=f"Q3 invoice for contact {index}", days_ago=0)
+    assert AgentRetriever(registry).search("what's the latest on the Acme Q3 invoice")[0].name == "Q3 Invoice with Omar"
+
+
+def test_near_universal_words_are_not_listed_as_reasons(registry):
+    for index in range(6):
+        add_agent(registry, f"Agent {index}", summary=f"Latest result: topic{index}")
+    results = AgentRetriever(registry).search("latest on topic3")
+    assert results[0].name == "Agent 3"
+    assert results[0].reasons == ["keywords: topic3"]

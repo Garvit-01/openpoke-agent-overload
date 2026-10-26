@@ -26,11 +26,14 @@ from .registry import (
 HARD_MATCH_BONUS = 100.0
 # An email shared by many agents (usually the user's own address) says nothing about which thread
 MAX_AGENTS_PER_HARD_ENTITY = 5
-# Dormant and archived agents stay searchable but rank a little lower than active ones
-STATUS_WEIGHT = {STATUS_ACTIVE: 1.0, STATUS_DORMANT: 0.85, STATUS_ARCHIVED: 0.6}
-# Recency is only a tie-breaker: at most +0.5 for an agent used right now
-RECENCY_WEIGHT = 0.5
+# Status and recency only nudge the ranking: small multipliers, so they mean the same at any
+# corpus size and an archived agent that clearly matches better still beats a weaker active one.
+# (An earlier 0.6 multiplier for archived agents was strong enough to hide the right agent.)
+STATUS_WEIGHT = {STATUS_ACTIVE: 1.0, STATUS_DORMANT: 0.95, STATUS_ARCHIVED: 0.9}
+RECENCY_BOOST = 0.05  # at most +5% for an agent used right now, halving every two weeks
 RECENCY_HALF_LIFE_DAYS = 14.0
+# Words this common (e.g. "latest" in every summary) are not shown as reasons for a match
+MIN_REASON_IDF = 0.5
 
 
 @dataclass
@@ -75,6 +78,9 @@ class BM25Index:
             for term, freq in document_frequency.items()
         }
 
+    def idf(self, term: str) -> float:
+        return self._idf.get(term, 0.0)
+
     def score(self, query_tokens: Iterable[str]) -> Dict[str, float]:
         unique_terms = [term for term in dict.fromkeys(query_tokens) if term in self._idf]
         scores: Dict[str, float] = {}
@@ -115,8 +121,9 @@ class AgentRetriever:
         query_tokens = tokenize(query)
         hard_matches = self._hard_matches(query, records)
         documents = {record.name: agent_document_tokens(record) for record in records}
-        keyword_scores = BM25Index(documents).score(query_tokens)
-        query_terms = set(query_tokens)
+        index = BM25Index(documents)
+        keyword_scores = index.score(query_tokens)
+        query_terms = {term for term in query_tokens if index.idf(term) >= MIN_REASON_IDF}
 
         results: List[ScoredAgent] = []
         for record in records:
@@ -127,12 +134,12 @@ class AgentRetriever:
 
             reasons = list(hard_reasons)
             score = keyword * STATUS_WEIGHT.get(record.status, 1.0)
-            if keyword > 0:
-                shared = sorted(query_terms & set(documents[record.name]))[:4]
+            score *= 1 + RECENCY_BOOST * self._recency(record, now)
+            shared = sorted(query_terms & set(documents[record.name]))[:4]
+            if keyword > 0 and shared:
                 reasons.append("keywords: " + ", ".join(shared))
             if hard_reasons:
                 score += HARD_MATCH_BONUS
-            score += RECENCY_WEIGHT * self._recency(record, now)
             results.append(ScoredAgent(record=record, score=score, reasons=reasons))
 
         results.sort(key=lambda item: (item.score, item.record.last_active_at), reverse=True)
@@ -192,6 +199,7 @@ __all__ = [
     "BM25Index",
     "HARD_MATCH_BONUS",
     "MAX_AGENTS_PER_HARD_ENTITY",
+    "STATUS_WEIGHT",
     "ScoredAgent",
     "agent_document_tokens",
 ]
