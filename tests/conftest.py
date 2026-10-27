@@ -26,6 +26,30 @@ class FakeClock:
 
 
 @pytest.fixture(autouse=True)
+def isolated_data_files(tmp_path, monkeypatch):
+    """Point every app data file at a temp folder, so tests never write into server/data.
+
+    Without this, the end-to-end test appended fake "Sarah Chen" turns to the real working-memory log.
+    """
+    from server.services.conversation import log as conversation_log_module
+    from server.services.conversation.summarization import working_memory_log as working_memory_module
+    from server.services.execution import log_store as log_store_module
+    from server.services.execution import roster as roster_module
+    from server.services.execution import routing as routing_module
+
+    data = tmp_path / "server_data"
+    monkeypatch.setattr(working_memory_module, "_working_memory_log",
+                        working_memory_module.WorkingMemoryLog(data / "working_memory.log"))
+    monkeypatch.setattr(conversation_log_module, "_conversation_log",
+                        conversation_log_module.ConversationLog(data / "conversation.log"))
+    monkeypatch.setattr(log_store_module, "_execution_agent_logs", log_store_module.ExecutionAgentLogStore(data / "logs"))
+    monkeypatch.setattr(routing_module, "_ROUTING_LOG_PATH", data / "routing_decisions.jsonl")
+    monkeypatch.setattr(roster_module, "_REGISTRY_PATH", data / "registry.db")
+    monkeypatch.setattr(roster_module, "_LEGACY_ROSTER_PATH", data / "roster.json")
+    monkeypatch.setattr(roster_module, "_registry", None)
+
+
+@pytest.fixture(autouse=True)
 def no_background_model_calls(monkeypatch):
     """Tests never call a real model, even when .env holds a key. Phrase tests pass a fake model."""
     from server.config import get_settings

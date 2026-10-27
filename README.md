@@ -86,6 +86,10 @@ All of this is configurable in `server/config.py` (see "New settings" below).
 - an end-to-end turn through the real interaction and execution runtimes with only the model calls faked: create an agent, refresh its profile after it runs, route a reworded follow-up back to it, check the next prompt carries its summary
 - the evaluator itself: labels are unambiguous, the simulated router follows its stated rules, a wrong first turn carries over to later turns, the LLM loop works with a fake model
 
+Two autouse fixtures in `tests/conftest.py` keep tests from touching anything real. Every app data file (conversation log, working memory, agent logs, routing log, registry) points at a temp folder, and no test can call a model, even with a key in `.env`. I added the first after finding that the end-to-end test had been appending fake turns to the real working-memory log.
+
+I also ran the real server once with Haiku for every role, using reminders since Gmail isn't connected. "Remind me to water the plants every Sunday at 9am" created an agent, wrote its registry entry and routing log line, and added 10 search phrases in the background. "Can you move the greenery thing to Saturdays instead?" then went back to the same agent, with no duplicate.
+
 ### The evaluator: `python -m evals.run_eval`
 
 **Scenario** (`evals/scenarios.py`). This is a generated history, not real data. There are 300 agents built up over about 10 weeks: email threads, reminders and searches. It's built to contain what causes overload:
