@@ -12,7 +12,17 @@ from typing import AsyncIterator, Dict, List, Optional
 from .runtime import ExecutionAgentRuntime, ExecutionResult
 from ...logging_config import logger
 from ...services.execution.ids import agent_id_for
+from ...services.execution.phrases import maybe_add_phrases
 from ...services.execution.routing import refresh_agent_profile
+
+# Keep references so background tasks aren't garbage-collected before they finish
+_BACKGROUND_TASKS: set = set()
+
+
+def _start_background(coroutine) -> None:
+    task = asyncio.create_task(coroutine)
+    _BACKGROUND_TASKS.add(task)
+    task.add_done_callback(_BACKGROUND_TASKS.discard)
 
 
 @dataclass
@@ -111,6 +121,8 @@ class ExecutionBatchManager:
             # Keep the agent's summary and entities current so it can be found next time
             refresh_agent_profile(agent_name)
 
+        # Once per agent, in the background: other words a user might use for its task
+        _start_background(maybe_add_phrases(agent_name))
         await self._complete_execution(batch_id, result, agent_name)
         return result
 

@@ -191,9 +191,10 @@ async def evaluate_llm(
     repeats: int = 3,
     concurrency: int = 4,
     workdir: Path,
+    phrases: Optional[Dict[str, List[str]]] = None,
 ) -> List[LLMOutcome]:
     baseline = BaselineArm(scenario)
-    solution = SolutionArm(scenario, workdir)
+    solution = SolutionArm(scenario, workdir, phrases=phrases)
     solution_tools = get_tool_schemas()
     baseline_tools = original_tool_schemas(solution_tools)
     semaphore = asyncio.Semaphore(concurrency)
@@ -259,6 +260,44 @@ def summarise(outcomes: Sequence[LLMOutcome]) -> Dict[str, Dict[str, Any]]:
             "seconds_p95": seconds[max(0, int(len(seconds) * 0.95) - 1)],
         }
     return summary
+
+
+PHRASES_FILE = "agent_phrases.json"
+
+
+async def ensure_phrases(
+    agents: Sequence[Any], *, complete: Complete, model: str, api_key: Optional[str], path: Path, concurrency: int = 8
+) -> Dict[str, List[str]]:
+    """Search phrases for every agent, written once by `model` and cached in `path`.
+
+    The model sees only each agent's name and summary (never a test message), the same as in the app.
+    An agent is regenerated only if its summary changed, so reruns are free and repeatable.
+    """
+    from server.services.execution.phrases import generate_phrases
+
+    cache: Dict[str, Dict[str, Any]] = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    missing = [a for a in agents if cache.get(a.name, {}).get("summary") != a.summary]
+    if missing:
+        print(f"Writing search phrases for {len(missing)} agents with {model} ...")
+        semaphore = asyncio.Semaphore(concurrency)
+
+        async def one(agent):
+            async with semaphore:
+                phrases = await generate_phrases(agent.name, agent.summary, complete=complete, model=model, api_key=api_key)
+            cache[agent.name] = {"summary": agent.summary, "phrases": phrases}
+
+        await asyncio.gather(*(one(agent) for agent in missing))
+        path.write_text(json.dumps(cache, indent=1, sort_keys=True), encoding="utf-8")
+    return {agent.name: cache[agent.name]["phrases"] for agent in agents}
+
+
+def load_phrases(agents: Sequence[Any], path: Path) -> Dict[str, List[str]]:
+    """Cached phrases only (no model calls); exits if any agent is missing."""
+    cache = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    missing = [a.name for a in agents if cache.get(a.name, {}).get("summary") != a.summary]
+    if missing:
+        sys.exit(f"No cached phrases for {len(missing)} agents; run once with --router llm --phrases to write them")
+    return {agent.name: cache[agent.name]["phrases"] for agent in agents}
 
 
 def fetch_prices() -> Prices:
@@ -335,6 +374,10 @@ def run_llm(args) -> None:
     stem = "llm_results_" + re.sub(r"[^a-z0-9]+", "-", args.model.lower()).strip("-")
     if getattr(args, "set", "generated") == "paraphrase":
         stem += "_paraphrase"
+    if args.agents != 300:
+        stem += f"_{args.agents}agents"
+    if getattr(args, "phrases", False):
+        stem += "_phrases"
     saved = RESULTS_DIR / f"{stem}.json"
     if args.rescore:
         # Re-report a saved run (new metrics, fixed formatting) without paying for the model calls again
@@ -357,13 +400,19 @@ def run_llm(args) -> None:
         cases = sample_cases(scenario, args.limit, args.seed)
         case_count = len(cases)
         print(f"Running {case_count} cases x {args.repeats} repeats x 2 arms on {args.model} ...")
+        # A routing decision is a short tool call; the cap stops OpenRouter reserving 65k output tokens per request
+        complete = functools.partial(request_chat_completion, max_tokens=MAX_OUTPUT_TOKENS)
+        phrases = None
+        if getattr(args, "phrases", False):
+            phrases = asyncio.run(ensure_phrases(
+                scenario.agents, complete=complete, model=get_settings().agent_phrases_model,
+                api_key=api_key, path=RESULTS_DIR / PHRASES_FILE,
+            ))
         with tempfile.TemporaryDirectory() as workdir:
-            # A routing decision is a short tool call; the cap stops OpenRouter reserving 65k output tokens per request
-            complete = functools.partial(request_chat_completion, max_tokens=MAX_OUTPUT_TOKENS)
             outcomes = asyncio.run(
                 evaluate_llm(
                     scenario, cases, complete=complete, model=args.model, api_key=api_key,
-                    repeats=args.repeats, concurrency=args.concurrency, workdir=Path(workdir),
+                    repeats=args.repeats, concurrency=args.concurrency, workdir=Path(workdir), phrases=phrases,
                 )
             )
     summary = summarise(outcomes)

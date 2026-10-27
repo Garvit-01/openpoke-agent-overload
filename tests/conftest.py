@@ -25,6 +25,14 @@ class FakeClock:
         self.current += timedelta(**delta)
 
 
+@pytest.fixture(autouse=True)
+def no_background_model_calls(monkeypatch):
+    """Tests never call a real model, even when .env holds a key. Phrase tests pass a fake model."""
+    from server.config import get_settings
+
+    monkeypatch.setattr(get_settings(), "agent_search_phrases", False)
+
+
 @pytest.fixture
 def clock() -> FakeClock:
     return FakeClock()

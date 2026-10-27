@@ -282,6 +282,10 @@ def parse_args(argv=None):
         "--set", choices=["generated", "paraphrase"], default="generated",
         help="generated: the 185 labelled cases; paraphrase: 24 hand-written paraphrases (evals/paraphrase_set.py)",
     )
+    parser.add_argument(
+        "--phrases", action="store_true",
+        help="give this change's agents search phrases (written once by a model, cached in evals/results/agent_phrases.json)",
+    )
     parser.add_argument("--concurrency", type=int, default=4)
     return parser.parse_args(argv)
 
@@ -295,7 +299,12 @@ def run_paraphrase_offline(args) -> None:
     from .paraphrase_set import build_paraphrase_scenario
 
     scenario = build_paraphrase_scenario(args.agents, seed=args.seed)
-    result = run_simulated(scenario, threshold=args.threshold)
+    phrases = None
+    if args.phrases:
+        from .llm import PHRASES_FILE, load_phrases
+
+        phrases = load_phrases(scenario.agents, RESULTS_DIR / PHRASES_FILE)
+    result = run_simulated(scenario, threshold=args.threshold, phrases=phrases)
     base, new = result["baseline"], result["solution"]
     counts: Dict[str, int] = {}
     for case in scenario.cases:
@@ -323,8 +332,8 @@ def run_paraphrase_offline(args) -> None:
             f"{'yes' if decision['in_shortlist'] else 'no'} | {'yes' if decision['in_search'] else 'no'} |"
         )
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
-    (RESULTS_DIR / "results_paraphrase.md").write_text("\n".join(md) + "\n", encoding="utf-8")
-    (RESULTS_DIR / "results_paraphrase.json").write_text(
+    (RESULTS_DIR / f"results_paraphrase{'_phrases' if args.phrases else ''}.md").write_text("\n".join(md) + "\n", encoding="utf-8")
+    (RESULTS_DIR / f"results_paraphrase{'_phrases' if args.phrases else ''}.json").write_text(
         json.dumps({"main": {arm: asdict(result[arm]) for arm in ("baseline", "solution")},
                     "decisions": result["decisions"]}, indent=2),
         encoding="utf-8",

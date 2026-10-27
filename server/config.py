@@ -63,6 +63,10 @@ class Settings(BaseModel):
     agent_summary_chars: int = Field(default=_env_int("OPENPOKE_AGENT_SUMMARY_CHARS", 200))
     # Other agents of a person the message names, listed by name and topic only (0 = off)
     agent_named_people_limit: int = Field(default=_env_int("OPENPOKE_AGENT_NAMED_PEOPLE", 12))
+    # Search phrases: after an agent's first run, a small model writes other words a user might use for its
+    # task, so keyword search can find it by meaning (one cheap call per agent, off the reply path)
+    agent_search_phrases: bool = Field(default=os.getenv("OPENPOKE_AGENT_PHRASES", "1") != "0")
+    agent_phrases_model: str = Field(default=os.getenv("OPENPOKE_PHRASES_MODEL", "anthropic/claude-haiku-5.5"))
 
     # Agent lifecycle (idle days before an agent is demoted; agents with active triggers are never demoted)
     agent_dormant_after_days: int = Field(default=_env_int("OPENPOKE_AGENT_DORMANT_DAYS", 14))

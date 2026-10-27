@@ -32,6 +32,7 @@ from typing import Dict, List, Optional, Sequence, Set, Tuple
 from server.agents.interaction_agent.agent import agent_topic, render_agent_shortlist
 from server.services.execution.entities import EMAIL_PATTERN, extract_entities, tokenize
 from server.services.execution.lifecycle import LifecyclePolicy, apply_lifecycle
+from server.services.execution.phrases import PHRASE_KIND
 from server.services.execution.registry import AgentRecord, AgentRegistry, to_iso
 from server.services.execution.resolver import resolve_agent
 from server.services.execution.retrieval import AgentRetriever, ScoredAgent
@@ -256,8 +257,12 @@ def visible_text(item: ScoredAgent) -> str:
 class SolutionArm:
     label = "solution"
 
-    def __init__(self, scenario: Scenario, workdir: Path):
+    def __init__(self, scenario: Scenario, workdir: Path, phrases: Optional[Dict[str, List[str]]] = None):
         self.registry = build_registry(scenario, workdir / "registry.db")
+        # Search phrases as the app would have written them after each agent's first run
+        for name, values in (phrases or {}).items():
+            if values and self.registry.get(name):
+                self.registry.update_profile(name, entities={PHRASE_KIND: values})
         self.retriever = AgentRetriever(self.registry)
         self.total = self.registry.count()
 
@@ -537,13 +542,15 @@ def score(arm: str, decisions: Sequence[Decision]) -> ArmMetrics:
     )
 
 
-def run_simulated(scenario: Scenario, *, threshold: float = 0.6) -> Dict[str, object]:
+def run_simulated(
+    scenario: Scenario, *, threshold: float = 0.6, phrases: Optional[Dict[str, List[str]]] = None
+) -> Dict[str, object]:
     """Run both arms on one scenario. Returns metrics plus every decision for inspection."""
 
     router = SimulatedRouter(scenario.vocabulary, threshold=threshold)
     baseline = BaselineArm(scenario)
     with tempfile.TemporaryDirectory() as workdir:
-        solution = SolutionArm(scenario, Path(workdir))
+        solution = SolutionArm(scenario, Path(workdir), phrases=phrases)
         base_decisions = [baseline.route(case, router) for case in scenario.cases]
         new_decisions = [solution.route(case, router) for case in scenario.cases]
         # Each conversation starts from the same history; the solution arm gets a fresh copy
