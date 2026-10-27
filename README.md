@@ -30,7 +30,9 @@ The rows above the real-model ones use a simulated router on synthetic data. The
 
 ## The problem, in the code
 
-OpenPoke has one interaction agent (the one you talk to) and many execution agents, one per task, like "Email to Sarah". Agents are kept forever so they can own a thread for follow-ups. After a few weeks there are hundreds of them. The author calls this out himself in the explainer.
+OpenPoke has one interaction agent (the one you talk to) and many execution agents, one per task, like "Email to Sarah". Agents are kept forever so they can own a thread for follow-ups. After a few weeks there are hundreds of them. The author calls this out himself in the [explainer](https://www.shloked.com/openpoke): the full roster goes to the interaction agent on every request, and with hundreds of agents that becomes a relevance problem.
+
+The main cost is accuracy, not prompt length. 300 agent names are only about 3,000 tokens, which is short for current models. What hurts is that most of them look alike: "Email to Sarah", "Email to Sarah Chen", "Sarah venue contract". Research on long contexts finds that similar-looking distractors lower a model's accuracy, and more so as the input grows ([Chroma, "Context Rot", 2025](https://www.trychroma.com/research/context-rot)). Tool-selection studies also find that showing a model every option does worse than retrieving a short list first ([RAG-MCP, 2025](https://arxiv.org/abs/2505.03275)).
 
 Here is what I found in the original code:
 
@@ -230,7 +232,7 @@ What I take from this:
 - **The named-people list fixed it.** When the message names a person, the prompt now also lists that person's other agents as "name | topic | status". The model picked "Onboarding Plan with Vera" on all 3 runs, and paraphrases tied the original at 75%. It costs about 70 tokens per turn (909 to 978 roster tokens, simulated) and is capped at 12 entries.
 - **One paraphrase still fails in both versions.** "...what we're doing at the team retreat?" belongs to "Email to Michael Brown", whose thread is about the offsite agenda. With the fix, "Email to Michael Brown | offsite agenda | dormant" is in the prompt, but Haiku doesn't link "team retreat" to "offsite". That's now the model's judgement, not missing information. A stronger model, or embeddings ranking it into the detailed shortlist with its summary, might get it.
 - **Duplicates went up slightly, from 1.0% to 3.1%.** That's 3 of 96 runs, all the Michael case above, where the model created "Team Retreat Michael Update" instead of reusing an agent. In run 1 it mostly reused the wrong Michael instead. Same case, a different way of being wrong.
-- **The saving on the whole prompt is smaller than on the roster section.** The roster section shrinks by about 70% (3,135 to 978 tokens, simulated count). But both versions also send the system prompt and tool definitions on every call, and that part doesn't shrink. So the whole input drops 28% (9,854 to 7,134 tokens) and the bill 25%. The gap grows with the roster, because the original's list keeps growing and the shortlist doesn't.
+- **Accuracy is the real win. Cost is a modest bonus, and caching could erase it.** The roster section shrinks by about 70% (3,135 to 978 tokens, simulated count). But both versions also send the system prompt and tool definitions on every call, and that part doesn't shrink. So the whole input drops 28% (9,854 to 7,134 tokens) and the bill 25%, at list prices with no caching. With prompt caching, cached input costs a tenth of the normal price on Anthropic models. The original's roster changes only when an agent is created, so it caches well, and with a warm cache it could cost less per call than my shortlist. Two things favor the shortlist anyway. Personal-assistant messages often arrive more than 5 minutes apart, so the cache is often cold. And the original's list keeps growing. I haven't measured cache hit rates. My layout already caches well: tools and the system prompt never change, and the per-turn shortlist goes in the user message, not the system prompt.
 - **Speed is the same.** About 3 seconds per decision for both. The extra `search_agents` call costs time in the few cases that use it, and a shorter prompt saves a little. A real turn makes several model calls, so routing isn't where OpenPoke's slowness comes from. OpenRouter also spreads requests across several providers (Google Vertex, AWS, Azure, Anthropic), whose speeds differ, so timings are noisy.
 - **Haiku 5.5 thinks by default** on OpenRouter, about 130 to 180 tokens per decision. These are billed as output and are included in the costs above.
 - **It's a small sample.** 40 cases, 4 or 5 per category. One case flipping moves a category by 20 to 25 points, so read the per-category numbers as direction, not precision. Each run cost about $0.26.
@@ -257,6 +259,28 @@ What this showed:
 - **A mistake I caught.** My first version of that prompt used examples taken from this test set ("home insurance" for "the policy on the house"). It scored 93.1% of runs, which was teaching to the test. I replaced them with examples that appear nowhere in the data ("bathroom remodel" for "fixing up the shower"). It scored 88.9%, and that's the number above.
 - **Still small and still mine.** 24 messages written by one person aren't real users, and some of them will be easier for my approach than real traffic.
 
+## How this lines up with the author's suggestions
+
+The explainer suggests four fixes for agent overload. Here is what I did with each:
+
+| Author's suggestion | Here | Where |
+|---|---|---|
+| Semantic search over agent descriptions | Partly. Agents have summaries and entities, and the shortlist and `search_agents` search them. It's keyword search (BM25) plus exact email and thread matches, not embeddings, so it works offline and never merges on similarity. Matching by meaning is left to the model: the named-people list and searching by the likely filed name. Embeddings are next step 2. | changes 2 to 4, 12, 13 |
+| Archive dormant agents | Yes. Dormant after 14 idle days, archived after 45, never while the agent owns a live reminder. Archived agents stay searchable and come back when used. | change 7 |
+| Cluster related agents | No. Duplicates are prevented when an agent is created, but agents that already exist aren't merged or grouped. That's next step 4. | change 5 |
+| A hot cache of recently active agents | Yes. The 4 most recently used agents are always in the shortlist, so "send it" still resolves. | change 2 |
+
+## Two design choices worth explaining
+
+**One agent per task, not one per person.** In the explainer's example, one agent owns everything about Alice. I kept the original's per-task agents and added `new_task` for "something new with someone who already has an agent". Three reasons:
+- The original prompt already says to start a new agent when tasks can run in parallel.
+- With the run lock (change 11), one agent per person would make Emma's new audit email wait behind her lease work.
+- Each agent sees only its last 10 requests, and an agent about one topic gets a summary that retrieval can match.
+
+The cost is more agents, which is the problem being solved here, so retrieval and lifecycle have to carry it. The opposite design would be fine too, if the execution agent reliably starts a new email instead of replying on the old thread. I haven't tested that. The multi-turn eval labels "same person, new topic" as "new agent", and that label is my judgement. Without the flag those conversations score 50% (see the multi-turn table).
+
+**SQLite, not a vector database or Elastic.** One user has hundreds of agents, maybe a few thousand. The registry needs exact lookups ("who owns this email address or thread?") and safe concurrent writes. SQLite does both, ships with Python, needs no server, and works on Windows, where the original `fcntl` file locking failed. BM25 over a few thousand agents runs in memory in milliseconds. A search server would make sense with many users on one deployment, for example a brokerage with thousands of clients. Embeddings could live in SQLite too, as vectors with a brute-force cosine search, without adding a server.
+
 ## Other gaps I found
 
 Fixed in code:
@@ -282,7 +306,7 @@ Not fixed, worth knowing:
 - **The data is synthetic.** I generated it to contain known failure modes. The 24 hand-written paraphrases avoid the generator's vocabulary, but one person wrote them. Real inboxes are messier, and real users paraphrase in ways I didn't think of. The next step is turning real routing logs into eval cases.
 - **Most numbers use a simulated router.** It measures what each version gives the model and how each reuses agents, not how a real model behaves. The real-model run agrees on the overall result but not on paraphrases (see above). It covers one model, one roster size (300) and 40 cases.
 - **The multi-turn numbers are kind to both versions.** The simulated router always resolves "send it" and "the first one" correctly. A real model can lose track. The real-model mode only runs single-turn cases so far, so it doesn't yet show whether a model sets `new_task`.
-- **Token counts are characters ÷ 4,** and cost uses an assumed $3 per million input tokens. Both are fine for comparing the two versions, not for exact billing.
+- **Token counts in the simulated eval are characters ÷ 4,** and its cost uses an assumed $3 per million input tokens. Both are fine for comparing the two versions, not for exact billing. The real-model run uses the API's token counts and live list prices, but no prompt caching (see above).
 - **Retrieval is keyword based,** so paraphrases fail (see above). The BM25 index is rebuilt on each call. That's fine for thousands of agents, but at 100k you'd want SQLite FTS5 or a vector index.
 - **The lifecycle thresholds (14 and 45 days) and the shortlist size (8 + 4) are reasonable defaults,** not tuned values.
 - **Summaries are templated from the log,** not written by a model. They're cheap and never invent anything, but they read worse than a model-written summary would.
