@@ -57,7 +57,9 @@ TOOL_SCHEMAS = [
                 "properties": {
                     "query": {
                         "type": "string",
-                        "description": "Who or what the task is about, e.g. 'Sarah Chen invoice' or 'sarah.chen@acme.com'.",
+                        "description": "Who or what the task is about, e.g. 'Sarah Chen invoice' or 'sarah.chen@acme.com'. "
+                        "Search matches words, not meaning: use the words the task was likely filed under "
+                        "('bathroom remodel'), not only the user's wording ('fixing up the shower').",
                     },
                 },
                 "required": ["query"],

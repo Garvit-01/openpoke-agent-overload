@@ -17,14 +17,16 @@ Same synthetic history (300 agents, 185 labelled follow-up messages), same simul
 | Roster tokens in every prompt (approx.) | 3,135 | 978 |
 | Roster tokens at 800 agents | 8,508 | 994 |
 | Multi-turn conversations with every turn right (26 conversations) | 34.6% | 100% |
-| **With a real model** (Claude Haiku 5.5, 40 cases × 3 runs): routed right | 58.3% | 97.5% |
-| Real model: duplicate agent created | 15.6% | 3.1% |
+| **With a real model** (Claude Haiku 5.5, 40 cases × 3 runs): routed right, latest run | 54.2% | 97.5% |
+| Real model: duplicate agent created, latest run | 17.7% | 2.1% |
 | Real model: cost per 1,000 routing decisions (whole prompt, measured) | $1.22 | $0.91 |
 | **Real model: paraphrased follow-ups** (4 cases × 3 runs). The original was ahead (75% vs 50%) until change 12 | **75%** | **75%** |
+| **Real model: 24 hand-written paraphrases** (no shared words with their agent), cases right | 13/24 | 21/24 |
+| of which the message names nobody. The original was ahead (7/8 vs 1/8) until change 13 | **6/8** | **5/8** |
 
-**Is the difference real?** On the same cases, this change fixed 65 and broke 0 of the 185 simulated cases, and fixed 15 and broke 0 of the 40 real-model cases. McNemar's exact test gives p = 5e-20 and p = 6e-5, so the difference is very unlikely to be chance. The 95% intervals don't overlap: 87% to 99.6% vs 45% to 74% on the real model. Over three random seeds the simulated accuracy is 58.0% vs 92.4%.
+**Is the difference real?** On the same cases, this change fixed 65 and broke 0 of the 185 simulated cases, and fixed 17 and broke 0 of the 40 real-model cases in the latest run. McNemar's exact test gives p = 5e-20 and p = 2e-5, so the difference is very unlikely to be chance. On the real model the 95% intervals don't overlap: 87% to 99.6% vs 40% to 69% of cases right. The original scored 54% to 58% over three real-model runs. Over three random seeds the simulated accuracy is 58.0% vs 92.4%.
 
-The rows above the real-model ones use a simulated router on synthetic data. The real-model run uses the same synthetic data. Read the "Limitations" section before quoting any of these numbers.
+The rows above the real-model ones use a simulated router on synthetic data. The real-model runs use the same synthetic data, plus 24 hand-written messages. Read the "Limitations" section before quoting any of these numbers.
 
 ## The problem, in the code
 
@@ -60,13 +62,15 @@ The idea: treat "which agent is this about?" as a retrieval problem, not a "read
 
 12. **A named person's other agents** (`retrieval.py`, `interaction_agent/agent.py`). Added after the real-model eval showed the original beating the shortlist on paraphrases. When the message names a person, the prompt also lists up to 12 of that person's other agents as "name | topic | status". The topic is the email subject, or the start of the summary. A model can then match "first week schedule for the new hire" to "Onboarding Plan with Vera" by meaning, which keywords can't do, without the prompt going back to listing every agent.
 
+13. **Search by the likely filed name** (`system_prompt.md`, `search_agents` tool description). Added after the hand-written paraphrase set showed the model creating duplicates when a message names nobody. The prompt says `search_agents` matches words, not meaning. So the model should search for the name a task was probably filed under, not the user's wording, and try another wording before creating an agent. This is query rewriting done by the model itself, with no extra code or calls when the shortlist already fits.
+
 All of this is configurable in `server/config.py` (see "New settings" below).
 
 ## How I tested it
 
 ### Unit and integration tests: `python -m pytest`
 
-109 tests, about a minute, no network, no API keys. They cover:
+113 tests, about a minute, no network, no API keys. They cover:
 
 - registry create, reuse, revive, entity lookup, persistence, and migration from `roster.json`
 - agent ids: the four names that used to share `email-to-sarah.log` now keep separate histories, and old slug logs are carried over without overwriting anything
@@ -180,7 +184,15 @@ What I take from this:
 
 `python -m evals.run_eval --router llm --limit 40 --repeats 3` on Claude Haiku 5.5 through OpenRouter. The 40 cases are spread across the 9 categories, and each case ran 3 times per version. Full output: [llm_results_anthropic-claude-haiku-5-5.md](evals/results/llm_results_anthropic-claude-haiku-5-5.md).
 
-I ran it twice. The first run showed the original beating this change on paraphrases, so I added the named-people list (change 12) and ran it again on the same cases. Both columns for the original come from the same code, and the small difference between them is the model's own run-to-run variation.
+I ran it three times on the same 40 cases, changing my version between runs. The original's code never changed, so its spread (54% to 58%) is the model's own run-to-run variation.
+
+| Run | This change, as of | Original | This change | Same cases: fixed / broke (McNemar) |
+|---|---|---|---|---|
+| 1 | changes 1 to 11 | 57.5% | 95.0% | 15 / 1 (p = 5e-4) |
+| 2 | + named-people list (change 12) | 58.3% | 97.5% | 15 / 0 (p = 6e-5) |
+| 3 | + search wording in the prompt (change 13) | 54.2% | 97.5% | 17 / 0 (p = 2e-5) |
+
+The saved results file holds run 3. In run 3 this change used `search_agents` more (10.8% of runs, up from 5.8%), so its input tokens per decision rose to 7,809 (9,854 for the original). The details of runs 1 and 2:
 
 | | Original, run 1 | Original, run 2 | This change, run 1 | This change + named-people list, run 2 |
 |---|---|---|---|---|
@@ -223,6 +235,28 @@ What I take from this:
 - **Haiku 5.5 thinks by default** on OpenRouter, about 130 to 180 tokens per decision. These are billed as output and are included in the costs above.
 - **It's a small sample.** 40 cases, 4 or 5 per category. One case flipping moves a category by 20 to 25 points, so read the per-category numbers as direction, not precision. Each run cost about $0.26.
 
+### Hand-written paraphrases
+
+The generated cases have a weakness: the same code wrote the agent summaries and the messages, so they share words, and keyword retrieval looks better than it would with real users. So I wrote 24 paraphrase messages by hand (`evals/paraphrase_set.py`). Each targets an agent on a topic the generator never uses, added to the same 300-agent history. A test checks that no message shares a content word with its agent's name or summary, except the person's first name. 16 messages name the person ("Did Sarah get back to us on how much redoing the cooking area will cost?"). 8 name nobody ("When is the policy on the house up again?" for "Ashgrove Home Insurance Renewal"). The first names are common ones from the generator, so there are other Sarahs.
+
+`python -m evals.run_eval --router llm --set paraphrase`, Haiku 5.5, 3 runs per case. Cases right (2 of 3 runs):
+
+| | Original | Before change 13 | After change 13 |
+|---|---|---|---|
+| Names the person (16) | 7/16 | **16/16** | **16/16** |
+| Names nobody (8) | **6 to 7/8** | 1/8 | 5/8 |
+| All 24 | 13 to 14/24 | 17/24 | **21/24** |
+| Same cases vs the original: fixed / broke | | 9 / 6 (p = 0.61, could be chance) | 10 / 2 (p = 0.04) |
+| Duplicate agent created (runs) | 42% to 44% | 27.8% | 11.1% |
+
+What this showed:
+
+- **When a person is named, this change wins clearly.** The original keeps creating a new agent, because "Email to Sarah" doesn't say which Sarah or what about. The named-people list puts "Email to Sarah Whitfield | kitchen renovation quote" in front of the model, and it gets all 16.
+- **When nobody is named, the original won, 7/8 vs 1/8.** It shows every name, so the model links "the policy on the house" to "Home Insurance Renewal" by meaning. My shortlist doesn't contain that agent, and keywords can't find it. The model searched in only 10 of 24 runs, it searched with the user's words, and then it created a duplicate. The generated set never showed this, because its paraphrase cases all named a person.
+- **Change 13 closed most of the gap.** The prompt now says search matches words, not meaning, so search for the name the task was probably filed under, and try another wording before creating an agent. The model then searched in 23 of 24 runs, and topic-only cases went from 1/8 to 5/8. The three it still misses need meaning-based search ("everyone's old computers" for "Laptop Refresh"). That's the case for embeddings.
+- **A mistake I caught.** My first version of that prompt used examples taken from this test set ("home insurance" for "the policy on the house"). It scored 93.1% of runs, which was teaching to the test. I replaced them with examples that appear nowhere in the data ("bathroom remodel" for "fixing up the shower"). It scored 88.9%, and that's the number above.
+- **Still small and still mine.** 24 messages written by one person aren't real users, and some of them will be easier for my approach than real traffic.
+
 ## Other gaps I found
 
 Fixed in code:
@@ -245,7 +279,7 @@ Not fixed, worth knowing:
 - There were no tests in the original repo. There are now, but only for the parts I touched.
 ## Limitations
 
-- **The data is synthetic.** I generated it to contain known failure modes. Real inboxes are messier, and real users paraphrase more than my 15 cases.
+- **The data is synthetic.** I generated it to contain known failure modes. The 24 hand-written paraphrases avoid the generator's vocabulary, but one person wrote them. Real inboxes are messier, and real users paraphrase in ways I didn't think of. The next step is turning real routing logs into eval cases.
 - **Most numbers use a simulated router.** It measures what each version gives the model and how each reuses agents, not how a real model behaves. The real-model run agrees on the overall result but not on paraphrases (see above). It covers one model, one roster size (300) and 40 cases.
 - **The multi-turn numbers are kind to both versions.** The simulated router always resolves "send it" and "the first one" correctly. A real model can lose track. The real-model mode only runs single-turn cases so far, so it doesn't yet show whether a model sets `new_task`.
 - **Token counts are characters ÷ 4,** and cost uses an assumed $3 per million input tokens. Both are fine for comparing the two versions, not for exact billing.
@@ -256,7 +290,7 @@ Not fixed, worth knowing:
 ## What I'd do next
 
 1. Extend the real-model eval to the multi-turn conversations, mainly to see whether the model sets `new_task`, and run it on more cases, a second model and the 800-agent roster.
-2. Add embeddings as an optional third signal, used only for ranking and never for merging. The paraphrase category is the metric to move. The named-people list only helps when the message names someone, and it shows a topic, not the full summary.
+2. Add embeddings as an optional third signal, used only for ranking and never for merging. The metric to move is the hand-written "names nobody" cases (5/8). Those need matching by meaning, and the named-people list can't help when nobody is named. Cheaper first: index each agent's past requests and LLM-written example requests in its search text, which research on tool retrieval (Re-Invoke, Toolshed) found works well with plain BM25.
 3. Write model-generated summaries for agents with long histories.
 4. Add a merge tool for duplicates that already exist, plus clustering, so related agents share context.
 5. Turn routing log mistakes into new eval cases automatically.
@@ -269,7 +303,7 @@ The same shape shows up anywhere one front agent serves many long-running contex
 
 ```bash
 pip install -r server/requirements.txt pytest
-python -m pytest                       # 109 tests, no keys needed
+python -m pytest                       # 113 tests, no keys needed
 python -m evals.run_eval --quick       # one seed, about 15 seconds
 python -m evals.run_eval               # full run, about 2 minutes, writes evals/results/
 python -m evals.run_eval --router llm --limit 1 --repeats 1    # check the key and model, costs under a cent
@@ -306,8 +340,8 @@ server/services/execution/
   roster.py       migration from roster.json, old interface kept
 server/agents/execution_agent/batch_manager.py   per-agent run lock
 server/services/safety/outbound.py   send confirmation guard
-evals/            scenario generator (single-turn + conversations), baseline copy, harness, real-model mode, results
-tests/            109 tests
+evals/            scenario generator (single-turn + conversations), hand-written paraphrase set, baseline copy, harness, stats, real-model mode, results
+tests/            113 tests
 ```
 
 ---
