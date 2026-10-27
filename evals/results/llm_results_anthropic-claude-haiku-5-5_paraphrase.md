@@ -24,7 +24,7 @@ A case counts as right when more than half of its 3 runs were right.
 | Original OpenPoke | 13/24 (54.2%) | 35.1% to 72.1% |
 | This change | 21/24 (87.5%) | 69.0% to 95.7% |
 
-Same cases, both versions: this change fixed 10 and broke 2 (McNemar's exact test, p = 0.04, unlikely to be chance).
+Same cases, both versions: this change fixed 10 and broke 2 (McNemar's exact test, p = 0.039, unlikely to be chance).
 
 ## Cost on anthropic/claude-haiku-5.5
 

@@ -55,8 +55,8 @@ def describe_p(p: float) -> str:
     if p < 0.001:
         return f"p = {p:.1g}, very unlikely to be chance"
     if p < 0.05:
-        return f"p = {p:.2f}, unlikely to be chance"
-    return f"p = {p:.2f}, could be chance"
+        return f"p = {p:.2g}, unlikely to be chance"
+    return f"p = {p:.2g}, could be chance"
 
 
 def paired_lines(old: Dict[str, bool], new: Dict[str, bool], *, unit: str = "cases") -> list:
