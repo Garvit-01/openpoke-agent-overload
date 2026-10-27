@@ -6,7 +6,7 @@ The original project's setup notes are kept at the bottom.
 
 ## Results in one table
 
-Same synthetic history (300 agents, 185 labelled follow-up messages), same simulated router, original code vs this branch. Full results, including every failure: [evals/results/results.md](evals/results/results.md).
+Original code vs this branch on the same data. The first rows use a simulated router on a synthetic history of 300 agents and 185 labelled follow-up messages. Full results, including every failure, are in [evals/results/results.md](evals/results/results.md). The rows marked "real model" send each version's real prompt to Claude Haiku 5.5.
 
 | | Original OpenPoke | This change |
 |---|---|---|
@@ -20,14 +20,14 @@ Same synthetic history (300 agents, 185 labelled follow-up messages), same simul
 | **With a real model** (Claude Haiku 5.5, 40 cases × 3 runs): routed right, current version | 58.3% | 99.2% |
 | Real model at 800 agents: duplicate agent created | **47.9%** | 7.3% |
 | Real model at 800 agents: input tokens per decision | 19,471 | 6,914 |
-| Real model: cost per 1,000 routing decisions (whole prompt, measured) | $1.22 | $0.91 |
+| Real model: cost per 1,000 routing decisions (whole prompt, measured, no caching) | $1.21 | $0.90 |
 | **Real model: paraphrased follow-ups** (4 cases × 3 runs). The original was ahead (75% vs 50%) until change 12 | **75%** | **75%** |
 | **Real model: 24 hand-written paraphrases** (no shared words with their agent), cases right | 15/24 | 24/24 |
 | of which the message names nobody. The original was ahead (7/8 vs 1/8) until changes 13 and 14 | 7/8 | 8/8 |
 
-**Is the difference real?** On the same cases, this change fixed 65 and broke 0 of the 185 simulated cases, and fixed 17 and broke 0 of the 40 real-model cases in the latest run. McNemar's exact test gives p = 5e-20 and p = 2e-5, so the difference is very unlikely to be chance. On the real model the 95% intervals don't overlap: 87% to 99.6% vs 40% to 69% of cases right. The original scored 54% to 58% over three real-model runs. Over three random seeds the simulated accuracy is 58.0% vs 92.4%.
+**Is the difference real?** On the same cases, this change fixed 65 and broke 0 of the 185 simulated cases, and fixed 16 and broke 0 of the 40 real-model cases (current version). McNemar's exact test gives p = 5e-20 and p = 3e-5, so the difference is very unlikely to be chance. On the real model the 95% intervals don't overlap: 91% to 100% vs 45% to 74% of cases right. The original scored 54% to 58% over four real-model runs. Over three random seeds the simulated accuracy is 58.0% vs 92.4%. A second model, Gemma 4, shows the same direction (72.5% vs 47.5% of cases).
 
-The rows above the real-model ones use a simulated router on synthetic data. The real-model runs use the same synthetic data, plus 24 hand-written messages. Read the "Limitations" section before quoting any of these numbers.
+The real-model runs use the same synthetic data, plus 24 hand-written messages. Read the "Limitations" section before quoting any of these numbers.
 
 ## The problem, in the code
 
@@ -62,9 +62,7 @@ The idea: treat "which agent is this about?" as a retrieval problem, not a "read
 9. **Bounded execution history.** Execution agents see their last 10 requests, plus their registry summary in place of everything older.
 10. **Stable agent ids** (`ids.py`). The original log store named each agent's file after a slug of its name. "Email to Sarah", "email to sarah" and "Email-to-Sarah!" all wrote to `email-to-sarah.log`, so different agents read and wrote each other's history. Each agent now has an id made from a hash of its exact name, and its log file is named by that id. The id needs no lookup and stays the same across restarts. Old slug logs are moved to id files once at startup. When two agents shared one old file, the oldest keeps it, because the old store had already mixed the histories and they can't be split. The id also appears in the tool result and the routing log.
 11. **One run at a time per agent** (`batch_manager.py`). Before, two quick follow-ups to the same agent, or a reminder firing while you're talking to that agent, started two runs at once. Both read the same history and both could act, for example two drafts for one reply. Now a second run waits for the first and then sees its result. Different agents still run in parallel. The lock is shared by the chat path and the trigger scheduler, which creates its own batch manager for every trigger. The wait doesn't count against the 90 second timeout.
-
 12. **A named person's other agents** (`retrieval.py`, `interaction_agent/agent.py`). Added after the real-model eval showed the original beating the shortlist on paraphrases. When the message names a person, the prompt also lists up to 12 of that person's other agents as "name | topic | status". The topic is the email subject, or the start of the summary. A model can then match "first week schedule for the new hire" to "Onboarding Plan with Vera" by meaning, which keywords can't do, without the prompt going back to listing every agent.
-
 13. **Search by the likely filed name** (`system_prompt.md`, `search_agents` tool description). Added after the hand-written paraphrase set showed the model creating duplicates when a message names nobody. The prompt says `search_agents` matches words, not meaning. So the model should search for the name a task was probably filed under, not the user's wording, and try another wording before creating an agent. This is query rewriting done by the model itself, with no extra code or calls when the shortlist already fits.
 14. **Search phrases** (`phrases.py`). After an agent's first run, a cheap model (Haiku 5.5 by default) writes about 10 short phrases a user might use for its task, from the agent's own name and summary. They're stored as "phrase" entities, which BM25 already indexes. This is the "document expansion" idea from tool-retrieval research (Re-Invoke, EMNLP 2024; Toolshed, 2025): enrich what gets searched, so keyword search can find "house policy" under "Home Insurance Renewal". The call runs in the background after the run finishes, once per agent, and a failure is only logged. Phrases help an agent get found, but they can never merge agents, because only email addresses and thread ids are hard matches. It's off when there's no API key, and tests never call a model.
 
@@ -98,7 +96,7 @@ All of this is configurable in `server/config.py` (see "New settings" below).
 - threads that come back after weeks
 - new requests that look like old ones
 
-The 185 follow-up messages are labelled with the right agent, or "a new agent is right". They fall into 9 categories. One is deliberately hard for my approach: the topic is paraphrased ("the event space agreement" for "venue contract").
+The 185 follow-up messages are labelled with the right agent, or "a new agent is right". They fall into 9 categories. One is deliberately hard for my approach: the topic is paraphrased ("the event space agreement" for "venue contract"). A separate set of 24 hand-written paraphrases (`evals/paraphrase_set.py`) avoids the generator's vocabulary altogether. See "Hand-written paraphrases" below.
 
 There are also 26 short conversations (92 turns), because real follow-ups lean on what was just said. There are four kinds:
 
@@ -138,7 +136,7 @@ Every failure is listed, so it can be checked by hand.
 
 ## Results
 
-From [evals/results/results.md](evals/results/results.md):
+From [evals/results/results.md](evals/results/results.md). The simulated runs cover changes 1 to 13. Search phrases (change 14) need a model to write them, so they appear only in the real-model runs.
 
 | Category | Cases | Original | This change | Right agent in shortlist |
 |---|---|---|---|---|
@@ -230,10 +228,10 @@ By category (runs right, 4 or 5 cases × 3 runs each):
 
 What I take from this:
 
-- **The overall result holds with a real model.** 58.3% vs 97.5%, close to the simulated 57.8% vs 93.0%. The original's mistakes are the same kinds: 12 of its 15 email-address runs created a duplicate agent, because nothing in a bare name says which address it owns.
+- **The overall result holds with a real model.** 58.3% vs 97.5% in run 2 (99.2% in run 4), close to the simulated 57.8% vs 93.0%. The original's mistakes are the same kinds: 12 of its 15 email-address runs created a duplicate agent, because nothing in a bare name says which address it owns.
 - **In run 1 the original did better than mine on paraphrases (75% vs 50%).** This is the opposite of the simulation, which scored the original at 6.7% there. The gap was one case out of four: "Any news from Vera about the first week schedule for the new hire?" should go to "Onboarding Plan with Vera". The original shows every name, and the model links "first week schedule for the new hire" to "Onboarding Plan". My shortlist left that agent out. Three reminders took slots because they share the words "new" and "schedule", and four other Vera agents filled the rest. The model then reused "Email to Vera Garcia", wrong on all 3 runs. So the simulated router was too harsh on the original for paraphrases.
 - **The named-people list fixed it.** When the message names a person, the prompt now also lists that person's other agents as "name | topic | status". The model picked "Onboarding Plan with Vera" on all 3 runs, and paraphrases tied the original at 75%. It costs about 70 tokens per turn (909 to 978 roster tokens, simulated) and is capped at 12 entries.
-- **One paraphrase still fails in both versions.** "...what we're doing at the team retreat?" belongs to "Email to Michael Brown", whose thread is about the offsite agenda. With the fix, "Email to Michael Brown | offsite agenda | dormant" is in the prompt, but Haiku doesn't link "team retreat" to "offsite". That's now the model's judgement, not missing information. A stronger model, or embeddings ranking it into the detailed shortlist with its summary, might get it.
+- **One paraphrase still fails in both versions.** "...what we're doing at the team retreat?" belongs to "Email to Michael Brown", whose thread is about the offsite agenda. With the fix, "Email to Michael Brown | offsite agenda | dormant" is in the prompt, but Haiku doesn't link "team retreat" to "offsite". That was the model's judgement, not missing information. In run 4, search phrases (change 14) fixed it: "Email to Michael Brown" got phrases like "company retreat agenda", so keyword search finds it.
 - **Duplicates went up slightly, from 1.0% to 3.1%.** That's 3 of 96 runs, all the Michael case above, where the model created "Team Retreat Michael Update" instead of reusing an agent. In run 1 it mostly reused the wrong Michael instead. Same case, a different way of being wrong.
 - **Accuracy is the real win. Cost is a modest bonus, and caching could erase it.** The roster section shrinks by about 70% (3,135 to 978 tokens, simulated count). But both versions also send the system prompt and tool definitions on every call, and that part doesn't shrink. So the whole input drops 28% (9,854 to 7,134 tokens) and the bill 25%, at list prices with no caching. With prompt caching, cached input costs a tenth of the normal price on Anthropic models. The original's roster changes only when an agent is created, so it caches well, and with a warm cache it could cost less per call than my shortlist. Two things favor the shortlist anyway. Personal-assistant messages often arrive more than 5 minutes apart, so the cache is often cold. And the original's list keeps growing. I haven't measured cache hit rates. My layout already caches well: tools and the system prompt never change, and the per-turn shortlist goes in the user message, not the system prompt.
 - **Speed is the same.** About 3 seconds per decision for both. The extra `search_agents` call costs time in the few cases that use it, and a shorter prompt saves a little. A real turn makes several model calls, so routing isn't where OpenPoke's slowness comes from. OpenRouter also spreads requests across several providers (Google Vertex, AWS, Azure, Anthropic), whose speeds differ, so timings are noisy.
@@ -334,20 +332,21 @@ Not fixed, worth knowing:
 - All results from one batch wait for the slowest agent, for up to 90 seconds, before the user hears about any of them.
 - A request is written to the agent's log when it's sent, not when its run starts. So a run can see a request that is still waiting behind it in its history. This was already true before the lock.
 - There were no tests in the original repo. There are now, but only for the parts I touched.
+
 ## Limitations
 
 - **The data is synthetic.** I generated it to contain known failure modes. The 24 hand-written paraphrases avoid the generator's vocabulary, but they come from one author with Claude's help. Real inboxes are messier, and real users paraphrase in ways I didn't think of. The next step is turning real routing logs into eval cases.
-- **One model family does most of the work in the real-model runs.** Haiku routes, Haiku writes the search phrases, and a Claude model helped write the test messages. A second model (Gemma, below) checks the routing side. Nothing yet checks phrases written by another family.
-- **Most numbers use a simulated router.** It measures what each version gives the model and how each reuses agents, not how a real model behaves. The real-model run agrees on the overall result but not on paraphrases (see above). It covers one model, one roster size (300) and 40 cases.
+- **One model family does most of the work in the real-model runs.** Haiku routes, Haiku writes the search phrases, and a Claude model helped write the test messages. A second model (Gemma, above) checks the routing side. Nothing yet checks phrases written by another family.
+- **Many numbers use a simulated router.** It measures what each version gives the model and how each reuses agents, not how a real model behaves. The real-model runs agree on the overall result, but not on paraphrases, where the simulation was too harsh on the original (see above). They cover two models, three roster sizes and 64 messages, which is still small.
 - **The multi-turn numbers are kind to both versions.** The simulated router always resolves "send it" and "the first one" correctly. A real model can lose track. The real-model mode only runs single-turn cases so far, so it doesn't yet show whether a model sets `new_task`.
 - **Token counts in the simulated eval are characters ÷ 4,** and its cost uses an assumed $3 per million input tokens. Both are fine for comparing the two versions, not for exact billing. The real-model run uses the API's token counts and live list prices, but no prompt caching (see above).
-- **Retrieval is keyword based,** so paraphrases fail (see above). The BM25 index is rebuilt on each call. That's fine for thousands of agents, but at 100k you'd want SQLite FTS5 or a vector index.
+- **Retrieval is keyword based.** Search phrases and the model's own searches cover the paraphrases in these tests, but wording nobody anticipated can still miss. The BM25 index is rebuilt on each call. That's fine for thousands of agents, but at 100k you'd want SQLite FTS5 or a vector index.
 - **The lifecycle thresholds (14 and 45 days) and the shortlist size (8 + 4) are reasonable defaults,** not tuned values.
 - **Summaries are templated from the log,** not written by a model. They're cheap and never invent anything, but they read worse than a model-written summary would.
 
 ## What I'd do next
 
-1. Extend the real-model eval to the multi-turn conversations, mainly to see whether the model sets `new_task`, and run it on more cases, a second model and the 800-agent roster.
+1. Extend the real-model eval to the multi-turn conversations, mainly to see whether the model sets `new_task`, and run it on more cases.
 2. Test the search phrases against real user wording, and against phrases written by a model from another family. If they don't hold up, add embeddings as an optional extra ranking signal, never used for merging. Also index each agent's real past requests in its search text, which costs nothing.
 3. Write model-generated summaries for agents with long histories.
 4. Add a merge tool for duplicates that already exist, plus clustering, so related agents share context.
