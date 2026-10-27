@@ -226,6 +226,7 @@ Fixed in code:
 5. **No record of routing decisions.** There is now the JSONL log described above.
 6. **Agents could share a log file.** Different names with the same slug read and wrote one history file. Fixed with stable ids (change 10).
 7. **The same agent could run twice at once.** Fixed with the per-agent run lock (change 11). The lock lives in memory, so it covers one server process. Running several workers would need a lock in the database instead.
+8. **The default model no longer existed.** Every role defaulted to `anthropic/claude-sonnet-4`, which OpenRouter has retired, so a fresh install failed on the first chat message with a 404. The defaults are now `anthropic/claude-sonnet-5.5`, the current Sonnet, and each role can still be overridden with its env var. Hard-coded model names will go stale again, so a startup check against the provider's model list would be the lasting fix.
 
 Not fixed, worth knowing:
 
@@ -233,8 +234,6 @@ Not fixed, worth knowing:
 - All results from one batch wait for the slowest agent, for up to 90 seconds, before the user hears about any of them.
 - A request is written to the agent's log when it's sent, not when its run starts. So a run can see a request that is still waiting behind it in its history. This was already true before the lock.
 - There were no tests in the original repo. There are now, but only for the parts I touched.
-- **The default model no longer exists on OpenRouter.** Every role defaults to `anthropic/claude-sonnet-4`, which OpenRouter has retired, so a fresh install fails on the first chat message with a 404. This is true of the original and of this branch. The workaround is to set the five `OPENPOKE_*_MODEL` env vars to a current model. The eval defaults to `anthropic/claude-haiku-5.5` for this reason.
-
 ## Limitations
 
 - **The data is synthetic.** I generated it to contain known failure modes. Real inboxes are messier, and real users paraphrase more than my 15 cases.
@@ -280,7 +279,7 @@ The real-model eval uses `anthropic/claude-haiku-5.5` unless you pass `--model`.
 | `OPENPOKE_AGENT_DORMANT_DAYS` / `OPENPOKE_AGENT_ARCHIVE_DAYS` | 14 / 45 | Idle days before demotion |
 | `OPENPOKE_EXECUTION_HISTORY_LIMIT` | 10 | Past requests an execution agent sees (0 = all) |
 | `OPENPOKE_OUTBOUND_GUARD` | enforce | `off` disables the send guard |
-| `OPENPOKE_INTERACTION_MODEL`, `OPENPOKE_EXECUTION_MODEL`, `OPENPOKE_SEARCH_MODEL`, `OPENPOKE_SUMMARIZER_MODEL`, `OPENPOKE_CLASSIFIER_MODEL` | `anthropic/claude-sonnet-4` | Model per role |
+| `OPENPOKE_INTERACTION_MODEL`, `OPENPOKE_EXECUTION_MODEL`, `OPENPOKE_SEARCH_MODEL`, `OPENPOKE_SUMMARIZER_MODEL`, `OPENPOKE_CLASSIFIER_MODEL` | `anthropic/claude-sonnet-5.5` | Model per role (was `claude-sonnet-4`, now retired on OpenRouter) |
 
 ### What's new in the repo
 

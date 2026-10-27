@@ -51,11 +51,11 @@ class Settings(BaseModel):
     server_port: int = Field(default=_env_int("OPENPOKE_PORT", 8001))
 
     # LLM model selection (each role can be overridden, e.g. a smaller model for the classifier)
-    interaction_agent_model: str = Field(default=os.getenv("OPENPOKE_INTERACTION_MODEL", "anthropic/claude-sonnet-4"))
-    execution_agent_model: str = Field(default=os.getenv("OPENPOKE_EXECUTION_MODEL", "anthropic/claude-sonnet-4"))
-    execution_agent_search_model: str = Field(default=os.getenv("OPENPOKE_SEARCH_MODEL", "anthropic/claude-sonnet-4"))
-    summarizer_model: str = Field(default=os.getenv("OPENPOKE_SUMMARIZER_MODEL", "anthropic/claude-sonnet-4"))
-    email_classifier_model: str = Field(default=os.getenv("OPENPOKE_CLASSIFIER_MODEL", "anthropic/claude-sonnet-4"))
+    interaction_agent_model: str = Field(default=os.getenv("OPENPOKE_INTERACTION_MODEL", "anthropic/claude-sonnet-5.5"))
+    execution_agent_model: str = Field(default=os.getenv("OPENPOKE_EXECUTION_MODEL", "anthropic/claude-sonnet-5.5"))
+    execution_agent_search_model: str = Field(default=os.getenv("OPENPOKE_SEARCH_MODEL", "anthropic/claude-sonnet-5.5"))
+    summarizer_model: str = Field(default=os.getenv("OPENPOKE_SUMMARIZER_MODEL", "anthropic/claude-sonnet-5.5"))
+    email_classifier_model: str = Field(default=os.getenv("OPENPOKE_CLASSIFIER_MODEL", "anthropic/claude-sonnet-5.5"))
 
     # Agent routing: how many agents the interaction agent sees per turn (fixed, not the whole roster)
     agent_shortlist_retrieved: int = Field(default=_env_int("OPENPOKE_AGENT_SHORTLIST", 8))
