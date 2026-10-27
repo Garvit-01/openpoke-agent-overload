@@ -20,6 +20,7 @@ Same synthetic history (300 agents, 185 labelled follow-up messages), same simul
 | **With a real model** (Claude Haiku 5.5, 40 cases × 3 runs): routed right | 57.5% | 95.0% |
 | Real model: duplicate agent created | 17.7% | 1.0% |
 | Real model: cost per 1,000 routing decisions (whole prompt, measured) | $1.22 | $0.91 |
+| **Real model: paraphrased follow-ups** (4 cases × 3 runs), where the original does better | **75%** | **50%** |
 
 Over three random seeds the accuracy is 58.0% vs 92.4%. The rows above the real-model ones use a simulated router on synthetic data. The real-model run uses the same synthetic data. Read the "Limitations" section before quoting any of these numbers.
 
@@ -184,7 +185,7 @@ What I take from this:
 | Output tokens per decision (thinking included) | 461 (178) | 422 (143) |
 | Seconds per decision, p50 / p95 | 3.2 / 4.2 | 3.0 / 4.4 |
 | Cost per 1,000 decisions on Haiku 5.5 | $1.22 | $0.91 |
-| Same tokens priced on Sonnet 5.5 / Opus 5.5 | $24.32 / $48.64 | $18.10 / $36.21 |
+| Same tokens priced on Sonnet 5.5 / Opus 5.5 (estimate, not run) | $24.32 / $48.64 | $18.10 / $36.21 |
 
 By category (runs right, 4 or 5 cases × 3 runs each):
 
@@ -203,7 +204,11 @@ By category (runs right, 4 or 5 cases × 3 runs each):
 What I take from this:
 
 - **The overall result holds with a real model.** 57.5% vs 95.0%, close to the simulated 57.8% vs 93.0%. The original's mistakes are the same kinds: 12 of its 15 email-address runs created a duplicate agent, because nothing in a bare name says which address it owns.
-- **The original does better than mine on paraphrases.** This is the opposite of the simulation, which scored the original at 6.7% there. Seeing all 300 names, the model connects "the onboarding plan" to the right agent. My shortlist sometimes leaves that agent out. The model then reuses a look-alike instead ("Email to Vera Garcia" for "Onboarding Plan with Vera") or picks the wrong Michael. It used `search_agents` in only some of those runs. So the simulated router was too harsh on the original for paraphrases, and this is the strongest case for adding embeddings to the shortlist.
+- **The original does better than mine on paraphrases.** This is the opposite of the simulation, which scored the original at 6.7% there. The gap is one case out of four:
+  - "Any news from Vera about the first week schedule for the new hire?" should go to "Onboarding Plan with Vera". The original shows every name, and the model links "first week schedule for the new hire" to "Onboarding Plan". My shortlist left that agent out. Three reminders took slots because they share the words "new" and "schedule", while four other Vera agents filled the rest. The model then reused "Email to Vera Garcia", which is wrong on all 3 runs.
+  - "...what we're doing at the team retreat?" belongs to "Email to Michael Brown", whose thread is about the offsite agenda. Both versions miss it. Its name says nothing about the topic, and keywords can't link "team retreat" to "offsite".
+
+  So the simulated router was too harsh on the original for paraphrases. The first miss is a shortlist problem, and the second needs a match on meaning.
 - **The saving on the whole prompt is smaller than on the roster section.** The roster section shrinks by about 70% (3,135 to 909 tokens, simulated count). But both versions also send the system prompt and tool definitions on every call, and that part doesn't shrink. So the whole input drops 30% (9,854 to 6,943 tokens) and the bill 26%. The gap grows with the roster, because the original's list keeps growing and the shortlist doesn't.
 - **Speed is the same.** About 3 seconds per decision for both. The extra `search_agents` call costs time in the few cases that use it, and a shorter prompt saves a little. A real turn makes several model calls, so routing isn't where OpenPoke's slowness comes from.
 - **Haiku 5.5 thinks by default** on OpenRouter, about 150 tokens per decision. These are billed as output and are included in the costs above.
