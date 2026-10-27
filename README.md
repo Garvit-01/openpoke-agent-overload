@@ -22,7 +22,9 @@ Same synthetic history (300 agents, 185 labelled follow-up messages), same simul
 | Real model: cost per 1,000 routing decisions (whole prompt, measured) | $1.22 | $0.91 |
 | **Real model: paraphrased follow-ups** (4 cases × 3 runs). The original was ahead (75% vs 50%) until change 12 | **75%** | **75%** |
 
-Over three random seeds the accuracy is 58.0% vs 92.4%. The rows above the real-model ones use a simulated router on synthetic data. The real-model run uses the same synthetic data. Read the "Limitations" section before quoting any of these numbers.
+**Is the difference real?** On the same cases, this change fixed 65 and broke 0 of the 185 simulated cases, and fixed 15 and broke 0 of the 40 real-model cases. McNemar's exact test gives p = 5e-20 and p = 6e-5, so the difference is very unlikely to be chance. The 95% intervals don't overlap: 87% to 99.6% vs 45% to 74% on the real model. Over three random seeds the simulated accuracy is 58.0% vs 92.4%.
+
+The rows above the real-model ones use a simulated router on synthetic data. The real-model run uses the same synthetic data. Read the "Limitations" section before quoting any of these numbers.
 
 ## The problem, in the code
 
@@ -64,7 +66,7 @@ All of this is configurable in `server/config.py` (see "New settings" below).
 
 ### Unit and integration tests: `python -m pytest`
 
-105 tests, about a minute, no network, no API keys. They cover:
+109 tests, about a minute, no network, no API keys. They cover:
 
 - registry create, reuse, revive, entity lookup, persistence, and migration from `roster.json`
 - agent ids: the four names that used to share `email-to-sarah.log` now keep separate histories, and old slug logs are carried over without overwriting anything
@@ -120,6 +122,7 @@ My first version of the router was unfair to the original code. It would create 
 - roster tokens and cost per turn
 - routing overhead
 - results across 3 seeds, a 50 to 800 agent scaling run, and a router threshold sweep (0.5 / 0.6 / 0.75)
+- 95% Wilson intervals and a paired test (McNemar's exact test on the cases one version got right and the other didn't), in `evals/stats.py`
 
 Every failure is listed, so it can be checked by hand.
 
@@ -182,7 +185,7 @@ I ran it twice. The first run showed the original beating this change on paraphr
 | | Original, run 1 | Original, run 2 | This change, run 1 | This change + named-people list, run 2 |
 |---|---|---|---|---|
 | Routed right (all runs) | 57.5% | 58.3% | 95.0% | **97.5%** |
-| Cases right on all 3 runs | 52.5% | 52.5% | 95.0% | 97.5% |
+| Cases right on all 3 runs (pass^3) | 52.5% | 52.5% | 95.0% | 97.5% |
 | Duplicate created | 17.7% | 15.6% | 1.0% | 3.1% |
 | False reuse | 12.5% | 8.3% | 0.0% | 0.0% |
 | Used `search_agents` | n/a | n/a | 5.8% | 5.8% |
@@ -191,6 +194,8 @@ I ran it twice. The first run showed the original beating this change on paraphr
 | Seconds per decision, p50 / p95 | 3.2 / 4.2 | 3.4 / 4.5 | 3.0 / 4.4 | 2.9 / 4.7 |
 | Cost per 1,000 decisions on Haiku 5.5 | $1.22 | $1.22 | $0.91 | $0.91 |
 | Same tokens priced on Sonnet 5.5 / Opus 5.5 (estimate, not run) | $24.32 / $48.64 | $24.47 / $48.94 | $18.10 / $36.21 | $18.26 / $36.52 |
+
+**Is it real, with only 40 cases?** I treat the case as the unit, not the run, because three runs of the same message aren't independent. A case counts as right when at least 2 of its 3 runs were. Run 2 then gives the original 24/40 (95% Wilson interval 44.6% to 73.7%) and this change 39/40 (87.1% to 99.6%). On the same cases, this change fixed 15 and broke 0, and McNemar's exact test gives p = 6e-5. "pass^3" is the tau-bench name for "right on all 3 runs". The eval prints all of this, and `python -m evals.run_eval --router llm --rescore` recomputes it from the saved run without calling the model.
 
 By category (runs right, 4 or 5 cases × 3 runs each):
 
@@ -264,7 +269,7 @@ The same shape shows up anywhere one front agent serves many long-running contex
 
 ```bash
 pip install -r server/requirements.txt pytest
-python -m pytest                       # 105 tests, no keys needed
+python -m pytest                       # 109 tests, no keys needed
 python -m evals.run_eval --quick       # one seed, about 15 seconds
 python -m evals.run_eval               # full run, about 2 minutes, writes evals/results/
 python -m evals.run_eval --router llm --limit 1 --repeats 1    # check the key and model, costs under a cent
@@ -302,7 +307,7 @@ server/services/execution/
 server/agents/execution_agent/batch_manager.py   per-agent run lock
 server/services/safety/outbound.py   send confirmation guard
 evals/            scenario generator (single-turn + conversations), baseline copy, harness, real-model mode, results
-tests/            105 tests
+tests/            109 tests
 ```
 
 ---

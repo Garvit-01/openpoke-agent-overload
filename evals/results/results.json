@@ -15,8 +15,8 @@
       "wrong_agent_rate": 0.36551724137931035,
       "false_reuse_rate": 0.1,
       "roster_tokens_mean": 3135.0,
-      "latency_ms_p50": 0.6804999429732561,
-      "latency_ms_p95": 1.273399917408824,
+      "latency_ms_p50": 0.6619999185204506,
+      "latency_ms_p95": 0.8734000148251653,
       "recall_shortlist": null,
       "recall_search": null,
       "search_rate": null,
@@ -41,8 +41,8 @@
       "wrong_agent_rate": 0.08275862068965517,
       "false_reuse_rate": 0.025,
       "roster_tokens_mean": 978.0972972972972,
-      "latency_ms_p50": 20.55549994111061,
-      "latency_ms_p95": 47.38999996334314,
+      "latency_ms_p50": 26.246100082062185,
+      "latency_ms_p95": 70.32119994983077,
       "recall_shortlist": 1.0,
       "recall_search": 0.9586206896551724,
       "search_rate": 0.21081081081081082,
@@ -79,8 +79,8 @@
         "wrong_agent_rate": 0.36551724137931035,
         "false_reuse_rate": 0.1,
         "roster_tokens_mean": 3135.0,
-        "latency_ms_p50": 0.6804999429732561,
-        "latency_ms_p95": 1.273399917408824,
+        "latency_ms_p50": 0.6619999185204506,
+        "latency_ms_p95": 0.8734000148251653,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -105,8 +105,8 @@
         "wrong_agent_rate": 0.08275862068965517,
         "false_reuse_rate": 0.025,
         "roster_tokens_mean": 978.0972972972972,
-        "latency_ms_p50": 20.55549994111061,
-        "latency_ms_p95": 47.38999996334314,
+        "latency_ms_p50": 26.246100082062185,
+        "latency_ms_p95": 70.32119994983077,
         "recall_shortlist": 1.0,
         "recall_search": 0.9586206896551724,
         "search_rate": 0.21081081081081082,
@@ -142,8 +142,8 @@
         "wrong_agent_rate": 0.41379310344827586,
         "false_reuse_rate": 0.075,
         "roster_tokens_mean": 3138.0,
-        "latency_ms_p50": 0.6719999946653843,
-        "latency_ms_p95": 0.7913999725133181,
+        "latency_ms_p50": 0.6557999877259135,
+        "latency_ms_p95": 0.8572000078856945,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -168,8 +168,8 @@
         "wrong_agent_rate": 0.0896551724137931,
         "false_reuse_rate": 0.025,
         "roster_tokens_mean": 973.5297297297298,
-        "latency_ms_p50": 21.079599973745644,
-        "latency_ms_p95": 45.967500074766576,
+        "latency_ms_p50": 24.22410005237907,
+        "latency_ms_p95": 62.077300040982664,
         "recall_shortlist": 1.0,
         "recall_search": 0.9655172413793104,
         "search_rate": 0.21081081081081082,
@@ -205,8 +205,8 @@
         "wrong_agent_rate": 0.36551724137931035,
         "false_reuse_rate": 0.1,
         "roster_tokens_mean": 3133.0,
-        "latency_ms_p50": 0.6925000343471766,
-        "latency_ms_p95": 0.9102000622078776,
+        "latency_ms_p50": 0.6552999839186668,
+        "latency_ms_p95": 1.0611999314278364,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -231,8 +231,8 @@
         "wrong_agent_rate": 0.09655172413793103,
         "false_reuse_rate": 0.025,
         "roster_tokens_mean": 945.027027027027,
-        "latency_ms_p50": 20.973300095647573,
-        "latency_ms_p95": 46.01300007198006,
+        "latency_ms_p50": 24.478400009684265,
+        "latency_ms_p95": 54.90380001720041,
         "recall_shortlist": 1.0,
         "recall_search": 0.9793103448275862,
         "search_rate": 0.21081081081081082,
@@ -270,8 +270,8 @@
         "wrong_agent_rate": 0.3564356435643564,
         "false_reuse_rate": 0.05,
         "roster_tokens_mean": 518.0,
-        "latency_ms_p50": 0.11470005847513676,
-        "latency_ms_p95": 0.17499993555247784,
+        "latency_ms_p50": 0.12199999764561653,
+        "latency_ms_p95": 0.20890007726848125,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -296,8 +296,8 @@
         "wrong_agent_rate": 0.12871287128712872,
         "false_reuse_rate": 0.0,
         "roster_tokens_mean": 812.5531914893617,
-        "latency_ms_p50": 5.839299992658198,
-        "latency_ms_p95": 11.542699998244643,
+        "latency_ms_p50": 7.088400074280798,
+        "latency_ms_p95": 16.444200067780912,
         "recall_shortlist": 1.0,
         "recall_search": 0.9801980198019802,
         "search_rate": 0.28368794326241137,
@@ -333,8 +333,8 @@
         "wrong_agent_rate": 0.3880597014925373,
         "false_reuse_rate": 0.125,
         "roster_tokens_mean": 1044.0,
-        "latency_ms_p50": 0.35319989547133446,
-        "latency_ms_p95": 0.4577001091092825,
+        "latency_ms_p50": 0.22629997693002224,
+        "latency_ms_p95": 0.33549999352544546,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -359,8 +359,8 @@
         "wrong_agent_rate": 0.08955223880597014,
         "false_reuse_rate": 0.025,
         "roster_tokens_mean": 891.7528735632184,
-        "latency_ms_p50": 8.80949990823865,
-        "latency_ms_p95": 19.53190006315708,
+        "latency_ms_p50": 9.10310004837811,
+        "latency_ms_p95": 22.60220004245639,
         "recall_shortlist": 1.0,
         "recall_search": 0.9850746268656716,
         "search_rate": 0.22413793103448276,
@@ -396,8 +396,8 @@
         "wrong_agent_rate": 0.3586206896551724,
         "false_reuse_rate": 0.1,
         "roster_tokens_mean": 2066.0,
-        "latency_ms_p50": 0.4477000329643488,
-        "latency_ms_p95": 0.5928999744355679,
+        "latency_ms_p50": 0.4336999263614416,
+        "latency_ms_p95": 0.5855000345036387,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -422,8 +422,8 @@
         "wrong_agent_rate": 0.0896551724137931,
         "false_reuse_rate": 0.025,
         "roster_tokens_mean": 923.918918918919,
-        "latency_ms_p50": 16.30810007918626,
-        "latency_ms_p95": 37.174500059336424,
+        "latency_ms_p50": 16.81320008356124,
+        "latency_ms_p95": 42.34240006189793,
         "recall_shortlist": 1.0,
         "recall_search": 0.993103448275862,
         "search_rate": 0.21081081081081082,
@@ -459,8 +459,8 @@
         "wrong_agent_rate": 0.41379310344827586,
         "false_reuse_rate": 0.15,
         "roster_tokens_mean": 4183.0,
-        "latency_ms_p50": 0.861200038343668,
-        "latency_ms_p95": 0.9929999941959977,
+        "latency_ms_p50": 0.9321999968960881,
+        "latency_ms_p95": 1.7757000168785453,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -485,8 +485,8 @@
         "wrong_agent_rate": 0.09655172413793103,
         "false_reuse_rate": 0.025,
         "roster_tokens_mean": 962.4810810810811,
-        "latency_ms_p50": 28.533499920740724,
-        "latency_ms_p95": 62.28060007560998,
+        "latency_ms_p50": 31.028099940158427,
+        "latency_ms_p95": 74.43130004685372,
         "recall_shortlist": 1.0,
         "recall_search": 0.9793103448275862,
         "search_rate": 0.21081081081081082,
@@ -522,8 +522,8 @@
         "wrong_agent_rate": 0.42758620689655175,
         "false_reuse_rate": 0.125,
         "roster_tokens_mean": 8508.0,
-        "latency_ms_p50": 1.7920000245794654,
-        "latency_ms_p95": 3.043700009584427,
+        "latency_ms_p50": 1.8779999809339643,
+        "latency_ms_p95": 2.956800046376884,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -548,8 +548,8 @@
         "wrong_agent_rate": 0.09655172413793103,
         "false_reuse_rate": 0.025,
         "roster_tokens_mean": 993.6216216216217,
-        "latency_ms_p50": 56.59920000471175,
-        "latency_ms_p95": 137.19180005136877,
+        "latency_ms_p50": 82.24400004837662,
+        "latency_ms_p95": 217.94740005861968,
         "recall_shortlist": 0.993103448275862,
         "recall_search": 0.9517241379310345,
         "search_rate": 0.21081081081081082,
@@ -587,8 +587,8 @@
         "wrong_agent_rate": 0.36551724137931035,
         "false_reuse_rate": 0.275,
         "roster_tokens_mean": 3135.0,
-        "latency_ms_p50": 0.6356000667437911,
-        "latency_ms_p95": 0.7329999934881926,
+        "latency_ms_p50": 0.6509000668302178,
+        "latency_ms_p95": 0.9443999733775854,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -613,8 +613,8 @@
         "wrong_agent_rate": 0.08275862068965517,
         "false_reuse_rate": 0.2,
         "roster_tokens_mean": 978.0972972972972,
-        "latency_ms_p50": 20.64160001464188,
-        "latency_ms_p95": 45.45380000490695,
+        "latency_ms_p50": 23.104700027033687,
+        "latency_ms_p95": 51.825599977746606,
         "recall_shortlist": 1.0,
         "recall_search": 0.9586206896551724,
         "search_rate": 0.17297297297297298,
@@ -650,8 +650,8 @@
         "wrong_agent_rate": 0.36551724137931035,
         "false_reuse_rate": 0.1,
         "roster_tokens_mean": 3135.0,
-        "latency_ms_p50": 0.6925000343471766,
-        "latency_ms_p95": 1.5666999388486147,
+        "latency_ms_p50": 0.645300024189055,
+        "latency_ms_p95": 0.9549000533297658,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -676,8 +676,8 @@
         "wrong_agent_rate": 0.08275862068965517,
         "false_reuse_rate": 0.025,
         "roster_tokens_mean": 978.0972972972972,
-        "latency_ms_p50": 20.753599936142564,
-        "latency_ms_p95": 47.7004999993369,
+        "latency_ms_p50": 24.20640003401786,
+        "latency_ms_p95": 57.01700004283339,
         "recall_shortlist": 1.0,
         "recall_search": 0.9586206896551724,
         "search_rate": 0.21081081081081082,
@@ -713,8 +713,8 @@
         "wrong_agent_rate": 0.2620689655172414,
         "false_reuse_rate": 0.075,
         "roster_tokens_mean": 3135.0,
-        "latency_ms_p50": 0.6768000312149525,
-        "latency_ms_p95": 1.0581000242382288,
+        "latency_ms_p50": 0.7006000960245728,
+        "latency_ms_p95": 1.0157000506296754,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -739,8 +739,8 @@
         "wrong_agent_rate": 0.08275862068965517,
         "false_reuse_rate": 0.0,
         "roster_tokens_mean": 978.0972972972972,
-        "latency_ms_p50": 21.442600060254335,
-        "latency_ms_p95": 44.85980002209544,
+        "latency_ms_p50": 24.08650005236268,
+        "latency_ms_p95": 51.868599955923855,
         "recall_shortlist": 1.0,
         "recall_search": 0.9586206896551724,
         "search_rate": 0.21621621621621623,
@@ -776,7 +776,7 @@
         "chosen": "Reply to Alex re podcast interview",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.5348000451922417,
+        "latency_ms": 0.636699958704412,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -788,7 +788,7 @@
         "chosen": "Q3 Invoice with Priya",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.273399917408824,
+        "latency_ms": 0.578800099901855,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -800,7 +800,7 @@
         "chosen": "Email to Michael Turner",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2456000549718738,
+        "latency_ms": 0.5713000427931547,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -812,7 +812,7 @@
         "chosen": "Email to Leah Dubois",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2347000883892179,
+        "latency_ms": 0.5635999841615558,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -824,7 +824,7 @@
         "chosen": "Email to Zane Park",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.226700027473271,
+        "latency_ms": 0.5692000268027186,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -836,7 +836,7 @@
         "chosen": "Design Review with Wei",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2279999209567904,
+        "latency_ms": 0.6104999920353293,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -848,7 +848,7 @@
         "chosen": "Email to Vera Kaur",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2499999720603228,
+        "latency_ms": 0.5595000693574548,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -860,7 +860,7 @@
         "chosen": "Vendor Quote with Vera",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2504999758675694,
+        "latency_ms": 0.8734000148251653,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -872,7 +872,7 @@
         "chosen": "Reply to David re tax documents",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2326000723987818,
+        "latency_ms": 0.7630999898537993,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -884,7 +884,7 @@
         "chosen": "Email to Mila Dimitrov",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2223999947309494,
+        "latency_ms": 0.80289994366467,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -896,7 +896,7 @@
         "chosen": "Reply to Ravi re launch timeline",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2259000213816762,
+        "latency_ms": 0.7273000665009022,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -908,7 +908,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 1.5133999986574054,
+        "latency_ms": 0.7451999699696898,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -920,7 +920,7 @@
         "chosen": "Budget Approval with Isaac",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.3725999742746353,
+        "latency_ms": 0.5886999424546957,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -932,7 +932,7 @@
         "chosen": "Email to Emma Schmidt",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.249499968253076,
+        "latency_ms": 0.5691000260412693,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -944,7 +944,7 @@
         "chosen": "Reply to Leah re venue contract",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.232899958267808,
+        "latency_ms": 0.6219999631866813,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -956,7 +956,7 @@
         "chosen": "Podcast Interview with Noah",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.230900059454143,
+        "latency_ms": 0.5613999674096704,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -968,7 +968,7 @@
         "chosen": "Email to Kofi Patel",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2278000358492136,
+        "latency_ms": 0.5828000139445066,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -980,7 +980,7 @@
         "chosen": "Email to David Park",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2318999506533146,
+        "latency_ms": 0.586699927225709,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -992,7 +992,7 @@
         "chosen": "Email to Umar Dimitrov",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2277000350877643,
+        "latency_ms": 0.556900049559772,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1004,7 +1004,7 @@
         "chosen": "Board Deck with Kai",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2205999810248613,
+        "latency_ms": 0.5622999742627144,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1016,7 +1016,7 @@
         "chosen": "Reply to Michael re job offer",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.301799900829792,
+        "latency_ms": 0.5637999856844544,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1028,7 +1028,7 @@
         "chosen": "Job Offer with Priya",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.3645000290125608,
+        "latency_ms": 0.6079999729990959,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1040,7 +1040,7 @@
         "chosen": "Email to Isaac Chen",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.411499921232462,
+        "latency_ms": 0.561299966648221,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1052,7 +1052,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 1.5968999359756708,
+        "latency_ms": 0.6182000506669283,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1064,7 +1064,7 @@
         "chosen": "Reply to Emma re contract redlines",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2529999949038029,
+        "latency_ms": 0.5680000176653266,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1076,7 +1076,7 @@
         "chosen": "Security Audit with Amara",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2258999049663544,
+        "latency_ms": 0.5631000967696309,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1088,7 +1088,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 1.2700000079348683,
+        "latency_ms": 0.5907999584451318,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1100,7 +1100,7 @@
         "chosen": "Email to Rosa Turner",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2344999704509974,
+        "latency_ms": 0.5782999796792865,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1112,7 +1112,7 @@
         "chosen": "Reply to Alex re travel itinerary",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2359999818727374,
+        "latency_ms": 0.5997000262141228,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1124,7 +1124,7 @@
         "chosen": "Reply to Sarah re design review",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2528999941423535,
+        "latency_ms": 0.5821000086143613,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1136,7 +1136,7 @@
         "chosen": "Launch Timeline with Fatima",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2239000061526895,
+        "latency_ms": 0.570200034417212,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1148,7 +1148,7 @@
         "chosen": "Reply to Fatima re Q3 invoice",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2224999954923987,
+        "latency_ms": 0.647100037895143,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1160,7 +1160,7 @@
         "chosen": "Reply to Noah re lease renewal",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2172999558970332,
+        "latency_ms": 0.5911000771448016,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1172,7 +1172,7 @@
         "chosen": "Launch Timeline with Fatima",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2274000328034163,
+        "latency_ms": 1.6333999810740352,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1184,7 +1184,7 @@
         "chosen": "Email to Paige Lopez",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.236199983395636,
+        "latency_ms": 0.6293000187724829,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1196,7 +1196,7 @@
         "chosen": "Reply to David re travel itinerary",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.3886999804526567,
+        "latency_ms": 0.709500047378242,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1208,7 +1208,7 @@
         "chosen": "Job Offer with Kofi",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2393000070005655,
+        "latency_ms": 0.9419999551028013,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1220,7 +1220,7 @@
         "chosen": "Board Deck with Kai",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2332999613136053,
+        "latency_ms": 0.9579000761732459,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1232,7 +1232,7 @@
         "chosen": "Launch Timeline with Fatima",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2263000244274735,
+        "latency_ms": 0.7899999618530273,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1244,7 +1244,7 @@
         "chosen": "Launch Timeline with Noah",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.222599996253848,
+        "latency_ms": 0.7027999963611364,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1256,7 +1256,7 @@
         "chosen": "Email to Julia",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.214000047184527,
+        "latency_ms": 0.5695000290870667,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1268,7 +1268,7 @@
         "chosen": "Reply to Isaac re venue contract",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2144999345764518,
+        "latency_ms": 0.5837000207975507,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1280,7 +1280,7 @@
         "chosen": "Email to David Park",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2211999855935574,
+        "latency_ms": 0.5608999636024237,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1292,7 +1292,7 @@
         "chosen": "Reply to David re tax documents",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2182999635115266,
+        "latency_ms": 0.5673000123351812,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1304,7 +1304,7 @@
         "chosen": "Reply to Sarah re design review",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.218200079165399,
+        "latency_ms": 0.7013999857008457,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1316,7 +1316,7 @@
         "chosen": "Email to David Park",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2178000761196017,
+        "latency_ms": 0.5673000123351812,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1328,7 +1328,7 @@
         "chosen": "Onboarding Plan with Paige",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2276999186724424,
+        "latency_ms": 0.5615000845864415,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1340,7 +1340,7 @@
         "chosen": "Job Offer with Rosa",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2131000403314829,
+        "latency_ms": 0.5593999521806836,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1352,7 +1352,7 @@
         "chosen": "Visa Paperwork with Noah",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.6652001067996025,
+        "latency_ms": 0.5632999818772078,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1364,7 +1364,7 @@
         "chosen": "Reply to Zara re lease renewal",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2468999484553933,
+        "latency_ms": 0.5610999651253223,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1376,7 +1376,7 @@
         "chosen": "Email to Umar",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.3741999864578247,
+        "latency_ms": 0.5616999696940184,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1388,7 +1388,7 @@
         "chosen": "Email to Umar",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.2223999947309494,
+        "latency_ms": 0.5534000229090452,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1400,7 +1400,7 @@
         "chosen": "Job Offer with Rosa",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 1.248299959115684,
+        "latency_ms": 0.5978000117465854,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1412,7 +1412,7 @@
         "chosen": "Email to Sven",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5655999993905425,
+        "latency_ms": 0.6435000104829669,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1424,7 +1424,7 @@
         "chosen": "Insurance Claim with Emma",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5793999880552292,
+        "latency_ms": 0.5772999720647931,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1436,7 +1436,7 @@
         "chosen": "Reply to Grace re Q3 invoice",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5597000708803535,
+        "latency_ms": 0.6511000683531165,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1448,7 +1448,7 @@
         "chosen": "Board Deck with Vera",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6033000536262989,
+        "latency_ms": 0.6253001047298312,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1460,7 +1460,7 @@
         "chosen": "Email to Paige Lopez",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5589999491348863,
+        "latency_ms": 0.5642001051455736,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1472,7 +1472,7 @@
         "chosen": "Reply to Emma re contract redlines",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5596000701189041,
+        "latency_ms": 0.8693001000210643,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1484,7 +1484,7 @@
         "chosen": "Email to David Park",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5620999727398157,
+        "latency_ms": 0.8232999825850129,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1496,7 +1496,7 @@
         "chosen": "Launch Timeline with Fatima",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5602999590337276,
+        "latency_ms": 0.5915999645367265,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1508,7 +1508,7 @@
         "chosen": "Board Deck with Vera",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5588999483734369,
+        "latency_ms": 0.6260999944061041,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1520,7 +1520,7 @@
         "chosen": "Contract Redlines with Priya",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5568000487983227,
+        "latency_ms": 0.5616999696940184,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1532,7 +1532,7 @@
         "chosen": "Launch Timeline with Fatima",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5601999582722783,
+        "latency_ms": 0.5641999887302518,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1544,7 +1544,7 @@
         "chosen": "Contract Redlines with Priya",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5573000526055694,
+        "latency_ms": 0.5701000336557627,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1556,7 +1556,7 @@
         "chosen": "Board Deck with Vera",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5579000571742654,
+        "latency_ms": 0.5601999582722783,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1568,7 +1568,7 @@
         "chosen": "Launch Timeline with Fatima",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5574999377131462,
+        "latency_ms": 0.5642999894917011,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1580,7 +1580,7 @@
         "chosen": "Job Offer with Rosa",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5528000183403492,
+        "latency_ms": 0.6132000125944614,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1592,7 +1592,7 @@
         "chosen": "Budget Approval with Isaac",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5930999759584665,
+        "latency_ms": 0.5588999483734369,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1604,7 +1604,7 @@
         "chosen": "Email to Michael Kim",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5568000487983227,
+        "latency_ms": 0.5856000352650881,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1616,7 +1616,7 @@
         "chosen": "Podcast Interview with Noah",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6388999754562974,
+        "latency_ms": 0.5575999384745955,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1628,7 +1628,7 @@
         "chosen": "Board Deck with Kai",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5649999948218465,
+        "latency_ms": 0.5594000685960054,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1640,7 +1640,7 @@
         "chosen": "Email to Sven",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5623999750241637,
+        "latency_ms": 0.5641999887302518,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1652,7 +1652,7 @@
         "chosen": "Reply to Alex re podcast interview",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5951999919489026,
+        "latency_ms": 0.5563999293372035,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1664,7 +1664,7 @@
         "chosen": "Board Deck with Quinn",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5554999224841595,
+        "latency_ms": 0.5763999652117491,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1676,7 +1676,7 @@
         "chosen": "Soylent Reference Check",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6753000197932124,
+        "latency_ms": 0.6741000106558204,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1688,7 +1688,7 @@
         "chosen": "Acme Travel Itinerary",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.665399944409728,
+        "latency_ms": 0.6657000631093979,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1700,7 +1700,7 @@
         "chosen": "Northwind Onboarding Plan",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6596000166609883,
+        "latency_ms": 0.7073000306263566,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1712,7 +1712,7 @@
         "chosen": "Job Offer with Kofi",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6634000455960631,
+        "latency_ms": 0.6546999793499708,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1724,7 +1724,7 @@
         "chosen": "Northwind Onboarding Plan",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6598999025300145,
+        "latency_ms": 0.6611000280827284,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1736,7 +1736,7 @@
         "chosen": "Monarch Contract Redlines",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6619000341743231,
+        "latency_ms": 0.7877999451011419,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1748,7 +1748,7 @@
         "chosen": "Board Deck with Vera",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.664499937556684,
+        "latency_ms": 0.6747000152245164,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1760,7 +1760,7 @@
         "chosen": "Wayne Lease Renewal",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6606000242754817,
+        "latency_ms": 0.660400022752583,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1772,7 +1772,7 @@
         "chosen": "Oscorp Contract Redlines",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6656999466940761,
+        "latency_ms": 0.6991000846028328,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1784,7 +1784,7 @@
         "chosen": "Oscorp Offsite Agenda",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.683500082232058,
+        "latency_ms": 1.3423999771475792,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1796,7 +1796,7 @@
         "chosen": "Pied Piper Contract Redlines",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6804999429732561,
+        "latency_ms": 0.8675999706611037,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1808,7 +1808,7 @@
         "chosen": "Monarch Contract Redlines",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6659999489784241,
+        "latency_ms": 0.7376000285148621,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1820,7 +1820,7 @@
         "chosen": "Find reference check emails",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6699999794363976,
+        "latency_ms": 0.8014999330043793,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1832,7 +1832,7 @@
         "chosen": "Tyrell Budget Approval",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7003000937402248,
+        "latency_ms": 0.7492000004276633,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1844,7 +1844,7 @@
         "chosen": "Find design review emails",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6568999961018562,
+        "latency_ms": 0.7400999311357737,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1856,7 +1856,7 @@
         "chosen": "Job Offer with Kofi",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6578000029549003,
+        "latency_ms": 0.7508000126108527,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1868,7 +1868,7 @@
         "chosen": "Launch Timeline with Fatima",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6615000311285257,
+        "latency_ms": 0.6619999185204506,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1880,7 +1880,7 @@
         "chosen": "Find design review emails",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6554999854415655,
+        "latency_ms": 0.6793000502511859,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1892,7 +1892,7 @@
         "chosen": "Find pricing proposal emails",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6605000235140324,
+        "latency_ms": 0.7414999417960644,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1904,7 +1904,7 @@
         "chosen": "Oscorp Offsite Agenda",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.8261000039055943,
+        "latency_ms": 0.6553999846801162,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1916,7 +1916,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.8036000654101372,
+        "latency_ms": 0.7372000254690647,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1928,7 +1928,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7108000572770834,
+        "latency_ms": 0.7462999783456326,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1940,7 +1940,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7073000306263566,
+        "latency_ms": 0.8211999665945768,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1952,7 +1952,7 @@
         "chosen": "Email to Olivia Weber",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7263000588864088,
+        "latency_ms": 0.6923000328242779,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1964,7 +1964,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6944999331608415,
+        "latency_ms": 0.7021999917924404,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1976,7 +1976,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7168999873101711,
+        "latency_ms": 0.7009000983089209,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -1988,7 +1988,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7220000261440873,
+        "latency_ms": 1.0013999417424202,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2000,7 +2000,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6976999575272202,
+        "latency_ms": 0.775699969381094,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2012,7 +2012,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 1.0332000674679875,
+        "latency_ms": 0.7524000247940421,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2024,7 +2024,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.9459001012146473,
+        "latency_ms": 0.9384999284520745,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2036,7 +2036,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7183999987319112,
+        "latency_ms": 1.0897000320255756,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2048,7 +2048,7 @@
         "chosen": "Email to Emma Murphy",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7057000184431672,
+        "latency_ms": 0.810900004580617,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2060,7 +2060,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7137999637052417,
+        "latency_ms": 0.7306999759748578,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2072,7 +2072,7 @@
         "chosen": "Email to Emma Evans",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7025999948382378,
+        "latency_ms": 0.7306999759748578,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2084,7 +2084,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7152999751269817,
+        "latency_ms": 0.7309999782592058,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2096,7 +2096,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7158000953495502,
+        "latency_ms": 0.8105000015348196,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2108,7 +2108,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6941000465303659,
+        "latency_ms": 0.7652000058442354,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2120,7 +2120,7 @@
         "chosen": "Email to Michael Turner",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7241000421345234,
+        "latency_ms": 0.7116999477148056,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2132,7 +2132,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7018001051619649,
+        "latency_ms": 0.7241000421345234,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2144,7 +2144,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6982000777497888,
+        "latency_ms": 0.7428999524563551,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2156,7 +2156,7 @@
         "chosen": "Reminder: schedule annual physical",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6618999177590013,
+        "latency_ms": 0.6623000372201204,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2168,7 +2168,7 @@
         "chosen": "Reminder: check visa status",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.8591000223532319,
+        "latency_ms": 0.7400999311357737,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2180,7 +2180,7 @@
         "chosen": "Reminder: check flight prices",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6719999946653843,
+        "latency_ms": 0.6663999520242214,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2192,7 +2192,7 @@
         "chosen": "Reminder: order new glasses",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.659800018183887,
+        "latency_ms": 0.6557999877259135,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2204,7 +2204,7 @@
         "chosen": "Reminder: book team dinner",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6620000349357724,
+        "latency_ms": 0.6616000318899751,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2216,7 +2216,7 @@
         "chosen": "Reminder: call the bank",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6482000462710857,
+        "latency_ms": 0.645600026473403,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2228,7 +2228,7 @@
         "chosen": "Reminder: renew parking permit",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6576000014320016,
+        "latency_ms": 0.6607999093830585,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2240,7 +2240,7 @@
         "chosen": "Reminder: dentist appointment",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.647400040179491,
+        "latency_ms": 0.7389000384137034,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2252,7 +2252,7 @@
         "chosen": "Reminder: pay credit card",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6620000349357724,
+        "latency_ms": 0.7230000337585807,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2264,7 +2264,7 @@
         "chosen": "Reminder: quarterly tax payment",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6588998949155211,
+        "latency_ms": 0.663299928419292,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2276,7 +2276,7 @@
         "chosen": "Reminder: pay rent",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6510000675916672,
+        "latency_ms": 0.6489000516012311,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2288,7 +2288,7 @@
         "chosen": "Reminder: update resume",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6700999801978469,
+        "latency_ms": 0.6483999313786626,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2300,7 +2300,7 @@
         "chosen": "Reminder: send invoice to landlord",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6594000151380897,
+        "latency_ms": 0.6637000478804111,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2312,7 +2312,7 @@
         "chosen": "Reminder: schedule car service",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6621999200433493,
+        "latency_ms": 5.451499950140715,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2324,7 +2324,7 @@
         "chosen": "Reminder: vet appointment",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6468999199569225,
+        "latency_ms": 0.7311999797821045,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2336,7 +2336,7 @@
         "chosen": "Email to David Park",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5683000199496746,
+        "latency_ms": 0.5976000102236867,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2348,7 +2348,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6228999700397253,
+        "latency_ms": 0.6357000675052404,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2360,7 +2360,7 @@
         "chosen": "Email to Fatima Kim",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5666000070050359,
+        "latency_ms": 0.5913999630138278,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2372,7 +2372,7 @@
         "chosen": "Email to Noah Patel",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5679000169038773,
+        "latency_ms": 0.6448000203818083,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2384,7 +2384,7 @@
         "chosen": "Email to Lena Tanaka",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5630999803543091,
+        "latency_ms": 0.5630000960081816,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2396,7 +2396,7 @@
         "chosen": "Job Offer with Rosa",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5574999377131462,
+        "latency_ms": 0.5641001043841243,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2408,7 +2408,7 @@
         "chosen": "Email to Umar Okafor",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.561599968932569,
+        "latency_ms": 0.5634000990539789,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2420,7 +2420,7 @@
         "chosen": "Contract Redlines with Priya",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5628999788314104,
+        "latency_ms": 0.5661998875439167,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2432,7 +2432,7 @@
         "chosen": "Email to Zara Fischer",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5625000922009349,
+        "latency_ms": 0.5622000899165869,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2444,7 +2444,7 @@
         "chosen": "Email to Ethan Mendes",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.559799955226481,
+        "latency_ms": 0.6528999656438828,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2456,7 +2456,7 @@
         "chosen": "Launch Timeline with Fatima",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.5616999696940184,
+        "latency_ms": 0.6698999786749482,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2468,7 +2468,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6971999537199736,
+        "latency_ms": 0.6131000118330121,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2480,7 +2480,7 @@
         "chosen": "Email to Zara Fischer",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7413000566884875,
+        "latency_ms": 0.5607000784948468,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2492,7 +2492,7 @@
         "chosen": "Email to Amara Zhang",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.606000074185431,
+        "latency_ms": 0.5625999765470624,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2504,7 +2504,7 @@
         "chosen": "Job Offer with Kofi",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7893999572843313,
+        "latency_ms": 0.5625999765470624,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2516,7 +2516,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.8492999477311969,
+        "latency_ms": 0.7096999324858189,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2528,7 +2528,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7834000280126929,
+        "latency_ms": 0.6206000689417124,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2540,7 +2540,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7616999791935086,
+        "latency_ms": 0.9607999818399549,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2552,7 +2552,7 @@
         "chosen": "Onboarding Plan with Emma",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.7093000458553433,
+        "latency_ms": 0.606000074185431,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2564,7 +2564,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 1.1147999903187156,
+        "latency_ms": 0.7771000964567065,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2576,7 +2576,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6252999883145094,
+        "latency_ms": 0.731700100004673,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2588,7 +2588,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7026999955996871,
+        "latency_ms": 0.8157000411301851,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2600,7 +2600,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.606300076469779,
+        "latency_ms": 0.6716999923810363,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2612,7 +2612,7 @@
         "chosen": "Board Deck with Isaac",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.6883000023663044,
+        "latency_ms": 0.6992999697104096,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2624,7 +2624,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.5995000246912241,
+        "latency_ms": 0.700299977324903,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2636,7 +2636,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7021999917924404,
+        "latency_ms": 0.7051000138744712,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2648,7 +2648,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6192999426275492,
+        "latency_ms": 0.5775000900030136,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2660,7 +2660,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7693000370636582,
+        "latency_ms": 0.7086999248713255,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2672,7 +2672,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.5743999499827623,
+        "latency_ms": 0.5752999568358064,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2684,7 +2684,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.7039000047370791,
+        "latency_ms": 0.7047000108286738,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2696,7 +2696,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6172000430524349,
+        "latency_ms": 0.5995000246912241,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2708,7 +2708,7 @@
         "chosen": "Launch Timeline with Noah",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.692299916408956,
+        "latency_ms": 0.7097999332472682,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2720,7 +2720,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.5784999812021852,
+        "latency_ms": 0.7033000001683831,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2732,7 +2732,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.911500072106719,
+        "latency_ms": 0.7163999835029244,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2744,7 +2744,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.5951999919489026,
+        "latency_ms": 0.5818000063300133,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2756,7 +2756,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6674000760540366,
+        "latency_ms": 0.6733000045642257,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2768,7 +2768,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6646999390795827,
+        "latency_ms": 0.6627999246120453,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2780,7 +2780,7 @@
         "chosen": "Reminder: renew driver license",
         "reason": "exact_name",
         "roster_tokens": 3135,
-        "latency_ms": 0.660100020468235,
+        "latency_ms": 0.6562999915331602,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2792,7 +2792,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6566999945789576,
+        "latency_ms": 0.6826999597251415,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2804,7 +2804,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6673999596387148,
+        "latency_ms": 0.7148000877350569,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2816,7 +2816,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6697999779134989,
+        "latency_ms": 0.6647000554949045,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2828,7 +2828,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6570999976247549,
+        "latency_ms": 7.055099937133491,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2840,7 +2840,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6524999625980854,
+        "latency_ms": 0.7501000072807074,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2852,7 +2852,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6668999558314681,
+        "latency_ms": 0.7359998999163508,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2864,7 +2864,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6496000569313765,
+        "latency_ms": 0.7205000147223473,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2876,7 +2876,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.677499920129776,
+        "latency_ms": 0.6670999573543668,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2888,7 +2888,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.658900011330843,
+        "latency_ms": 0.6778000388294458,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2900,7 +2900,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6451000226661563,
+        "latency_ms": 0.6671999581158161,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2912,7 +2912,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6557999877259135,
+        "latency_ms": 0.6696999771520495,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2924,7 +2924,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6606000242754817,
+        "latency_ms": 0.6818999536335468,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2936,7 +2936,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6550000980496407,
+        "latency_ms": 0.694400048814714,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2948,7 +2948,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6662000669166446,
+        "latency_ms": 0.6940999301150441,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2960,7 +2960,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6482999306172132,
+        "latency_ms": 0.6839000852778554,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2972,7 +2972,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6479000439867377,
+        "latency_ms": 0.6659000646322966,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2984,7 +2984,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 3135,
-        "latency_ms": 0.6516999565064907,
+        "latency_ms": 0.6733000045642257,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -2998,7 +2998,7 @@
         "chosen": "Reply to Alex re podcast interview",
         "reason": "exact_name",
         "roster_tokens": 1044,
-        "latency_ms": 20.55549994111061,
+        "latency_ms": 25.469500105828047,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3010,7 +3010,7 @@
         "chosen": "Q3 Invoice with Priya",
         "reason": "exact_name",
         "roster_tokens": 1102,
-        "latency_ms": 18.76590005122125,
+        "latency_ms": 21.128699998371303,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3022,7 +3022,7 @@
         "chosen": "Email to Michael Turner",
         "reason": "exact_name",
         "roster_tokens": 1125,
-        "latency_ms": 20.81390004605055,
+        "latency_ms": 25.79620003234595,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3034,7 +3034,7 @@
         "chosen": "Email to Leah Dubois",
         "reason": "exact_name",
         "roster_tokens": 1106,
-        "latency_ms": 19.43410001695156,
+        "latency_ms": 25.13540000654757,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3046,7 +3046,7 @@
         "chosen": "Email to Zane Park",
         "reason": "exact_name",
         "roster_tokens": 1096,
-        "latency_ms": 18.681099987588823,
+        "latency_ms": 25.018000043928623,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3058,7 +3058,7 @@
         "chosen": "Design Review with Wei",
         "reason": "exact_name",
         "roster_tokens": 1072,
-        "latency_ms": 20.372700062580407,
+        "latency_ms": 23.143099970184267,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3070,7 +3070,7 @@
         "chosen": "Email to Vera Kaur",
         "reason": "exact_name",
         "roster_tokens": 1054,
-        "latency_ms": 20.194599987007678,
+        "latency_ms": 21.800899994559586,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3082,7 +3082,7 @@
         "chosen": "Vendor Quote with Vera",
         "reason": "exact_name",
         "roster_tokens": 1038,
-        "latency_ms": 24.99589999206364,
+        "latency_ms": 22.770300041884184,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3094,7 +3094,7 @@
         "chosen": "Reply to David re tax documents",
         "reason": "exact_name",
         "roster_tokens": 1108,
-        "latency_ms": 25.95040004234761,
+        "latency_ms": 20.55589994415641,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3106,7 +3106,7 @@
         "chosen": "Email to Mila",
         "reason": "exact_name",
         "roster_tokens": 1008,
-        "latency_ms": 28.397000045515597,
+        "latency_ms": 19.935899996198714,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3118,7 +3118,7 @@
         "chosen": "Reply to Ravi re launch timeline",
         "reason": "exact_name",
         "roster_tokens": 1026,
-        "latency_ms": 21.392500028014183,
+        "latency_ms": 20.85820003412664,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3130,7 +3130,7 @@
         "chosen": "Wayne Travel Itinerary",
         "reason": "exact_name",
         "roster_tokens": 1070,
-        "latency_ms": 24.978700093925,
+        "latency_ms": 28.528000111691654,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3142,7 +3142,7 @@
         "chosen": "Budget Approval with Isaac",
         "reason": "exact_name",
         "roster_tokens": 1022,
-        "latency_ms": 22.14260003529489,
+        "latency_ms": 40.229300037026405,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3154,7 +3154,7 @@
         "chosen": "Email to Emma Schmidt",
         "reason": "exact_name",
         "roster_tokens": 1051,
-        "latency_ms": 22.42689998820424,
+        "latency_ms": 36.13319993019104,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3166,7 +3166,7 @@
         "chosen": "Pied Piper Venue Contract",
         "reason": "exact_name",
         "roster_tokens": 1047,
-        "latency_ms": 22.34290004707873,
+        "latency_ms": 25.587599957361817,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3178,7 +3178,7 @@
         "chosen": "Podcast Interview with Noah",
         "reason": "exact_name",
         "roster_tokens": 1058,
-        "latency_ms": 46.51939996983856,
+        "latency_ms": 57.99270002171397,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3190,7 +3190,7 @@
         "chosen": "Email to Kofi Patel",
         "reason": "exact_name",
         "roster_tokens": 1025,
-        "latency_ms": 21.609399933367968,
+        "latency_ms": 29.95670004747808,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3202,7 +3202,7 @@
         "chosen": "Email to David",
         "reason": "exact_name",
         "roster_tokens": 1119,
-        "latency_ms": 20.541900070384145,
+        "latency_ms": 32.083600061014295,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3214,7 +3214,7 @@
         "chosen": "Email to Umar Dimitrov",
         "reason": "exact_name",
         "roster_tokens": 1057,
-        "latency_ms": 23.198800045065582,
+        "latency_ms": 27.746399980969727,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3226,7 +3226,7 @@
         "chosen": "Board Deck with Kai",
         "reason": "exact_name",
         "roster_tokens": 968,
-        "latency_ms": 21.89830003771931,
+        "latency_ms": 27.057799976319075,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3238,7 +3238,7 @@
         "chosen": "Cyberdyne Job Offer",
         "reason": "exact_name",
         "roster_tokens": 1130,
-        "latency_ms": 19.678100012242794,
+        "latency_ms": 29.26600002683699,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3250,7 +3250,7 @@
         "chosen": "Job Offer with Priya",
         "reason": "exact_name",
         "roster_tokens": 1108,
-        "latency_ms": 21.933200070634484,
+        "latency_ms": 25.887800031341612,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3262,7 +3262,7 @@
         "chosen": "Tyrell Insurance Claim",
         "reason": "exact_name",
         "roster_tokens": 1086,
-        "latency_ms": 18.865999998524785,
+        "latency_ms": 32.065700041130185,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3274,7 +3274,7 @@
         "chosen": "Monarch Hiring Plan",
         "reason": "exact_name",
         "roster_tokens": 1013,
-        "latency_ms": 42.68620000220835,
+        "latency_ms": 63.451800029724836,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3286,7 +3286,7 @@
         "chosen": "Reply to Emma re contract redlines",
         "reason": "exact_name",
         "roster_tokens": 1051,
-        "latency_ms": 20.416699931956828,
+        "latency_ms": 23.59599992632866,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3298,7 +3298,7 @@
         "chosen": "Security Audit with Amara",
         "reason": "exact_name",
         "roster_tokens": 951,
-        "latency_ms": 19.245499977841973,
+        "latency_ms": 27.21410000231117,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3310,7 +3310,7 @@
         "chosen": "Email to Noah",
         "reason": "exact_name",
         "roster_tokens": 1048,
-        "latency_ms": 19.78209998924285,
+        "latency_ms": 26.230000075884163,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3322,7 +3322,7 @@
         "chosen": "Email to Rosa Turner",
         "reason": "exact_name",
         "roster_tokens": 1032,
-        "latency_ms": 19.612800097092986,
+        "latency_ms": 22.78730005491525,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3334,7 +3334,7 @@
         "chosen": "Reply to Alex re travel itinerary",
         "reason": "exact_name",
         "roster_tokens": 1026,
-        "latency_ms": 19.48000001721084,
+        "latency_ms": 19.064699998125434,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3346,7 +3346,7 @@
         "chosen": "Reply to Sarah re design review",
         "reason": "exact_name",
         "roster_tokens": 1056,
-        "latency_ms": 19.589500036090612,
+        "latency_ms": 20.19730000756681,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3358,7 +3358,7 @@
         "chosen": "Email to Fatima Park",
         "reason": "exact_name",
         "roster_tokens": 1097,
-        "latency_ms": 18.621099996380508,
+        "latency_ms": 21.007400006055832,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3370,7 +3370,7 @@
         "chosen": "Reply to Fatima re Q3 invoice",
         "reason": "exact_name",
         "roster_tokens": 1067,
-        "latency_ms": 19.692400004714727,
+        "latency_ms": 39.74230005405843,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3382,7 +3382,7 @@
         "chosen": "Reply to Noah re lease renewal",
         "reason": "exact_name",
         "roster_tokens": 1057,
-        "latency_ms": 18.687799922190607,
+        "latency_ms": 18.950400059111416,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3394,7 +3394,7 @@
         "chosen": "Oscorp Visa Paperwork",
         "reason": "exact_name",
         "roster_tokens": 1103,
-        "latency_ms": 20.10840002913028,
+        "latency_ms": 19.602100015617907,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3406,7 +3406,7 @@
         "chosen": "Email to Paige Patel",
         "reason": "exact_name",
         "roster_tokens": 1095,
-        "latency_ms": 19.110499997623265,
+        "latency_ms": 32.64240000862628,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3418,7 +3418,7 @@
         "chosen": "Reply to David re travel itinerary",
         "reason": "exact_name",
         "roster_tokens": 1113,
-        "latency_ms": 21.498700021766126,
+        "latency_ms": 19.04919999651611,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3430,7 +3430,7 @@
         "chosen": "Email to Kofi",
         "reason": "exact_name",
         "roster_tokens": 1016,
-        "latency_ms": 18.582699936814606,
+        "latency_ms": 18.629200058057904,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3442,7 +3442,7 @@
         "chosen": "Email to Kai Haddad",
         "reason": "exact_name",
         "roster_tokens": 982,
-        "latency_ms": 20.20619995892048,
+        "latency_ms": 18.994699930772185,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3454,7 +3454,7 @@
         "chosen": "Launch Timeline with Fatima",
         "reason": "exact_name",
         "roster_tokens": 1107,
-        "latency_ms": 19.26990004722029,
+        "latency_ms": 18.84150004480034,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3466,7 +3466,7 @@
         "chosen": "Launch Timeline with Noah",
         "reason": "exact_name",
         "roster_tokens": 1065,
-        "latency_ms": 18.573999986983836,
+        "latency_ms": 19.46939993649721,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3478,7 +3478,7 @@
         "chosen": "Email to Julia Gupta",
         "reason": "exact_name",
         "roster_tokens": 1026,
-        "latency_ms": 38.387499982491136,
+        "latency_ms": 38.32579997833818,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3490,7 +3490,7 @@
         "chosen": "Reply to Isaac re venue contract",
         "reason": "exact_name",
         "roster_tokens": 1027,
-        "latency_ms": 18.8133999472484,
+        "latency_ms": 21.115200011990964,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3502,7 +3502,7 @@
         "chosen": "Email to David",
         "reason": "exact_name",
         "roster_tokens": 1112,
-        "latency_ms": 20.665300078690052,
+        "latency_ms": 19.19300004374236,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3514,7 +3514,7 @@
         "chosen": "Reply to David re tax documents",
         "reason": "exact_name",
         "roster_tokens": 1043,
-        "latency_ms": 18.808299908414483,
+        "latency_ms": 19.212700077332556,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3526,7 +3526,7 @@
         "chosen": "Reply to Sarah re design review",
         "reason": "exact_name",
         "roster_tokens": 1033,
-        "latency_ms": 18.411900033243,
+        "latency_ms": 18.737099948339164,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3538,7 +3538,7 @@
         "chosen": "Email to David Park",
         "reason": "exact_name",
         "roster_tokens": 1098,
-        "latency_ms": 18.47979996819049,
+        "latency_ms": 49.8454999178648,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3550,7 +3550,7 @@
         "chosen": "Onboarding Plan with Paige",
         "reason": "exact_name",
         "roster_tokens": 1052,
-        "latency_ms": 20.08769998792559,
+        "latency_ms": 26.302500045858324,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3562,7 +3562,7 @@
         "chosen": "Umbrella Budget Approval",
         "reason": "exact_name",
         "roster_tokens": 1060,
-        "latency_ms": 18.936699954792857,
+        "latency_ms": 27.20860007684678,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3574,7 +3574,7 @@
         "chosen": "Visa Paperwork with Noah",
         "reason": "exact_name",
         "roster_tokens": 1062,
-        "latency_ms": 18.459900049492717,
+        "latency_ms": 27.651999960653484,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3586,7 +3586,7 @@
         "chosen": "Reply to Zara re lease renewal",
         "reason": "exact_name",
         "roster_tokens": 990,
-        "latency_ms": 38.73490006662905,
+        "latency_ms": 51.824299967847764,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3598,7 +3598,7 @@
         "chosen": "Email to Umar Dimitrov",
         "reason": "exact_name",
         "roster_tokens": 1016,
-        "latency_ms": 19.487099954858422,
+        "latency_ms": 112.05220001284033,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3610,7 +3610,7 @@
         "chosen": "Email to Umar",
         "reason": "exact_name",
         "roster_tokens": 1000,
-        "latency_ms": 19.420400029048324,
+        "latency_ms": 39.40809995401651,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3622,7 +3622,7 @@
         "chosen": "Globex Launch Timeline",
         "reason": "exact_name",
         "roster_tokens": 1063,
-        "latency_ms": 18.533900030888617,
+        "latency_ms": 25.536400033161044,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3634,7 +3634,7 @@
         "chosen": "Wayne Budget Approval",
         "reason": "exact_name",
         "roster_tokens": 1002,
-        "latency_ms": 18.482199986465275,
+        "latency_ms": 22.767600021325052,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3646,7 +3646,7 @@
         "chosen": "Email to Emma Murphy",
         "reason": "exact_name",
         "roster_tokens": 1053,
-        "latency_ms": 20.50870005041361,
+        "latency_ms": 23.96799996495247,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3658,7 +3658,7 @@
         "chosen": "Email to Grace Ali",
         "reason": "exact_name",
         "roster_tokens": 939,
-        "latency_ms": 20.033800043165684,
+        "latency_ms": 22.324400022625923,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3670,7 +3670,7 @@
         "chosen": "Email to Vera Kaur",
         "reason": "exact_name",
         "roster_tokens": 1029,
-        "latency_ms": 19.345900043845177,
+        "latency_ms": 21.93519996944815,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3682,7 +3682,7 @@
         "chosen": "Email to Paige Lopez",
         "reason": "exact_name",
         "roster_tokens": 1060,
-        "latency_ms": 19.683399936184287,
+        "latency_ms": 22.083100047893822,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3694,7 +3694,7 @@
         "chosen": "Reply to Emma re contract redlines",
         "reason": "exact_name",
         "roster_tokens": 1031,
-        "latency_ms": 39.405700052157044,
+        "latency_ms": 42.72679996211082,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3706,7 +3706,7 @@
         "chosen": "Email to David Schmidt",
         "reason": "exact_name",
         "roster_tokens": 1039,
-        "latency_ms": 18.91550002619624,
+        "latency_ms": 20.83150006365031,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3718,7 +3718,7 @@
         "chosen": "Reply to Fatima re Q3 invoice",
         "reason": "exact_name",
         "roster_tokens": 977,
-        "latency_ms": 18.568700063042343,
+        "latency_ms": 18.953300081193447,
         "in_shortlist": true,
         "in_search": false,
         "used_search": false
@@ -3730,7 +3730,7 @@
         "chosen": "Email to Vera",
         "reason": "exact_name",
         "roster_tokens": 938,
-        "latency_ms": 18.44139990862459,
+        "latency_ms": 19.535700092092156,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3742,7 +3742,7 @@
         "chosen": "Job Offer with Priya",
         "reason": "exact_name",
         "roster_tokens": 1064,
-        "latency_ms": 18.748000031337142,
+        "latency_ms": 19.492999999783933,
         "in_shortlist": true,
         "in_search": false,
         "used_search": false
@@ -3754,7 +3754,7 @@
         "chosen": "Reply to Fatima re Q3 invoice",
         "reason": "exact_name",
         "roster_tokens": 997,
-        "latency_ms": 18.277600058354437,
+        "latency_ms": 19.84740002080798,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3766,7 +3766,7 @@
         "chosen": "Job Offer with Priya",
         "reason": "exact_name",
         "roster_tokens": 1032,
-        "latency_ms": 19.38239997252822,
+        "latency_ms": 26.629499974660575,
         "in_shortlist": true,
         "in_search": false,
         "used_search": false
@@ -3778,7 +3778,7 @@
         "chosen": "Email to Vera",
         "reason": "exact_name",
         "roster_tokens": 924,
-        "latency_ms": 18.984300084412098,
+        "latency_ms": 27.692100033164024,
         "in_shortlist": true,
         "in_search": false,
         "used_search": false
@@ -3790,7 +3790,7 @@
         "chosen": "Reply to Fatima re Q3 invoice",
         "reason": "exact_name",
         "roster_tokens": 1011,
-        "latency_ms": 19.137200084514916,
+        "latency_ms": 26.168999960646033,
         "in_shortlist": true,
         "in_search": false,
         "used_search": false
@@ -3802,7 +3802,7 @@
         "chosen": "Email to Rosa",
         "reason": "exact_name",
         "roster_tokens": 958,
-        "latency_ms": 40.0002000387758,
+        "latency_ms": 43.44190005213022,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3814,7 +3814,7 @@
         "chosen": "Email to Isaac",
         "reason": "exact_name",
         "roster_tokens": 944,
-        "latency_ms": 18.790200003422797,
+        "latency_ms": 28.10439991299063,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3826,7 +3826,7 @@
         "chosen": "Pricing Proposal with Michael",
         "reason": "exact_name",
         "roster_tokens": 1062,
-        "latency_ms": 20.49959998112172,
+        "latency_ms": 26.246100082062185,
         "in_shortlist": true,
         "in_search": false,
         "used_search": false
@@ -3838,7 +3838,7 @@
         "chosen": "Email to Noah",
         "reason": "exact_name",
         "roster_tokens": 976,
-        "latency_ms": 23.495899979025126,
+        "latency_ms": 29.4825000455603,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3850,7 +3850,7 @@
         "chosen": "Email to Kai",
         "reason": "exact_name",
         "roster_tokens": 749,
-        "latency_ms": 18.481999984942377,
+        "latency_ms": 34.97329994570464,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3862,7 +3862,7 @@
         "chosen": "Email to Sven",
         "reason": "exact_name",
         "roster_tokens": 621,
-        "latency_ms": 18.05910002440214,
+        "latency_ms": 33.56889996211976,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3874,7 +3874,7 @@
         "chosen": "Email to Alex",
         "reason": "exact_name",
         "roster_tokens": 899,
-        "latency_ms": 19.092499976977706,
+        "latency_ms": 24.266400025226176,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3886,7 +3886,7 @@
         "chosen": "Pied Piper Contract Redlines",
         "reason": "exact_name",
         "roster_tokens": 630,
-        "latency_ms": 18.25610001105815,
+        "latency_ms": 24.494199897162616,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3898,7 +3898,7 @@
         "chosen": "Soylent Reference Check",
         "reason": "exact_name",
         "roster_tokens": 984,
-        "latency_ms": 19.79859999846667,
+        "latency_ms": 27.20809995662421,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3910,7 +3910,7 @@
         "chosen": "Acme Travel Itinerary",
         "reason": "exact_name",
         "roster_tokens": 1008,
-        "latency_ms": 21.300500025972724,
+        "latency_ms": 47.52989998087287,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3922,7 +3922,7 @@
         "chosen": "Email to Ava",
         "reason": "exact_name",
         "roster_tokens": 997,
-        "latency_ms": 20.789600093849003,
+        "latency_ms": 38.943400024436414,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3934,7 +3934,7 @@
         "chosen": "Email to Ibrahim",
         "reason": "exact_name",
         "roster_tokens": 965,
-        "latency_ms": 25.586400064639747,
+        "latency_ms": 37.251200061291456,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3946,7 +3946,7 @@
         "chosen": "Email to Kai Haddad",
         "reason": "exact_name",
         "roster_tokens": 989,
-        "latency_ms": 21.130000008270144,
+        "latency_ms": 29.096800019033253,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3958,7 +3958,7 @@
         "chosen": "Email to Zane",
         "reason": "exact_name",
         "roster_tokens": 1013,
-        "latency_ms": 20.41650004684925,
+        "latency_ms": 26.5474000480026,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3970,7 +3970,7 @@
         "chosen": "Board Deck with David",
         "reason": "exact_name",
         "roster_tokens": 982,
-        "latency_ms": 19.79539997410029,
+        "latency_ms": 23.61110004130751,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3982,7 +3982,7 @@
         "chosen": "Wayne Lease Renewal",
         "reason": "exact_name",
         "roster_tokens": 982,
-        "latency_ms": 21.78259997162968,
+        "latency_ms": 24.138699984177947,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -3994,7 +3994,7 @@
         "chosen": "Oscorp Contract Redlines",
         "reason": "exact_name",
         "roster_tokens": 995,
-        "latency_ms": 20.158099941909313,
+        "latency_ms": 45.05389998666942,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4006,7 +4006,7 @@
         "chosen": "Email to Kai",
         "reason": "exact_name",
         "roster_tokens": 974,
-        "latency_ms": 20.619000075384974,
+        "latency_ms": 24.906700011342764,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4018,7 +4018,7 @@
         "chosen": "Pied Piper Contract Redlines",
         "reason": "exact_name",
         "roster_tokens": 957,
-        "latency_ms": 19.768700003623962,
+        "latency_ms": 21.660200087353587,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4030,7 +4030,7 @@
         "chosen": "Reply to Julia re contract redlines",
         "reason": "exact_name",
         "roster_tokens": 1013,
-        "latency_ms": 22.14819996152073,
+        "latency_ms": 20.402800058946013,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4042,7 +4042,7 @@
         "chosen": "Email to Julia Gupta",
         "reason": "exact_name",
         "roster_tokens": 986,
-        "latency_ms": 20.611500018276274,
+        "latency_ms": 20.56149998679757,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4054,7 +4054,7 @@
         "chosen": "Email to Kofi",
         "reason": "exact_name",
         "roster_tokens": 988,
-        "latency_ms": 19.935899996198714,
+        "latency_ms": 20.408099982887506,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4066,7 +4066,7 @@
         "chosen": "Design Review with Diego",
         "reason": "exact_name",
         "roster_tokens": 995,
-        "latency_ms": 19.594700075685978,
+        "latency_ms": 24.41089996136725,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4078,7 +4078,7 @@
         "chosen": "Email to Nadia Dimitrov",
         "reason": "exact_name",
         "roster_tokens": 967,
-        "latency_ms": 20.795299904420972,
+        "latency_ms": 29.930700082331896,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4090,7 +4090,7 @@
         "chosen": "Email to Michael Turner",
         "reason": "exact_name",
         "roster_tokens": 989,
-        "latency_ms": 39.91389996372163,
+        "latency_ms": 50.19820004235953,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4102,7 +4102,7 @@
         "chosen": "Design Review with Michael",
         "reason": "exact_name",
         "roster_tokens": 977,
-        "latency_ms": 20.114999962970614,
+        "latency_ms": 22.632000036537647,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4114,7 +4114,7 @@
         "chosen": "Reply to Vera re pricing proposal",
         "reason": "exact_name",
         "roster_tokens": 1009,
-        "latency_ms": 21.956900018267334,
+        "latency_ms": 27.277600020170212,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4126,7 +4126,7 @@
         "chosen": "Email to Vera Kaur",
         "reason": "exact_name",
         "roster_tokens": 993,
-        "latency_ms": 20.205200067721307,
+        "latency_ms": 66.75750005524606,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4138,7 +4138,7 @@
         "chosen": "Vendor Quote with Vera",
         "reason": "exact_name",
         "roster_tokens": 1026,
-        "latency_ms": 19.326800014823675,
+        "latency_ms": 33.71129999868572,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4150,7 +4150,7 @@
         "chosen": "Reply to Zara re lease renewal",
         "reason": "exact_name",
         "roster_tokens": 1015,
-        "latency_ms": 19.85799998510629,
+        "latency_ms": 29.47940002195537,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4162,7 +4162,7 @@
         "chosen": "Email to Emma",
         "reason": "exact_name",
         "roster_tokens": 1044,
-        "latency_ms": 22.305899998173118,
+        "latency_ms": 23.731400026008487,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4174,7 +4174,7 @@
         "chosen": "Email to Olivia Weber",
         "reason": "exact_name",
         "roster_tokens": 911,
-        "latency_ms": 19.87860002554953,
+        "latency_ms": 71.12020009662956,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4186,7 +4186,7 @@
         "chosen": "Wayne Contract Redlines",
         "reason": "exact_name",
         "roster_tokens": 1034,
-        "latency_ms": 39.85360008664429,
+        "latency_ms": 84.86139995511621,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4198,7 +4198,7 @@
         "chosen": "Acme Pricing Proposal",
         "reason": "exact_name",
         "roster_tokens": 1006,
-        "latency_ms": 23.117200005799532,
+        "latency_ms": 27.508400031365454,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4210,7 +4210,7 @@
         "chosen": "Reply to Michael re hiring plan",
         "reason": "exact_name",
         "roster_tokens": 1140,
-        "latency_ms": 20.015799906104803,
+        "latency_ms": 46.466800034977496,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4222,7 +4222,7 @@
         "chosen": "Job Offer with Sarah",
         "reason": "exact_name",
         "roster_tokens": 1038,
-        "latency_ms": 21.309199975803494,
+        "latency_ms": 28.053300105966628,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4234,7 +4234,7 @@
         "chosen": "Monarch Hiring Plan",
         "reason": "exact_name",
         "roster_tokens": 927,
-        "latency_ms": 21.04180003516376,
+        "latency_ms": 24.454599944874644,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4246,7 +4246,7 @@
         "chosen": "Reply to Julia re visa paperwork",
         "reason": "exact_name",
         "roster_tokens": 1013,
-        "latency_ms": 20.545499981381,
+        "latency_ms": 20.26120002847165,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4258,7 +4258,7 @@
         "chosen": "Email to Alex",
         "reason": "exact_name",
         "roster_tokens": 966,
-        "latency_ms": 21.098700002767146,
+        "latency_ms": 19.802500028163195,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4270,7 +4270,7 @@
         "chosen": "Email to Emma Murphy",
         "reason": "exact_name",
         "roster_tokens": 1035,
-        "latency_ms": 21.665800013579428,
+        "latency_ms": 20.218299934640527,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4282,7 +4282,7 @@
         "chosen": "Email to Sarah",
         "reason": "exact_name",
         "roster_tokens": 1033,
-        "latency_ms": 43.844500090926886,
+        "latency_ms": 41.3166000507772,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4294,7 +4294,7 @@
         "chosen": "Email to Emma Evans",
         "reason": "exact_name",
         "roster_tokens": 1008,
-        "latency_ms": 19.765599980019033,
+        "latency_ms": 19.883499946445227,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4306,7 +4306,7 @@
         "chosen": "Oscorp Offsite Agenda",
         "reason": "exact_name",
         "roster_tokens": 1020,
-        "latency_ms": 19.922600011341274,
+        "latency_ms": 19.817300024442375,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4318,7 +4318,7 @@
         "chosen": "Email to Ibrahim",
         "reason": "exact_name",
         "roster_tokens": 959,
-        "latency_ms": 21.98659989517182,
+        "latency_ms": 19.501499948091805,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4330,7 +4330,7 @@
         "chosen": "Reply to Noah re lease renewal",
         "reason": "exact_name",
         "roster_tokens": 990,
-        "latency_ms": 19.706299994140863,
+        "latency_ms": 19.330599927343428,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4342,7 +4342,7 @@
         "chosen": "Email to Michael Turner",
         "reason": "exact_name",
         "roster_tokens": 1141,
-        "latency_ms": 20.627800025977194,
+        "latency_ms": 19.388799904845655,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4354,7 +4354,7 @@
         "chosen": "Monarch Reference Check",
         "reason": "exact_name",
         "roster_tokens": 1066,
-        "latency_ms": 21.685300045646727,
+        "latency_ms": 19.1323000472039,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4366,7 +4366,7 @@
         "chosen": "Email to Michael",
         "reason": "exact_name",
         "roster_tokens": 1138,
-        "latency_ms": 21.397699951194227,
+        "latency_ms": 19.76609998382628,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4378,7 +4378,7 @@
         "chosen": "Reminder: schedule annual physical",
         "reason": "exact_name",
         "roster_tokens": 748,
-        "latency_ms": 19.386500003747642,
+        "latency_ms": 18.992199911735952,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4390,7 +4390,7 @@
         "chosen": "Reminder: check visa status",
         "reason": "exact_name",
         "roster_tokens": 905,
-        "latency_ms": 19.531700061634183,
+        "latency_ms": 19.134300062432885,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4402,7 +4402,7 @@
         "chosen": "Reminder: check flight prices",
         "reason": "exact_name",
         "roster_tokens": 887,
-        "latency_ms": 20.8682999946177,
+        "latency_ms": 19.554700003936887,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4414,7 +4414,7 @@
         "chosen": "Reminder: order new glasses",
         "reason": "exact_name",
         "roster_tokens": 734,
-        "latency_ms": 19.09210009034723,
+        "latency_ms": 19.205100019462407,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4426,7 +4426,7 @@
         "chosen": "Reminder: book team dinner",
         "reason": "exact_name",
         "roster_tokens": 742,
-        "latency_ms": 20.608499995432794,
+        "latency_ms": 18.961200024932623,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4438,7 +4438,7 @@
         "chosen": "Reminder: call the bank",
         "reason": "exact_name",
         "roster_tokens": 728,
-        "latency_ms": 19.25949996802956,
+        "latency_ms": 18.79440003540367,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4450,7 +4450,7 @@
         "chosen": "Reminder: renew parking permit",
         "reason": "exact_name",
         "roster_tokens": 748,
-        "latency_ms": 21.878300001844764,
+        "latency_ms": 19.145900034345686,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4462,7 +4462,7 @@
         "chosen": "Reminder: dentist appointment",
         "reason": "exact_name",
         "roster_tokens": 739,
-        "latency_ms": 21.63590001873672,
+        "latency_ms": 19.00129998102784,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4474,7 +4474,7 @@
         "chosen": "Reminder: pay credit card",
         "reason": "exact_name",
         "roster_tokens": 743,
-        "latency_ms": 19.41960002295673,
+        "latency_ms": 39.211499970406294,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4486,7 +4486,7 @@
         "chosen": "Reminder: quarterly tax payment",
         "reason": "exact_name",
         "roster_tokens": 878,
-        "latency_ms": 18.97779991850257,
+        "latency_ms": 18.922299961559474,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4498,7 +4498,7 @@
         "chosen": "Reminder: pay rent",
         "reason": "exact_name",
         "roster_tokens": 723,
-        "latency_ms": 18.978800042532384,
+        "latency_ms": 19.057300058193505,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4510,7 +4510,7 @@
         "chosen": "Reminder: update resume",
         "reason": "exact_name",
         "roster_tokens": 729,
-        "latency_ms": 19.00009997189045,
+        "latency_ms": 18.985899980179965,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4522,7 +4522,7 @@
         "chosen": "Reminder: send invoice to landlord",
         "reason": "exact_name",
         "roster_tokens": 853,
-        "latency_ms": 19.109399989247322,
+        "latency_ms": 19.161000032909214,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4534,7 +4534,7 @@
         "chosen": "Reminder: schedule car service",
         "reason": "exact_name",
         "roster_tokens": 754,
-        "latency_ms": 19.060600083321333,
+        "latency_ms": 19.143300014548004,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4546,7 +4546,7 @@
         "chosen": "Reminder: vet appointment",
         "reason": "exact_name",
         "roster_tokens": 738,
-        "latency_ms": 19.422800047323108,
+        "latency_ms": 18.63140007480979,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4558,7 +4558,7 @@
         "chosen": "Email to David Park",
         "reason": "exact_name",
         "roster_tokens": 1104,
-        "latency_ms": 19.020200008526444,
+        "latency_ms": 19.206900033168495,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4570,7 +4570,7 @@
         "chosen": "Email to Ravi",
         "reason": "exact_name",
         "roster_tokens": 1024,
-        "latency_ms": 18.958200002089143,
+        "latency_ms": 19.59859998896718,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4582,7 +4582,7 @@
         "chosen": "Oscorp Visa Paperwork",
         "reason": "exact_name",
         "roster_tokens": 1127,
-        "latency_ms": 41.44950001500547,
+        "latency_ms": 39.85199995804578,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4594,7 +4594,7 @@
         "chosen": "Email to Noah Patel",
         "reason": "exact_name",
         "roster_tokens": 1124,
-        "latency_ms": 19.207200035452843,
+        "latency_ms": 19.61179997306317,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4606,7 +4606,7 @@
         "chosen": "Email to Lena Tanaka",
         "reason": "exact_name",
         "roster_tokens": 993,
-        "latency_ms": 19.809599965810776,
+        "latency_ms": 18.950099940411747,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4618,7 +4618,7 @@
         "chosen": "Job Offer with Rosa",
         "reason": "exact_name",
         "roster_tokens": 1027,
-        "latency_ms": 20.50799992866814,
+        "latency_ms": 19.027599948458374,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4630,7 +4630,7 @@
         "chosen": "Wonka Launch Timeline",
         "reason": "exact_name",
         "roster_tokens": 1010,
-        "latency_ms": 18.94820004235953,
+        "latency_ms": 19.209299935027957,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4642,7 +4642,7 @@
         "chosen": "Contract Redlines with Priya",
         "reason": "exact_name",
         "roster_tokens": 1141,
-        "latency_ms": 19.177100039087236,
+        "latency_ms": 19.184600096195936,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4654,7 +4654,7 @@
         "chosen": "Northwind Conference Talk",
         "reason": "exact_name",
         "roster_tokens": 987,
-        "latency_ms": 18.723499961197376,
+        "latency_ms": 18.973799888044596,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4666,7 +4666,7 @@
         "chosen": "Email to Ethan Mendes",
         "reason": "exact_name",
         "roster_tokens": 996,
-        "latency_ms": 20.70689992979169,
+        "latency_ms": 18.443999928422272,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4678,7 +4678,7 @@
         "chosen": "Launch Timeline with Fatima",
         "reason": "exact_name",
         "roster_tokens": 1123,
-        "latency_ms": 19.300099927932024,
+        "latency_ms": 19.496900029480457,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4690,7 +4690,7 @@
         "chosen": "Wayne Partnership Proposal",
         "reason": "exact_name",
         "roster_tokens": 1047,
-        "latency_ms": 38.847099989652634,
+        "latency_ms": 41.952500003390014,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4702,7 +4702,7 @@
         "chosen": "Email to Zara Fischer",
         "reason": "exact_name",
         "roster_tokens": 982,
-        "latency_ms": 18.37469998281449,
+        "latency_ms": 19.385599996894598,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4714,7 +4714,7 @@
         "chosen": "Monarch Contract Redlines",
         "reason": "exact_name",
         "roster_tokens": 973,
-        "latency_ms": 19.260800094343722,
+        "latency_ms": 18.918200046755373,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4726,7 +4726,7 @@
         "chosen": "Job Offer with Kofi",
         "reason": "exact_name",
         "roster_tokens": 993,
-        "latency_ms": 19.10540007520467,
+        "latency_ms": 27.2052000509575,
         "in_shortlist": true,
         "in_search": true,
         "used_search": false
@@ -4738,7 +4738,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 1087,
-        "latency_ms": 43.01110003143549,
+        "latency_ms": 65.99749997258186,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4750,7 +4750,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 1117,
-        "latency_ms": 41.03289998602122,
+        "latency_ms": 54.10539999138564,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4762,7 +4762,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 1034,
-        "latency_ms": 42.34099993482232,
+        "latency_ms": 57.85839993041009,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4774,7 +4774,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 1052,
-        "latency_ms": 63.368699979037046,
+        "latency_ms": 68.35269997827709,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4786,7 +4786,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 1126,
-        "latency_ms": 43.33989997394383,
+        "latency_ms": 47.78490005992353,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4798,7 +4798,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 971,
-        "latency_ms": 41.19779996108264,
+        "latency_ms": 43.28769992571324,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4810,7 +4810,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 1023,
-        "latency_ms": 44.03960006311536,
+        "latency_ms": 47.27700003422797,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4822,7 +4822,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 978,
-        "latency_ms": 41.33689997252077,
+        "latency_ms": 46.81700002402067,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4834,7 +4834,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 1033,
-        "latency_ms": 41.88639996573329,
+        "latency_ms": 51.02700006682426,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4846,7 +4846,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 1019,
-        "latency_ms": 42.29390004184097,
+        "latency_ms": 47.29399993084371,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4858,7 +4858,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 1049,
-        "latency_ms": 63.82769998162985,
+        "latency_ms": 73.08259990531951,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4870,7 +4870,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 952,
-        "latency_ms": 43.76110003795475,
+        "latency_ms": 45.3181000193581,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4882,7 +4882,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 1048,
-        "latency_ms": 42.915300000458956,
+        "latency_ms": 46.73429997637868,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4894,7 +4894,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 1057,
-        "latency_ms": 39.938899921253324,
+        "latency_ms": 43.37850003503263,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4906,7 +4906,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 1130,
-        "latency_ms": 45.73590005747974,
+        "latency_ms": 46.57270002644509,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4918,7 +4918,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 992,
-        "latency_ms": 41.036800015717745,
+        "latency_ms": 45.63609999604523,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4930,7 +4930,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 1104,
-        "latency_ms": 90.86929995100945,
+        "latency_ms": 67.49909999780357,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4942,7 +4942,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 972,
-        "latency_ms": 46.029799967072904,
+        "latency_ms": 43.16390003077686,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4954,7 +4954,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 1098,
-        "latency_ms": 50.418399972841144,
+        "latency_ms": 46.948499977588654,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4966,7 +4966,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 1084,
-        "latency_ms": 46.3031999533996,
+        "latency_ms": 47.14200005400926,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4978,7 +4978,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 720,
-        "latency_ms": 47.38999996334314,
+        "latency_ms": 45.61930010095239,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -4990,7 +4990,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 815,
-        "latency_ms": 95.25779995601624,
+        "latency_ms": 47.21300001256168,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5002,7 +5002,7 @@
         "chosen": "Reminder: renew driver license",
         "reason": "exact_name",
         "roster_tokens": 742,
-        "latency_ms": 26.941100019030273,
+        "latency_ms": 20.108700031414628,
         "in_shortlist": null,
         "in_search": null,
         "used_search": false
@@ -5014,7 +5014,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 810,
-        "latency_ms": 80.02000011038035,
+        "latency_ms": 70.32119994983077,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5026,7 +5026,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 726,
-        "latency_ms": 43.44759997911751,
+        "latency_ms": 50.565000041387975,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5038,7 +5038,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 811,
-        "latency_ms": 45.57730001397431,
+        "latency_ms": 58.796699973754585,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5050,7 +5050,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 734,
-        "latency_ms": 47.8129000402987,
+        "latency_ms": 112.46079998090863,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5062,7 +5062,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 813,
-        "latency_ms": 48.26329997740686,
+        "latency_ms": 84.9570999853313,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5074,7 +5074,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 724,
-        "latency_ms": 44.89279992412776,
+        "latency_ms": 56.93640001118183,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5086,7 +5086,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 813,
-        "latency_ms": 47.09170002024621,
+        "latency_ms": 54.8503000754863,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5098,7 +5098,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 720,
-        "latency_ms": 60.78129995148629,
+        "latency_ms": 85.79239994287491,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5110,7 +5110,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 815,
-        "latency_ms": 41.8416999746114,
+        "latency_ms": 93.05719996336848,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5122,7 +5122,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 720,
-        "latency_ms": 47.13389999233186,
+        "latency_ms": 51.13130004610866,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5134,7 +5134,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 810,
-        "latency_ms": 42.17199992854148,
+        "latency_ms": 52.78369993902743,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5146,7 +5146,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 727,
-        "latency_ms": 39.58240000065416,
+        "latency_ms": 92.83599990885705,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5158,7 +5158,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 811,
-        "latency_ms": 43.77949994523078,
+        "latency_ms": 56.56300007831305,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5170,7 +5170,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 876,
-        "latency_ms": 41.13410005811602,
+        "latency_ms": 66.1353999748826,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5182,7 +5182,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 813,
-        "latency_ms": 63.7578999157995,
+        "latency_ms": 83.34040001500398,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5194,7 +5194,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 720,
-        "latency_ms": 41.76679998636246,
+        "latency_ms": 49.32420002296567,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true
@@ -5206,7 +5206,7 @@
         "chosen": "__NEW__",
         "reason": "new",
         "roster_tokens": 813,
-        "latency_ms": 41.329899919219315,
+        "latency_ms": 51.26790003851056,
         "in_shortlist": null,
         "in_search": null,
         "used_search": true

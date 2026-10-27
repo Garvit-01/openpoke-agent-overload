@@ -19,6 +19,7 @@ from typing import Dict, List, Sequence
 
 from .harness import ArmMetrics, run_simulated
 from .scenarios import NEW, build_scenario
+from .stats import paired_lines
 
 RESULTS_DIR = Path(__file__).parent / "results"
 # Assumption for cost estimates only: Claude Sonnet 4 list price for input tokens, USD per million.
@@ -137,6 +138,13 @@ def run_offline(args) -> None:
         "",
         f"\\* Input tokens for the roster section only, at an assumed ${INPUT_PRICE_PER_MTOK:.2f} per million "
         "input tokens. Tokens are estimated as characters / 4.",
+        "",
+        "### Is the difference real?",
+        "",
+        *paired_lines(
+            {d["case_id"]: d["chosen"] == d["gold"] for d in main["decisions"]["baseline"]},
+            {d["case_id"]: d["chosen"] == d["gold"] for d in main["decisions"]["solution"]},
+        ),
         "",
         "### By category",
         "",
@@ -269,6 +277,7 @@ def parse_args(argv=None):
     parser.add_argument("--model", default="anthropic/claude-haiku-5.5")
     parser.add_argument("--limit", type=int, default=40, help="LLM mode: number of cases (cost control)")
     parser.add_argument("--repeats", type=int, default=3, help="LLM mode: runs per case, to report a pass rate")
+    parser.add_argument("--rescore", action="store_true", help="LLM mode: re-report the saved run for --model, no API calls")
     parser.add_argument("--concurrency", type=int, default=4)
     return parser.parse_args(argv)
 

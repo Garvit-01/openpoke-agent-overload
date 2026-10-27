@@ -38,6 +38,7 @@ from server.agents.interaction_agent.tools import get_tool_schemas
 from .baseline import ORIGINAL_SYSTEM_PROMPT, original_tool_schemas
 from .harness import BaselineArm, SolutionArm
 from .scenarios import NEW, Case, Scenario, build_scenario
+from .stats import majority_right, paired_lines
 
 NO_ROUTE = "__NO_ROUTE__"
 NEW_TASK_MARK = " [new_task]"
@@ -330,22 +331,34 @@ def run_llm(args) -> None:
 
     from .run_eval import RESULTS_DIR
 
-    api_key = get_settings().openrouter_api_key
-    if not api_key:
-        sys.exit("OPENROUTER_API_KEY is not set (put it in .env). The offline eval needs no key: python -m evals.run_eval")
-
-    scenario = build_scenario(args.agents, seed=args.seed)
-    cases = sample_cases(scenario, args.limit, args.seed)
-    print(f"Running {len(cases)} cases x {args.repeats} repeats x 2 arms on {args.model} ...")
-    with tempfile.TemporaryDirectory() as workdir:
-        # A routing decision is a short tool call; the cap stops OpenRouter reserving 65k output tokens per request
-        complete = functools.partial(request_chat_completion, max_tokens=MAX_OUTPUT_TOKENS)
-        outcomes = asyncio.run(
-            evaluate_llm(
-                scenario, cases, complete=complete, model=args.model, api_key=api_key,
-                repeats=args.repeats, concurrency=args.concurrency, workdir=Path(workdir),
+    # One file per model, so runs on different models don't overwrite each other
+    stem = "llm_results_" + re.sub(r"[^a-z0-9]+", "-", args.model.lower()).strip("-")
+    saved = RESULTS_DIR / f"{stem}.json"
+    if args.rescore:
+        # Re-report a saved run (new metrics, fixed formatting) without paying for the model calls again
+        if not saved.exists():
+            sys.exit(f"No saved run at {saved}")
+        outcomes = [LLMOutcome(**row) for row in json.loads(saved.read_text(encoding="utf-8"))["outcomes"]]
+        case_count = len({o.case_id for o in outcomes})
+        args.repeats = max(o.repeat for o in outcomes) + 1
+        print(f"Rescoring {saved} ({case_count} cases x {args.repeats} repeats), no model calls")
+    else:
+        api_key = get_settings().openrouter_api_key
+        if not api_key:
+            sys.exit("OPENROUTER_API_KEY is not set (put it in .env). The offline eval needs no key: python -m evals.run_eval")
+        scenario = build_scenario(args.agents, seed=args.seed)
+        cases = sample_cases(scenario, args.limit, args.seed)
+        case_count = len(cases)
+        print(f"Running {case_count} cases x {args.repeats} repeats x 2 arms on {args.model} ...")
+        with tempfile.TemporaryDirectory() as workdir:
+            # A routing decision is a short tool call; the cap stops OpenRouter reserving 65k output tokens per request
+            complete = functools.partial(request_chat_completion, max_tokens=MAX_OUTPUT_TOKENS)
+            outcomes = asyncio.run(
+                evaluate_llm(
+                    scenario, cases, complete=complete, model=args.model, api_key=api_key,
+                    repeats=args.repeats, concurrency=args.concurrency, workdir=Path(workdir),
+                )
             )
-        )
     summary = summarise(outcomes)
 
     def pct(value):
@@ -354,12 +367,13 @@ def run_llm(args) -> None:
     lines = [
         f"# LLM routing evaluation ({args.model})",
         "",
-        f"{len(cases)} cases (spread across categories) x {args.repeats} repeats, {args.agents} agents, seed {args.seed}.",
+        f"{case_count} cases (spread across categories) x {args.repeats} repeats, {args.agents} agents, seed {args.seed}.",
         "",
         "| Metric | Original OpenPoke | This change |",
         "|---|---|---|",
     ]
-    for label, key in [("Accuracy (all runs)", "accuracy"), ("Cases right on every repeat", "all_repeats_correct"),
+    for label, key in [("Accuracy (all runs, pass^1)", "accuracy"),
+                       (f"Cases right on all {args.repeats} repeats (pass^{args.repeats})", "all_repeats_correct"),
                        ("Duplicate created", "duplicate_rate"), ("False reuse", "false_reuse_rate"),
                        ("Model did not route at all", "no_route_rate"), ("Used search_agents", "search_rate")]:
         lines.append(f"| {label} | {pct(summary['baseline'][key])} | {pct(summary['solution'][key])} |")
@@ -376,12 +390,19 @@ def run_llm(args) -> None:
     )
     lines += ["", "Seconds cover every model call for the decision and depend on the provider's load that day, "
               "so compare the two columns with each other, not with other runs."]
+    # The case is the unit, not the run: repeats of one message aren't independent
+    by_arm = {
+        arm: majority_right((o.case_id, o.correct) for o in outcomes if o.arm == arm) for arm in ("baseline", "solution")
+    }
+    lines += [
+        "", "## Is the difference real?", "",
+        f"A case counts as right when more than half of its {args.repeats} runs were right.", "",
+        *paired_lines(by_arm["baseline"], by_arm["solution"]),
+    ]
     lines += cost_lines(summary, fetch_prices(), args.model)
-    # One file per model, so runs on different models don't overwrite each other
-    stem = "llm_results_" + re.sub(r"[^a-z0-9]+", "-", args.model.lower()).strip("-")
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     (RESULTS_DIR / f"{stem}.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    (RESULTS_DIR / f"{stem}.json").write_text(
+    saved.write_text(
         json.dumps({"model": args.model, "summary": summary, "outcomes": [o.__dict__ for o in outcomes]}, indent=2),
         encoding="utf-8",
     )

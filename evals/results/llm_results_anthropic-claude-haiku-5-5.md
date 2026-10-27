@@ -4,8 +4,8 @@
 
 | Metric | Original OpenPoke | This change |
 |---|---|---|
-| Accuracy (all runs) | 58.3% | 97.5% |
-| Cases right on every repeat | 52.5% | 97.5% |
+| Accuracy (all runs, pass^1) | 58.3% | 97.5% |
+| Cases right on all 3 repeats (pass^3) | 52.5% | 97.5% |
 | Duplicate created | 15.6% | 3.1% |
 | False reuse | 8.3% | 0.0% |
 | Model did not route at all | 0.0% | 0.0% |
@@ -14,6 +14,17 @@
 | Seconds per routing decision, p50 / p95 | 3.4 / 4.5 | 2.9 / 4.7 |
 
 Seconds cover every model call for the decision and depend on the provider's load that day, so compare the two columns with each other, not with other runs.
+
+## Is the difference real?
+
+A case counts as right when more than half of its 3 runs were right.
+
+| | Right | 95% interval |
+|---|---|---|
+| Original OpenPoke | 24/40 (60.0%) | 44.6% to 73.7% |
+| This change | 39/40 (97.5%) | 87.1% to 99.6% |
+
+Same cases, both versions: this change fixed 15 and broke 0 (McNemar's exact test, p = 6e-05, very unlikely to be chance).
 
 ## Cost on anthropic/claude-haiku-5.5
 
