@@ -333,6 +333,8 @@ def run_llm(args) -> None:
 
     # One file per model, so runs on different models don't overwrite each other
     stem = "llm_results_" + re.sub(r"[^a-z0-9]+", "-", args.model.lower()).strip("-")
+    if getattr(args, "set", "generated") == "paraphrase":
+        stem += "_paraphrase"
     saved = RESULTS_DIR / f"{stem}.json"
     if args.rescore:
         # Re-report a saved run (new metrics, fixed formatting) without paying for the model calls again
@@ -346,7 +348,12 @@ def run_llm(args) -> None:
         api_key = get_settings().openrouter_api_key
         if not api_key:
             sys.exit("OPENROUTER_API_KEY is not set (put it in .env). The offline eval needs no key: python -m evals.run_eval")
-        scenario = build_scenario(args.agents, seed=args.seed)
+        if getattr(args, "set", "generated") == "paraphrase":
+            from .paraphrase_set import build_paraphrase_scenario
+
+            scenario = build_paraphrase_scenario(args.agents, seed=args.seed)
+        else:
+            scenario = build_scenario(args.agents, seed=args.seed)
         cases = sample_cases(scenario, args.limit, args.seed)
         case_count = len(cases)
         print(f"Running {case_count} cases x {args.repeats} repeats x 2 arms on {args.model} ...")
