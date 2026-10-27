@@ -1,11 +1,13 @@
 """Interaction agent helpers for prompt construction."""
 
+import re
 from html import escape
 from pathlib import Path
 from typing import Dict, List, Sequence
 
 from ...config import get_settings
 from ...services.execution import AgentRetriever, ScoredAgent, get_agent_registry
+from ...services.execution.registry import AgentRecord
 from ...services.execution.lifecycle import LifecyclePolicy
 from ...services.execution.routing import maybe_apply_lifecycle
 
@@ -60,12 +62,18 @@ def _render_active_agents(latest_text: str) -> str:
     if not total:
         return render_agent_shortlist([], total=0)
 
-    shortlist = AgentRetriever(registry).shortlist(
+    retriever = AgentRetriever(registry)
+    shortlist = retriever.shortlist(
         latest_text,
         retrieved=settings.agent_shortlist_retrieved,
         recent=settings.agent_shortlist_recent,
     )
-    return render_agent_shortlist(shortlist, total=total, summary_chars=settings.agent_summary_chars)
+    related = retriever.named_people_agents(
+        latest_text, exclude=[item.name for item in shortlist], limit=settings.agent_named_people_limit
+    )
+    return render_agent_shortlist(
+        shortlist, total=total, summary_chars=settings.agent_summary_chars, related=related
+    )
 
 
 # Render shortlisted agents with status, last use, why they matched, and a short summary
@@ -74,6 +82,7 @@ def render_agent_shortlist(
     *,
     total: int,
     summary_chars: int = 200,
+    related: Sequence[AgentRecord] = (),
 ) -> str:
     if not shortlist:
         body = "None"
@@ -93,7 +102,25 @@ def render_agent_shortlist(
                 attributes.append(f'matched="{escape("; ".join(item.reasons), quote=True)}"')
             rendered.append(f"<agent {' '.join(attributes)}>{escape(summary, quote=False)}</agent>")
         body = "\n".join(rendered)
-    return f'<active_agents total="{total}" shown="{len(shortlist)}">\n{body}\n</active_agents>'
+    if related:
+        lines = [f"{record.name} | {agent_topic(record)} | {record.status}" for record in related]
+        body += (
+            "\n<more_agents_for_named_people>\n"
+            + escape("\n".join(lines), quote=False)
+            + "\n</more_agents_for_named_people>"
+        )
+    return f'<active_agents total="{total}" shown="{len(shortlist) + len(related)}">\n{body}\n</active_agents>'
+
+
+# A few words on what an agent is about: its email subject, else the start of its summary
+def agent_topic(record: AgentRecord, chars: int = 60) -> str:
+    subjects = record.entities.get("subject", [])
+    if subjects:
+        topic = re.sub(r"^\s*((re|fw|fwd)\s*:\s*)+", "", subjects[0], flags=re.IGNORECASE)
+    else:
+        topic = re.sub(r"^Task:\s*", "", record.summary.split("|")[0])
+    topic = " ".join(topic.split())
+    return topic if len(topic) <= chars else topic[: chars - 3].rstrip() + "..."
 
 
 # Wrap the current message in appropriate XML tags based on sender type

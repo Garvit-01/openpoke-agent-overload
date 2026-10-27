@@ -14,13 +14,13 @@ Same synthetic history (300 agents, 185 labelled follow-up messages), same simul
 | Duplicate agent created when the right one existed | 14.5% | 0.0% |
 | Wrong existing agent used | 36.6% | 8.3% |
 | Reused an old agent when a new one was right | 10.0% | 2.5% |
-| Roster tokens in every prompt (approx.) | 3,135 | 909 |
-| Roster tokens at 800 agents | 8,508 | 878 |
+| Roster tokens in every prompt (approx.) | 3,135 | 978 |
+| Roster tokens at 800 agents | 8,508 | 994 |
 | Multi-turn conversations with every turn right (26 conversations) | 34.6% | 100% |
-| **With a real model** (Claude Haiku 5.5, 40 cases × 3 runs): routed right | 57.5% | 95.0% |
-| Real model: duplicate agent created | 17.7% | 1.0% |
+| **With a real model** (Claude Haiku 5.5, 40 cases × 3 runs): routed right | 58.3% | 97.5% |
+| Real model: duplicate agent created | 15.6% | 3.1% |
 | Real model: cost per 1,000 routing decisions (whole prompt, measured) | $1.22 | $0.91 |
-| **Real model: paraphrased follow-ups** (4 cases × 3 runs), where the original does better | **75%** | **50%** |
+| **Real model: paraphrased follow-ups** (4 cases × 3 runs). The original was ahead (75% vs 50%) until change 12 | **75%** | **75%** |
 
 Over three random seeds the accuracy is 58.0% vs 92.4%. The rows above the real-model ones use a simulated router on synthetic data. The real-model run uses the same synthetic data. Read the "Limitations" section before quoting any of these numbers.
 
@@ -56,18 +56,21 @@ The idea: treat "which agent is this about?" as a retrieval problem, not a "read
 10. **Stable agent ids** (`ids.py`). The original log store named each agent's file after a slug of its name. "Email to Sarah", "email to sarah" and "Email-to-Sarah!" all wrote to `email-to-sarah.log`, so different agents read and wrote each other's history. Each agent now has an id made from a hash of its exact name, and its log file is named by that id. The id needs no lookup and stays the same across restarts. Old slug logs are moved to id files once at startup. When two agents shared one old file, the oldest keeps it, because the old store had already mixed the histories and they can't be split. The id also appears in the tool result and the routing log.
 11. **One run at a time per agent** (`batch_manager.py`). Before, two quick follow-ups to the same agent, or a reminder firing while you're talking to that agent, started two runs at once. Both read the same history and both could act, for example two drafts for one reply. Now a second run waits for the first and then sees its result. Different agents still run in parallel. The lock is shared by the chat path and the trigger scheduler, which creates its own batch manager for every trigger. The wait doesn't count against the 90 second timeout.
 
+12. **A named person's other agents** (`retrieval.py`, `interaction_agent/agent.py`). Added after the real-model eval showed the original beating the shortlist on paraphrases. When the message names a person, the prompt also lists up to 12 of that person's other agents as "name | topic | status". The topic is the email subject, or the start of the summary. A model can then match "first week schedule for the new hire" to "Onboarding Plan with Vera" by meaning, which keywords can't do, without the prompt going back to listing every agent.
+
 All of this is configurable in `server/config.py` (see "New settings" below).
 
 ## How I tested it
 
 ### Unit and integration tests: `python -m pytest`
 
-100 tests, about 30 seconds, no network, no API keys. They cover:
+105 tests, about a minute, no network, no API keys. They cover:
 
 - registry create, reuse, revive, entity lookup, persistence, and migration from `roster.json`
 - agent ids: the four names that used to share `email-to-sarah.log` now keep separate histories, and old slug logs are carried over without overwriting anything
 - the run lock: two requests to one agent run one after the other and the second sees the first's result, different agents still overlap, chat and trigger managers share the lock, waiting doesn't trip the timeout
 - retrieval: email beats keywords, two Sarahs told apart by topic, archived agents still found, the shortlist size is fixed
+- the named-people list: the Vera case from the real-model eval, where keywords leave the right agent out and the list brings it back. It only lists people the message names, never lists an agent twice, and is capped.
 - the resolver: each reuse rule, plus the cases where it must *not* merge (a new contact, an ambiguous name, a common address like the user's own, a new task flagged with `new_task`)
 - lifecycle: thresholds, never demoting trigger owners, revive on use
 - prompt budget: the roster section stays the same size from 20 to 1,000 agents, while the original grows linearly
@@ -134,7 +137,7 @@ From [evals/results/results.md](evals/results/results.md):
 | Email address | 20 | 20.0% | 100% | 100% |
 | Reminder | 15 | 100% | 100% | 100% |
 | Stale thread (archived) | 15 | 60.0% | 100% | 100% |
-| **Paraphrased topic** | 15 | 6.7% | **20.0%** | **60.0%** |
+| **Paraphrased topic** | 15 | 6.7% | **20.0%** | **100%** |
 | New person, same first name | 20 | 85.0% | 100% | n/a |
 | Genuinely new task | 20 | 95.0% | 95.0% | n/a |
 
@@ -142,11 +145,11 @@ As the roster grows:
 
 | Agents | Original accuracy | New accuracy | Original roster tokens | New roster tokens |
 |---|---|---|---|---|
-| 50 | 61.0% | 90.8% | 518 | 793 |
-| 100 | 58.0% | 92.5% | 1,044 | 848 |
-| 200 | 59.5% | 92.4% | 2,066 | 867 |
-| 400 | 51.9% | 91.9% | 4,183 | 882 |
-| 800 | 57.3% | 91.9% | 8,508 | 878 |
+| 50 | 61.0% | 90.8% | 518 | 813 |
+| 100 | 58.0% | 92.5% | 1,044 | 892 |
+| 200 | 59.5% | 92.4% | 2,066 | 924 |
+| 400 | 51.9% | 91.9% | 4,183 | 962 |
+| 800 | 57.3% | 91.9% | 8,508 | 994 |
 
 Multi-turn conversations (300 agents, seed 7):
 
@@ -166,53 +169,54 @@ What I take from this:
 - **Early mistakes spread.** In the original, when turn 1 picks the wrong Michael, "tell them Thursday works" goes to the wrong Michael too. Accuracy on turns 2+ is 59.1% for the original and 100% here.
 - **Most of the original's mistakes come from missing information, not a weak router.** "Email to Mila" and "Email to Mila Dimitrov" are the same person on two threads. Nothing in the names says which one is the travel itinerary.
 - **Duplicates went to zero on this set,** mostly because of the resolver.
-- **Paraphrases are the weak spot.** 11 of the 13 failures are paraphrases. Keyword retrieval can't connect "immigration forms" to "visa paperwork". Even here the right agent was in the shortlist 60% of the time, and a real model reading the summaries might make that connection. This is the case for adding embeddings.
-- **For small rosters my version uses more tokens** (793 vs 518 at 50 agents), because summaries are longer than bare names. It is already smaller at 100 agents (848 vs 1,044), so the crossover is somewhere between 50 and 100, and it stays flat after that.
+- **Paraphrases are the weak spot.** 11 of the 13 failures are paraphrases. Keyword retrieval can't connect "immigration forms" to "visa paperwork", and neither can the simulated router. Since change 12 the right agent is in the prompt for all 15 (60% before), at least by name and topic, so a real model can make the connection the simulated router can't. The real-model run below shows that it does in some cases.
+- **For small rosters my version uses more tokens** (813 vs 518 at 50 agents), because summaries are longer than bare names. It is already smaller at 100 agents (892 vs 1,044), so the crossover is somewhere between 50 and 100. After that it grows slowly, from 892 to 994 between 100 and 800 agents, because a named person has more agents to list. The 12-entry cap stops it there.
 - **The original barely gets worse with size in this simulation.** That's because the simulated router reads a list of 800 names as carefully as a list of 50. A real model may not. I've only run the real model at 300 agents, so this is still a hypothesis.
 
 ### With a real model
 
 `python -m evals.run_eval --router llm --limit 40 --repeats 3` on Claude Haiku 5.5 through OpenRouter. The 40 cases are spread across the 9 categories, and each case ran 3 times per version. Full output: [llm_results_anthropic-claude-haiku-5-5.md](evals/results/llm_results_anthropic-claude-haiku-5-5.md).
 
-| | Original OpenPoke | This change |
-|---|---|---|
-| Routed right (all runs) | 57.5% | 95.0% |
-| Cases right on all 3 runs | 52.5% | 95.0% |
-| Duplicate created | 17.7% | 1.0% |
-| False reuse | 12.5% | 0.0% |
-| Used `search_agents` | n/a | 5.8% |
-| Input tokens per decision | 9,854 | 6,943 |
-| Output tokens per decision (thinking included) | 461 (178) | 422 (143) |
-| Seconds per decision, p50 / p95 | 3.2 / 4.2 | 3.0 / 4.4 |
-| Cost per 1,000 decisions on Haiku 5.5 | $1.22 | $0.91 |
-| Same tokens priced on Sonnet 5.5 / Opus 5.5 (estimate, not run) | $24.32 / $48.64 | $18.10 / $36.21 |
+I ran it twice. The first run showed the original beating this change on paraphrases, so I added the named-people list (change 12) and ran it again on the same cases. Both columns for the original come from the same code, and the small difference between them is the model's own run-to-run variation.
+
+| | Original, run 1 | Original, run 2 | This change, run 1 | This change + named-people list, run 2 |
+|---|---|---|---|---|
+| Routed right (all runs) | 57.5% | 58.3% | 95.0% | **97.5%** |
+| Cases right on all 3 runs | 52.5% | 52.5% | 95.0% | 97.5% |
+| Duplicate created | 17.7% | 15.6% | 1.0% | 3.1% |
+| False reuse | 12.5% | 8.3% | 0.0% | 0.0% |
+| Used `search_agents` | n/a | n/a | 5.8% | 5.8% |
+| Input tokens per decision | 9,854 | 9,854 | 6,943 | 7,134 |
+| Output tokens per decision (thinking included) | 461 (178) | 476 (184) | 422 (143) | 399 (130) |
+| Seconds per decision, p50 / p95 | 3.2 / 4.2 | 3.4 / 4.5 | 3.0 / 4.4 | 2.9 / 4.7 |
+| Cost per 1,000 decisions on Haiku 5.5 | $1.22 | $1.22 | $0.91 | $0.91 |
+| Same tokens priced on Sonnet 5.5 / Opus 5.5 (estimate, not run) | $24.32 / $48.64 | $24.47 / $48.94 | $18.10 / $36.21 | $18.26 / $36.52 |
 
 By category (runs right, 4 or 5 cases × 3 runs each):
 
-| Category | Original | This change |
-|---|---|---|
-| Full name + topic | 60% | 100% |
-| Shared first name + topic | 40% | 100% |
-| Company + topic | 20% | 100% |
-| Email address | 20% | 100% |
-| Reminder | 100% | 100% |
-| Stale thread (archived) | 50% | 100% |
-| **Paraphrased topic** | **75%** | **50%** |
-| New person, same first name | 75% | 100% |
-| Genuinely new task | 100% | 100% |
+| Category | Original, run 2 | This change, run 1 | This change + named-people list, run 2 |
+|---|---|---|---|
+| Full name + topic | 60% | 100% | 100% |
+| Shared first name + topic | 40% | 100% | 100% |
+| Company + topic | 20% | 100% | 100% |
+| Email address | 20% | 100% | 100% |
+| Reminder | 100% | 100% | 100% |
+| Stale thread (archived) | 50% | 100% | 100% |
+| **Paraphrased topic** | **75%** | **50%** | **75%** |
+| New person, same first name | 83% | 100% | 100% |
+| Genuinely new task | 100% | 100% | 100% |
 
 What I take from this:
 
-- **The overall result holds with a real model.** 57.5% vs 95.0%, close to the simulated 57.8% vs 93.0%. The original's mistakes are the same kinds: 12 of its 15 email-address runs created a duplicate agent, because nothing in a bare name says which address it owns.
-- **The original does better than mine on paraphrases.** This is the opposite of the simulation, which scored the original at 6.7% there. The gap is one case out of four:
-  - "Any news from Vera about the first week schedule for the new hire?" should go to "Onboarding Plan with Vera". The original shows every name, and the model links "first week schedule for the new hire" to "Onboarding Plan". My shortlist left that agent out. Three reminders took slots because they share the words "new" and "schedule", while four other Vera agents filled the rest. The model then reused "Email to Vera Garcia", which is wrong on all 3 runs.
-  - "...what we're doing at the team retreat?" belongs to "Email to Michael Brown", whose thread is about the offsite agenda. Both versions miss it. Its name says nothing about the topic, and keywords can't link "team retreat" to "offsite".
-
-  So the simulated router was too harsh on the original for paraphrases. The first miss is a shortlist problem, and the second needs a match on meaning.
-- **The saving on the whole prompt is smaller than on the roster section.** The roster section shrinks by about 70% (3,135 to 909 tokens, simulated count). But both versions also send the system prompt and tool definitions on every call, and that part doesn't shrink. So the whole input drops 30% (9,854 to 6,943 tokens) and the bill 26%. The gap grows with the roster, because the original's list keeps growing and the shortlist doesn't.
-- **Speed is the same.** About 3 seconds per decision for both. The extra `search_agents` call costs time in the few cases that use it, and a shorter prompt saves a little. A real turn makes several model calls, so routing isn't where OpenPoke's slowness comes from.
-- **Haiku 5.5 thinks by default** on OpenRouter, about 150 tokens per decision. These are billed as output and are included in the costs above.
-- **It's a small sample.** 40 cases, 4 or 5 per category. One case flipping moves a category by 20 to 25 points, so read the per-category numbers as direction, not precision. The whole run cost about $0.26.
+- **The overall result holds with a real model.** 58.3% vs 97.5%, close to the simulated 57.8% vs 93.0%. The original's mistakes are the same kinds: 12 of its 15 email-address runs created a duplicate agent, because nothing in a bare name says which address it owns.
+- **In run 1 the original did better than mine on paraphrases (75% vs 50%).** This is the opposite of the simulation, which scored the original at 6.7% there. The gap was one case out of four: "Any news from Vera about the first week schedule for the new hire?" should go to "Onboarding Plan with Vera". The original shows every name, and the model links "first week schedule for the new hire" to "Onboarding Plan". My shortlist left that agent out. Three reminders took slots because they share the words "new" and "schedule", and four other Vera agents filled the rest. The model then reused "Email to Vera Garcia", wrong on all 3 runs. So the simulated router was too harsh on the original for paraphrases.
+- **The named-people list fixed it.** When the message names a person, the prompt now also lists that person's other agents as "name | topic | status". The model picked "Onboarding Plan with Vera" on all 3 runs, and paraphrases tied the original at 75%. It costs about 70 tokens per turn (909 to 978 roster tokens, simulated) and is capped at 12 entries.
+- **One paraphrase still fails in both versions.** "...what we're doing at the team retreat?" belongs to "Email to Michael Brown", whose thread is about the offsite agenda. With the fix, "Email to Michael Brown | offsite agenda | dormant" is in the prompt, but Haiku doesn't link "team retreat" to "offsite". That's now the model's judgement, not missing information. A stronger model, or embeddings ranking it into the detailed shortlist with its summary, might get it.
+- **Duplicates went up slightly, from 1.0% to 3.1%.** That's 3 of 96 runs, all the Michael case above, where the model created "Team Retreat Michael Update" instead of reusing an agent. In run 1 it mostly reused the wrong Michael instead. Same case, a different way of being wrong.
+- **The saving on the whole prompt is smaller than on the roster section.** The roster section shrinks by about 70% (3,135 to 978 tokens, simulated count). But both versions also send the system prompt and tool definitions on every call, and that part doesn't shrink. So the whole input drops 28% (9,854 to 7,134 tokens) and the bill 25%. The gap grows with the roster, because the original's list keeps growing and the shortlist doesn't.
+- **Speed is the same.** About 3 seconds per decision for both. The extra `search_agents` call costs time in the few cases that use it, and a shorter prompt saves a little. A real turn makes several model calls, so routing isn't where OpenPoke's slowness comes from. OpenRouter also spreads requests across several providers (Google Vertex, AWS, Azure, Anthropic), whose speeds differ, so timings are noisy.
+- **Haiku 5.5 thinks by default** on OpenRouter, about 130 to 180 tokens per decision. These are billed as output and are included in the costs above.
+- **It's a small sample.** 40 cases, 4 or 5 per category. One case flipping moves a category by 20 to 25 points, so read the per-category numbers as direction, not precision. Each run cost about $0.26.
 
 ## Other gaps I found
 
@@ -247,7 +251,7 @@ Not fixed, worth knowing:
 ## What I'd do next
 
 1. Extend the real-model eval to the multi-turn conversations, mainly to see whether the model sets `new_task`, and run it on more cases, a second model and the 800-agent roster.
-2. Add embeddings as an optional third signal, used only for ranking and never for merging. The paraphrase category is the metric to move, and the real-model run shows the original beating this change there.
+2. Add embeddings as an optional third signal, used only for ranking and never for merging. The paraphrase category is the metric to move. The named-people list only helps when the message names someone, and it shows a topic, not the full summary.
 3. Write model-generated summaries for agents with long histories.
 4. Add a merge tool for duplicates that already exist, plus clustering, so related agents share context.
 5. Turn routing log mistakes into new eval cases automatically.
@@ -260,7 +264,7 @@ The same shape shows up anywhere one front agent serves many long-running contex
 
 ```bash
 pip install -r server/requirements.txt pytest
-python -m pytest                       # 100 tests, no keys needed
+python -m pytest                       # 105 tests, no keys needed
 python -m evals.run_eval --quick       # one seed, about 15 seconds
 python -m evals.run_eval               # full run, about 2 minutes, writes evals/results/
 python -m evals.run_eval --router llm --limit 1 --repeats 1    # check the key and model, costs under a cent
@@ -276,6 +280,7 @@ The real-model eval uses `anthropic/claude-haiku-5.5` unless you pass `--model`.
 | `OPENPOKE_AGENT_SHORTLIST` | 8 | Agents retrieved per turn |
 | `OPENPOKE_AGENT_RECENT` | 4 | Recently used agents added per turn |
 | `OPENPOKE_AGENT_SUMMARY_CHARS` | 200 | Summary length shown per agent |
+| `OPENPOKE_AGENT_NAMED_PEOPLE` | 12 | Other agents of a named person listed by name and topic (0 = off) |
 | `OPENPOKE_AGENT_DORMANT_DAYS` / `OPENPOKE_AGENT_ARCHIVE_DAYS` | 14 / 45 | Idle days before demotion |
 | `OPENPOKE_EXECUTION_HISTORY_LIMIT` | 10 | Past requests an execution agent sees (0 = all) |
 | `OPENPOKE_OUTBOUND_GUARD` | enforce | `off` disables the send guard |
@@ -297,7 +302,7 @@ server/services/execution/
 server/agents/execution_agent/batch_manager.py   per-agent run lock
 server/services/safety/outbound.py   send confirmation guard
 evals/            scenario generator (single-turn + conversations), baseline copy, harness, real-model mode, results
-tests/            100 tests
+tests/            105 tests
 ```
 
 ---

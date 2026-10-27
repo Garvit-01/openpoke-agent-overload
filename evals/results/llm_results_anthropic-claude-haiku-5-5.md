@@ -4,14 +4,14 @@
 
 | Metric | Original OpenPoke | This change |
 |---|---|---|
-| Accuracy (all runs) | 57.5% | 95.0% |
-| Cases right on every repeat | 52.5% | 95.0% |
-| Duplicate created | 17.7% | 1.0% |
-| False reuse | 12.5% | 0.0% |
+| Accuracy (all runs) | 58.3% | 97.5% |
+| Cases right on every repeat | 52.5% | 97.5% |
+| Duplicate created | 15.6% | 3.1% |
+| False reuse | 8.3% | 0.0% |
 | Model did not route at all | 0.0% | 0.0% |
 | Used search_agents | 0.0% | 5.8% |
-| Prompt tokens, first call (from API usage) | 9,854 | 6,517 |
-| Seconds per routing decision, p50 / p95 | 3.2 / 4.2 | 3.0 / 4.4 |
+| Prompt tokens, first call (from API usage) | 9,854 | 6,690 |
+| Seconds per routing decision, p50 / p95 | 3.4 / 4.5 | 2.9 / 4.7 |
 
 Seconds cover every model call for the decision and depend on the provider's load that day, so compare the two columns with each other, not with other runs.
 
@@ -19,9 +19,9 @@ Seconds cover every model call for the decision and depend on the provider's loa
 
 | | Original OpenPoke | This change |
 |---|---|---|
-| Input tokens per routing decision | 9,854 | 6,943 |
-| Output tokens per routing decision | 461 | 422 |
-| of which thinking tokens | 178 | 143 |
+| Input tokens per routing decision | 9,854 | 7,134 |
+| Output tokens per routing decision | 476 | 399 |
+| of which thinking tokens | 184 | 130 |
 | Model calls per routing decision | 1.00 | 1.06 |
 | Cost per 1,000 routing decisions | $1.22 | $0.91 |
 | Cost of this run | $0.15 | $0.11 |
@@ -32,6 +32,6 @@ The token counts measured on anthropic/claude-haiku-5.5, priced at each model's 
 
 | Model | Input / output $ per million | Original, per 1,000 decisions | This change, per 1,000 decisions | Saving |
 |---|---|---|---|---|
-| anthropic/claude-haiku-5.5 | $0.10 / $0.50 | $1.22 | $0.91 | 26% |
-| anthropic/claude-sonnet-5.5 | $2.00 / $10.00 | $24.32 | $18.10 | 26% |
-| anthropic/claude-opus-5.5 | $4.00 / $20.00 | $48.64 | $36.21 | 26% |
+| anthropic/claude-haiku-5.5 | $0.10 / $0.50 | $1.22 | $0.91 | 25% |
+| anthropic/claude-sonnet-5.5 | $2.00 / $10.00 | $24.47 | $18.26 | 25% |
+| anthropic/claude-opus-5.5 | $4.00 / $20.00 | $48.94 | $36.52 | 25% |

@@ -175,6 +175,29 @@ class AgentRetriever:
                 added += 1
         return shortlist
 
+    # Other agents of a person the message names, listed by name and topic only. The original prompt
+    # showed every name, which let a model link "the new hire's first week" to "Onboarding Plan with
+    # Vera" by meaning. Keywords can't, so this keeps that for the people in the message.
+    def named_people_agents(
+        self,
+        query: str,
+        *,
+        exclude: Iterable[str] = (),
+        limit: int = 12,
+    ) -> List[AgentRecord]:
+        query_tokens = set(tokenize(query))
+        if not query_tokens or limit <= 0:
+            return []
+        skip = set(exclude)
+        matched = [
+            record
+            for record in self._registry.list_agents()
+            if record.name not in skip
+            and query_tokens & set(tokenize(" ".join(record.entities.get("person", []))))
+        ]
+        matched.sort(key=lambda record: record.last_active_at, reverse=True)
+        return matched[:limit]
+
     @staticmethod
     def _hard_matches(query: str, records: Sequence[AgentRecord]) -> Dict[str, List[str]]:
         query_entities = extract_entities(query)

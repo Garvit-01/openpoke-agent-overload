@@ -61,6 +61,8 @@ class Settings(BaseModel):
     agent_shortlist_retrieved: int = Field(default=_env_int("OPENPOKE_AGENT_SHORTLIST", 8))
     agent_shortlist_recent: int = Field(default=_env_int("OPENPOKE_AGENT_RECENT", 4))
     agent_summary_chars: int = Field(default=_env_int("OPENPOKE_AGENT_SUMMARY_CHARS", 200))
+    # Other agents of a person the message names, listed by name and topic only (0 = off)
+    agent_named_people_limit: int = Field(default=_env_int("OPENPOKE_AGENT_NAMED_PEOPLE", 12))
 
     # Agent lifecycle (idle days before an agent is demoted; agents with active triggers are never demoted)
     agent_dormant_after_days: int = Field(default=_env_int("OPENPOKE_AGENT_DORMANT_DAYS", 14))

@@ -29,7 +29,7 @@ from datetime import timedelta
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Set, Tuple
 
-from server.agents.interaction_agent.agent import render_agent_shortlist
+from server.agents.interaction_agent.agent import agent_topic, render_agent_shortlist
 from server.services.execution.entities import EMAIL_PATTERN, extract_entities, tokenize
 from server.services.execution.lifecycle import LifecyclePolicy, apply_lifecycle
 from server.services.execution.registry import AgentRecord, AgentRegistry, to_iso
@@ -55,6 +55,7 @@ from .scenarios import (
 
 SHORTLIST_RETRIEVED = 8
 SHORTLIST_RECENT = 4
+NAMED_PEOPLE_LIMIT = 12
 SUMMARY_CHARS = 200
 CHARS_PER_TOKEN = 4  # rough English average; good enough to compare two prompts
 
@@ -263,8 +264,15 @@ class SolutionArm:
     def shortlist(self, message: str) -> List[ScoredAgent]:
         return self.retriever.shortlist(message, retrieved=SHORTLIST_RETRIEVED, recent=SHORTLIST_RECENT)
 
+    def related(self, message: str, shortlist: Sequence[ScoredAgent]) -> List[AgentRecord]:
+        exclude = [item.name for item in shortlist]
+        return self.retriever.named_people_agents(message, exclude=exclude, limit=NAMED_PEOPLE_LIMIT)
+
     def roster_section(self, message: str) -> str:
-        return render_agent_shortlist(self.shortlist(message), total=self.total, summary_chars=SUMMARY_CHARS)
+        shortlist = self.shortlist(message)
+        return render_agent_shortlist(
+            shortlist, total=self.total, summary_chars=SUMMARY_CHARS, related=self.related(message, shortlist)
+        )
 
     def search(self, query: str) -> List[ScoredAgent]:
         return self.retriever.search(query, limit=8)
@@ -276,8 +284,11 @@ class SolutionArm:
     def route(self, case: Case, router: SimulatedRouter) -> Decision:
         started = time.perf_counter()
         shortlist = self.shortlist(case.message)
-        roster = render_agent_shortlist(shortlist, total=self.total, summary_chars=SUMMARY_CHARS)
-        choice = router.choose(case.message, [(item.name, visible_text(item)) for item in shortlist])
+        related = self.related(case.message, shortlist)
+        roster = render_agent_shortlist(shortlist, total=self.total, summary_chars=SUMMARY_CHARS, related=related)
+        visible = [(item.name, visible_text(item)) for item in shortlist]
+        visible += [(record.name, f"{record.name} {agent_topic(record)}") for record in related]
+        choice = router.choose(case.message, visible)
         used_search = False
         if choice is None:
             # Nothing on the shortlist fits: the prompt tells the model to call search_agents
@@ -288,7 +299,8 @@ class SolutionArm:
 
         in_shortlist = in_search = None
         if case.gold != NEW:
-            in_shortlist = case.gold in {item.name for item in shortlist}
+            # In the prompt at all: the detailed shortlist or the named-people list
+            in_shortlist = case.gold in {item.name for item in shortlist} | {record.name for record in related}
             in_search = case.gold in {item.name for item in self.search(case.message)}
         return Decision(
             case_id=case.id, category=case.category, gold=case.gold, chosen=chosen, reason=reason,
@@ -391,7 +403,12 @@ def run_solution_conversation(
             choice = router.choose(turn.message, [(r.name, f"{r.name} {r.summary}") for r in seen if r])
         if choice is None and not new_task:
             shortlist = retriever.shortlist(turn.message, retrieved=SHORTLIST_RETRIEVED, recent=SHORTLIST_RECENT)
-            choice = router.choose(turn.message, [(item.name, visible_text(item)) for item in shortlist])
+            visible = [(item.name, visible_text(item)) for item in shortlist]
+            related = retriever.named_people_agents(
+                turn.message, exclude=[item.name for item in shortlist], limit=NAMED_PEOPLE_LIMIT
+            )
+            visible += [(record.name, f"{record.name} {agent_topic(record)}") for record in related]
+            choice = router.choose(turn.message, visible)
         if choice is None and not new_task:
             found = retriever.search(turn.message, limit=8)
             choice = router.choose(turn.message, [(item.name, visible_text(item)) for item in found])
