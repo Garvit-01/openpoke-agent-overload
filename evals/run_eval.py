@@ -265,7 +265,8 @@ def parse_args(argv=None):
     parser.add_argument("--thresholds", type=float, nargs="+", default=[0.5, 0.6, 0.75])
     parser.add_argument("--quick", action="store_true")
     # LLM router options
-    parser.add_argument("--model", default="anthropic/claude-sonnet-4")
+    # OpenRouter no longer serves claude-sonnet-4 (the app's default), so the eval uses a current model
+    parser.add_argument("--model", default="anthropic/claude-haiku-5.5")
     parser.add_argument("--limit", type=int, default=40, help="LLM mode: number of cases (cost control)")
     parser.add_argument("--repeats", type=int, default=3, help="LLM mode: runs per case, to report a pass rate")
     parser.add_argument("--concurrency", type=int, default=4)

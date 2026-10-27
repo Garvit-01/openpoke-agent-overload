@@ -54,6 +54,7 @@ async def request_chat_completion(
     api_key: Optional[str] = None,
     tools: Optional[List[Dict[str, Any]]] = None,
     base_url: str = OpenRouterBaseURL,
+    max_tokens: Optional[int] = None,
 ) -> Dict[str, Any]:
     """Request a chat completion and return the raw JSON payload."""
 
@@ -64,6 +65,9 @@ async def request_chat_completion(
     }
     if tools:
         payload["tools"] = tools
+    # Without a cap OpenRouter reserves the model's full output limit against the balance
+    if max_tokens:
+        payload["max_tokens"] = max_tokens
 
     url = f"{base_url.rstrip('/')}/chat/completions"
 

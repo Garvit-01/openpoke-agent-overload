@@ -17,8 +17,11 @@ Same synthetic history (300 agents, 185 labelled follow-up messages), same simul
 | Roster tokens in every prompt (approx.) | 3,135 | 909 |
 | Roster tokens at 800 agents | 8,508 | 878 |
 | Multi-turn conversations with every turn right (26 conversations) | 34.6% | 100% |
+| **With a real model** (Claude Haiku 5.5, 40 cases × 3 runs): routed right | 57.5% | 95.0% |
+| Real model: duplicate agent created | 17.7% | 1.0% |
+| Real model: cost per 1,000 routing decisions (whole prompt, measured) | $1.22 | $0.91 |
 
-Over three random seeds the accuracy is 58.0% vs 92.4%. Read the "Limitations" section before quoting these numbers. The data is synthetic and the router is a simulation, and I explain below what that does and does not prove.
+Over three random seeds the accuracy is 58.0% vs 92.4%. The rows above the real-model ones use a simulated router on synthetic data. The real-model run uses the same synthetic data. Read the "Limitations" section before quoting any of these numbers.
 
 ## The problem, in the code
 
@@ -58,7 +61,7 @@ All of this is configurable in `server/config.py` (see "New settings" below).
 
 ### Unit and integration tests: `python -m pytest`
 
-99 tests, about 30 seconds, no network, no API keys. They cover:
+100 tests, about 30 seconds, no network, no API keys. They cover:
 
 - registry create, reuse, revive, entity lookup, persistence, and migration from `roster.json`
 - agent ids: the four names that used to share `email-to-sarah.log` now keep separate histories, and old slug logs are carried over without overwriting anything
@@ -116,7 +119,7 @@ My first version of the router was unfair to the original code. It would create 
 
 Every failure is listed, so it can be checked by hand.
 
-**With a real model: `python -m evals.run_eval --router llm`.** This sends each arm's real prompt and tools through OpenRouter: the original system prompt and tools for the baseline, and the current ones for this branch. It applies each arm's reuse rule to the model's choice. Each case runs several times, because model output is not deterministic. It reports mean accuracy and the share of cases that were right on every repeat, with prompt tokens taken from the API's usage field. It costs money, so by default it runs 40 cases × 3 repeats. **I have not run this yet.** Its results will be in `evals/results/llm_results.md`.
+**With a real model: `python -m evals.run_eval --router llm`.** This sends each arm's real prompt and tools through OpenRouter: the original system prompt and tools for the baseline, and the current ones for this branch. It applies each arm's reuse rule to the model's choice. Each case runs several times, because model output is not deterministic. It reports mean accuracy and the share of cases that were right on every repeat, with prompt tokens taken from the API's usage field. It also records input, output and thinking tokens over every call, the cost at OpenRouter's live list prices, and the seconds per decision. It costs money, so by default it runs 40 cases × 3 repeats. Results are written per model, for example [evals/results/llm_results_anthropic-claude-haiku-5-5.md](evals/results/llm_results_anthropic-claude-haiku-5-5.md). See "With a real model" below.
 
 ## Results
 
@@ -164,7 +167,47 @@ What I take from this:
 - **Duplicates went to zero on this set,** mostly because of the resolver.
 - **Paraphrases are the weak spot.** 11 of the 13 failures are paraphrases. Keyword retrieval can't connect "immigration forms" to "visa paperwork". Even here the right agent was in the shortlist 60% of the time, and a real model reading the summaries might make that connection. This is the case for adding embeddings.
 - **For small rosters my version uses more tokens** (793 vs 518 at 50 agents), because summaries are longer than bare names. It is already smaller at 100 agents (848 vs 1,044), so the crossover is somewhere between 50 and 100, and it stays flat after that.
-- **The original barely gets worse with size in this simulation.** That's because the simulated router reads a list of 800 names as carefully as a list of 50. A real model does not, so I'd expect the real-model run to show a bigger drop for the original. That's a hypothesis until the LLM eval is run.
+- **The original barely gets worse with size in this simulation.** That's because the simulated router reads a list of 800 names as carefully as a list of 50. A real model may not. I've only run the real model at 300 agents, so this is still a hypothesis.
+
+### With a real model
+
+`python -m evals.run_eval --router llm --limit 40 --repeats 3` on Claude Haiku 5.5 through OpenRouter. The 40 cases are spread across the 9 categories, and each case ran 3 times per version. Full output: [llm_results_anthropic-claude-haiku-5-5.md](evals/results/llm_results_anthropic-claude-haiku-5-5.md).
+
+| | Original OpenPoke | This change |
+|---|---|---|
+| Routed right (all runs) | 57.5% | 95.0% |
+| Cases right on all 3 runs | 52.5% | 95.0% |
+| Duplicate created | 17.7% | 1.0% |
+| False reuse | 12.5% | 0.0% |
+| Used `search_agents` | n/a | 5.8% |
+| Input tokens per decision | 9,854 | 6,943 |
+| Output tokens per decision (thinking included) | 461 (178) | 422 (143) |
+| Seconds per decision, p50 / p95 | 3.2 / 4.2 | 3.0 / 4.4 |
+| Cost per 1,000 decisions on Haiku 5.5 | $1.22 | $0.91 |
+| Same tokens priced on Sonnet 5.5 / Opus 5.5 | $24.32 / $48.64 | $18.10 / $36.21 |
+
+By category (runs right, 4 or 5 cases × 3 runs each):
+
+| Category | Original | This change |
+|---|---|---|
+| Full name + topic | 60% | 100% |
+| Shared first name + topic | 40% | 100% |
+| Company + topic | 20% | 100% |
+| Email address | 20% | 100% |
+| Reminder | 100% | 100% |
+| Stale thread (archived) | 50% | 100% |
+| **Paraphrased topic** | **75%** | **50%** |
+| New person, same first name | 75% | 100% |
+| Genuinely new task | 100% | 100% |
+
+What I take from this:
+
+- **The overall result holds with a real model.** 57.5% vs 95.0%, close to the simulated 57.8% vs 93.0%. The original's mistakes are the same kinds: 12 of its 15 email-address runs created a duplicate agent, because nothing in a bare name says which address it owns.
+- **The original does better than mine on paraphrases.** This is the opposite of the simulation, which scored the original at 6.7% there. Seeing all 300 names, the model connects "the onboarding plan" to the right agent. My shortlist sometimes leaves that agent out. The model then reuses a look-alike instead ("Email to Vera Garcia" for "Onboarding Plan with Vera") or picks the wrong Michael. It used `search_agents` in only some of those runs. So the simulated router was too harsh on the original for paraphrases, and this is the strongest case for adding embeddings to the shortlist.
+- **The saving on the whole prompt is smaller than on the roster section.** The roster section shrinks by about 70% (3,135 to 909 tokens, simulated count). But both versions also send the system prompt and tool definitions on every call, and that part doesn't shrink. So the whole input drops 30% (9,854 to 6,943 tokens) and the bill 26%. The gap grows with the roster, because the original's list keeps growing and the shortlist doesn't.
+- **Speed is the same.** About 3 seconds per decision for both. The extra `search_agents` call costs time in the few cases that use it, and a shorter prompt saves a little. A real turn makes several model calls, so routing isn't where OpenPoke's slowness comes from.
+- **Haiku 5.5 thinks by default** on OpenRouter, about 150 tokens per decision. These are billed as output and are included in the costs above.
+- **It's a small sample.** 40 cases, 4 or 5 per category. One case flipping moves a category by 20 to 25 points, so read the per-category numbers as direction, not precision. The whole run cost about $0.26.
 
 ## Other gaps I found
 
@@ -185,12 +228,13 @@ Not fixed, worth knowing:
 - All results from one batch wait for the slowest agent, for up to 90 seconds, before the user hears about any of them.
 - A request is written to the agent's log when it's sent, not when its run starts. So a run can see a request that is still waiting behind it in its history. This was already true before the lock.
 - There were no tests in the original repo. There are now, but only for the parts I touched.
+- **The default model no longer exists on OpenRouter.** Every role defaults to `anthropic/claude-sonnet-4`, which OpenRouter has retired, so a fresh install fails on the first chat message with a 404. This is true of the original and of this branch. The workaround is to set the five `OPENPOKE_*_MODEL` env vars to a current model. The eval defaults to `anthropic/claude-haiku-5.5` for this reason.
 
 ## Limitations
 
 - **The data is synthetic.** I generated it to contain known failure modes. Real inboxes are messier, and real users paraphrase more than my 15 cases.
-- **The headline numbers use a simulated router.** It measures what each version gives the model and how each reuses agents, not how a real model behaves. The real-model mode exists for that and has not been run yet.
-- **The multi-turn numbers are kind to both versions.** The simulated router always resolves "send it" and "the first one" correctly. A real model can lose track. The real-model mode only runs single-turn cases so far.
+- **Most numbers use a simulated router.** It measures what each version gives the model and how each reuses agents, not how a real model behaves. The real-model run agrees on the overall result but not on paraphrases (see above). It covers one model, one roster size (300) and 40 cases.
+- **The multi-turn numbers are kind to both versions.** The simulated router always resolves "send it" and "the first one" correctly. A real model can lose track. The real-model mode only runs single-turn cases so far, so it doesn't yet show whether a model sets `new_task`.
 - **Token counts are characters ÷ 4,** and cost uses an assumed $3 per million input tokens. Both are fine for comparing the two versions, not for exact billing.
 - **Retrieval is keyword based,** so paraphrases fail (see above). The BM25 index is rebuilt on each call. That's fine for thousands of agents, but at 100k you'd want SQLite FTS5 or a vector index.
 - **The lifecycle thresholds (14 and 45 days) and the shortlist size (8 + 4) are reasonable defaults,** not tuned values.
@@ -198,8 +242,8 @@ Not fixed, worth knowing:
 
 ## What I'd do next
 
-1. Run the real-model eval and add its numbers here, then extend it to the multi-turn conversations, mainly to see whether the model sets `new_task`.
-2. Add embeddings as an optional third signal, used only for ranking and never for merging. The paraphrase category is the metric to move.
+1. Extend the real-model eval to the multi-turn conversations, mainly to see whether the model sets `new_task`, and run it on more cases, a second model and the 800-agent roster.
+2. Add embeddings as an optional third signal, used only for ranking and never for merging. The paraphrase category is the metric to move, and the real-model run shows the original beating this change there.
 3. Write model-generated summaries for agents with long histories.
 4. Add a merge tool for duplicates that already exist, plus clustering, so related agents share context.
 5. Turn routing log mistakes into new eval cases automatically.
@@ -212,11 +256,14 @@ The same shape shows up anywhere one front agent serves many long-running contex
 
 ```bash
 pip install -r server/requirements.txt pytest
-python -m pytest                       # 99 tests, no keys needed
+python -m pytest                       # 100 tests, no keys needed
 python -m evals.run_eval --quick       # one seed, about 15 seconds
 python -m evals.run_eval               # full run, about 2 minutes, writes evals/results/
-python -m evals.run_eval --router llm --limit 40 --repeats 3   # needs OPENROUTER_API_KEY, costs money
+python -m evals.run_eval --router llm --limit 1 --repeats 1    # check the key and model, costs under a cent
+python -m evals.run_eval --router llm --limit 40 --repeats 3   # needs OPENROUTER_API_KEY, about $0.30 on Haiku 5.5
 ```
+
+The real-model eval uses `anthropic/claude-haiku-5.5` unless you pass `--model`. Your OpenRouter account needs credits: a key's "limit" is a spending cap, not a balance.
 
 ### New settings (env vars, all optional)
 
@@ -246,7 +293,7 @@ server/services/execution/
 server/agents/execution_agent/batch_manager.py   per-agent run lock
 server/services/safety/outbound.py   send confirmation guard
 evals/            scenario generator (single-turn + conversations), baseline copy, harness, real-model mode, results
-tests/            99 tests
+tests/            100 tests
 ```
 
 ---

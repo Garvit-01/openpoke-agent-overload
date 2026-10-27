@@ -7,7 +7,7 @@ import json
 import pytest
 
 from evals.harness import SimulatedRouter, run_simulated
-from evals.llm import NO_ROUTE, evaluate_llm, sample_cases, summarise
+from evals.llm import NO_ROUTE, cost_lines, cost_per_1k, evaluate_llm, sample_cases, summarise
 from evals.scenarios import NEW, build_scenario
 
 
@@ -100,6 +100,25 @@ def test_llm_loop_with_a_fake_model(scenario, tmp_path):
     assert summary["solution"]["prompt_tokens_mean"] == 900
     assert summary["baseline"]["no_route_rate"] == 0.0
     assert NO_ROUTE not in {o.chosen for o in outcomes}
+    # Tokens and calls are summed over every call: the solution arm searched first (900) then routed (3000)
+    assert summary["solution"]["input_tokens_per_decision"] == 3900
+    assert summary["solution"]["calls_per_decision"] == 2
+    assert summary["baseline"]["input_tokens_per_decision"] == 3000
+    assert summary["baseline"]["calls_per_decision"] == 1
+
+
+def test_cost_tables_price_the_measured_tokens():
+    arm = {"runs": 10, "input_tokens_per_decision": 4000, "output_tokens_per_decision": 100, "calls_per_decision": 1.0}
+    small = {**arm, "input_tokens_per_decision": 2000}
+    # $1 per million input, $5 per million output: 4,000 x 1e-6 + 100 x 5e-6 = $0.0045 per decision
+    assert cost_per_1k(arm, (1e-6, 5e-6)) == pytest.approx(4.5)
+
+    prices = {"anthropic/claude-haiku-5.5": (1e-6, 5e-6), "anthropic/claude-opus-5.5": (4e-6, 2e-5)}
+    lines = "\n".join(cost_lines({"baseline": arm, "solution": small}, prices, "anthropic/claude-haiku-5.5"))
+    assert "| Cost per 1,000 routing decisions | $4.50 | $2.50 |" in lines
+    assert "| anthropic/claude-opus-5.5 |" in lines
+    assert "44%" in lines  # 1 - 2.5 / 4.5
+    assert cost_lines({"baseline": arm, "solution": small}, {}, "x") == []
 
 
 def test_conversation_labels_are_sound(scenario):
