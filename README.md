@@ -135,7 +135,7 @@ Not fixed, worth knowing:
 
 ## Next steps
 
-1. **Finish measuring the alternatives** (below): real-model runs for meaning search (about $0.41), and one same-day run of each branch so the real-model numbers compare cleanly. Not tried yet: the router seeing 30 candidates instead of 12, and the original full list with prompt caching on, to answer "with caching, why retrieve?".
+1. **Merge the alternatives into this branch** once someone has looked at them, then rerun the real-model comparison once more to see which 1-case differences repeat. Not tried yet: the router seeing 30 candidates instead of 12, and the original full list with prompt caching on, to answer "with caching, why retrieve?".
 2. Run the real-model eval on the multi-turn conversations, mainly to see how often the model sets `new_task`.
 3. Use recent context for first names: prefer the Sarah from the last few turns, but still ask before sending.
 4. Turn routing-log mistakes into eval cases.
