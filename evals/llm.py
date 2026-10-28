@@ -37,9 +37,11 @@ from server.agents.interaction_agent.tools import get_tool_schemas
 
 from .baseline import ORIGINAL_SYSTEM_PROMPT, original_tool_schemas
 from .harness import BaselineArm, SolutionArm
-from .scenarios import NEW, Case, Scenario, build_scenario
+from .scenarios import NEW, PAST_REQUEST, Case, Scenario, build_scenario
 from .stats import majority_right, paired_lines
 
+# Categories added after the first real-model runs: kept out of sample_cases, appended by added_cases
+ADDED_CATEGORIES = {PAST_REQUEST}
 NO_ROUTE = "__NO_ROUTE__"
 NEW_TASK_MARK = " [new_task]"
 MAX_STEPS = 4
@@ -166,10 +168,16 @@ async def ask_model(
 
 
 def sample_cases(scenario: Scenario, limit: int, seed: int) -> List[Case]:
-    """Spread the limited budget evenly across categories."""
+    """Spread the limited budget evenly across categories.
+
+    Categories added after the first real-model runs are left out, so the sample (and so the
+    results) stay comparable with those runs. added_cases() appends them on top.
+    """
     rng = random.Random(seed)
     by_category: Dict[str, List[Case]] = {}
     for case in scenario.cases:
+        if case.category in ADDED_CATEGORIES:
+            continue
         by_category.setdefault(case.category, []).append(case)
     for cases in by_category.values():
         rng.shuffle(cases)
@@ -179,6 +187,27 @@ def sample_cases(scenario: Scenario, limit: int, seed: int) -> List[Case]:
             if by_category[name] and len(picked) < limit:
                 picked.append(by_category[name].pop())
     return picked
+
+
+def added_cases(scenario: Scenario, count: int) -> List[Case]:
+    """The first `count` cases of each added category (they alternate item-only / named, so this is balanced)."""
+    picked: List[Case] = []
+    for category in sorted(ADDED_CATEGORIES):
+        picked += [case for case in scenario.cases if case.category == category][:count]
+    return picked
+
+
+def category_lines(outcomes: Sequence[LLMOutcome]) -> List[str]:
+    """Accuracy per category and arm (all runs)."""
+    lines = ["| Category | Cases | Original OpenPoke | This change |", "|---|---|---|---|"]
+    for category in sorted({o.category for o in outcomes}):
+        rows = [o for o in outcomes if o.category == category]
+        cells = []
+        for arm in ("baseline", "solution"):
+            arm_rows = [o for o in rows if o.arm == arm]
+            cells.append(f"{statistics.fmean(o.correct for o in arm_rows) * 100:.1f}%" if arm_rows else "n/a")
+        lines.append(f"| {category} | {len({o.case_id for o in rows})} | {cells[0]} | {cells[1]} |")
+    return lines
 
 
 async def evaluate_llm(
@@ -384,6 +413,8 @@ def run_llm(args) -> None:
         stem += f"_{args.agents}agents"
     if getattr(args, "phrases", False):
         stem += "_phrases"
+    if getattr(args, "tag", ""):
+        stem += f"_{args.tag}"
     saved = RESULTS_DIR / f"{stem}.json"
     if args.rescore:
         # Re-report a saved run (new metrics, fixed formatting) without paying for the model calls again
@@ -403,7 +434,7 @@ def run_llm(args) -> None:
             scenario = build_paraphrase_scenario(args.agents, seed=args.seed)
         else:
             scenario = build_scenario(args.agents, seed=args.seed)
-        cases = sample_cases(scenario, args.limit, args.seed)
+        cases = sample_cases(scenario, args.limit, args.seed) + added_cases(scenario, getattr(args, "added_cases", 0))
         case_count = len(cases)
         print(f"Running {case_count} cases x {args.repeats} repeats x 2 arms on {args.model} ...")
         # A routing decision is a short tool call; the cap stops OpenRouter reserving 65k output tokens per request
@@ -426,10 +457,14 @@ def run_llm(args) -> None:
     def pct(value):
         return "n/a" if value is None else f"{value * 100:.1f}%"
 
+    added = sorted({o.case_id for o in outcomes if o.category in ADDED_CATEGORIES})
     lines = [
         f"# LLM routing evaluation ({args.model})",
         "",
         f"{case_count} cases (spread across categories) x {args.repeats} repeats, {args.agents} agents, seed {args.seed}.",
+        f"Past requests indexed (OPENPOKE_AGENT_INDEX_REQUESTS): {'on' if get_settings().agent_index_requests else 'off'}."
+        + (f" {len(added)} cases of the added categories ({', '.join(sorted(ADDED_CATEGORIES))}) are appended "
+           "to the usual sample." if added else ""),
         "",
         "| Metric | Original OpenPoke | This change |",
         "|---|---|---|",
@@ -461,6 +496,20 @@ def run_llm(args) -> None:
         f"A case counts as right when more than half of its {args.repeats} runs were right.", "",
         *paired_lines(by_arm["baseline"], by_arm["solution"]),
     ]
+    if added:
+        # The usual sample on its own, comparable with runs made before the added categories existed
+        usual = {arm: {case: right for case, right in cases.items() if case not in added} for arm, cases in by_arm.items()}
+        usual_rows = [o for o in outcomes if o.case_id not in added]
+        usual_summary = summarise(usual_rows)
+        lines += [
+            "", f"### The usual {len(usual['solution'])}-case sample only", "",
+            f"Accuracy (all runs): {pct(usual_summary['baseline']['accuracy'])} original, "
+            f"{pct(usual_summary['solution']['accuracy'])} this change. "
+            f"Right on all repeats: {pct(usual_summary['baseline']['all_repeats_correct'])} original, "
+            f"{pct(usual_summary['solution']['all_repeats_correct'])} this change.", "",
+            *paired_lines(usual["baseline"], usual["solution"]),
+        ]
+    lines += ["", "## By category", "", *category_lines(outcomes)]
     lines += cost_lines(summary, fetch_prices(), args.model)
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     (RESULTS_DIR / f"{stem}.md").write_text("\n".join(lines) + "\n", encoding="utf-8")

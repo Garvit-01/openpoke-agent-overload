@@ -67,6 +67,9 @@ class Settings(BaseModel):
     # task, so keyword search can find it by meaning (one cheap call per agent, off the reply path)
     agent_search_phrases: bool = Field(default=os.getenv("OPENPOKE_AGENT_PHRASES", "1") != "0")
     agent_phrases_model: str = Field(default=os.getenv("OPENPOKE_PHRASES_MODEL", "anthropic/claude-haiku-5.5"))
+    # Past requests: keyword search also reads the last 20 requests sent to each agent (at a lower weight),
+    # so a follow-up about something asked mid-history still finds the agent. Search only, never a merge signal.
+    agent_index_requests: bool = Field(default=os.getenv("OPENPOKE_AGENT_INDEX_REQUESTS", "1") != "0")
 
     # Agent lifecycle (idle days before an agent is demoted; agents with active triggers are never demoted)
     agent_dormant_after_days: int = Field(default=_env_int("OPENPOKE_AGENT_DORMANT_DAYS", 14))

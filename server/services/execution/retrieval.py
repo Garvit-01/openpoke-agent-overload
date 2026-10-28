@@ -4,6 +4,11 @@ Rule: exact entity matches (same email address, same Gmail thread id) are hard
 signals and always rank first. Keyword similarity (BM25 over name, summary and
 entities) only orders agents within those groups. Similarity can say "what is
 this about", but only an exact entity can say "which thread is this".
+
+Past requests (the last 20 sent to each agent) are a second, weaker field: each
+word counts once, words the name/summary/entities already have are left out, and
+the field has its own BM25 score added at REQUEST_WEIGHT. The resolver never asks
+for them, so they help find an agent but never decide a merge.
 """
 
 from __future__ import annotations
@@ -36,6 +41,10 @@ RECENCY_BOOST = 0.05  # at most +5% for an agent used right now, halving every t
 RECENCY_HALF_LIFE_DAYS = 14.0
 # Words this common (e.g. "latest" in every summary) are not shown as reasons for a match
 MIN_REASON_IDF = 0.5
+# Past requests count for half: one old instruction is weaker evidence than the agent's name or summary
+REQUEST_WEIGHT = 0.5
+# Words of the best-matching past request shown as the reason, so the model can see why the agent is listed
+REQUEST_SNIPPET_WORDS = 14
 
 # Did-you-mean for contact names ("Sarha" -> "Sarah"). difflib ratio: one swapped or wrong
 # letter in a 5-letter name is exactly 0.8. Only words in a name position are checked.
@@ -112,6 +121,40 @@ def agent_document_tokens(record: AgentRecord) -> List[str]:
     return tokenize(" ".join(parts))
 
 
+def request_tokens(record: AgentRecord, identity: Optional[Iterable[str]] = None) -> List[str]:
+    """Distinct words of the agent's past requests that its name, summary and entities don't already have.
+
+    Each word once, so an agent asked about "invoice" 20 times is not 20 times more about invoices.
+    """
+
+    known = set(agent_document_tokens(record) if identity is None else identity)
+    words = (token for text in record.requests for token in tokenize(text) if token not in known)
+    return list(dict.fromkeys(words))
+
+
+def request_snippet(requests: Sequence[str], terms: Iterable[str], words: int = REQUEST_SNIPPET_WORDS) -> str:
+    """The past request that shares most of `terms` (newest wins ties), cut to a few words around the match."""
+
+    # Request words are compared plural-folded, so the terms are folded the same way
+    wanted = set(tokenize(" ".join(terms)))
+    best, best_hits = "", 0
+    for text in reversed(requests):
+        hits = len(wanted & set(tokenize(text)))
+        if hits > best_hits:
+            best, best_hits = text, hits
+    parts = best.split()
+    first = next((index for index, part in enumerate(parts) if wanted & set(tokenize(part))), 0)
+    start = max(0, first - 4)
+    piece = parts[start : start + words]
+    return ("..." if start else "") + " ".join(piece) + ("..." if start + len(piece) < len(parts) else "")
+
+
+def _index_requests_by_default() -> bool:
+    from ...config import get_settings
+
+    return bool(get_settings().agent_index_requests)
+
+
 class BM25Index:
     """Plain BM25 over a small in-memory corpus (hundreds to low thousands of agents)."""
 
@@ -153,10 +196,17 @@ class BM25Index:
 class AgentRetriever:
     """Search and shortlist agents from the registry for a given message."""
 
-    def __init__(self, registry: AgentRegistry):
+    def __init__(self, registry: AgentRegistry, *, index_requests: Optional[bool] = None):
         self._registry = registry
+        # None: follow the OPENPOKE_AGENT_INDEX_REQUESTS setting
+        self._index_requests = index_requests
 
-    # Rank all agents for a query: hard entity matches first, then BM25 with a small recency boost
+    @property
+    def index_requests(self) -> bool:
+        return _index_requests_by_default() if self._index_requests is None else self._index_requests
+
+    # Rank all agents for a query: hard entity matches first, then BM25 with a small recency boost.
+    # include_requests=False searches name, summary and entities only (the resolver always asks for that).
     def search(
         self,
         query: str,
@@ -164,8 +214,10 @@ class AgentRetriever:
         limit: int = 8,
         statuses: Optional[Sequence[str]] = None,
         now: Optional[datetime] = None,
+        include_requests: Optional[bool] = None,
     ) -> List[ScoredAgent]:
-        records = self._registry.list_agents(statuses)
+        use_requests = self.index_requests if include_requests is None else include_requests
+        records = self._registry.list_agents(statuses, with_requests=use_requests)
         if not records or limit <= 0:
             return []
 
@@ -177,9 +229,23 @@ class AgentRetriever:
         keyword_scores = index.score(query_tokens)
         query_terms = {term for term in query_tokens if index.idf(term) >= MIN_REASON_IDF}
 
+        # Past requests: a separate index over agents that have new words in them, so its length
+        # normalisation and word rarity are about request text only and can't dilute the main index
+        request_documents: Dict[str, List[str]] = {}
+        request_scores: Dict[str, float] = {}
+        if use_requests:
+            for record in records:
+                tokens = request_tokens(record, documents[record.name])
+                if tokens:
+                    request_documents[record.name] = tokens
+            if request_documents:
+                request_scores = BM25Index(request_documents).score(query_tokens)
+
         results: List[ScoredAgent] = []
         for record in records:
-            keyword = keyword_scores.get(record.name, 0.0)
+            identity_score = keyword_scores.get(record.name, 0.0)
+            request_score = request_scores.get(record.name, 0.0)
+            keyword = identity_score + REQUEST_WEIGHT * request_score
             hard_reasons = hard_matches.get(record.name, [])
             if keyword <= 0 and not hard_reasons:
                 continue
@@ -188,8 +254,11 @@ class AgentRetriever:
             score = keyword * STATUS_WEIGHT.get(record.status, 1.0)
             score *= 1 + RECENCY_BOOST * self._recency(record, now)
             shared = sorted(query_terms & set(documents[record.name]))[:4]
-            if keyword > 0 and shared:
+            if identity_score > 0 and shared:
                 reasons.append("keywords: " + ", ".join(shared))
+            if request_score > 0:
+                matched = set(query_tokens) & set(request_documents[record.name])
+                reasons.append("past request: " + request_snippet(record.requests, matched))
             if hard_reasons:
                 score += HARD_MATCH_BONUS
             results.append(ScoredAgent(record=record, score=score, reasons=reasons))
@@ -370,8 +439,11 @@ __all__ = [
     "MAX_AGENTS_PER_HARD_ENTITY",
     "NameSuggestion",
     "PromptCandidates",
+    "REQUEST_WEIGHT",
     "STATUS_WEIGHT",
     "ScoredAgent",
     "agent_document_tokens",
+    "request_snippet",
+    "request_tokens",
     "with_suggested_names",
 ]

@@ -4,6 +4,8 @@ This is a fork of [OpenPoke](https://github.com/shlokkhemani/openpoke) by Shlok 
 
 The original is on branch `upstream-main` (upstream commit `5b5f635`). Everything behind the numbers below, run by run, is in [docs/EVALUATION.md](docs/EVALUATION.md).
 
+Alternative tried on branch `approach-past-requests`: searching each agent's past requests, not just its summary. See [docs/APPROACH_PAST_REQUESTS.md](docs/APPROACH_PAST_REQUESTS.md).
+
 ## In short
 
 **The problem.** OpenPoke has one interaction agent (the one you talk to) and many execution agents, one per task, like "Email to Sarah". Agents are kept forever so they can own a thread for follow-ups. After a few weeks there are hundreds. The original puts every agent's name into every prompt, and reuses an agent only on an exact name match. With four contacts called Sarah and names like "Email to Sarah", the model can't tell which thread a follow-up belongs to. So it guesses, or creates a duplicate.
