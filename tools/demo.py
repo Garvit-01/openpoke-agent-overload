@@ -1,7 +1,7 @@
 """Side-by-side demo: the original OpenPoke and this branch, with the same 300 agents.
 
     python tools/demo.py seed                      # fill both apps with the same synthetic history
-    python -m server.server                        # this branch, port 8001 (own terminal)
+    python tools/run_mine.py                       # this branch, port 8001 (own terminal)
     python tools/run_original.py                   # the original, port 8002 (own terminal)
     python tools/demo.py ask "Did Sarah Chen reply about the Q3 invoice?"
     python tools/demo.py status

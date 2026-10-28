@@ -10,7 +10,8 @@ It makes two runtime-only changes, both needed for the original to start at all 
 - Windows has no `fcntl`, which the original roster imports. A stand-in module that does no file
   locking is put on the import path from a temp folder. Fine for one local demo process.
 - The original hard-codes `anthropic/claude-sonnet-4`, which OpenRouter has retired. The model
-  names are swapped in memory after import (default: the same model this branch uses).
+  names are swapped in memory after import (default: Haiku 5.5, the same as tools/run_mine.py
+  and the eval, so both apps in the demo always run on the same model).
 
 API keys are read from this repo's `.env`. The original keeps its own data (roster.json, logs) in
 its own folder, so the two apps never share state. `git status` in the original's folder stays clean.
@@ -26,6 +27,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent.parent
 DEFAULT_ORIGINAL = HERE.parent / "openpoke-original"
+# One model for both apps in the demo; cheap, and the one the eval results use
+DEMO_MODEL = "anthropic/claude-haiku-5.5"
 
 FCNTL_STUB = '''"""Stand-in for Unix fcntl on Windows (added by tools/run_original.py). No real locking."""
 LOCK_SH, LOCK_EX, LOCK_NB, LOCK_UN = 1, 2, 4, 8
@@ -58,7 +61,7 @@ def main(argv=None) -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--path", type=Path, default=DEFAULT_ORIGINAL, help="folder with the original checked out")
     parser.add_argument("--port", type=int, default=8002)
-    parser.add_argument("--model", default="anthropic/claude-sonnet-5.5", help="replaces the retired claude-sonnet-4")
+    parser.add_argument("--model", default=DEMO_MODEL, help="replaces the retired claude-sonnet-4 (use the same as run_mine.py)")
     args = parser.parse_args(argv)
 
     original = args.path.resolve()
@@ -86,7 +89,7 @@ def main(argv=None) -> None:
     import uvicorn
 
     print(f"Original OpenPoke from {original}")
-    print(f"Model: {args.model}. Data: {original / 'server' / 'data'}. Listening on http://localhost:{args.port}")
+    print(f"Model: {args.model}. Data: {original / 'server' / 'data'}. Listening on http://localhost:{args.port}", flush=True)
     uvicorn.run(app, host="127.0.0.1", port=args.port, log_level="warning")
 
 

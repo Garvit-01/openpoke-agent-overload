@@ -23,6 +23,15 @@ def test_demo_names_logs_like_the_original():
         assert demo.slugify(name) == _slugify(name)
 
 
+def test_both_demo_apps_default_to_the_same_cheap_model():
+    import sys
+
+    sys.path.insert(0, str(TOOLS))
+    original, mine = load("run_original"), load("run_mine")
+    assert original.DEMO_MODEL == mine.DEMO_MODEL == "anthropic/claude-haiku-5.5"
+    assert "OPENPOKE_INTERACTION_MODEL" in mine.MODEL_VARIABLES and "OPENPOKE_PHRASES_MODEL" in mine.MODEL_VARIABLES
+
+
 def test_fcntl_stand_in_has_what_the_original_uses():
     namespace = {}
     exec(load("run_original").FCNTL_STUB, namespace)
