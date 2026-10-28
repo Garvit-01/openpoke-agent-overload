@@ -101,6 +101,16 @@ class AgentRegistry:
         self._db_path.parent.mkdir(parents=True, exist_ok=True)
         with self._lock, closing(self._connect()) as conn:
             conn.executescript(_SCHEMA)
+            self._refresh_name_keys(conn)
+
+    # Keys saved by an older normalize_agent_name (before plurals were folded) would miss matches
+    @staticmethod
+    def _refresh_name_keys(conn: sqlite3.Connection) -> None:
+        rows = conn.execute("SELECT name, name_key FROM agents").fetchall()
+        stale = [(key, row["name"]) for row in rows if (key := normalize_agent_name(row["name"])) != row["name_key"]]
+        if stale:
+            conn.executemany("UPDATE agents SET name_key = ? WHERE name = ?", stale)
+            logger.info("agent name keys refreshed", extra={"count": len(stale)})
 
     @property
     def db_path(self) -> Path:

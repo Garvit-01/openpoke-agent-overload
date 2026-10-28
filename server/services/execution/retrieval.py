@@ -185,7 +185,8 @@ class AgentRetriever:
         exclude: Iterable[str] = (),
         limit: int = 12,
     ) -> List[AgentRecord]:
-        query_tokens = set(tokenize(query))
+        # Names as written, not plural-folded: "Lucas" is not "Luca"
+        query_tokens = set(tokenize(query, fold=False))
         if not query_tokens or limit <= 0:
             return []
         skip = set(exclude)
@@ -193,7 +194,7 @@ class AgentRetriever:
             record
             for record in self._registry.list_agents()
             if record.name not in skip
-            and query_tokens & set(tokenize(" ".join(record.entities.get("person", []))))
+            and query_tokens & set(tokenize(" ".join(record.entities.get("person", [])), fold=False))
         ]
         matched.sort(key=lambda record: record.last_active_at, reverse=True)
         return matched[:limit]
