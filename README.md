@@ -72,7 +72,7 @@ All of this is configurable in `server/config.py` (see "New settings" below).
 
 ### Unit and integration tests: `python -m pytest`
 
-124 tests, about a minute, no network, no API keys. They cover:
+126 tests, about a minute, no network, no API keys. They cover:
 
 - registry create, reuse, revive, entity lookup, persistence, and migration from `roster.json`
 - agent ids: the four names that used to share `email-to-sarah.log` now keep separate histories, and old slug logs are carried over without overwriting anything
@@ -364,7 +364,7 @@ The same shape shows up anywhere one front agent serves many long-running contex
 
 ```bash
 pip install -r server/requirements.txt pytest
-python -m pytest                       # 124 tests, no keys needed
+python -m pytest                       # 126 tests, no keys needed
 python -m evals.run_eval --quick       # one seed, about 15 seconds
 python -m evals.run_eval               # full run, about 2 minutes, writes evals/results/
 python -m evals.run_eval --router llm --limit 1 --repeats 1    # check the key and model, costs under a cent
@@ -390,7 +390,7 @@ python tools/demo.py ask "Did Sarah Chen reply about the Q3 invoice?"
 python tools/demo.py status
 ```
 
-`ask` prints each app's reply and which agent it used: existing or newly created, and for this branch the match reason. If the message is one of the eval's labelled cases, it also prints the right answer. `seed` prints a few labelled messages to try.
+`ask` prints each app's reply and which agent it used: existing or newly created, and for this branch the match reason. It also prints how many agents were in each app's prompt, and each app's cost, tokens (in, out and thinking), number of model calls and time to the final reply. The launchers record every model call to a `usage.jsonl` in that app's data folder, by wrapping the one function both apps use to call the model, in memory. If the message is one of the eval's labelled cases, it also prints the right answer. `seed` prints a few labelled messages to try.
 
 `tools/run_original.py` runs the original's code unchanged. It makes two runtime-only changes that the original needs to start at all today: a stand-in for `fcntl` on Windows, and a current model name in place of the retired `claude-sonnet-4`. Each app keeps its own data in its own folder. The synthetic agents have no real email behind them, so an agent that then tries to read a thread finds nothing. Which agent gets picked is real, though, and that's what the demo is for. Both launchers run every model role on Claude Haiku 5.5, the model the eval results use, so both apps run on the same model and a message costs under a cent per app. Pass `--model` to both to compare on another model.
 
@@ -425,8 +425,8 @@ server/services/execution/
 server/agents/execution_agent/batch_manager.py   per-agent run lock
 server/services/safety/outbound.py   send confirmation guard
 evals/            scenario generator (single-turn + conversations), hand-written paraphrase set, baseline copy, harness, stats, real-model mode, results
-tests/            124 tests
-tools/            run_original.py (the original app, unchanged, port 8002), run_mine.py (this branch, port 8001), demo.py (seed both, ask both the same message)
+tests/            126 tests
+tools/            run_original.py (the original app, unchanged, port 8002), run_mine.py (this branch, port 8001), demo.py (seed both, ask both the same message), usage_meter.py (tokens, cost, time per call)
 ```
 
 ---

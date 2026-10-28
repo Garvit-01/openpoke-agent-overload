@@ -86,9 +86,15 @@ def main(argv=None) -> None:
         setattr(settings, field, args.model)
     assert Path(sys.modules["server"].__file__).resolve().is_relative_to(original), "imported the wrong server package"
 
+    # Record tokens and time per model call for tools/demo.py (in memory; the original's code is unchanged)
+    sys.path.append(str(HERE / "tools"))  # last, so it can never shadow the original's packages
+    import usage_meter
+
+    metered = usage_meter.install(original / "server" / "data")
+
     import uvicorn
 
-    print(f"Original OpenPoke from {original}")
+    print(f"Original OpenPoke from {original} (metering {metered} model-call sites)")
     print(f"Model: {args.model}. Data: {original / 'server' / 'data'}. Listening on http://localhost:{args.port}", flush=True)
     uvicorn.run(app, host="127.0.0.1", port=args.port, log_level="warning")
 

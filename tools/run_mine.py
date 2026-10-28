@@ -43,9 +43,14 @@ def main(argv=None) -> None:
     settings = get_settings()
     assert settings.interaction_agent_model == args.model, "model setting didn't take effect"
 
+    # Record tokens and time per model call for tools/demo.py, the same way as for the original
+    import usage_meter
+
+    metered = usage_meter.install(HERE / "server" / "data")
+
     import uvicorn
 
-    print(f"This branch from {HERE}")
+    print(f"This branch from {HERE} (metering {metered} model-call sites)")
     print(f"Model: {args.model}. Data: {HERE / 'server' / 'data'}. Listening on http://localhost:{args.port}", flush=True)
     uvicorn.run(app, host="127.0.0.1", port=args.port, log_level="warning")
 

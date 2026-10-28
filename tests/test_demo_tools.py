@@ -50,6 +50,47 @@ def test_original_state_reads_roster_and_new_logs(tmp_path):
     assert set(logs) == {"email-to-sarah"}
 
 
+def test_usage_meter_records_every_call(tmp_path, monkeypatch):
+    import asyncio
+    import sys
+
+    import server.agents.interaction_agent.runtime as interaction_runtime
+    import server.openrouter_client.client as client
+
+    sys.path.insert(0, str(TOOLS))
+    meter = load("usage_meter")
+
+    async def fake(**kwargs):
+        return {"usage": {"prompt_tokens": 9854, "completion_tokens": 461,
+                          "completion_tokens_details": {"reasoning_tokens": 178}}}
+
+    # Two places hold the function, like in the real app; monkeypatch restores both afterwards
+    monkeypatch.setattr(client, "request_chat_completion", fake)
+    monkeypatch.setattr(interaction_runtime, "request_chat_completion", fake)
+    assert meter.install(tmp_path) == 2
+
+    asyncio.run(interaction_runtime.request_chat_completion(model="m", messages=[]))
+    rows = meter.read(tmp_path)
+    assert len(rows) == 1
+    assert (rows[0]["prompt_tokens"], rows[0]["completion_tokens"], rows[0]["reasoning_tokens"]) == (9854, 461, 178)
+    assert rows[0]["model"] == "m"
+    assert meter.read(tmp_path, since=rows[0]["ts"] + 1) == []
+    assert meter.part_of("server.agents.interaction_agent.runtime") == "interaction agent (routing)"
+    assert meter.part_of("server.services.execution.phrases") == "search phrases"
+
+
+def test_usage_cost_and_time_lines():
+    demo = load("demo")
+    rows = [
+        {"model": "m", "part": "interaction agent (routing)", "prompt_tokens": 1_000_000, "completion_tokens": 0, "reasoning_tokens": 0},
+        {"model": "m", "part": "execution agents", "prompt_tokens": 0, "completion_tokens": 100_000, "reasoning_tokens": 10},
+    ]
+    text = "\n".join(demo.usage_lines(rows, {"m": (0.1e-6, 0.5e-6)}, 12.34))
+    assert "cost: $0.1500" in text and "model calls: 2" in text and "time to final reply: 12.3s" in text
+    assert "interaction agent (routing): 1 call(s), 1,000,000 in, 0 out, $0.1000" in text
+    assert "no model calls recorded" in "\n".join(demo.usage_lines([], {}, 1.0))
+
+
 def test_move_aside_never_deletes(tmp_path):
     demo = load("demo")
     data = tmp_path / "data"

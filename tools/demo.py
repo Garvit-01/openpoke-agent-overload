@@ -30,6 +30,7 @@ from typing import Dict, List, Optional, Tuple
 
 HERE = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(HERE))
+sys.path.insert(1, str(HERE / "tools"))
 
 DEFAULT_ORIGINAL = HERE.parent / "openpoke-original"
 OURS_URL, ORIGINAL_URL = "http://localhost:8001", "http://localhost:8002"
@@ -118,16 +119,20 @@ def history(base: str) -> List[Dict[str, str]]:
     return httpx.get(f"{base}/api/v1/chat/history", timeout=10).json().get("messages", [])
 
 
-def send_and_wait(base: str, message: str, timeout: float) -> Tuple[List[str], Optional[str]]:
-    """Send one message, then wait until the app's replies stop changing."""
+def send_and_wait(base: str, message: str, timeout: float) -> Tuple[List[str], Optional[str], float]:
+    """Send one message, then wait until the app's replies stop changing.
+
+    Returns the replies, an error if the app wasn't reachable, and seconds until the last reply arrived.
+    """
     import httpx
 
+    started = time.time()
     try:
         before = len(history(base))
         httpx.post(f"{base}/api/v1/chat/send", json={"messages": [{"role": "user", "content": message}]}, timeout=60)
     except httpx.HTTPError as exc:
-        return [], f"not reachable ({exc.__class__.__name__}). Is it running?"
-    started, last_change, seen = time.time(), time.time(), before
+        return [], f"not reachable ({exc.__class__.__name__}). Is it running?", 0.0
+    last_change, seen = time.time(), before
     while time.time() - started < timeout:
         time.sleep(2)
         count = len(history(base))
@@ -137,7 +142,7 @@ def send_and_wait(base: str, message: str, timeout: float) -> Tuple[List[str], O
         if replies >= 2 and time.time() - last_change > 8:  # the "on it" reply plus the agent's result
             break
     new = history(base)[before:]
-    return [m["content"] for m in new if m.get("role") != "user"], None
+    return [m["content"] for m in new if m.get("role") != "user"], None, last_change - started
 
 
 def original_state(original: Path) -> Tuple[List[str], Dict[str, float]]:
@@ -154,19 +159,74 @@ def ours_decisions() -> List[dict]:
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
 
 
+def ours_prompt_size(message: str) -> Tuple[int, int]:
+    """(agents this branch shows for the message, agents that exist), using the server's own code."""
+    from server.config import get_settings
+    from server.services.execution.registry import AgentRegistry
+    from server.services.execution.retrieval import AgentRetriever
+
+    path = OURS_DATA / "execution_agents" / "registry.db"
+    if not path.exists():
+        return 0, 0
+    settings, registry = get_settings(), AgentRegistry(path)
+    retriever = AgentRetriever(registry)
+    shortlist = retriever.shortlist(
+        message, retrieved=settings.agent_shortlist_retrieved, recent=settings.agent_shortlist_recent
+    )
+    related = retriever.named_people_agents(
+        message, exclude=[item.name for item in shortlist], limit=settings.agent_named_people_limit
+    )
+    return len(shortlist) + len(related), registry.count()
+
+
+def usage_lines(rows: List[dict], prices: Dict[str, Tuple[float, float]], seconds: float) -> List[str]:
+    """Cost, tokens and time for one app's share of one message."""
+    if not rows:
+        return [f"  time to final reply: {seconds:.1f}s   (no model calls recorded; was it started with tools/run_*.py?)"]
+
+    def cost(row):
+        per_in, per_out = prices.get(row["model"], (0.0, 0.0))
+        return row["prompt_tokens"] * per_in + row["completion_tokens"] * per_out
+
+    total_in = sum(row["prompt_tokens"] for row in rows)
+    total_out = sum(row["completion_tokens"] for row in rows)
+    thinking = sum(row["reasoning_tokens"] for row in rows)
+    priced = "" if all(row["model"] in prices for row in rows) else " (prices unavailable)"
+    lines = [
+        f"  cost: ${sum(map(cost, rows)):.4f}{priced}   model calls: {len(rows)}   "
+        f"tokens: {total_in:,} in, {total_out:,} out ({thinking:,} thinking)   time to final reply: {seconds:.1f}s"
+    ]
+    by_part: Dict[str, List[dict]] = {}
+    for row in rows:
+        by_part.setdefault(row["part"], []).append(row)
+    for part, part_rows in by_part.items():
+        lines.append(
+            f"      {part}: {len(part_rows)} call(s), {sum(r['prompt_tokens'] for r in part_rows):,} in, "
+            f"{sum(r['completion_tokens'] for r in part_rows):,} out, ${sum(map(cost, part_rows)):.4f}"
+        )
+    return lines
+
+
 def ask(args) -> None:
+    import usage_meter
+    from evals.llm import fetch_prices
     from evals.scenarios import NEW
 
     right = next((case.gold for case in scenario_for(args).cases if case.message == args.message), None)
     roster_before, logs_before = original_state(args.original)
     decisions_before = len(ours_decisions())
+    ours_shown, ours_total = ours_prompt_size(args.message)
 
     print(f'Asking both apps: "{args.message}"\n')
+    started = time.time()
     with ThreadPoolExecutor(2) as pool:
         ours_job = pool.submit(send_and_wait, OURS_URL, args.message, args.timeout)
         original_job = pool.submit(send_and_wait, ORIGINAL_URL, args.message, args.timeout)
-        ours_replies, ours_error = ours_job.result()
-        original_replies, original_error = original_job.result()
+        ours_replies, ours_error, ours_seconds = ours_job.result()
+        original_replies, original_error, original_seconds = original_job.result()
+    prices = fetch_prices()
+    original_usage = usage_meter.read(args.original / "server" / "data", since=started)
+    ours_usage = usage_meter.read(OURS_DATA, since=started)
 
     # Original: which agents ran (their log files changed) and whether its roster grew
     roster_after, logs_after = original_state(args.original)
@@ -175,7 +235,7 @@ def ask(args) -> None:
     ran = [by_slug.get(slug, slug) for slug, mtime in logs_after.items() if mtime > logs_before.get(slug, 0)]
 
     print("=" * 70)
-    print(f"ORIGINAL ({ORIGINAL_URL}): {len(roster_after)} agents, all {len(roster_before)} names in every prompt")
+    print(f"ORIGINAL ({ORIGINAL_URL}): all {len(roster_before)} agent names were in its prompt for this message")
     print("=" * 70)
     if original_error:
         print(f"  {original_error}")
@@ -185,10 +245,12 @@ def ask(args) -> None:
         print(f"  agent used: {name}" + ("   <- NEW agent created" if name in created else "   (existing)"))
     if not ran:
         print("  agent used: none (no execution agent ran)")
+    for line in usage_lines(original_usage, prices, original_seconds):
+        print(line)
 
     print()
     print("=" * 70)
-    print(f"THIS BRANCH ({OURS_URL}): shortlist of about 12 agents per turn")
+    print(f"THIS BRANCH ({OURS_URL}): {ours_shown} of its {ours_total} agents were in its prompt for this message")
     print("=" * 70)
     if ours_error:
         print(f"  {ours_error}")
@@ -202,10 +264,20 @@ def ask(args) -> None:
             print(f"      look-alikes it reported: {', '.join(decision['possible_duplicates'][:3])}")
     if not new_decisions:
         print("  agent used: none (no execution agent ran)")
+    for line in usage_lines(ours_usage, prices, ours_seconds):
+        print(line)
 
     if right is not None:
         print()
         print(f"RIGHT ANSWER (from the eval's labels): {'a NEW agent' if right == NEW else right}")
+
+    routing = "interaction agent (routing)"
+    original_in = sum(r["prompt_tokens"] for r in original_usage if r["part"] == routing)
+    ours_in = sum(r["prompt_tokens"] for r in ours_usage if r["part"] == routing)
+    if original_in and ours_in:
+        print()
+        print(f"ROUTING PROMPT: original {original_in:,} input tokens vs this branch {ours_in:,} "
+              f"({original_in / ours_in:.1f}x). That's the part the agent list is in.")
 
 
 # ------------------------------------------------------------------------- status
