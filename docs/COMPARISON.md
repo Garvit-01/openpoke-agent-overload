@@ -24,7 +24,7 @@ It prints the tables below and writes them to [evals/results/comparison.md](../e
 | `OPENPOKE_AGENT_INDEX_REQUESTS` | past requests not searched | searched at half weight (default) |
 | `OPENPOKE_AGENT_RETRIEVER` | `bm25`: keywords only (default) | `hybrid`: keywords plus meaning |
 
-Meaning search is off by default because its real-model effect isn't measured yet (see below) and it needs an extra 110 MB install.
+Meaning search is off by default only because it needs an extra 110 MB install. On the real model it helped and broke nothing (see below).
 
 ## Simulated results (free, run on 2026-10-28)
 
@@ -66,28 +66,42 @@ All rows use the same seed and cases. Each row turns one approach on over `main`
 - **The costs are small.** All three together add 34 roster tokens per turn (957 to 991) and about 13 to 17 ms of routing time. Meaning search alone adds about 37 to 56 ms, mostly to embed the message.
 - **The paraphrase "Right" column barely moves**, because the simulated router can't read meaning. The real-model runs below are the ones that count for accuracy.
 
-## Real-model results (Claude Haiku 5.5, from each branch)
-
-These runs come from each branch, at different times of day, so they don't make a clean side-by-side comparison. The original's column moved between 55.0% and 57.5% on the same 40 cases across these runs, which gives a sense of the run-to-run noise.
-
-| Run (3 repeats per case) | Original | `main` (committed) | Plurals and typos | Past requests |
-|---|---|---|---|---|
-| Main 40 cases, pass^1 | 55.0% to 58.3% | 99.2% | 95.8% * | 100% |
-| Main 40 cases, right by majority | 21 to 24 /40 | 40/40 | 39/40 * | 40/40 |
-| 6 cases about a mid-history request | 0/18 runs | not run | not run | 18/18 runs |
-| Paraphrases, right by majority | 13 to 15 /24 | 24/24 | 23/24 | 22/24 |
-| Paraphrases, right on all 3 runs (pass^3) | 37.5% to 54.2% | 83.3% | 95.8% | 87.5% |
-
-\* This run had to regenerate search phrases for 74 agents, because the phrase cache had been overwritten (fixed since). It isn't a clean comparison. Rendering the prompts again with the old phrases gave byte-identical prompts before and after the change for every case that moved.
-
-The paraphrase drops (24/24 to 23/24 and 22/24) are cases where the prompt was identical with the change on and off, so they are most likely model noise. Each branch's write-up has the case-by-case check.
-
-**Meaning search has not been run on the real model.** The OpenRouter credit ran out first. These two runs would measure it (about $0.41 together):
+## Real-model results (Claude Haiku 5.5, all rows on the same day)
 
 ```bash
-python -m evals.run_eval --set paraphrase --router llm --phrases --retriever hybrid
-python -m evals.run_eval --router llm --phrases --retriever hybrid
+python -m evals.compare_llm          # about $2.40 and an hour; needs OPENROUTER_API_KEY
+python -m evals.compare_llm --reuse  # rebuild the tables from the saved runs, no API calls
 ```
+
+Each row is one real-model run in its own process with that row's settings, on the same cases, seed and model, run on 2026-10-28. The original runs in every row too, so its range shows how much the model varies between identical runs. Full tables: [evals/results/comparison_llm.md](../evals/results/comparison_llm.md). The ten runs cost $2.36 together.
+
+| Version | Usual 40 cases, runs right | Usual 40, cases right | 6 mid-history cases | Paraphrases, cases right | Paraphrases, right on all 3 runs | Input tokens per decision (generated set) |
+|---|---|---|---|---|---|---|
+| Original OpenPoke (lowest to highest of 5 identical runs) | 66 to 70 /120 | 22 to 24 /40 | 0/6 | 12 to 15 /24 | 41.7% to 54.2% | 9,853 |
+| `main` | 117/120 | 39/40 | 0/6 | 23/24 | 87.5% | 8,666 |
+| + plurals and typo hints | 116/120 | 39/40 | 0/6 | 24/24 | 95.8% | 8,356 |
+| + past-request search | 114/120 | 38/40 | 6/6 | 22/24 | 87.5% | 7,655 |
+| + meaning search | **120/120** | **40/40** | 0/6 | 24/24 | 95.8% | 8,775 |
+| **all three together** | **120/120** | **40/40** | **6/6** | **24/24** | **100%** | **7,322** |
+
+On all 46 generated cases together, all three get 46/46, right on every one of the 3 runs (pass^3 100%), against 39/46 for `main`: fixed 7, broke 0 (McNemar's exact p = 0.016). The original got 22 to 24 of 46 across its five runs.
+
+**Every case that moved, against `main`:**
+- **Plurals and typos:** fixed `hw17` ("kids" now finds the "kid's registration" agent, right on 3 of 3 runs, was 1 of 3). Nothing broke.
+- **Meaning search:** fixed `hw17` and `new_same_first_name-156` (a new contact who shares a first name with an existing one: now a new agent on 3 of 3 runs, was 0 of 3). Nothing broke.
+- **Past requests:** fixed the 6 mid-history cases (0 to 3 of 3 runs each). It broke 2:
+  - `new_same_first_name-152` ("Write to Ibrahim Holloway about the launch timeline": 3 of 3 runs right before, 0 of 3 now);
+  - `hw05` ("Alex Moreau": 2 of 3 before, 0 of 3 now).
+
+  In all six runs the model didn't route at all: no duplicate and no wrong agent. For 152 the prompt is identical with the setting off and on, but the model searched, and search reads past requests when they're on. `hw05` used no search and its prompt is identical, so that one is noise; the past-requests branch saw the same case fail the same way. **With all three on, past requests included, both cases are right on all 3 runs.** So I read these as the model's sensitivity, not a defect. They are still breaks, and a rerun would show whether they repeat.
+- **All three:** fixed everything the three fixed separately, and broke nothing.
+
+**Cost and tokens.** All three together used the fewest input tokens per decision: 7,322 against 8,666 for `main` and 9,853 for the original. Fewer duplicate and no-route turns mean fewer follow-up calls.
+
+**Caveats.** These are one run per row (3 repeats per case). Most of the differences between the four single-approach rows are 1 or 2 cases, which is within the noise. The clear results are:
+- past requests on the 6 mid-history cases;
+- all three together against `main` (p = 0.016 on the generated set);
+- the original against everything.
 
 ## A pitfall this comparison found in the evaluator
 
@@ -97,12 +111,13 @@ The simulated numbers on `fix-plurals-typos` were measured before this fix, with
 
 ## What I'd ship
 
-- **Past requests: yes.** It's the only approach that fixes a whole class of follow-ups, it breaks nothing, and it never merges agents.
-- **Plurals and typo hints: yes.** It's small, cheap and fixes the "groceries" and "Sarha" cases from the live demo. It's also more stable on the real model (pass^3 95.8%).
-- **Meaning search: as an option, off by default,** until the two real-model runs above show it improves pass^3 without costing the main 40 cases.
+All three, together. They fix different cases, and on the real model the combination is the only row that is right on every case and every run of both sets. It also has the lowest token count.
+- **Past requests:** the only approach that fixes follow-ups about a mid-history request.
+- **Plurals and typo hints:** cheap. They fix the "groceries" and "Sarha" cases from the live demo, and raised paraphrase pass^3 from 87.5% to 95.8%.
+- **Meaning search:** the only approach that got all 40 usual cases right on every run on its own. It's the costliest: about 110 MB of downloads and 37 to 56 ms more per turn. It stays optional (`OPENPOKE_AGENT_RETRIEVER=hybrid`) for installs that don't want the download. I didn't measure plurals and past requests together without it.
 
 ## Limitations
 
 - Synthetic data. The 12 past-request cases were written to need that feature: they show it works, not how often real users ask that way.
 - One seed and 300 agents here. The per-branch write-ups cover other seeds and roster sizes.
-- The real-model numbers are from different runs, and meaning search has none.
+- The real-model rows are one run each (3 repeats per case). A second full run (about $2.40) would show which 1-case differences repeat.
