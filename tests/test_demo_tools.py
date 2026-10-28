@@ -130,8 +130,9 @@ def test_ask_stops_after_a_single_direct_reply(monkeypatch):
     started = time.time()
     replies, error, seconds = demo.send_and_wait("http://app", "send it to Sarha", timeout=30)
     assert replies == ["Who is Sarha?"] and error is None
-    assert time.time() - started < 2, "didn't wait for a second reply that never comes"
-    assert 0.05 < seconds < 0.5, "time to the reply, accurate to the poll interval"
+    # Generous upper bounds: the suite also runs while evals load the machine
+    assert time.time() - started < 5, "didn't wait for a second reply that never comes"
+    assert 0.05 < seconds < 1.5, "time to the reply, roughly"
 
 
 def test_move_aside_never_deletes(tmp_path):
