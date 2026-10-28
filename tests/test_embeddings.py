@@ -77,6 +77,13 @@ def names(results):
     return [item.name for item in results]
 
 
+def prepared(registry, embedder, **options):
+    """A hybrid retriever with every agent already embedded, as after the app's start-up warm-up."""
+    retriever = AgentRetriever(registry, mode="hybrid", embedder=embedder, **options)
+    retriever.prepare()
+    return retriever
+
+
 def test_bm25_mode_gives_todays_results(office, fake):
     query = "where are we on replacing everyone's old computers"
     keyword = names(AgentRetriever(office).keyword_search(query))
@@ -112,7 +119,7 @@ def test_hybrid_fills_the_last_places_with_meaning_matches(office, fake):
     query = "where are we on replacing everyone's old computers"
     keyword = names(AgentRetriever(office).keyword_search(query))
     assert "Ironbridge Laptop Refresh" not in keyword  # no shared word
-    hybrid = AgentRetriever(office, mode="hybrid", embedder=fake).search(query, limit=8)
+    hybrid = prepared(office, fake).search(query, limit=8)
     assert names(hybrid)[:5] == keyword[:5]  # keyword top results keep their places
     assert "Ironbridge Laptop Refresh" in names(hybrid)
     found = next(item for item in hybrid if item.name == "Ironbridge Laptop Refresh")
@@ -121,7 +128,7 @@ def test_hybrid_fills_the_last_places_with_meaning_matches(office, fake):
 
 
 def test_exact_email_and_name_hits_still_rank_first(office, fake):
-    retriever = AgentRetriever(office, mode="hybrid", embedder=fake)
+    retriever = prepared(office, fake)
     # Meaning points at the venue contract, the address at Sarah Chen
     results = retriever.search("tell sarah.chen@acme.com the venue contract and offsite are booked")
     assert results[0].name == "Email to Sarah" and results[0].score >= HARD_MATCH_BONUS
@@ -133,20 +140,21 @@ def test_hard_matches_are_never_pushed_out(registry, fake):
     for index in range(5):
         add_agent(registry, f"Shared contact {index}", entities={"email": ["team@corp.com"]})
     add_agent(registry, "Laptop order", summary="new laptops")
-    results = AgentRetriever(registry, mode="hybrid", embedder=fake, dense_slots=3).search(
+    results = prepared(registry, fake, dense_slots=3).search(
         "laptops for team@corp.com", limit=6
     )
     assert sum(item.score >= HARD_MATCH_BONUS for item in results) == 5
 
 
 def test_no_meaning_match_gives_the_places_back_to_keywords(office, fake):
-    retriever = AgentRetriever(office, mode="hybrid", embedder=fake, dense_min_similarity=1.01)
+    retriever = prepared(office, fake, dense_min_similarity=1.01)
     query = "Old printers survey"
     assert names(retriever.search(query)) == names(AgentRetriever(office).keyword_search(query))
 
 
 def test_vectors_are_reused_while_the_text_is_unchanged(office, fake, tmp_path):
     retriever = AgentRetriever(office, mode="hybrid", embedder=fake)
+    assert retriever.prepare() == office.count()
     retriever.search("old computers")
     first = fake.documents
     assert first == office.count()
@@ -163,6 +171,21 @@ def test_vectors_are_reused_while_the_text_is_unchanged(office, fake, tmp_path):
     assert store.embedded == 0
 
 
+def test_a_big_backlog_is_embedded_in_the_background_not_during_the_turn(office, fake):
+    from server.services.execution.embeddings import store_for
+
+    store = store_for(office.db_path)
+    store.inline_limit = 3  # the office has 12 agents, all new
+    query = "where are we on replacing everyone's old computers"
+    retriever = AgentRetriever(office, mode="hybrid", embedder=fake)
+    first = retriever.search(query)
+    store.wait(timeout=10)
+    assert fake.documents == office.count()  # done by the background thread
+    assert "Ironbridge Laptop Refresh" in names(retriever.search(query))
+    # The first turn did not wait: it got either keyword results or the finished vectors, never an error
+    assert len(first) <= 8
+
+
 def test_agent_text_holds_name_summary_and_phrases(registry):
     add_agent(registry, "Ironbridge Laptop Refresh", summary="Task: order laptops",
               entities={"phrase": ["new computers", "it hardware"], "email": ["zane@ironbridge.com"]})
@@ -172,7 +195,7 @@ def test_agent_text_holds_name_summary_and_phrases(registry):
 
 
 def test_similarity_never_merges_agents(office, fake):
-    retriever = AgentRetriever(office, mode="hybrid", embedder=fake)
+    retriever = prepared(office, fake)
     # Meaning says this is the laptop agent; no exact name, email, thread or name key matches it
     resolution = resolve_agent("New computers for the design team", "buy laptops for the designers", office, retriever)
     assert resolution.created and resolution.agent_name == "New computers for the design team"
@@ -221,6 +244,7 @@ def paraphrase_registry(real_embedder, tmp_path_factory):
         insert(agent)
     for index, item in enumerate(item for item in HANDWRITTEN if item.name in PARAPHRASE_MISSES.values()):
         insert(handwritten_agent(item, f"{index:016x}"))
+    AgentRetriever(registry, mode="hybrid", embedder=real_embedder).prepare()
     return registry
 
 

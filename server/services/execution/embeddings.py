@@ -30,6 +30,9 @@ from .registry import AgentRecord
 DEFAULT_MODEL = "BAAI/bge-small-en-v1.5"
 # bge's recommended instruction for short queries against longer passages (fastembed doesn't add it)
 QUERY_PREFIX = "Represent this sentence for searching relevant passages: "
+# New or changed agents embedded during a turn; a bigger backlog goes to a background thread.
+# About 20 to 130 ms per agent text on a 4-core laptop CPU (see docs/APPROACH_EMBEDDINGS.md).
+INLINE_LIMIT = 8
 PHRASE_KIND = "phrase"  # same value as phrases.PHRASE_KIND; not imported to keep this module standalone
 
 _SCHEMA = """
@@ -154,31 +157,73 @@ def set_embedder(embedder: Optional[Embedder]) -> None:
 
 
 class EmbeddingStore:
-    """Agent vectors in the registry's SQLite file, keyed by agent id, reused while the text is unchanged."""
+    """Agent vectors in the registry's SQLite file, keyed by agent id, reused while the text is unchanged.
 
-    def __init__(self, db_path: Path):
+    During a turn, at most `inline_limit` new or changed agents are embedded (normally 0 to 2: an agent
+    that just ran). A bigger backlog, such as the first hybrid search over an existing registry, is
+    embedded in a background thread, and until it is done those agents are found by keywords only.
+    """
+
+    def __init__(self, db_path: Path, *, inline_limit: int = INLINE_LIMIT):
         self._db_path = Path(db_path)
         self._lock = threading.Lock()
+        self.inline_limit = inline_limit
         self.embedded = 0  # vectors computed by this store (tests and timing use it)
         self._memory: Dict[str, Tuple[str, object]] = {}  # agent_id -> (text hash, vector), saves a read per turn
+        self._background: Optional[threading.Thread] = None
         with self._lock, closing(self._connect()) as conn:
             conn.executescript(_SCHEMA)
 
     def _connect(self) -> sqlite3.Connection:
         return sqlite3.connect(self._db_path, timeout=30, isolation_level=None)
 
-    def vectors(self, records: Sequence[AgentRecord], embedder: Embedder):
-        """One unit vector per record, in order. Embeds only agents whose text is new or changed."""
+    def vectors(self, records: Sequence[AgentRecord], embedder: Embedder, *, block: bool = True) -> Dict[str, object]:
+        """Unit vectors by agent id. Embeds only agents whose text is new or changed.
 
-        import numpy as np
+        block=False: if more than inline_limit agents need a vector, embed them in the background and
+        return only the vectors that already exist.
+        """
 
         model = embedder.model_name
         wanted: List[Tuple[str, str, str]] = []  # (agent_id, hash, text)
         for record in records:
             text = agent_text(record)
             wanted.append((record.agent_id, text_hash(model, text), text))
+        vectors, missing = self._known(wanted, model)
+        if not missing:
+            return vectors
+        if not block and len(missing) > self.inline_limit:
+            self._embed_in_background(missing, embedder)
+            return vectors
+        vectors.update(self._embed(missing, embedder))
+        return vectors
 
-        vectors: Dict[str, "np.ndarray"] = {}
+    def wait(self, timeout: Optional[float] = None) -> None:
+        """Wait for a background backlog to finish (tests, evals)."""
+        thread = self._background
+        if thread is not None:
+            thread.join(timeout)
+
+    def _embed_in_background(self, missing: List[Tuple[str, str, str]], embedder: Embedder) -> None:
+        with self._lock:
+            if self._background is not None and self._background.is_alive():
+                return
+
+            def run() -> None:
+                try:
+                    started = time.perf_counter()
+                    self._embed(missing, embedder)
+                    logger.info(f"Embedded {len(missing)} agents in {time.perf_counter() - started:.1f}s")
+                except Exception as exc:  # pragma: no cover - keyword search still works
+                    logger.warning(f"Background agent embedding failed: {exc}")
+
+            self._background = threading.Thread(target=run, name="agent-embeddings", daemon=True)
+            self._background.start()
+
+    def _known(self, wanted: List[Tuple[str, str, str]], model: str):
+        import numpy as np
+
+        vectors: Dict[str, object] = {}
         unknown = []
         for agent_id, digest, text in wanted:
             hit = self._memory.get(agent_id)
@@ -186,52 +231,79 @@ class EmbeddingStore:
                 vectors[agent_id] = hit[1]
             else:
                 unknown.append((agent_id, digest, text))
-
         missing: List[Tuple[str, str, str]] = []
-        if unknown:
-            # Vectors written earlier (another process, or before a restart) are read, not recomputed
-            stored: Dict[str, Tuple[str, bytes, int]] = {}
-            with self._lock, closing(self._connect()) as conn:
-                for row in conn.execute(
-                    "SELECT agent_id, text_hash, vector, dim FROM agent_embeddings WHERE model = ?", (model,)
-                ):
-                    stored[row[0]] = (row[1], row[2], row[3])
-            for agent_id, digest, text in unknown:
-                hit = stored.get(agent_id)
-                if hit and hit[0] == digest:
-                    vectors[agent_id] = np.frombuffer(hit[1], dtype=np.float32, count=hit[2])
-                    self._memory[agent_id] = (digest, vectors[agent_id])
-                else:
-                    missing.append((agent_id, digest, text))
+        if not unknown:
+            return vectors, missing
+        # Vectors written earlier (another process, or before a restart) are read, not recomputed
+        stored: Dict[str, Tuple[str, bytes, int]] = {}
+        with self._lock, closing(self._connect()) as conn:
+            for row in conn.execute(
+                "SELECT agent_id, text_hash, vector, dim FROM agent_embeddings WHERE model = ?", (model,)
+            ):
+                stored[row[0]] = (row[1], row[2], row[3])
+        for agent_id, digest, text in unknown:
+            hit = stored.get(agent_id)
+            if hit and hit[0] == digest:
+                vectors[agent_id] = np.frombuffer(hit[1], dtype=np.float32, count=hit[2])
+                self._memory[agent_id] = (digest, vectors[agent_id])
+            else:
+                missing.append((agent_id, digest, text))
+        return vectors, missing
 
-        if missing:
-            fresh = embedder.embed_documents([text for _, _, text in missing])
+    def _embed(self, missing: List[Tuple[str, str, str]], embedder: Embedder) -> Dict[str, object]:
+        import numpy as np
+
+        model = embedder.model_name
+        vectors: Dict[str, object] = {}
+        fresh = embedder.embed_documents([text for _, _, text in missing])
+        rows = []
+        for (agent_id, digest, _text), vector in zip(missing, fresh):
+            vector = np.asarray(vector, dtype=np.float32)
+            vectors[agent_id] = vector
+            self._memory[agent_id] = (digest, vector)
+            rows.append((agent_id, model, digest, int(vector.shape[0]), vector.tobytes()))
+        with self._lock, closing(self._connect()) as conn:
             self.embedded += len(missing)
-            rows = []
-            for (agent_id, digest, _text), vector in zip(missing, fresh):
-                vector = np.asarray(vector, dtype=np.float32)
-                vectors[agent_id] = vector
-                self._memory[agent_id] = (digest, vector)
-                rows.append((agent_id, model, digest, int(vector.shape[0]), vector.tobytes()))
-            with self._lock, closing(self._connect()) as conn:
-                conn.executemany(
-                    "INSERT OR REPLACE INTO agent_embeddings (agent_id, model, text_hash, dim, vector)"
-                    " VALUES (?, ?, ?, ?, ?)",
-                    rows,
-                )
-
-        if not wanted:
-            return np.zeros((0, 0), dtype=np.float32)
-        return np.vstack([vectors[agent_id] for agent_id, _, _ in wanted])
+            conn.executemany(
+                "INSERT OR REPLACE INTO agent_embeddings (agent_id, model, text_hash, dim, vector)"
+                " VALUES (?, ?, ?, ?, ?)",
+                rows,
+            )
+        return vectors
 
     def similarities(self, query: str, records: Sequence[AgentRecord], embedder: Embedder) -> Dict[str, float]:
-        """Cosine similarity of the query with each record, by agent name."""
+        """Cosine similarity of the query with each record that has a vector, by agent name."""
+
+        import numpy as np
 
         if not records or not (query or "").strip():
             return {}
-        matrix = self.vectors(records, embedder)
+        vectors = self.vectors(records, embedder, block=False)
+        present = [record for record in records if record.agent_id in vectors]
+        if not present:
+            return {}
+        matrix = np.vstack([vectors[record.agent_id] for record in present])
         scores = matrix @ embedder.embed_query(query)
-        return {record.name: float(score) for record, score in zip(records, scores)}
+        return {record.name: float(score) for record, score in zip(present, scores)}
+
+
+def warm_in_background(registry) -> Optional[threading.Thread]:
+    """At app start: load the model and embed every agent off the reply path. None if hybrid is off."""
+
+    from ...config import get_settings
+
+    if get_settings().agent_retriever != "hybrid":
+        return None
+
+    def run() -> None:
+        embedder = get_embedder()  # loading the model here keeps it off the first reply
+        if embedder is not None:
+            # Non-blocking form, so a turn that arrives meanwhile shares the same background job
+            store_for(registry.db_path).vectors(registry.list_agents(), embedder, block=False)
+
+    thread = threading.Thread(target=run, name="agent-embeddings-warmup", daemon=True)
+    thread.start()
+    return thread
 
 
 _stores: Dict[str, EmbeddingStore] = {}
@@ -258,4 +330,5 @@ __all__ = [
     "set_embedder",
     "store_for",
     "text_hash",
+    "warm_in_background",
 ]

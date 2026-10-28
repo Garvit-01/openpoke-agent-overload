@@ -183,6 +183,18 @@ class AgentRetriever:
             return keyword[:limit]
         return self._fill_with_dense(keyword, records, similarity, limit)
 
+    # Embed every agent now, blocking (evals do this so every search sees all vectors). No-op for bm25.
+    def prepare(self) -> int:
+        embedder = self._dense_embedder()
+        if embedder is None:
+            return 0
+        from .embeddings import store_for
+
+        store = store_for(self._registry.db_path)
+        before = store.embedded
+        store.vectors(self._registry.list_agents(), embedder)
+        return store.embedded - before
+
     # Keyword search only: hard matches, then BM25. The resolver uses this, so similarity never merges.
     def keyword_search(
         self,
