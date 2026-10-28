@@ -30,7 +30,8 @@ from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Set, Tuple
 
 from server.agents.interaction_agent.agent import agent_topic, render_agent_shortlist, render_name_hints
-from server.services.execution.entities import EMAIL_PATTERN, extract_entities, tokenize
+from server.services.execution.entities import EMAIL_PATTERN, extract_entities
+from server.services.execution.entities import tokenize as _app_tokenize
 from server.services.execution.lifecycle import LifecyclePolicy, apply_lifecycle
 from server.services.execution.phrases import PHRASE_KIND
 from server.services.execution.registry import AgentRecord, AgentRegistry, to_iso
@@ -53,6 +54,12 @@ from .scenarios import (
     Scenario,
     Turn,
 )
+
+
+# The simulated router stands in for the model, so it reads words as written whatever OPENPOKE_FOLD_PLURALS
+# says: a setting of the app's search must not also change the judge (evals/compare.py flips it per row).
+def tokenize(text: str):
+    return _app_tokenize(text, fold=False)
 
 SHORTLIST_RETRIEVED = 8
 SHORTLIST_RECENT = 4

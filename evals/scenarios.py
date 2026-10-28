@@ -21,7 +21,13 @@ from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Optional, Sequence, Set, Tuple
 
 from server.services.execution.digest import build_digest
-from server.services.execution.entities import tokenize
+from server.services.execution.entities import tokenize as _app_tokenize
+
+
+# The simulated router stands in for the model, so it reads words as written whatever OPENPOKE_FOLD_PLURALS
+# says: a setting of the app's search must not also change the judge (evals/compare.py flips it per row).
+def tokenize(text: str):
+    return _app_tokenize(text, fold=False)
 
 NEW = "__NEW__"
 DEFAULT_NOW = datetime(2026, 10, 26, 12, 0, tzinfo=timezone.utc)
