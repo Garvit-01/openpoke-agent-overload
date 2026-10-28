@@ -16,7 +16,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Dict, Iterable, List, Optional, Sequence
 
-from .entities import HARD_KINDS, STOPWORDS, extract_entities, fold_plural, tokenize
+from .entities import EMAIL_PATTERN, HARD_KINDS, STOPWORDS, extract_entities, fold_plural, tokenize
 from .registry import (
     STATUS_ACTIVE,
     STATUS_ARCHIVED,
@@ -40,6 +40,9 @@ MIN_REASON_IDF = 0.5
 # Did-you-mean for contact names ("Sarha" -> "Sarah"). difflib ratio: one swapped or wrong
 # letter in a 5-letter name is exactly 0.8. Only words in a name position are checked.
 NAME_SUGGEST_CUTOFF = 0.8
+# One swapped or wrong letter in a 4-letter name ("Noha", "Alxe") scores exactly 0.75, so short words get
+# a lower bar; evals/typo_hints.py checks it still raises no hint on any eval message.
+NAME_SUGGEST_SHORT_CUTOFF = 0.75
 NAME_SUGGEST_MIN_LENGTH = 4
 NAME_SUGGEST_MAX_PEOPLE = 8
 # A lowercase word right after one of these is in a name position ("send it to sarha")
@@ -287,6 +290,9 @@ class AgentRetriever:
             and match.group().lower() not in STOPWORDS
             and match.group().lower() not in _CAPITALISED_WORDS
         ]
+        # "Email Nora (nora.k@acme.com)": a name the message also gives an address for is a new contact, not a typo
+        address_words = {word for address in EMAIL_PATTERN.findall(message or "") for word in tokenize(address, fold=False)}
+        candidates = [match for match in candidates if match.group().lower() not in address_words]
         if not candidates:
             return []
 
@@ -311,7 +317,8 @@ class AgentRetriever:
             if word in name_words:
                 continue  # a known name
             pool = [name for name in first_names if name[0] == word[0]]
-            close = difflib.get_close_matches(word, pool, n=2, cutoff=NAME_SUGGEST_CUTOFF)
+            cutoff = NAME_SUGGEST_SHORT_CUTOFF if len(word) <= 4 else NAME_SUGGEST_CUTOFF
+            close = difflib.get_close_matches(word, pool, n=2, cutoff=cutoff)
             if not close:
                 continue
             if vocabulary is None:

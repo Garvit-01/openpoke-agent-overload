@@ -118,6 +118,24 @@ def test_misspelt_name_suggests_every_sarah(registry):
     )
 
 
+def test_one_wrong_letter_in_a_four_letter_name_still_counts(registry):
+    # "Noha" / "Nosh" score 0.75 against Noah, under the 0.8 used for longer names
+    add_agent(registry, "Email to Noah Park", summary="Task: reply to Noah Park about the lease",
+              entities={"person": ["Noah Park"]})
+    retriever = AgentRetriever(registry)
+    for typo in ("Noha", "Nosh"):
+        assert [s.name for s in retriever.suggest_names(f"send the lease to {typo}")] == ["Noah"], typo
+
+
+def test_a_new_contact_with_an_address_gets_no_hint(registry):
+    add_agent(registry, "Email to Noah Park", summary="Task: reply to Noah Park about the lease",
+              entities={"person": ["Noah Park"]})
+    retriever = AgentRetriever(registry)
+    assert retriever.suggest_names("Email Nora (nora.lind@acme.com) about the lease") == []
+    # Without the address, "Nora" may be a typo of Noah: the model asks
+    assert [s.name for s in retriever.suggest_names("send the lease to Nora")] == ["Noah"]
+
+
 def test_lowercase_typo_after_to_also_counts(registry):
     four_sarahs(registry)
     assert [s.name for s in AgentRetriever(registry).suggest_names("send the list to sarha")] == ["Sarah"]
@@ -174,3 +192,16 @@ def test_no_hint_block_when_names_are_known(registry, monkeypatch):
     finally:
         set_agent_registry(None)
     assert "<contact_name_hints>" not in content
+
+
+def test_labelled_typo_check():
+    # evals/typo_hints.py on the 300-agent history: every typo that keeps the first letter is caught,
+    # and no real eval message or correctly spelt name raises a hint
+    from evals import typo_hints
+
+    result = typo_hints.run()
+    caught = [result["by_edit"][edit] for edit in typo_hints.EDITS]
+    assert sum(row["named"] for row in caught) == sum(row["cases"] for row in caught) > 100
+    assert result["false_alarms"]["real_with_hint"] == []
+    assert result["false_alarms"]["spelt_right_with_hint"] == []
+    assert result["narrowed"]["right"] == result["narrowed"]["cases"]
