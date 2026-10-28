@@ -162,12 +162,20 @@ Branch **`all-approaches`** has all three behind settings, and `python -m evals.
 
 None of them breaks a case this branch gets right. Past requests fix 12 follow-ups about a mid-history request, and the 13th fix is a coincidental word match. Plurals and meaning search close the paraphrase gap.
 
-On the real model (Haiku 5.5, each branch's own runs, different days):
-- Plurals and typos raised paraphrase pass^3 from 83.3% to 95.8%.
-- Past requests got 40/40 on the main cases and 18/18 runs on the new mid-history cases.
-- Meaning search isn't measured on the real model yet.
+On the real model (Haiku 5.5, all rows on the same day, 3 runs per case, `python -m evals.compare_llm`, $2.36 in total):
 
-My verdict: ship past requests and plurals, and keep meaning search as an opt-in until it is. Full tables, method and caveats: [docs/COMPARISON.md on branch `all-approaches`](https://github.com/Garvit-01/openpoke-agent-overload/blob/all-approaches/docs/COMPARISON.md).
+| Version | Usual 40 cases right | 6 mid-history cases | Paraphrases right | Paraphrases right on all 3 runs | Input tokens per decision |
+|---|---|---|---|---|---|
+| Original OpenPoke (5 identical runs) | 22 to 24 | 0 | 12 to 15 | 41.7% to 54.2% | 9,853 |
+| This branch (`main`) | 39 | 0 | 23 | 87.5% | 8,666 |
+| + plurals and typo hints | 39 | 0 | 24 | 95.8% | 8,356 |
+| + past-request search | 38 | 6 | 22 | 87.5% | 7,655 |
+| + meaning search | 40 | 0 | 24 | 95.8% | 8,775 |
+| all three together | **40** | **6** | **24** | **100%** | **7,322** |
+
+All three together were right on every case and every run of both sets. On the 46 generated cases they fixed 7 and broke 0 against this branch (p = 0.016). Past requests alone broke 2 cases where the model didn't route at all. Both cases are right with all three on, so I read them as model noise, but they are reported as breaks.
+
+My verdict: all three together. Meaning search stays optional because it needs about 110 MB of downloads. Full tables, method and caveats: [docs/COMPARISON.md on branch `all-approaches`](https://github.com/Garvit-01/openpoke-agent-overload/blob/all-approaches/docs/COMPARISON.md).
 
 ## Running it
 
