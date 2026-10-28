@@ -192,9 +192,10 @@ async def evaluate_llm(
     concurrency: int = 4,
     workdir: Path,
     phrases: Optional[Dict[str, List[str]]] = None,
+    retriever: Optional[str] = None,
 ) -> List[LLMOutcome]:
     baseline = BaselineArm(scenario)
-    solution = SolutionArm(scenario, workdir, phrases=phrases)
+    solution = SolutionArm(scenario, workdir, phrases=phrases, retriever=retriever)
     solution_tools = get_tool_schemas()
     baseline_tools = original_tool_schemas(solution_tools)
     semaphore = asyncio.Semaphore(concurrency)
@@ -395,6 +396,8 @@ def run_llm(args) -> None:
         stem += f"_{args.agents}agents"
     if getattr(args, "phrases", False):
         stem += "_phrases"
+    if getattr(args, "retriever", "bm25") == "hybrid":
+        stem += "_hybrid"
     saved = RESULTS_DIR / f"{stem}.json"
     if args.rescore:
         # Re-report a saved run (new metrics, fixed formatting) without paying for the model calls again
@@ -430,6 +433,7 @@ def run_llm(args) -> None:
                 evaluate_llm(
                     scenario, cases, complete=complete, model=args.model, api_key=api_key,
                     repeats=args.repeats, concurrency=args.concurrency, workdir=Path(workdir), phrases=phrases,
+                    retriever=getattr(args, "retriever", None),
                 )
             )
     summary = summarise(outcomes)
@@ -440,7 +444,8 @@ def run_llm(args) -> None:
     lines = [
         f"# LLM routing evaluation ({args.model})",
         "",
-        f"{case_count} cases (spread across categories) x {args.repeats} repeats, {args.agents} agents, seed {args.seed}.",
+        f"{case_count} cases (spread across categories) x {args.repeats} repeats, {args.agents} agents, seed {args.seed}"
+        + (", agent search: hybrid (keywords + local embeddings)." if stem.endswith("_hybrid") else "."),
         "",
         "| Metric | Original OpenPoke | This change |",
         "|---|---|---|",

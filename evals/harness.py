@@ -257,13 +257,19 @@ def visible_text(item: ScoredAgent) -> str:
 class SolutionArm:
     label = "solution"
 
-    def __init__(self, scenario: Scenario, workdir: Path, phrases: Optional[Dict[str, List[str]]] = None):
+    def __init__(
+        self,
+        scenario: Scenario,
+        workdir: Path,
+        phrases: Optional[Dict[str, List[str]]] = None,
+        retriever: Optional[str] = None,
+    ):
         self.registry = build_registry(scenario, workdir / "registry.db")
         # Search phrases as the app would have written them after each agent's first run
         for name, values in (phrases or {}).items():
             if values and self.registry.get(name):
                 self.registry.update_profile(name, entities={PHRASE_KIND: values})
-        self.retriever = AgentRetriever(self.registry)
+        self.retriever = AgentRetriever(self.registry, mode=retriever)  # None: OPENPOKE_AGENT_RETRIEVER
         self.total = self.registry.count()
 
     def shortlist(self, message: str) -> List[ScoredAgent]:
@@ -384,6 +390,7 @@ def run_solution_conversation(
     workdir: Path,
     *,
     use_new_task: bool = True,
+    retriever_mode: Optional[str] = None,
 ) -> List[TurnDecision]:
     """New behaviour over several turns, through the real route_to_agent on a copy of the registry.
 
@@ -394,7 +401,7 @@ def run_solution_conversation(
     db_path = workdir / f"{conversation.id}{'' if use_new_task else '-noflag'}.db"
     shutil.copyfile(template_db, db_path)
     registry = AgentRegistry(db_path, clock=lambda: scenario.now)
-    retriever = AgentRetriever(registry)
+    retriever = AgentRetriever(registry, mode=retriever_mode)
     memory: List[str] = []
     created_at: Dict[int, str] = {}
     decisions: List[TurnDecision] = []
@@ -543,14 +550,21 @@ def score(arm: str, decisions: Sequence[Decision]) -> ArmMetrics:
 
 
 def run_simulated(
-    scenario: Scenario, *, threshold: float = 0.6, phrases: Optional[Dict[str, List[str]]] = None
+    scenario: Scenario,
+    *,
+    threshold: float = 0.6,
+    phrases: Optional[Dict[str, List[str]]] = None,
+    retriever: Optional[str] = None,
 ) -> Dict[str, object]:
-    """Run both arms on one scenario. Returns metrics plus every decision for inspection."""
+    """Run both arms on one scenario. Returns metrics plus every decision for inspection.
+
+    retriever: "bm25" or "hybrid" for the solution arm; None uses OPENPOKE_AGENT_RETRIEVER.
+    """
 
     router = SimulatedRouter(scenario.vocabulary, threshold=threshold)
     baseline = BaselineArm(scenario)
     with tempfile.TemporaryDirectory() as workdir:
-        solution = SolutionArm(scenario, Path(workdir), phrases=phrases)
+        solution = SolutionArm(scenario, Path(workdir), phrases=phrases, retriever=retriever)
         base_decisions = [baseline.route(case, router) for case in scenario.cases]
         new_decisions = [solution.route(case, router) for case in scenario.cases]
         # Each conversation starts from the same history; the solution arm gets a fresh copy
@@ -560,10 +574,11 @@ def run_simulated(
         for conversation in scenario.conversations:
             base_turns += run_baseline_conversation(scenario, conversation, router)
             new_turns += run_solution_conversation(
-                scenario, conversation, router, solution.registry.db_path, Path(workdir)
+                scenario, conversation, router, solution.registry.db_path, Path(workdir), retriever_mode=retriever
             )
             no_flag_turns += run_solution_conversation(
-                scenario, conversation, router, solution.registry.db_path, Path(workdir), use_new_task=False
+                scenario, conversation, router, solution.registry.db_path, Path(workdir), use_new_task=False,
+                retriever_mode=retriever,
             )
     return {
         "agents": len(scenario.agents),
