@@ -61,18 +61,22 @@ Nothing got worse in accuracy, recall, the seeds, the roster sizes, the threshol
 
 Result files: `evals/results/results_hybrid.md` and `results_paraphrase_phrases_hybrid.md`.
 
-## Results, real model (paid): not run
+## Results, real model (Claude Haiku 5.5)
 
-Before any paid run I checked the shared OpenRouter credit. $0.39 was left, below the $0.50 floor for starting, so I ran neither the paraphrase run nor the main run. What a real model does with the extra 3 agents is therefore **not measured**. The committed Haiku 5.5 numbers to compare against are 24/24 (pass^3 83.3%) on the paraphrases and 99.2% on the main 40 cases. To run them later:
+Two runs, after more credit was added on 2026-10-28:
 
-```bash
-python -m evals.run_eval --set paraphrase --router llm --phrases --retriever hybrid   # about $0.15
-python -m evals.run_eval --router llm --phrases --retriever hybrid                   # about $0.26
-```
+| Run | Original | `main` (keywords only, same day) | Hybrid |
+|---|---|---|---|
+| 24 hand-written paraphrases, cases right by majority | 12 to 15 | 23/24 | 24/24 |
+| same, right on all 3 runs (pass^3) | 41.7% to 58.3% | 87.5% | 95.8% to 100% |
+| Usual 40 cases, runs right | 66 to 70 /120 | 117/120 | 120/120 |
+| Usual 40 cases, cases right | 22 to 24 | 39/40 | 40/40 |
 
-They write files with a `_hybrid` suffix, so the committed results stay.
-
-**What I expect, as an assumption.** With bm25, Haiku already got all 24 paraphrases right by majority, by searching when the agent wasn't shown. So the likely gain is in stability (pass^3) and fewer `search_agents` calls, not in majority accuracy. It could also go the other way: 3 extra agents that are only similar in meaning are 3 more ways to pick wrong.
+- The paraphrase run on this branch (`evals/results/llm_results_anthropic-claude-haiku-5-5_paraphrase_phrases_hybrid.md`, $0.16) got 24/24, right on all 3 runs for every case. Against the original it fixed 9 and broke 0 (p = 0.0039).
+- The rest come from the same-day comparison on branch `all-approaches` (`python -m evals.compare_llm`, see its `docs/COMPARISON.md`). There, hybrid on its own fixed 2 cases against keyword search and broke none:
+  - `hw17`, a paraphrase;
+  - `new_same_first_name-156`, a new contact who shares a first name with an existing one.
+- Before the runs I expected a gain in stability (pass^3), not in majority accuracy, and worried that 3 agents matched only by meaning would be 3 more ways to pick wrong. The first part held. The worry didn't show: no wrong picks in these runs.
 
 ## Install size and CPU cost
 
@@ -125,9 +129,9 @@ For it:
 - It can't merge agents.
 
 Against making it the default now:
-- The real-model run that would show whether this changes routing wasn't done, for lack of credit. With keywords alone Haiku already scores 24/24 by majority, so the gain may be small.
+- The real-model gain is small in absolute terms: 1 or 2 cases per set, on one run per row. The clear part is stability: no case got a wrong pick, and pass^3 went up.
 - It adds about 110 MB on disk and a model download on first use, and on this machine the install changed a shared package (protobuf).
 - It adds 45 to 100 ms per turn and minutes of background CPU for a large registry.
 - On a 43,000-tool benchmark, plain BM25 beat small embedders ([ToolRet, 2025](https://arxiv.org/abs/2503.01763)). Here it helped recall at a few hundred agents, but on synthetic data and 24 hand-written messages from one author.
 
-If the two paid runs show a better pass^3 on the paraphrases and no loss on the main 40 cases, I'd make `hybrid` the default.
+Update after the paid runs: both conditions I set were met. Paraphrase pass^3 went up (87.5% to 95.8% same day, 100% on this branch's run), and the main 40 lost nothing (40/40). So `hybrid` is a reasonable default wherever the 110 MB install is acceptable. I still left `bm25` as the default here, so a plain install needs no extra download.
