@@ -19,8 +19,8 @@ The original is on branch `upstream-main` (upstream commit `5b5f635`). Everythin
 | Real model, **800 agents**: runs routed right | 54.2% | **100%** |
 | 800 agents: duplicate agent created when the right one existed | **44.8%** | 0.0% |
 | 800 agents: input tokens per routing decision | 19,471 | 7,287 |
-| 24 **hand-written paraphrases** (no shared words with their agent): cases right | 15/24 | **24/24** |
-| same, right on all 3 runs (pass^3) | 54.2% | 83.3% |
+| 24 **hand-written paraphrases** (no shared words with their agent): cases right | 13/24 | **23/24** |
+| same, right on all 3 runs (pass^3) | 37.5% | 95.8% |
 | **Second model** (Gemma 4 26B), 40 cases: cases right | 19/40 | **29/40** |
 | Simulated router, 185 labelled cases: right | 57.8% | 93.0% |
 | Simulated, 26 multi-turn conversations: every turn right | 34.6% | 100% |
@@ -57,6 +57,8 @@ The author names the first problems himself in his [explainer](https://www.shlok
 | 12 | When the message names a person, list that person's other agents by name and topic | `retrieval.py` |
 | 13 | Prompt: search for the name a task was probably filed under, not the user's words | `system_prompt.md` |
 | 14 | Search phrases: after an agent's first run, a cheap model writes about 10 ways a user might refer to it, and search indexes them | `phrases.py` |
+| 15 | Plurals folded when tokenising ("groceries" finds "Grocery list"), also in the dedup key | `entities.py` |
+| 16 | A misspelt contact name ("Sarha") gets a hint listing every Sarah, and the model asks which one | `retrieval.py`, `system_prompt.md` |
 
 Changes 12 to 14 were each added after an eval showed the original doing better on some cases. [docs/EVALUATION.md](docs/EVALUATION.md) shows the before and after of each.
 
@@ -127,8 +129,8 @@ Not fixed, worth knowing:
 - **The data is synthetic.** I generated the 300 agents and labelled messages to contain known failure modes. The 24 hand-written paraphrases avoid the generator's wording, but one author wrote them with Claude's help. Real users will be messier.
 - **One model family does most of the work.** Haiku routes, Haiku writes the search phrases, and a Claude model helped write the test messages. Gemma checks the routing side only.
 - **The sample is small.** 40 main cases and 24 paraphrases. The headline difference is significant, but per-category numbers move 20 points when one case flips.
-- **Paraphrases are still the weak spot.** For 3 of the 24 the right agent isn't in the shortlist, and the model only finds it by searching. 4 cases were right on 2 of 3 runs, not all 3.
-- **No stemming or typo matching yet.** "grocery" doesn't match "groceries", and "Sarha" doesn't match "Sarah". In the demo the model asked who "Sarha" was, which is safe but not smart.
+- **Paraphrases are still the weak spot.** For 1 of the 24 (a manual translation) the right agent isn't in the shortlist, and the model only finds it by searching. In the latest run one case was right on only 1 of 3 runs; the model didn't route at all in the other two.
+- **Plural and typo matching are simple.** Plurals are folded with a few suffix rules, not a stemmer, so "running" still doesn't match "run". A misspelt name ("Sarha") is only caught in a name position (capitalised mid-sentence, or after "to", "ask" and the like), when it is close to a known first name and starts with the same letter. The model then gets every contact with that first name and is told to ask which one. There is no labelled eval case for the typo hint yet, only unit tests.
 - **It asks "which Sarah?" even right after you named one.** One turn after "Sarah Okafor", it asked again for a new topic. That's a deliberate lean towards asking before an email goes out, but a person would guess Okafor.
 - **Gmail isn't tested live.** Routing never needs Gmail, so none of the numbers above depend on it. Incoming-email routing by thread id, drafting and the send guard are unit-tested with fakes, not run against a real inbox.
 - **Prompt caching isn't measured.** The original's list changes only when an agent is created, so with a warm cache it costs less than the token counts suggest. Caching doesn't change its accuracy.
