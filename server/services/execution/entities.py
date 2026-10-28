@@ -48,18 +48,51 @@ NAME_FILLER = frozenset(
 )
 
 
-def tokenize(text: str) -> List[str]:
-    """Lowercase word tokens without stopwords or single characters."""
+# Words that end in "s" but are not plurals
+_NOT_PLURAL = frozenset("news series species".split())
 
-    return [
+
+def fold_plural(token: str) -> str:
+    """Map a plural to its singular, so "groceries" matches "grocery" and "lists" matches "list".
+
+    A few suffix rules, no stemmer: "ies" -> "y" (groceries), "es" goes after ss/x/ch/sh/zz
+    (addresses, boxes, matches, wishes), otherwise a final "s" goes (lists, cases, houses).
+    Words of 3 letters or fewer, words ending in ss/us/is (address, status, analysis, bus) and
+    anything with a digit stay as they are. The result is a real word in most cases, which
+    matters because matched keywords are shown to the model.
+    """
+
+    if len(token) <= 3 or not token.isalpha() or token in _NOT_PLURAL:
+        return token
+    if not token.endswith("s") or token.endswith(("ss", "us", "is")):
+        return token
+    if token.endswith("ies") and len(token) > 4:
+        return token[:-3] + "y"
+    if token.endswith(("sses", "xes", "ches", "shes", "zzes")):
+        return token[:-2]
+    return token[:-1]
+
+
+def tokenize(text: str, *, fold: bool = True) -> List[str]:
+    """Lowercase word tokens without stopwords or single characters, plurals folded.
+
+    fold=False keeps words as written; person names use it so "Lucas" doesn't become "Luca".
+    """
+
+    tokens = [
         token
         for token in _TOKEN_PATTERN.findall((text or "").lower())
         if len(token) > 1 and token not in STOPWORDS
     ]
+    return [fold_plural(token) for token in tokens] if fold else tokens
 
 
 def normalize_agent_name(name: str) -> str:
-    """Order-independent key for an agent name, used to catch near-duplicate names."""
+    """Order-independent key for an agent name, used to catch near-duplicate names.
+
+    Plurals are folded too, so "Grocery lists" and "grocery list" get the same key. The resolver
+    reuses on a same key only when exactly one agent has it and no new email address is named.
+    """
 
     tokens = {token for token in tokenize(name) if token not in NAME_FILLER}
     return " ".join(sorted(tokens))
@@ -102,6 +135,7 @@ __all__ = [
     "HARD_KINDS",
     "SOFT_KINDS",
     "extract_entities",
+    "fold_plural",
     "merge_entities",
     "normalize_agent_name",
     "tokenize",
