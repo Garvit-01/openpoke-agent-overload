@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+import os
 import re
-from typing import Dict, Iterable, List
+from typing import Dict, Iterable, List, Optional
 
 # Email addresses and Gmail thread ids are "hard" entities: an exact match means
 # "this is the same conversation". Names and subjects are "soft": they help rank.
@@ -52,6 +53,12 @@ NAME_FILLER = frozenset(
 _NOT_PLURAL = frozenset("news series species".split())
 
 
+# OPENPOKE_FOLD_PLURALS=0 keeps words as written (the agent-overload behaviour). Read here, not from
+# Settings, because tokenize runs for every agent on every search. Agent name keys are recomputed
+# when the registry opens, so changing it needs a restart, not a migration.
+FOLD_PLURALS = os.getenv("OPENPOKE_FOLD_PLURALS", "1") != "0"
+
+
 def fold_plural(token: str) -> str:
     """Map a plural to its singular, so "groceries" matches "grocery" and "lists" matches "list".
 
@@ -73,11 +80,15 @@ def fold_plural(token: str) -> str:
     return token[:-1]
 
 
-def tokenize(text: str, *, fold: bool = True) -> List[str]:
+def tokenize(text: str, *, fold: Optional[bool] = None) -> List[str]:
     """Lowercase word tokens without stopwords or single characters, plurals folded.
 
     fold=False keeps words as written; person names use it so "Lucas" doesn't become "Luca".
+    None follows FOLD_PLURALS.
     """
+
+    if fold is None:
+        fold = FOLD_PLURALS
 
     tokens = [
         token

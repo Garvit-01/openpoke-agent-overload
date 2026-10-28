@@ -467,9 +467,13 @@ class AgentRetriever:
         retrieved: int = 8,
         recent: int = 4,
         named_people: int = 12,
-        suggest: bool = True,
+        suggest: Optional[bool] = None,
         now: Optional[datetime] = None,
     ) -> PromptCandidates:
+        if suggest is None:
+            from ...config import get_settings
+
+            suggest = get_settings().agent_name_hints
         suggestions = self.suggest_names(message) if suggest else []
         query = with_suggested_names(message, suggestions)
         shortlist = self.shortlist(query, retrieved=retrieved, recent=recent, now=now)

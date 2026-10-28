@@ -70,6 +70,10 @@ class Settings(BaseModel):
     # Past requests: keyword search also reads the last 20 requests sent to each agent (at a lower weight),
     # so a follow-up about something asked mid-history still finds the agent. Search only, never a merge signal.
     agent_index_requests: bool = Field(default=os.getenv("OPENPOKE_AGENT_INDEX_REQUESTS", "1") != "0")
+    # Typo hints: a word in a name position that is close to a known contact's first name ("Sarha") makes
+    # the prompt list the matching contacts, so the model asks "did you mean ...?" instead of guessing.
+    # Plural folding has its own switch, OPENPOKE_FOLD_PLURALS, read in entities.py.
+    agent_name_hints: bool = Field(default=os.getenv("OPENPOKE_AGENT_NAME_HINTS", "1") != "0")
     # Agent search: "bm25" is keyword search only; "hybrid" also searches by meaning with a small local
     # embedding model (optional: pip install -r server/requirements-embeddings.txt). Without fastembed,
     # "hybrid" quietly behaves like "bm25".

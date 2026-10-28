@@ -69,7 +69,7 @@ def _render_active_agents(latest_text: str, *, suggest_names: bool = True) -> st
         retrieved=settings.agent_shortlist_retrieved,
         recent=settings.agent_shortlist_recent,
         named_people=settings.agent_named_people_limit,
-        suggest=suggest_names,
+        suggest=suggest_names and settings.agent_name_hints,
     )
     roster = render_agent_shortlist(
         candidates.shortlist, total=total, summary_chars=settings.agent_summary_chars, related=candidates.related
