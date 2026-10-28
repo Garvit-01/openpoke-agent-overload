@@ -91,6 +91,18 @@ def test_usage_cost_and_time_lines():
     assert "no model calls recorded" in "\n".join(demo.usage_lines([], {}, 1.0))
 
 
+def test_routing_comparison_is_per_call():
+    # The original made 4 routing calls and this branch 1: the headline ratio must not count that as savings
+    demo = load("demo")
+    routing = "interaction agent (routing)"
+    original = [{"part": routing, "prompt_tokens": 14_000}] * 4 + [{"part": "execution agents", "prompt_tokens": 9_999}]
+    ours = [{"part": routing, "prompt_tokens": 10_000}]
+    text = "\n".join(demo.routing_lines(original, ours))
+    assert "per call: original 14,000 vs this branch 10,000 (1.4x)" in text
+    assert "original 56,000 over 4 call(s) vs this branch 10,000 over 1 call(s)" in text
+    assert demo.routing_lines(original, []) == []
+
+
 def test_ask_stops_after_a_single_direct_reply(monkeypatch):
     import time
 

@@ -278,13 +278,25 @@ def ask(args) -> None:
         print()
         print(f"RIGHT ANSWER (from the eval's labels): {'a NEW agent' if right == NEW else right}")
 
+    for line in routing_lines(original_usage, ours_usage):
+        print(line)
+
+
+def routing_lines(original_usage: List[dict], ours_usage: List[dict]) -> List[str]:
+    """Routing input tokens, per call as well as in total: the apps can make a different number of calls."""
     routing = "interaction agent (routing)"
-    original_in = sum(r["prompt_tokens"] for r in original_usage if r["part"] == routing)
-    ours_in = sum(r["prompt_tokens"] for r in ours_usage if r["part"] == routing)
-    if original_in and ours_in:
-        print()
-        print(f"ROUTING PROMPT: original {original_in:,} input tokens vs this branch {ours_in:,} "
-              f"({original_in / ours_in:.1f}x). That's the part the agent list is in.")
+    original = [r["prompt_tokens"] for r in original_usage if r["part"] == routing]
+    ours = [r["prompt_tokens"] for r in ours_usage if r["part"] == routing]
+    if not original or not ours:
+        return []
+    original_each, ours_each = sum(original) / len(original), sum(ours) / len(ours)
+    return [
+        "",
+        f"ROUTING PROMPT (the part the agent list is in), input tokens per call: "
+        f"original {original_each:,.0f} vs this branch {ours_each:,.0f} ({original_each / ours_each:.1f}x)",
+        f"  in total for this message: original {sum(original):,} over {len(original)} call(s) vs "
+        f"this branch {sum(ours):,} over {len(ours)} call(s)",
+    ]
 
 
 # ------------------------------------------------------------------------- status
