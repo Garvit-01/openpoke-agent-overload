@@ -29,13 +29,13 @@ from datetime import timedelta
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Set, Tuple
 
-from server.agents.interaction_agent.agent import agent_topic, render_agent_shortlist
+from server.agents.interaction_agent.agent import agent_topic, render_agent_shortlist, render_name_hints
 from server.services.execution.entities import EMAIL_PATTERN, extract_entities, tokenize
 from server.services.execution.lifecycle import LifecyclePolicy, apply_lifecycle
 from server.services.execution.phrases import PHRASE_KIND
 from server.services.execution.registry import AgentRecord, AgentRegistry, to_iso
 from server.services.execution.resolver import resolve_agent
-from server.services.execution.retrieval import AgentRetriever, ScoredAgent
+from server.services.execution.retrieval import AgentRetriever, PromptCandidates, ScoredAgent
 from server.services.execution.routing import route_to_agent
 
 from .baseline import original_reuse, render_original_roster
@@ -249,6 +249,21 @@ def build_registry(scenario: Scenario, path: Path) -> AgentRegistry:
     return registry
 
 
+def prompt_candidates(retriever: AgentRetriever, message: str) -> PromptCandidates:
+    """What the app's per-turn prompt would show for a user message (same call as agent.py)."""
+    return retriever.prompt_candidates(
+        message, retrieved=SHORTLIST_RETRIEVED, recent=SHORTLIST_RECENT, named_people=NAMED_PEOPLE_LIMIT
+    )
+
+
+def render_roster(candidates: PromptCandidates, total: int) -> str:
+    roster = render_agent_shortlist(
+        candidates.shortlist, total=total, summary_chars=SUMMARY_CHARS, related=candidates.related
+    )
+    hints = render_name_hints(candidates.suggestions)
+    return f"{roster}\n\n{hints}" if hints else roster
+
+
 def visible_text(item: ScoredAgent) -> str:
     """What the solution prompt shows for one agent (name, summary, why it matched)."""
     return " ".join([item.name, item.record.summary, *item.reasons])
@@ -266,18 +281,11 @@ class SolutionArm:
         self.retriever = AgentRetriever(self.registry)
         self.total = self.registry.count()
 
-    def shortlist(self, message: str) -> List[ScoredAgent]:
-        return self.retriever.shortlist(message, retrieved=SHORTLIST_RETRIEVED, recent=SHORTLIST_RECENT)
-
-    def related(self, message: str, shortlist: Sequence[ScoredAgent]) -> List[AgentRecord]:
-        exclude = [item.name for item in shortlist]
-        return self.retriever.named_people_agents(message, exclude=exclude, limit=NAMED_PEOPLE_LIMIT)
+    def candidates(self, message: str) -> PromptCandidates:
+        return prompt_candidates(self.retriever, message)
 
     def roster_section(self, message: str) -> str:
-        shortlist = self.shortlist(message)
-        return render_agent_shortlist(
-            shortlist, total=self.total, summary_chars=SUMMARY_CHARS, related=self.related(message, shortlist)
-        )
+        return render_roster(self.candidates(message), self.total)
 
     def search(self, query: str) -> List[ScoredAgent]:
         return self.retriever.search(query, limit=8)
@@ -288,9 +296,9 @@ class SolutionArm:
 
     def route(self, case: Case, router: SimulatedRouter) -> Decision:
         started = time.perf_counter()
-        shortlist = self.shortlist(case.message)
-        related = self.related(case.message, shortlist)
-        roster = render_agent_shortlist(shortlist, total=self.total, summary_chars=SUMMARY_CHARS, related=related)
+        candidates = self.candidates(case.message)
+        shortlist, related = candidates.shortlist, candidates.related
+        roster = render_roster(candidates, self.total)
         visible = [(item.name, visible_text(item)) for item in shortlist]
         visible += [(record.name, f"{record.name} {agent_topic(record)}") for record in related]
         choice = router.choose(case.message, visible)
@@ -407,12 +415,9 @@ def run_solution_conversation(
             seen = [registry.get(name) for name in dict.fromkeys(memory)]
             choice = router.choose(turn.message, [(r.name, f"{r.name} {r.summary}") for r in seen if r])
         if choice is None and not new_task:
-            shortlist = retriever.shortlist(turn.message, retrieved=SHORTLIST_RETRIEVED, recent=SHORTLIST_RECENT)
-            visible = [(item.name, visible_text(item)) for item in shortlist]
-            related = retriever.named_people_agents(
-                turn.message, exclude=[item.name for item in shortlist], limit=NAMED_PEOPLE_LIMIT
-            )
-            visible += [(record.name, f"{record.name} {agent_topic(record)}") for record in related]
+            candidates = prompt_candidates(retriever, turn.message)
+            visible = [(item.name, visible_text(item)) for item in candidates.shortlist]
+            visible += [(record.name, f"{record.name} {agent_topic(record)}") for record in candidates.related]
             choice = router.choose(turn.message, visible)
         if choice is None and not new_task:
             found = retriever.search(turn.message, limit=8)

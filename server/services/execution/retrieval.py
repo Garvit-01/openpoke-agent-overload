@@ -8,13 +8,15 @@ this about", but only an exact entity can say "which thread is this".
 
 from __future__ import annotations
 
+import difflib
 import math
+import re
 from collections import Counter
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Dict, Iterable, List, Optional, Sequence
 
-from .entities import HARD_KINDS, extract_entities, tokenize
+from .entities import HARD_KINDS, STOPWORDS, extract_entities, fold_plural, tokenize
 from .registry import (
     STATUS_ACTIVE,
     STATUS_ARCHIVED,
@@ -34,6 +36,56 @@ RECENCY_BOOST = 0.05  # at most +5% for an agent used right now, halving every t
 RECENCY_HALF_LIFE_DAYS = 14.0
 # Words this common (e.g. "latest" in every summary) are not shown as reasons for a match
 MIN_REASON_IDF = 0.5
+
+# Did-you-mean for contact names ("Sarha" -> "Sarah"). difflib ratio: one swapped or wrong
+# letter in a 5-letter name is exactly 0.8. Only words in a name position are checked.
+NAME_SUGGEST_CUTOFF = 0.8
+NAME_SUGGEST_MIN_LENGTH = 4
+NAME_SUGGEST_MAX_PEOPLE = 8
+# A lowercase word right after one of these is in a name position ("send it to sarha")
+NAME_CUES = frozenset("to with from for cc ask tell email ping text call message".split())
+# Capitalised mid-sentence but not names
+_CAPITALISED_WORDS = frozenset(
+    """
+    monday tuesday wednesday thursday friday saturday sunday
+    january february march april june july august september october november december
+    """.split()
+)
+_WORD = re.compile(r"[A-Za-z]+")
+
+
+@dataclass
+class NameSuggestion:
+    """A word in the message that looks like a misspelt contact name."""
+
+    typed: str  # as written, e.g. "Sarha"
+    name: str  # the closest known first name, e.g. "Sarah"
+    people: List[str] = field(default_factory=list)  # full names with that first name, most recent first
+
+    def hint(self) -> str:
+        shown = self.people[:NAME_SUGGEST_MAX_PEOPLE]
+        listed = ", ".join(shown)
+        if len(self.people) > len(shown):
+            listed += f" and {len(self.people) - len(shown)} more"
+        closest = f"{self.name} ({listed})" if listed else self.name
+        ask = "which one they mean" if len(self.people) > 1 else "if that is who they mean"
+        return f'"{self.typed}" isn\'t a known contact. Closest: {closest}. Ask the user {ask} before acting.'
+
+
+def with_suggested_names(query: str, suggestions: Sequence[NameSuggestion]) -> str:
+    """The query with suggested names added, so retrieval and the named-people list find them."""
+
+    names = list(dict.fromkeys(suggestion.name for suggestion in suggestions))
+    return f"{query} {' '.join(names)}" if names else query
+
+
+@dataclass
+class PromptCandidates:
+    """Everything the interaction agent's per-turn prompt shows about existing agents."""
+
+    shortlist: List[ScoredAgent]
+    related: List[AgentRecord]
+    suggestions: List[NameSuggestion]
 
 
 @dataclass
@@ -199,6 +251,83 @@ class AgentRetriever:
         matched.sort(key=lambda record: record.last_active_at, reverse=True)
         return matched[:limit]
 
+    # The per-turn prompt: shortlist, the named people's other agents, and did-you-mean names
+    def prompt_candidates(
+        self,
+        message: str,
+        *,
+        retrieved: int = 8,
+        recent: int = 4,
+        named_people: int = 12,
+        suggest: bool = True,
+        now: Optional[datetime] = None,
+    ) -> PromptCandidates:
+        suggestions = self.suggest_names(message) if suggest else []
+        query = with_suggested_names(message, suggestions)
+        shortlist = self.shortlist(query, retrieved=retrieved, recent=recent, now=now)
+        related = self.named_people_agents(query, exclude=[item.name for item in shortlist], limit=named_people)
+        return PromptCandidates(shortlist=shortlist, related=related, suggestions=suggestions)
+
+    # "Sarha" when no contact is called Sarha but several are called Sarah
+    def suggest_names(self, message: str) -> List[NameSuggestion]:
+        """Words that are probably a misspelt first name of a known contact.
+
+        A word counts only if it is in a name position (capitalised mid-sentence, or right after
+        "to", "with", "ask" and the like), has 4+ letters, isn't a stopword, isn't a word any
+        agent already uses, and starts with the same letter as the name. So an exact name, a
+        normal word ("trace" vs Grace) or a sentence's first word doesn't trigger it.
+        """
+
+        candidates = [
+            match for match in _WORD.finditer(message or "") if _in_name_position(message, match)
+        ]
+        candidates = [
+            match for match in candidates
+            if len(match.group()) >= NAME_SUGGEST_MIN_LENGTH
+            and match.group().lower() not in STOPWORDS
+            and match.group().lower() not in _CAPITALISED_WORDS
+        ]
+        if not candidates:
+            return []
+
+        name_words: set[str] = set()
+        first_names: Dict[str, str] = {}  # lowercase -> as written
+        people: Dict[str, List[str]] = {}  # lowercase first name -> full names, most recent first
+        for person in self._registry.entity_values("person"):
+            words = person.split()
+            name_words.update(word.lower() for word in words)
+            if not words or not words[0].isalpha():
+                continue
+            first = words[0].lower()
+            first_names.setdefault(first, words[0])
+            if len(words) > 1:
+                people.setdefault(first, []).append(person)
+
+        vocabulary: Optional[set[str]] = None  # built only when a word is close to a name
+        suggestions: List[NameSuggestion] = []
+        for match in candidates:
+            typed = match.group()
+            word = typed.lower()
+            if word in name_words:
+                continue  # a known name
+            pool = [name for name in first_names if name[0] == word[0]]
+            close = difflib.get_close_matches(word, pool, n=2, cutoff=NAME_SUGGEST_CUTOFF)
+            if not close:
+                continue
+            if vocabulary is None:
+                vocabulary = {
+                    token for record in self._registry.list_agents() for token in agent_document_tokens(record)
+                }
+            if word in vocabulary or fold_plural(word) in vocabulary:
+                continue  # a word the agents use, so probably not a misspelt name
+            following = _next_word(message, match)
+            for name in close:
+                full = people.get(name, [])
+                # "Sarha Okafor": the surname says which Sarah
+                narrowed = [person for person in full if following and following in person.lower().split()[1:]]
+                suggestions.append(NameSuggestion(typed=typed, name=first_names[name], people=narrowed or full))
+        return suggestions
+
     @staticmethod
     def _hard_matches(query: str, records: Sequence[AgentRecord]) -> Dict[str, List[str]]:
         query_entities = extract_entities(query)
@@ -218,12 +347,31 @@ class AgentRetriever:
         return 0.5 ** (age_days / RECENCY_HALF_LIFE_DAYS)
 
 
+def _in_name_position(text: str, match: re.Match) -> bool:
+    """Capitalised and not the first word of a sentence, or right after a word like "to"."""
+
+    before = text[: match.start()].rstrip()
+    previous = _WORD.findall(before[-20:])
+    if previous and previous[-1].lower() in NAME_CUES:
+        return True
+    starts_sentence = not before or before[-1] in ".!?:;\n\"'(" or not previous
+    return match.group()[0].isupper() and not starts_sentence
+
+
+def _next_word(text: str, match: re.Match) -> str:
+    following = _WORD.match(text[match.end():].lstrip())
+    return following.group().lower() if following else ""
+
+
 __all__ = [
     "AgentRetriever",
     "BM25Index",
     "HARD_MATCH_BONUS",
     "MAX_AGENTS_PER_HARD_ENTITY",
+    "NameSuggestion",
+    "PromptCandidates",
     "STATUS_WEIGHT",
     "ScoredAgent",
     "agent_document_tokens",
+    "with_suggested_names",
 ]

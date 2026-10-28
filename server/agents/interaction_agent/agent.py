@@ -8,6 +8,7 @@ from typing import Dict, List, Sequence
 from ...config import get_settings
 from ...services.execution import AgentRetriever, ScoredAgent, get_agent_registry
 from ...services.execution.registry import AgentRecord
+from ...services.execution.retrieval import NameSuggestion
 from ...services.execution.lifecycle import LifecyclePolicy
 from ...services.execution.routing import maybe_apply_lifecycle
 
@@ -31,7 +32,7 @@ def prepare_message_with_history(
     sections: List[str] = []
 
     sections.append(_render_conversation_history(transcript))
-    sections.append(_render_active_agents(latest_text))
+    sections.append(_render_active_agents(latest_text, suggest_names=message_type == "user"))
     sections.append(_render_current_turn(latest_text, message_type))
 
     content = "\n\n".join(sections)
@@ -47,7 +48,7 @@ def _render_conversation_history(transcript: str) -> str:
 
 
 # Show a fixed-size shortlist of agents relevant to this turn instead of the whole roster
-def _render_active_agents(latest_text: str) -> str:
+def _render_active_agents(latest_text: str, *, suggest_names: bool = True) -> str:
     settings = get_settings()
     registry = get_agent_registry()
     maybe_apply_lifecycle(
@@ -62,18 +63,27 @@ def _render_active_agents(latest_text: str) -> str:
     if not total:
         return render_agent_shortlist([], total=0)
 
-    retriever = AgentRetriever(registry)
-    shortlist = retriever.shortlist(
+    # Only user messages get did-you-mean names; agent reports name people as the agent found them
+    candidates = AgentRetriever(registry).prompt_candidates(
         latest_text,
         retrieved=settings.agent_shortlist_retrieved,
         recent=settings.agent_shortlist_recent,
+        named_people=settings.agent_named_people_limit,
+        suggest=suggest_names,
     )
-    related = retriever.named_people_agents(
-        latest_text, exclude=[item.name for item in shortlist], limit=settings.agent_named_people_limit
+    roster = render_agent_shortlist(
+        candidates.shortlist, total=total, summary_chars=settings.agent_summary_chars, related=candidates.related
     )
-    return render_agent_shortlist(
-        shortlist, total=total, summary_chars=settings.agent_summary_chars, related=related
-    )
+    hints = render_name_hints(candidates.suggestions)
+    return f"{roster}\n\n{hints}" if hints else roster
+
+
+# One line per word that looks like a misspelt contact name, so the model asks "did you mean ...?"
+def render_name_hints(suggestions: Sequence[NameSuggestion]) -> str:
+    if not suggestions:
+        return ""
+    lines = "\n".join(suggestion.hint() for suggestion in suggestions)
+    return f"<contact_name_hints>\n{escape(lines, quote=False)}\n</contact_name_hints>"
 
 
 # Render shortlisted agents with status, last use, why they matched, and a short summary

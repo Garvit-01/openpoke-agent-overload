@@ -286,6 +286,16 @@ class AgentRegistry:
             ).fetchall()
         return [row["name"] for row in rows]
 
+    # Every value of one entity kind (e.g. all person names), most recently active agent first
+    def entity_values(self, kind: str) -> List[str]:
+        with self._lock, closing(self._connect()) as conn:
+            rows = conn.execute(
+                "SELECT e.value FROM agent_entities e JOIN agents a ON a.name = e.agent_name"
+                " WHERE e.kind = ? ORDER BY a.last_active_at DESC, e.rowid",
+                (kind,),
+            ).fetchall()
+        return list(dict.fromkeys(row["value"] for row in rows))
+
     # Helpers -----------------------------------------------------------------
 
     @staticmethod
