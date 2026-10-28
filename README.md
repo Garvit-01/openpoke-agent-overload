@@ -152,7 +152,8 @@ Not fixed, worth knowing:
 
 ```bash
 pip install -r server/requirements.txt pytest
-python -m pytest                                  # 128 tests, about a minute, no keys needed
+python -m pytest                                  # 177 tests, about two minutes, no keys needed
+python -m evals.compare                           # the three approaches side by side, about 12 minutes, free
 python -m evals.run_eval                          # simulated eval, about 2 minutes, writes evals/results/
 python -m evals.run_eval --router llm --phrases   # real model, needs OPENROUTER_API_KEY, about $0.30 on Haiku 5.5
 python -m evals.run_eval --set paraphrase --router llm --phrases   # the 24 hand-written paraphrases
@@ -191,18 +192,23 @@ For a labelled eval case it also prints the right answer. The launchers record e
 | `OPENPOKE_AGENT_DORMANT_DAYS` / `OPENPOKE_AGENT_ARCHIVE_DAYS` | 14 / 45 | Idle days before demotion |
 | `OPENPOKE_EXECUTION_HISTORY_LIMIT` | 10 | Past requests an execution agent sees (0 = all) |
 | `OPENPOKE_OUTBOUND_GUARD` | enforce | `off` disables the send guard |
+| `OPENPOKE_FOLD_PLURALS` | 1 | Fold plurals in search, so "groceries" finds "Grocery list" (0 = off) |
+| `OPENPOKE_AGENT_NAME_HINTS` | 1 | "Did you mean ...?" hints for misspelt contact names (0 = off) |
+| `OPENPOKE_AGENT_INDEX_REQUESTS` | 1 | Search each agent's last 20 requests at half weight (0 = off) |
+| `OPENPOKE_AGENT_RETRIEVER` | bm25 | `hybrid` adds search by meaning (needs `pip install -r server/requirements-embeddings.txt`) |
+| `OPENPOKE_EMBEDDING_MODEL` / `OPENPOKE_EMBEDDING_CACHE` | `BAAI/bge-small-en-v1.5` / fastembed's default | Embedding model and where its files go |
 | `OPENPOKE_INTERACTION_MODEL`, `_EXECUTION_MODEL`, `_SEARCH_MODEL`, `_SUMMARIZER_MODEL`, `_CLASSIFIER_MODEL` | `anthropic/claude-sonnet-5.5` | Model per role |
 
 ### What's new in the repo
 
 ```
-server/services/execution/   registry, ids, entities, retrieval, resolver, phrases, digest, lifecycle, routing, roster (migration)
+server/services/execution/   registry, ids, entities, retrieval, resolver, phrases, digest, lifecycle, routing, roster (migration), embeddings
 server/agents/execution_agent/batch_manager.py   per-agent run lock
 server/services/safety/outbound.py               send confirmation guard
-evals/     scenario generator, hand-written paraphrase set, copy of the original, harness, stats, real-model mode, results/
-tests/     128 tests
+evals/     scenario generator, hand-written paraphrase set, copy of the original, harness, stats, real-model mode, compare.py, results/
+tests/     177 tests
 tools/     run_original.py, run_mine.py, demo.py, usage_meter.py
-docs/      EVALUATION.md
+docs/      EVALUATION.md, COMPARISON.md, APPROACH_PAST_REQUESTS.md, APPROACH_EMBEDDINGS.md
 ```
 
 ---

@@ -6,7 +6,7 @@ Everything behind the numbers in the [README](../README.md): the tests, how the 
 
 ### Unit and integration tests: `python -m pytest`
 
-128 tests, about a minute, no network, no API keys. They cover:
+177 tests, about two minutes, no network, no API keys. They cover:
 
 - registry create, reuse, revive, entity lookup, persistence, and migration from `roster.json`
 - agent ids: the four names that used to share `email-to-sarah.log` now keep separate histories, and old slug logs are carried over without overwriting anything
