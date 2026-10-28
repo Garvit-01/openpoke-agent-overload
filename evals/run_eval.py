@@ -301,9 +301,9 @@ def run_paraphrase_offline(args) -> None:
     scenario = build_paraphrase_scenario(args.agents, seed=args.seed)
     phrases = None
     if args.phrases:
-        from .llm import PHRASES_FILE, load_phrases
+        from .llm import load_phrases, phrases_file
 
-        phrases = load_phrases(scenario.agents, RESULTS_DIR / PHRASES_FILE)
+        phrases = load_phrases(scenario.agents, RESULTS_DIR / phrases_file(args.agents))
     result = run_simulated(scenario, threshold=args.threshold, phrases=phrases)
     base, new = result["baseline"], result["solution"]
     counts: Dict[str, int] = {}

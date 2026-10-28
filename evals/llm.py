@@ -265,6 +265,12 @@ def summarise(outcomes: Sequence[LLMOutcome]) -> Dict[str, Dict[str, Any]]:
 PHRASES_FILE = "agent_phrases.json"
 
 
+def phrases_file(agents: int) -> str:
+    """One cache per roster size. The cache is keyed by agent name, and the 300- and 800-agent
+    histories share 74 names with different summaries, so one file let each run overwrite the other's."""
+    return PHRASES_FILE if agents == 300 else f"agent_phrases_{agents}agents.json"
+
+
 async def ensure_phrases(
     agents: Sequence[Any], *, complete: Complete, model: str, api_key: Optional[str], path: Path, concurrency: int = 8
 ) -> Dict[str, List[str]]:
@@ -406,7 +412,7 @@ def run_llm(args) -> None:
         if getattr(args, "phrases", False):
             phrases = asyncio.run(ensure_phrases(
                 scenario.agents, complete=complete, model=get_settings().agent_phrases_model,
-                api_key=api_key, path=RESULTS_DIR / PHRASES_FILE,
+                api_key=api_key, path=RESULTS_DIR / phrases_file(args.agents),
             ))
         with tempfile.TemporaryDirectory() as workdir:
             outcomes = asyncio.run(
