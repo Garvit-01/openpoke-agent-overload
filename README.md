@@ -4,7 +4,7 @@ This is a fork of [OpenPoke](https://github.com/shlokkhemani/openpoke) by Shlok 
 
 The original is on branch `upstream-main` (upstream commit `5b5f635`). Everything behind the numbers below, run by run, is in [docs/EVALUATION.md](docs/EVALUATION.md).
 
-An optional search by meaning with a small local embedding model, measured against keyword search, is in [docs/APPROACH_EMBEDDINGS.md](docs/APPROACH_EMBEDDINGS.md).
+> **This is branch `approach-embeddings`:** `main` plus optional search by meaning with a small local embedding model next to keyword search. Design and results: [docs/APPROACH_EMBEDDINGS.md](docs/APPROACH_EMBEDDINGS.md). The approaches each have their own branch: `fix-plurals-typos`, `approach-past-requests` and `approach-embeddings`. Branch `all-approaches` has all three behind settings and compares them side by side (`python -m evals.compare`).
 
 ## In short
 
@@ -150,7 +150,7 @@ Not fixed, worth knowing:
 
 ```bash
 pip install -r server/requirements.txt pytest
-python -m pytest                                  # 128 tests, about a minute, no keys needed
+python -m pytest                                  # 143 tests, about a minute, no keys needed
 python -m evals.run_eval                          # simulated eval, about 2 minutes, writes evals/results/
 python -m evals.run_eval --router llm --phrases   # real model, needs OPENROUTER_API_KEY, about $0.30 on Haiku 5.5
 python -m evals.run_eval --set paraphrase --router llm --phrases   # the 24 hand-written paraphrases
@@ -198,7 +198,7 @@ server/services/execution/   registry, ids, entities, retrieval, resolver, phras
 server/agents/execution_agent/batch_manager.py   per-agent run lock
 server/services/safety/outbound.py               send confirmation guard
 evals/     scenario generator, hand-written paraphrase set, copy of the original, harness, stats, real-model mode, results/
-tests/     128 tests
+tests/     143 tests
 tools/     run_original.py, run_mine.py, demo.py, usage_meter.py
 docs/      EVALUATION.md
 ```
