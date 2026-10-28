@@ -74,7 +74,7 @@ def seed(args) -> None:
 
     original_data = args.original / "server" / "data"
     if not (args.original / "server" / "app.py").is_file():
-        sys.exit(f'No original checkout at {args.original}. Run: git worktree add "{args.original}" main')
+        sys.exit(f'No original checkout at {args.original}. Run: git worktree add "{args.original}" 5b5f635')
 
     for folder in (OURS_DATA, original_data):
         backup = move_aside(folder)

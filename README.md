@@ -161,7 +161,7 @@ The real-model eval uses `anthropic/claude-haiku-5.5` unless you pass `--model`.
 ### Live demo: both apps side by side
 
 ```bash
-git worktree add ../openpoke-original upstream-main   # the original, in its own folder
+git worktree add ../openpoke-original 5b5f635   # the original (branch upstream-main), in its own folder
 python tools/demo.py seed                    # the same 300 agents into both apps (moves existing data aside)
 python tools/run_mine.py                     # this branch on port 8001, in its own terminal
 python tools/run_original.py                 # the original on port 8002, in another terminal

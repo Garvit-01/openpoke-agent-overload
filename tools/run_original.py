@@ -1,9 +1,9 @@
 """Run the original OpenPoke next to this branch, without changing a line of its code.
 
-The original is upstream commit 5b5f635 (this repo's `main` branch). Check it out into its own
+The original is upstream commit 5b5f635 (branch `upstream-main` on GitHub). Check it out into its own
 folder once, then start it with this script:
 
-    git worktree add "../openpoke-original" main
+    git worktree add "../openpoke-original" 5b5f635
     python tools/run_original.py                  # http://localhost:8002
 
 It makes two runtime-only changes, both needed for the original to start at all today:
@@ -66,7 +66,7 @@ def main(argv=None) -> None:
 
     original = args.path.resolve()
     if not (original / "server" / "app.py").is_file():
-        sys.exit(f'No original checkout at {original}. Run: git worktree add "{original}" main')
+        sys.exit(f'No original checkout at {original}. Run: git worktree add "{original}" 5b5f635')
 
     load_env(HERE / ".env")
 
