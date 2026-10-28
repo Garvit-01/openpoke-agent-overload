@@ -72,7 +72,7 @@ All of this is configurable in `server/config.py` (see "New settings" below).
 
 ### Unit and integration tests: `python -m pytest`
 
-119 tests, about a minute, no network, no API keys. They cover:
+123 tests, about a minute, no network, no API keys. They cover:
 
 - registry create, reuse, revive, entity lookup, persistence, and migration from `roster.json`
 - agent ids: the four names that used to share `email-to-sarah.log` now keep separate histories, and old slug logs are carried over without overwriting anything
@@ -364,7 +364,7 @@ The same shape shows up anywhere one front agent serves many long-running contex
 
 ```bash
 pip install -r server/requirements.txt pytest
-python -m pytest                       # 119 tests, no keys needed
+python -m pytest                       # 123 tests, no keys needed
 python -m evals.run_eval --quick       # one seed, about 15 seconds
 python -m evals.run_eval               # full run, about 2 minutes, writes evals/results/
 python -m evals.run_eval --router llm --limit 1 --repeats 1    # check the key and model, costs under a cent
@@ -376,6 +376,23 @@ python -m evals.run_eval --router llm --rescore                # re-report a sav
 ```
 
 The real-model eval uses `anthropic/claude-haiku-5.5` unless you pass `--model`. Your OpenRouter account needs credits: a key's "limit" is a spending cap, not a balance.
+
+### Live demo: the original and this branch side by side
+
+Both apps start empty, and with a handful of agents they behave the same. Overload only appears after weeks of use. So the demo loads the same 300 synthetic agents into both apps first, then sends each the same message.
+
+```bash
+git worktree add ../openpoke-original main   # the original (upstream 5b5f635), in its own folder
+python tools/demo.py seed                    # same 300 agents into both apps (moves any existing data aside)
+python -m server.server                      # this branch on port 8001, in its own terminal
+python tools/run_original.py                 # the original on port 8002, in another terminal
+python tools/demo.py ask "Did Sarah Chen reply about the Q3 invoice?"
+python tools/demo.py status
+```
+
+`ask` prints each app's reply and which agent it used: existing or newly created, and for this branch the match reason. If the message is one of the eval's labelled cases, it also prints the right answer. `seed` prints a few labelled messages to try.
+
+`tools/run_original.py` runs the original's code unchanged. It makes two runtime-only changes that the original needs to start at all today: a stand-in for `fcntl` on Windows, and a current model name in place of the retired `claude-sonnet-4`. Each app keeps its own data in its own folder. The synthetic agents have no real email behind them, so an agent that then tries to read a thread finds nothing. Which agent gets picked is real, though, and that's what the demo is for. Each message costs a few cents per app on the default Sonnet 5.5.
 
 ### New settings (env vars, all optional)
 
@@ -408,7 +425,8 @@ server/services/execution/
 server/agents/execution_agent/batch_manager.py   per-agent run lock
 server/services/safety/outbound.py   send confirmation guard
 evals/            scenario generator (single-turn + conversations), hand-written paraphrase set, baseline copy, harness, stats, real-model mode, results
-tests/            119 tests
+tests/            123 tests
+tools/            run_original.py (the original app, unchanged, on port 8002) and demo.py (seed both apps, ask both the same message)
 ```
 
 ---
