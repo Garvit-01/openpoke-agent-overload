@@ -237,6 +237,7 @@ def build_registry(scenario: Scenario, path: Path) -> AgentRegistry:
             entities=agent.entities,
             created_at=to_iso(scenario.now - timedelta(days=agent.created_days_ago)),
             last_active_at=to_iso(scenario.now - timedelta(days=agent.active_days_ago)),
+            requests=agent.requests,
         )
         for agent in scenario.agents
     )
