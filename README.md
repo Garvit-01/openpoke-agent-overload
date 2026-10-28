@@ -2,7 +2,7 @@
 
 This is a fork of [OpenPoke](https://github.com/shlokkhemani/openpoke) by Shlok Khemani, an open source take on the Poke assistant. I changed how the main agent finds and reuses its helper agents, so it keeps routing to the right one as helpers pile up. There are tests, an evaluator that runs the original code and my version on the same data, and a live demo that runs both apps side by side.
 
-The original is on branch `upstream-main` (upstream commit `5b5f635`). Everything behind the numbers below, run by run, is in [docs/EVALUATION.md](docs/EVALUATION.md).
+The original is on branch `upstream-main` (upstream commit `5b5f635`). Everything behind the numbers below, run by run, is in [docs/EVALUATION.md](docs/EVALUATION.md). Three further approaches, each on its own branch and compared side by side, are summarised in [Three alternative approaches](#three-alternative-approaches-other-branches).
 
 ## In short
 
@@ -127,22 +127,47 @@ Not fixed, worth knowing:
 - **The data is synthetic.** I generated the 300 agents and labelled messages to contain known failure modes. The 24 hand-written paraphrases avoid the generator's wording, but one author wrote them with Claude's help. Real users will be messier.
 - **One model family does most of the work.** Haiku routes, Haiku writes the search phrases, and a Claude model helped write the test messages. Gemma checks the routing side only.
 - **The sample is small.** 40 main cases and 24 paraphrases. The headline difference is significant, but per-category numbers move 20 points when one case flips.
-- **Paraphrases are still the weak spot.** For 3 of the 24 the right agent isn't in the shortlist, and the model only finds it by searching. 4 cases were right on 2 of 3 runs, not all 3.
-- **No stemming or typo matching yet.** "grocery" doesn't match "groceries", and "Sarha" doesn't match "Sarah". In the demo the model asked who "Sarha" was, which is safe but not smart.
+- **Paraphrases are still the weak spot.** For 3 of the 24 the right agent isn't in the shortlist, and the model only finds it by searching. 4 cases were right on 2 of 3 runs, not all 3. Branches `fix-plurals-typos` and `approach-embeddings` close most of this gap (see below).
+- **No stemming or typo matching on this branch.** "grocery" doesn't match "groceries", and "Sarha" doesn't match "Sarah". In the demo the model asked who "Sarha" was, which is safe but not smart. Branch `fix-plurals-typos` fixes both.
 - **It asks "which Sarah?" even right after you named one.** One turn after "Sarah Okafor", it asked again for a new topic. That's a deliberate lean towards asking before an email goes out, but a person would guess Okafor.
 - **Gmail isn't tested live.** Routing never needs Gmail, so none of the numbers above depend on it. Incoming-email routing by thread id, drafting and the send guard are unit-tested with fakes, not run against a real inbox.
 - **Prompt caching isn't measured.** The original's list changes only when an agent is created, so with a warm cache it costs less than the token counts suggest. Caching doesn't change its accuracy.
 
 ## Next steps
 
-1. **A comparison branch** with three cheap alternatives behind one setting, on the same eval plus a frozen set of hard cases (typos, plurals, topic-only paraphrases, shared first names):
-   - SQLite FTS5 with stemming plus typo matching on names;
-   - the router seeing 30 candidates instead of 12;
-   - the original full list with prompt caching on, to answer "with caching, why retrieve?".
+1. **Finish measuring the alternatives** (below): real-model runs for meaning search (about $0.41), and one same-day run of each branch so the real-model numbers compare cleanly. Not tried yet: the router seeing 30 candidates instead of 12, and the original full list with prompt caching on, to answer "with caching, why retrieve?".
 2. Run the real-model eval on the multi-turn conversations, mainly to see how often the model sets `new_task`.
 3. Use recent context for first names: prefer the Sarah from the last few turns, but still ask before sending.
 4. Turn routing-log mistakes into eval cases.
 5. A merge tool for duplicates that already exist.
+
+## Three alternative approaches (other branches)
+
+After this fix I tried three more ideas, each on its own branch on top of this one:
+
+- **`fix-plurals-typos`**: plural folding ("groceries" finds "Grocery list") and "did you mean ...?" hints for misspelt contact names ("Sarha" lists every Sarah).
+- **`approach-past-requests`**: keyword search also reads each agent's last 20 requests, at half weight, so a follow-up about something asked mid-history still finds the agent.
+- **`approach-embeddings`**: optional search by meaning with a small local embedding model, next to keyword search.
+
+Branch **`all-approaches`** has all three behind settings, and `python -m evals.compare` runs each one on the same cases. Simulated router, 300 agents, seed 7:
+
+| Version | Generated (197 cases) right | Fixed / broke vs this branch | Paraphrases: right agent in prompt | Roster tokens | Routing p50 |
+|---|---|---|---|---|---|
+| Original OpenPoke | 108 | | all shown | 3,135 | 1 ms |
+| This branch (`main`) | 172 | | 87.5% | 957 | 24 ms |
+| + plurals and typo hints | 172 | 0 / 0 | 95.8% | 959 | 29 ms |
+| + past-request search | 185 | 13 / 0 (p = 0.00024) | 87.5% | 964 | 27 ms |
+| + meaning search | 172 | 0 / 0 | 100% | 983 | 61 ms |
+| all three together | 185 | 13 / 0 | 100% | 991 | 37 ms |
+
+None of them breaks a case this branch gets right. Past requests fix 12 follow-ups about a mid-history request, and the 13th fix is a coincidental word match. Plurals and meaning search close the paraphrase gap.
+
+On the real model (Haiku 5.5, each branch's own runs, different days):
+- Plurals and typos raised paraphrase pass^3 from 83.3% to 95.8%.
+- Past requests got 40/40 on the main cases and 18/18 runs on the new mid-history cases.
+- Meaning search isn't measured on the real model yet.
+
+My verdict: ship past requests and plurals, and keep meaning search as an opt-in until it is. Full tables, method and caveats: [docs/COMPARISON.md on branch `all-approaches`](https://github.com/Garvit-01/openpoke-agent-overload/blob/all-approaches/docs/COMPARISON.md).
 
 ## Running it
 
