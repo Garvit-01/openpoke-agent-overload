@@ -270,6 +270,8 @@ class SolutionArm:
             if values and self.registry.get(name):
                 self.registry.update_profile(name, entities={PHRASE_KIND: values})
         self.retriever = AgentRetriever(self.registry, mode=retriever)  # None: OPENPOKE_AGENT_RETRIEVER
+        # Hybrid: embed all agents up front, as the app's start-up warm-up would have (bm25: no-op)
+        self.retriever.prepare()
         self.total = self.registry.count()
 
     def shortlist(self, message: str) -> List[ScoredAgent]:
