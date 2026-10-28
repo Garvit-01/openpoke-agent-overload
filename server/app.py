@@ -72,6 +72,14 @@ async def _start_trigger_scheduler() -> None:
     await scheduler.start()
     watcher = get_important_email_watcher()
     await watcher.start()
+    # Hybrid agent search: load the embedding model and embed agents off the reply path (no-op if off)
+    try:
+        from .services.execution import get_agent_registry
+        from .services.execution.embeddings import warm_in_background
+
+        warm_in_background(get_agent_registry())
+    except Exception as exc:  # pragma: no cover - keyword search still works
+        logger.warning(f"Agent embedding warm-up did not start: {exc}")
 
 
 @app.on_event("shutdown")

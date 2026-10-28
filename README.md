@@ -4,7 +4,7 @@ This is a fork of [OpenPoke](https://github.com/shlokkhemani/openpoke) by Shlok 
 
 The original is on branch `upstream-main` (upstream commit `5b5f635`). Everything behind the numbers below, run by run, is in [docs/EVALUATION.md](docs/EVALUATION.md).
 
-Alternative tried on branch `approach-past-requests`: searching each agent's past requests, not just its summary. See [docs/APPROACH_PAST_REQUESTS.md](docs/APPROACH_PAST_REQUESTS.md).
+This branch, `all-approaches`, holds the three alternatives together, each behind its own setting, so they can be measured side by side: see [docs/COMPARISON.md](docs/COMPARISON.md). Write-ups: [plurals and typos](docs/EVALUATION.md), [past requests](docs/APPROACH_PAST_REQUESTS.md), [embeddings](docs/APPROACH_EMBEDDINGS.md).
 
 ## In short
 

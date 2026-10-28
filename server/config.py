@@ -70,6 +70,13 @@ class Settings(BaseModel):
     # Past requests: keyword search also reads the last 20 requests sent to each agent (at a lower weight),
     # so a follow-up about something asked mid-history still finds the agent. Search only, never a merge signal.
     agent_index_requests: bool = Field(default=os.getenv("OPENPOKE_AGENT_INDEX_REQUESTS", "1") != "0")
+    # Agent search: "bm25" is keyword search only; "hybrid" also searches by meaning with a small local
+    # embedding model (optional: pip install -r server/requirements-embeddings.txt). Without fastembed,
+    # "hybrid" quietly behaves like "bm25".
+    agent_retriever: str = Field(default=os.getenv("OPENPOKE_AGENT_RETRIEVER", "bm25"))
+    agent_embedding_model: str = Field(default=os.getenv("OPENPOKE_EMBEDDING_MODEL", "BAAI/bge-small-en-v1.5"))
+    # Where fastembed keeps the downloaded model (about 65 MB); empty = fastembed's default temp folder
+    agent_embedding_cache_dir: Optional[str] = Field(default=os.getenv("OPENPOKE_EMBEDDING_CACHE"))
 
     # Agent lifecycle (idle days before an agent is demoted; agents with active triggers are never demoted)
     agent_dormant_after_days: int = Field(default=_env_int("OPENPOKE_AGENT_DORMANT_DAYS", 14))

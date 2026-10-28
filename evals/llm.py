@@ -221,9 +221,10 @@ async def evaluate_llm(
     concurrency: int = 4,
     workdir: Path,
     phrases: Optional[Dict[str, List[str]]] = None,
+    retriever: Optional[str] = None,
 ) -> List[LLMOutcome]:
     baseline = BaselineArm(scenario)
-    solution = SolutionArm(scenario, workdir, phrases=phrases)
+    solution = SolutionArm(scenario, workdir, phrases=phrases, retriever=retriever)
     solution_tools = get_tool_schemas()
     baseline_tools = original_tool_schemas(solution_tools)
     semaphore = asyncio.Semaphore(concurrency)
@@ -413,6 +414,8 @@ def run_llm(args) -> None:
         stem += f"_{args.agents}agents"
     if getattr(args, "phrases", False):
         stem += "_phrases"
+    if getattr(args, "retriever", "bm25") == "hybrid":
+        stem += "_hybrid"
     if getattr(args, "tag", ""):
         stem += f"_{args.tag}"
     saved = RESULTS_DIR / f"{stem}.json"
@@ -450,6 +453,7 @@ def run_llm(args) -> None:
                 evaluate_llm(
                     scenario, cases, complete=complete, model=args.model, api_key=api_key,
                     repeats=args.repeats, concurrency=args.concurrency, workdir=Path(workdir), phrases=phrases,
+                    retriever=getattr(args, "retriever", None),
                 )
             )
     summary = summarise(outcomes)
@@ -461,7 +465,8 @@ def run_llm(args) -> None:
     lines = [
         f"# LLM routing evaluation ({args.model})",
         "",
-        f"{case_count} cases (spread across categories) x {args.repeats} repeats, {args.agents} agents, seed {args.seed}.",
+        f"{case_count} cases (spread across categories) x {args.repeats} repeats, {args.agents} agents, seed {args.seed}"
+        + (", agent search: hybrid (keywords + local embeddings)." if "_hybrid" in stem else "."),
         f"Past requests indexed (OPENPOKE_AGENT_INDEX_REQUESTS): {'on' if get_settings().agent_index_requests else 'off'}."
         + (f" {len(added)} cases of the added categories ({', '.join(sorted(ADDED_CATEGORIES))}) are appended "
            "to the usual sample." if added else ""),
