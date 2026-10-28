@@ -265,6 +265,22 @@ def summarise(outcomes: Sequence[LLMOutcome]) -> Dict[str, Dict[str, Any]]:
 PHRASES_FILE = "agent_phrases.json"
 
 
+def _phrase_entry(cache: Dict[str, Dict[str, Any]], name: str, summary: str) -> Optional[Dict[str, Any]]:
+    """The cached entry for this exact name and summary. The 300- and 800-agent histories reuse some
+    names with different summaries, so a second summary is kept under the name plus a short hash."""
+    for key in (name, _phrase_alt_key(name, summary)):
+        entry = cache.get(key)
+        if entry and entry.get("summary") == summary:
+            return entry
+    return None
+
+
+def _phrase_alt_key(name: str, summary: str) -> str:
+    import hashlib
+
+    return f"{name} [{hashlib.sha256(summary.encode('utf-8')).hexdigest()[:10]}]"
+
+
 async def ensure_phrases(
     agents: Sequence[Any], *, complete: Complete, model: str, api_key: Optional[str], path: Path, concurrency: int = 8
 ) -> Dict[str, List[str]]:
@@ -276,7 +292,7 @@ async def ensure_phrases(
     from server.services.execution.phrases import generate_phrases
 
     cache: Dict[str, Dict[str, Any]] = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
-    missing = [a for a in agents if cache.get(a.name, {}).get("summary") != a.summary]
+    missing = [a for a in agents if _phrase_entry(cache, a.name, a.summary) is None]
     if missing:
         print(f"Writing search phrases for {len(missing)} agents with {model} ...")
         semaphore = asyncio.Semaphore(concurrency)
@@ -284,20 +300,21 @@ async def ensure_phrases(
         async def one(agent):
             async with semaphore:
                 phrases = await generate_phrases(agent.name, agent.summary, complete=complete, model=model, api_key=api_key)
-            cache[agent.name] = {"summary": agent.summary, "phrases": phrases}
+            key = agent.name if agent.name not in cache else _phrase_alt_key(agent.name, agent.summary)
+            cache[key] = {"summary": agent.summary, "phrases": phrases}
 
         await asyncio.gather(*(one(agent) for agent in missing))
         path.write_text(json.dumps(cache, indent=1, sort_keys=True), encoding="utf-8")
-    return {agent.name: cache[agent.name]["phrases"] for agent in agents}
+    return {agent.name: _phrase_entry(cache, agent.name, agent.summary)["phrases"] for agent in agents}
 
 
 def load_phrases(agents: Sequence[Any], path: Path) -> Dict[str, List[str]]:
     """Cached phrases only (no model calls); exits if any agent is missing."""
     cache = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
-    missing = [a.name for a in agents if cache.get(a.name, {}).get("summary") != a.summary]
+    missing = [a.name for a in agents if _phrase_entry(cache, a.name, a.summary) is None]
     if missing:
         sys.exit(f"No cached phrases for {len(missing)} agents; run once with --router llm --phrases to write them")
-    return {agent.name: cache[agent.name]["phrases"] for agent in agents}
+    return {agent.name: _phrase_entry(cache, agent.name, agent.summary)["phrases"] for agent in agents}
 
 
 def fetch_prices() -> Prices:

@@ -122,6 +122,22 @@
   ],
   "summary": "Task: Draft a reply to Emma Park (emma.park@acme.com) about the pricing proposal | Latest result: Draft created for Emma Park at Acme about the pricing proposal. Waiting for the user to confirm."
  },
+ "Acme Pricing Proposal [8fb9fa355b]": {
+  "phrases": [
+   "olivia's email reply",
+   "draft to olivia chen",
+   "reply to the rates email",
+   "message about our costs",
+   "quote follow-up for olivia",
+   "response to olivia's cost question",
+   "email draft awaiting approval",
+   "client rates reply draft",
+   "olivia chen correspondence",
+   "write-up for the price quote",
+   "unsent message to olivia"
+  ],
+  "summary": "Task: Draft a reply to Olivia Chen (olivia.chen@acme.com) about the pricing proposal | Latest result: Draft created for Olivia Chen at Acme about the pricing proposal. Waiting for the user to confirm."
+ },
  "Acme Product Demo": {
   "phrases": [
    "reply to ava",
@@ -181,6 +197,21 @@
    "draft message to coworker"
   ],
   "summary": "Task: Draft a reply to Priya Hughes (priya.hughes@acme.com) about the travel itinerary | Latest result: Draft created for Priya Hughes at Acme about the travel itinerary. Waiting for the user to confirm."
+ },
+ "Acme Travel Itinerary [6ba1bf80a0]": {
+  "phrases": [
+   "trip schedule reply for hannah",
+   "draft email to hannah about my trip",
+   "unsent message to hannah bianchi",
+   "flight plans email draft",
+   "pending reply awaiting my confirmation",
+   "journey schedule note to hannah",
+   "trip details message for coworker",
+   "vacation plans email to hannah",
+   "hannah's trip plan response",
+   "business trip planning correspondence"
+  ],
+  "summary": "Task: Draft a reply to Hannah Bianchi (hannah.bianchi@acme.com) about the travel itinerary | Latest result: Draft created for Hannah Bianchi at Acme about the travel itinerary. Waiting for the user to confirm."
  },
  "Acme Venue Contract": {
   "phrases": [
@@ -974,6 +1005,21 @@
   ],
   "summary": "Task: Draft a reply to Hannah Haddad (hannah.haddad@cyberdyne.com) about the podcast interview | Latest result: Draft created for Hannah Haddad at Cyberdyne about the podcast interview. Waiting for the user to confirm."
  },
+ "Cyberdyne Podcast Interview [b6c91bc87c]": {
+  "phrases": [
+   "reply to michael",
+   "email draft for michael",
+   "answer michael's message",
+   "that chat with michael's team",
+   "show appearance follow-up",
+   "media request response",
+   "guest spot reply email",
+   "pending email awaiting approval",
+   "draft waiting for my okay",
+   "emails to send to michael"
+  ],
+  "summary": "Task: Draft a reply to Michael Dubois (michael.dubois@cyberdyne.com) about the podcast interview | Latest result: Draft created for Michael Dubois at Cyberdyne about the podcast interview. Waiting for the user to confirm."
+ },
  "Cyberdyne Pricing Proposal": {
   "phrases": [
    "reply to lena's email",
@@ -1169,6 +1215,21 @@
   ],
   "summary": "Task: Draft a reply to Wei Lopez (wei.lopez@umbrella.com) about the design review | Latest result: Draft created for Wei Lopez at Umbrella about the design review. Waiting for the user to confirm."
  },
+ "Design Review with Wei [8d81596540]": {
+  "phrases": [
+   "follow-up email to the acme contact",
+   "unsent reply to a client",
+   "draft message about the mockups",
+   "prototype critique follow-up",
+   "ui feedback email to send",
+   "pending email awaiting my approval",
+   "client correspondence draft",
+   "acme email to confirm",
+   "mockup feedback response",
+   "work email needing sign-off"
+  ],
+  "summary": "Task: Draft a reply to Wei Hughes (wei.hughes@acme.com) about the design review | Latest result: Draft created for Wei Hughes at Acme about the design review. Waiting for the user to confirm."
+ },
  "Email to Alex": {
   "phrases": [
    "security audit follow-up note",
@@ -1230,6 +1291,21 @@
    "pending note about references"
   ],
   "summary": "Task: Draft a reply to Alex Larsen (alex.larsen@initech.com) about the reference check | Latest result: Draft created for Alex Larsen at Initech about the reference check. Waiting for the user to confirm."
+ },
+ "Email to Alex Larsen [4244eaf51e]": {
+  "phrases": [
+   "reply to the quarterly bill",
+   "follow-up on third-quarter invoice",
+   "message to my initech contact",
+   "draft awaiting my approval",
+   "quarterly billing correspondence",
+   "write back about payment",
+   "initech invoice response",
+   "unsent note about the bill",
+   "correspondence with a vendor",
+   "pending message needing confirmation"
+  ],
+  "summary": "Task: Draft a reply to Alex Larsen (alex.larsen@initech.com) about the Q3 invoice | Latest result: Draft created for Alex Larsen at Initech about the Q3 invoice. Waiting for the user to confirm."
  },
  "Email to Alex Lopez": {
   "phrases": [
@@ -1323,6 +1399,21 @@
   ],
   "summary": "Task: Draft a reply to Alex Silva (alex.silva@wonka.com) about the Q3 invoice | Latest result: Draft created for Alex Silva at Wonka about the Q3 invoice. Waiting for the user to confirm."
  },
+ "Email to Alex [00dd9aaff4]": {
+  "phrases": [
+   "reply draft for the podcast guest",
+   "writing back about the show",
+   "message for my hooli contact",
+   "podcast interview follow-up note",
+   "unsent note awaiting my approval",
+   "drafted letter for a contact",
+   "correspondence about a recording interview",
+   "pending reply at hooli",
+   "note for the podcast host",
+   "check and send the draft"
+  ],
+  "summary": "Task: Draft a reply to Alex Novak (alex.novak@hooli.com) about the podcast interview | Latest result: Draft created for Alex Novak at Hooli about the podcast interview. Waiting for the user to confirm."
+ },
  "Email to Amara": {
   "phrases": [
    "write back to the podcast host",
@@ -1399,6 +1490,21 @@
    "office message drafts awaiting send"
   ],
   "summary": "Task: Draft a reply to Ava Silva (ava.silva@acme.com) about the board deck | Latest result: Draft created for Ava Silva at Acme about the board deck. Waiting for the user to confirm."
+ },
+ "Email to Ava [59db9192bc]": {
+  "phrases": [
+   "acme onboarding reply draft",
+   "reply to the onboarding plan",
+   "message for the silva contact",
+   "write back about onboarding",
+   "draft note on new hire plan",
+   "respond to acme about onboarding",
+   "onboarding plan follow-up message",
+   "unsent reply awaiting approval",
+   "check my draft to silva",
+   "correspondence about the onboarding schedule"
+  ],
+  "summary": "Task: Draft a reply to Ava Silva (ava.silva@acme.com) about the onboarding plan | Latest result: Draft created for Ava Silva at Acme about the onboarding plan. Waiting for the user to confirm."
  },
  "Email to Chloe": {
   "phrases": [
@@ -1489,6 +1595,21 @@
    "office writing task for approval"
   ],
   "summary": "Task: Draft a reply to David Hughes (david.hughes@wonka.com) about the budget approval | Latest result: Draft created for David Hughes at Wonka about the budget approval. Waiting for the user to confirm."
+ },
+ "Email to David Hughes [2167bd20e4]": {
+  "phrases": [
+   "write back to the wonka contact",
+   "reply draft for design review",
+   "unsent note about the design meeting",
+   "design review follow-up message",
+   "mail waiting for my go-ahead",
+   "pending message to confirm",
+   "wonka correspondence draft",
+   "feedback message awaiting approval",
+   "office writing task to send",
+   "unfinished reply to a colleague"
+  ],
+  "summary": "Task: Draft a reply to David Hughes (david.hughes@wonka.com) about the design review | Latest result: Draft created for David Hughes at Wonka about the design review. Waiting for the user to confirm."
  },
  "Email to David Ivanova": {
   "phrases": [
@@ -1674,6 +1795,21 @@
   ],
   "summary": "Task: Draft a reply to David Schmidt (david.schmidt@globex.com) about the venue contract | Latest result: Draft created for David Schmidt at Globex about the venue contract. Waiting for the user to confirm."
  },
+ "Email to David Schmidt [37aa2e531c]": {
+  "phrases": [
+   "write back to the supplier",
+   "answer the vendor's pricing",
+   "globex quote response",
+   "unsent note about pricing",
+   "reply on the vendor quote",
+   "draft awaiting sign-off",
+   "message to the globex contact",
+   "price proposal follow-up",
+   "supplier quote reply draft",
+   "mail waiting for approval"
+  ],
+  "summary": "Task: Draft a reply to David Schmidt (david.schmidt@globex.com) about the vendor quote | Latest result: Draft created for David Schmidt at Globex about the vendor quote. Waiting for the user to confirm."
+ },
  "Email to David Weber": {
   "phrases": [
    "message to wayne contact about references",
@@ -1704,6 +1840,36 @@
    "mail about residency paperwork"
   ],
   "summary": "Task: Draft a reply to David Yilmaz (david.yilmaz@stark.com) about the visa paperwork | Latest result: Draft created for David Yilmaz at Stark about the visa paperwork. Waiting for the user to confirm."
+ },
+ "Email to David Yilmaz [e2b1d0430d]": {
+  "phrases": [
+   "draft message for stark contact",
+   "reply about new hire orientation",
+   "that onboarding plan note",
+   "answer the stark contact",
+   "unsent reply awaiting my approval",
+   "employee orientation message draft",
+   "stark onboarding follow-up letter",
+   "pending work correspondence check",
+   "the note about new staff setup",
+   "work message waiting for confirmation"
+  ],
+  "summary": "Task: Draft a reply to David Yilmaz (david.yilmaz@stark.com) about the onboarding plan | Latest result: Draft created for David Yilmaz at Stark about the onboarding plan. Waiting for the user to confirm."
+ },
+ "Email to David [a4b9933f36]": {
+  "phrases": [
+   "note to park about launch",
+   "launch schedule message draft",
+   "reply about the release date",
+   "northwind launch timeline follow-up",
+   "writing back to my contact",
+   "correspondence with northwind about launch",
+   "unsent note on launch dates",
+   "pending message awaiting my approval",
+   "letter about product rollout schedule",
+   "communication to a colleague at northwind"
+  ],
+  "summary": "Task: Draft a reply to David Park (david.park@northwind.com) about the launch timeline | Latest result: Draft created for David Park at Northwind about the launch timeline. Waiting for the user to confirm."
  },
  "Email to Diego": {
   "phrases": [
@@ -1767,6 +1933,36 @@
   ],
   "summary": "Task: Draft a reply to Diego Sato (diego.sato@stark.com) about the budget approval | Latest result: Draft created for Diego Sato at Stark about the budget approval. Waiting for the user to confirm."
  },
+ "Email to Diego Sato [9f91dda4da]": {
+  "phrases": [
+   "reply to the stark contact",
+   "follow-up on the reference request",
+   "message for the reference inquiry",
+   "write back to my coworker",
+   "pending note awaiting approval",
+   "the job reference correspondence",
+   "unsent message needing a go-ahead",
+   "drafted response to check on",
+   "employment verification chat",
+   "office mail to be sent"
+  ],
+  "summary": "Task: Draft a reply to Diego Sato (diego.sato@stark.com) about the reference check | Latest result: Draft created for Diego Sato at Stark about the reference check. Waiting for the user to confirm."
+ },
+ "Email to Diego [999a31cadd]": {
+  "phrases": [
+   "visa paperwork reply",
+   "message about the visa forms",
+   "write back to stark contact",
+   "immigration documents follow-up",
+   "that visa letter for sato",
+   "unsent note on visa",
+   "reply awaiting confirmation",
+   "stark visa correspondence",
+   "work permit paperwork message",
+   "drafted response about visas"
+  ],
+  "summary": "Task: Draft a reply to Diego Sato (diego.sato@stark.com) about the visa paperwork | Latest result: Draft created for Diego Sato at Stark about the visa paperwork. Waiting for the user to confirm."
+ },
  "Email to Emma": {
   "phrases": [
    "job offer reply draft",
@@ -1829,6 +2025,21 @@
   ],
   "summary": "Task: Draft a reply to Emma Evans (emma.evans@aperture.com) about the partnership proposal | Latest result: Draft created for Emma Evans at Aperture about the partnership proposal. Waiting for the user to confirm."
  },
+ "Email to Emma Evans [4cc110a90e]": {
+  "phrases": [
+   "reply about the job offer",
+   "draft waiting for my confirmation",
+   "offer response for aperture",
+   "note to the hiring contact",
+   "answer on the position offer",
+   "aperture recruiter follow-up",
+   "pending offer correspondence",
+   "writing back about the role",
+   "career offer reply draft",
+   "outgoing messages awaiting approval"
+  ],
+  "summary": "Task: Draft a reply to Emma Evans (emma.evans@aperture.com) about the job offer | Latest result: Draft created for Emma Evans at Aperture about the job offer. Waiting for the user to confirm."
+ },
  "Email to Emma Haddad": {
   "phrases": [
    "budget sign-off reply",
@@ -1858,6 +2069,21 @@
    "business message drafts to review"
   ],
   "summary": "Task: Draft a reply to Emma Kaur (emma.kaur@umbrella.com) about the pricing proposal | Latest result: Draft created for Emma Kaur at Umbrella about the pricing proposal. Waiting for the user to confirm."
+ },
+ "Email to Emma Kaur [eea81ab5ee]": {
+  "phrases": [
+   "reply to umbrella contact",
+   "partnership proposal follow-up",
+   "that umbrella deal message",
+   "write back about the proposal",
+   "umbrella partnership correspondence",
+   "note for the umbrella contact",
+   "pending message awaiting confirmation",
+   "business proposal response draft",
+   "umbrella collaboration reply",
+   "the proposal letter to send"
+  ],
+  "summary": "Task: Draft a reply to Emma Kaur (emma.kaur@umbrella.com) about the partnership proposal | Latest result: Draft created for Emma Kaur at Umbrella about the partnership proposal. Waiting for the user to confirm."
  },
  "Email to Emma Kim": {
   "phrases": [
@@ -1994,6 +2220,21 @@
   ],
   "summary": "Task: Draft a reply to Emma Schmidt (emma.schmidt@cyberdyne.com) about the contract redlines | Latest result: Draft created for Emma Schmidt at Cyberdyne about the contract redlines. Waiting for the user to confirm."
  },
+ "Email to Emma Schmidt [ad2dacee4d]": {
+  "phrases": [
+   "draft message awaiting my approval",
+   "the note about the hall deal",
+   "that letter to the cyber firm contact",
+   "pending reply to my contact",
+   "unsent message needing sign-off",
+   "follow-up on the room agreement",
+   "business message i still need to send",
+   "correspondence waiting on my okay",
+   "writing back to the vendor",
+   "pending outreach to the company rep"
+  ],
+  "summary": "Task: Draft a reply to Emma Schmidt (emma.schmidt@cyberdyne.com) about the venue contract | Latest result: Draft created for Emma Schmidt at Cyberdyne about the venue contract. Waiting for the user to confirm."
+ },
  "Email to Emma Vasquez": {
   "phrases": [
    "photographer follow-up message for the wedding",
@@ -2023,6 +2264,21 @@
    "work visa paperwork note"
   ],
   "summary": "Task: Draft a reply to Emma Zhang (emma.zhang@hooli.com) about the visa paperwork | Latest result: Draft created for Emma Zhang at Hooli about the visa paperwork. Waiting for the user to confirm."
+ },
+ "Email to Emma [52d53a471c]": {
+  "phrases": [
+   "product demo follow-up",
+   "draft for the wonka contact",
+   "reply waiting on my approval",
+   "unsent message about the demo",
+   "that demo response draft",
+   "writing back to a client",
+   "pending note for haddad",
+   "message awaiting confirmation",
+   "demo feedback reply draft",
+   "correspondence with wonka"
+  ],
+  "summary": "Task: Draft a reply to Emma Haddad (emma.haddad@wonka.com) about the product demo | Latest result: Draft created for Emma Haddad at Wonka about the product demo. Waiting for the user to confirm."
  },
  "Email to Ethan": {
   "phrases": [
@@ -2099,6 +2355,21 @@
   ],
   "summary": "Task: Draft a reply to Ethan Weber (ethan.weber@globex.com) about the venue contract | Latest result: Draft created for Ethan Weber at Globex about the venue contract. Waiting for the user to confirm."
  },
+ "Email to Ethan [59a092a776]": {
+  "phrases": [
+   "headcount plan message for wonka",
+   "recruiting update note for a colleague",
+   "hiring proposal write-up for wonka",
+   "staffing plan correspondence",
+   "reply about new team hires",
+   "unsent message on recruitment",
+   "wonka staffing response awaiting approval",
+   "pending note on headcount plans",
+   "correspondence with wonka contact on recruiting",
+   "team hiring letter awaiting sign-off"
+  ],
+  "summary": "Task: Draft a reply to Ethan Mendes (ethan.mendes@wonka.com) about the hiring plan | Latest result: Draft created for Ethan Mendes at Wonka about the hiring plan. Waiting for the user to confirm."
+ },
  "Email to Fatima": {
   "phrases": [
    "message about the job offer",
@@ -2129,6 +2400,21 @@
   ],
   "summary": "Task: Draft a reply to Fatima Kaur (fatima.kaur@umbrella.com) about the partnership proposal | Latest result: Draft created for Fatima Kaur at Umbrella about the partnership proposal. Waiting for the user to confirm."
  },
+ "Email to Fatima Kaur [b8df7def65]": {
+  "phrases": [
+   "reply about the pricing offer",
+   "message for the price proposal",
+   "follow up on the quote",
+   "draft note to umbrella",
+   "pricing message awaiting approval",
+   "writing back about costs",
+   "unsent reply for the umbrella deal",
+   "client note about rates",
+   "correspondence on pricing terms",
+   "pending message to umbrella contact"
+  ],
+  "summary": "Task: Draft a reply to Fatima Kaur (fatima.kaur@umbrella.com) about the pricing proposal | Latest result: Draft created for Fatima Kaur at Umbrella about the pricing proposal. Waiting for the user to confirm."
+ },
  "Email to Fatima Kim": {
   "phrases": [
    "the reply draft for my coworker",
@@ -2144,6 +2430,21 @@
    "correspondence with oscorp recruiter"
   ],
   "summary": "Task: Draft a reply to Fatima Kim (fatima.kim@oscorp.com) about the hiring plan | Latest result: Draft created for Fatima Kim at Oscorp about the hiring plan. Waiting for the user to confirm."
+ },
+ "Email to Fatima Kim [4510f58c0b]": {
+  "phrases": [
+   "reply draft on the offsite agenda",
+   "offsite agenda message i wrote",
+   "note to my oscorp contact",
+   "writing back about retreat plans",
+   "work correspondence with oscorp staff",
+   "retreat agenda follow-up note",
+   "unsent message awaiting my approval",
+   "draft waiting for my confirmation",
+   "colleague messages about the offsite",
+   "office written communication, pending send"
+  ],
+  "summary": "Task: Draft a reply to Fatima Kim (fatima.kim@oscorp.com) about the offsite agenda | Latest result: Draft created for Fatima Kim at Oscorp about the offsite agenda. Waiting for the user to confirm."
  },
  "Email to Fatima Larsen": {
   "phrases": [
@@ -2190,6 +2491,21 @@
   ],
   "summary": "Task: Draft a reply to Fatima Rahimi (fatima.rahimi@northgate.com) about the dental insurance enrollment | Latest result: Draft created for Fatima Rahimi at Northgate about the dental insurance enrollment. Waiting for the user to..."
  },
+ "Email to Fatima [b0c78bdd8a]": {
+  "phrases": [
+   "reply about the job offer",
+   "message about the offer",
+   "draft for my contact at aperture",
+   "write back regarding the position",
+   "pending note awaiting my confirmation",
+   "response for the recruiter's offer",
+   "letter for the hiring contact",
+   "job offer response draft",
+   "unsent reply needing approval",
+   "correspondence with aperture about hiring"
+  ],
+  "summary": "Task: Draft a reply to Fatima Hughes (fatima.hughes@aperture.com) about the job offer | Latest result: Draft created for Fatima Hughes at Aperture about the job offer. Waiting for the user to confirm."
+ },
  "Email to Grace": {
   "phrases": [
    "partnership proposal response",
@@ -2219,6 +2535,21 @@
    "spending decision reply waiting"
   ],
   "summary": "Task: Draft a reply to Grace Ali (grace.ali@globex.com) about the budget approval | Latest result: Draft created for Grace Ali at Globex about the budget approval. Waiting for the user to confirm."
+ },
+ "Email to Grace Ali [f58e6728f1]": {
+  "phrases": [
+   "reply about contract markup",
+   "draft for the globex contract",
+   "follow up on contract changes",
+   "unsent note on agreement edits",
+   "message awaiting my approval",
+   "globex contract response draft",
+   "sending back redlined agreement",
+   "contract feedback for the client",
+   "correspondence about contract revisions",
+   "pending note needing my sign-off"
+  ],
+  "summary": "Task: Draft a reply to Grace Ali (grace.ali@globex.com) about the contract redlines | Latest result: Draft created for Grace Ali at Globex about the contract redlines. Waiting for the user to confirm."
  },
  "Email to Grace Kowalski": {
   "phrases": [
@@ -2355,6 +2686,21 @@
   ],
   "summary": "Task: Draft a reply to Ibrahim Sato (ibrahim.sato@globex.com) about the board deck | Latest result: Draft created for Ibrahim Sato at Globex about the board deck. Waiting for the user to confirm."
  },
+ "Email to Ibrahim [c55720f9d5]": {
+  "phrases": [
+   "reply about the job offer",
+   "draft response on the offer",
+   "offer letter follow-up message",
+   "writing back to the globex contact",
+   "job offer correspondence",
+   "unsent note about the position",
+   "pending reply awaiting confirmation",
+   "recruiter message draft",
+   "hiring decision response",
+   "globex job offer letter"
+  ],
+  "summary": "Task: Draft a reply to Ibrahim Sato (ibrahim.sato@globex.com) about the job offer | Latest result: Draft created for Ibrahim Sato at Globex about the job offer. Waiting for the user to confirm."
+ },
  "Email to Isaac": {
   "phrases": [
    "soylent invoice follow-up",
@@ -2444,6 +2790,21 @@
    "timing reply pending my confirmation"
   ],
   "summary": "Task: Draft a reply to Isaac Okafor (isaac.okafor@piedpiper.com) about the launch timeline | Latest result: Draft created for Isaac Okafor at Pied Piper about the launch timeline. Waiting for the user to confirm."
+ },
+ "Email to Isaac [3b9f4cb373]": {
+  "phrases": [
+   "written note about references",
+   "reference check follow-up",
+   "draft awaiting my approval",
+   "unsent message on references",
+   "globex contact correspondence",
+   "referee callback draft",
+   "job reference correspondence",
+   "pending note for recruiter",
+   "background check reply",
+   "work messages awaiting sign-off"
+  ],
+  "summary": "Task: Draft a reply to Isaac Nguyen (isaac.nguyen@globex.com) about the reference check | Latest result: Draft created for Isaac Nguyen at Globex about the reference check. Waiting for the user to confirm."
  },
  "Email to Jasmine Costa": {
   "phrases": [
@@ -2583,6 +2944,22 @@
   ],
   "summary": "Task: Draft a reply to Julia Yilmaz (julia.yilmaz@hooli.com) about the travel itinerary | Latest result: Draft created for Julia Yilmaz at Hooli about the travel itinerary. Waiting for the user to confirm."
  },
+ "Email to Julia [ec7d26852d]": {
+  "phrases": [
+   "job offer response draft",
+   "written reply about the offer",
+   "follow-up on the open position",
+   "hooli recruiting correspondence",
+   "pending message to a recruiter",
+   "writing back about the role",
+   "draft waiting for my approval",
+   "reply on the compensation terms",
+   "note to the hiring contact",
+   "outgoing business correspondence",
+   "hooli offer message draft"
+  ],
+  "summary": "Task: Draft a reply to Julia Yilmaz (julia.yilmaz@hooli.com) about the job offer | Latest result: Draft created for Julia Yilmaz at Hooli about the job offer. Waiting for the user to confirm."
+ },
  "Email to Kai": {
   "phrases": [
    "hiring plan reply draft",
@@ -2642,6 +3019,21 @@
    "office communication awaiting sign-off"
   ],
   "summary": "Task: Draft a reply to Kai Haddad (kai.haddad@soylent.com) about the hiring plan | Latest result: Draft created for Kai Haddad at Soylent about the hiring plan. Waiting for the user to confirm."
+ },
+ "Email to Kai Haddad [9115f3c0ef]": {
+  "phrases": [
+   "soylent onboarding reply draft",
+   "written response on staff orientation",
+   "message regarding new hire setup",
+   "follow-up note for soylent contact",
+   "unsent note about onboarding timeline",
+   "pending reply awaiting my approval",
+   "drafted message for soylent staff",
+   "correspondence on employee orientation schedule",
+   "write back about the onboarding plan",
+   "new hire setup message"
+  ],
+  "summary": "Task: Draft a reply to Kai Haddad (kai.haddad@soylent.com) about the onboarding plan | Latest result: Draft created for Kai Haddad at Soylent about the onboarding plan. Waiting for the user to confirm."
  },
  "Email to Kai Park": {
   "phrases": [
@@ -2706,6 +3098,21 @@
   ],
   "summary": "Task: Draft a reply to Kai Weber (kai.weber@wayne.com) about the onboarding plan | Latest result: Draft created for Kai Weber at Wayne about the onboarding plan. Waiting for the user to confirm."
  },
+ "Email to Kai [50a5cdd4d7]": {
+  "phrases": [
+   "offsite agenda reply draft",
+   "message about the offsite plans",
+   "haddad offsite agenda note",
+   "drafted response awaiting approval",
+   "company retreat planning correspondence",
+   "unsent note on the offsite schedule",
+   "soylent contact reply draft",
+   "pending message for the offsite",
+   "meeting agenda follow-up note",
+   "written reply waiting for my okay"
+  ],
+  "summary": "Task: Draft a reply to Kai Haddad (kai.haddad@soylent.com) about the offsite agenda | Latest result: Draft created for Kai Haddad at Soylent about the offsite agenda. Waiting for the user to confirm."
+ },
  "Email to Kenji": {
   "phrases": [
    "reply draft for the conference talk",
@@ -2765,6 +3172,21 @@
    "mail draft for the aperture team"
   ],
   "summary": "Task: Draft a reply to Kenji Park (kenji.park@aperture.com) about the design review | Latest result: Draft created for Kenji Park at Aperture about the design review. Waiting for the user to confirm."
+ },
+ "Email to Kenji Park [7bbe6573be]": {
+  "phrases": [
+   "reply draft for aperture contact",
+   "unsent message awaiting my approval",
+   "writing back about references",
+   "drafted note on the reference check",
+   "work message needing a go-ahead",
+   "follow-up about someone's references",
+   "aperture references reply draft",
+   "pending message to review and send",
+   "correspondence about the reference request",
+   "office mail waiting for confirmation"
+  ],
+  "summary": "Task: Draft a reply to Kenji Park (kenji.park@aperture.com) about the reference check | Latest result: Draft created for Kenji Park at Aperture about the reference check. Waiting for the user to confirm."
  },
  "Email to Kenji Yilmaz": {
   "phrases": [
@@ -2858,6 +3280,36 @@
   ],
   "summary": "Task: Draft a reply to Kofi Patel (kofi.patel@vandelay.com) about the board deck | Latest result: Draft created for Kofi Patel at Vandelay about the board deck. Waiting for the user to confirm."
  },
+ "Email to Kofi Patel [d3e101dc8b]": {
+  "phrases": [
+   "pricing reply waiting for approval",
+   "answer for vandelay about costs",
+   "unsent message on pricing terms",
+   "price proposal response draft",
+   "writing back about the quote",
+   "vandelay pricing correspondence",
+   "quote follow-up for vandelay",
+   "message awaiting confirmation at vandelay",
+   "note about the proposal costs",
+   "business correspondence about pricing"
+  ],
+  "summary": "Task: Draft a reply to Kofi Patel (kofi.patel@vandelay.com) about the pricing proposal | Latest result: Draft created for Kofi Patel at Vandelay about the pricing proposal. Waiting for the user to confirm."
+ },
+ "Email to Kofi [3a2c9edab7]": {
+  "phrases": [
+   "budget approval reply",
+   "draft for the vandelay contact",
+   "note about budget sign-off",
+   "written response on funding",
+   "vandelay budget message waiting",
+   "send the approval update draft",
+   "pending budget okay draft",
+   "mail regarding spending approval",
+   "finance sign-off reply draft",
+   "unsent budget message for review"
+  ],
+  "summary": "Task: Draft a reply to Kofi Patel (kofi.patel@vandelay.com) about the budget approval | Latest result: Draft created for Kofi Patel at Vandelay about the budget approval. Waiting for the user to confirm."
+ },
  "Email to Leah": {
   "phrases": [
    "write back about the interview",
@@ -2950,6 +3402,36 @@
   ],
   "summary": "Task: Draft a reply to Leah Silva (leah.silva@piedpiper.com) about the contract redlines | Latest result: Draft created for Leah Silva at Pied Piper about the contract redlines. Waiting for the user to confirm."
  },
+ "Email to Leah Silva [3e35eb113e]": {
+  "phrases": [
+   "draft reply to the pied piper contact",
+   "message to my partnership contact",
+   "answer about the collaboration offer",
+   "write back on the pied piper deal",
+   "follow-up note on the joint venture",
+   "unsent reply waiting for approval",
+   "check the pied piper proposal response",
+   "partner message ready to send",
+   "business reply about the alliance",
+   "pending note to pied piper"
+  ],
+  "summary": "Task: Draft a reply to Leah Silva (leah.silva@piedpiper.com) about the partnership proposal | Latest result: Draft created for Leah Silva at Pied Piper about the partnership proposal. Waiting for the user to confirm."
+ },
+ "Email to Leah [f1fc0e5796]": {
+  "phrases": [
+   "budget approval reply draft",
+   "finance sign-off message",
+   "answer about the spending plan",
+   "written note to my colleague",
+   "unsent message awaiting confirmation",
+   "pied piper budget correspondence",
+   "send the budget okay",
+   "draft waiting for my go-ahead",
+   "note on funding approval",
+   "office correspondence about spending"
+  ],
+  "summary": "Task: Draft a reply to Leah Silva (leah.silva@piedpiper.com) about the budget approval | Latest result: Draft created for Leah Silva at Pied Piper about the budget approval. Waiting for the user to confirm."
+ },
  "Email to Lena": {
   "phrases": [
    "reply about the tax papers",
@@ -3009,6 +3491,21 @@
    "answer the onboarding question"
   ],
   "summary": "Task: Draft a reply to Lena Tanaka (lena.tanaka@oscorp.com) about the onboarding plan | Latest result: Draft created for Lena Tanaka at Oscorp about the onboarding plan. Waiting for the user to confirm."
+ },
+ "Email to Lena [47bed75948]": {
+  "phrases": [
+   "pricing proposal reply draft",
+   "drafted message awaiting confirmation",
+   "write back about costs",
+   "reply on the price offer",
+   "unsent note about pricing",
+   "pricing response ready to send",
+   "follow-up on the quote",
+   "oscorp contact pricing message",
+   "awaiting my go-ahead on note",
+   "get back about prices"
+  ],
+  "summary": "Task: Draft a reply to Lena Tanaka (lena.tanaka@oscorp.com) about the pricing proposal | Latest result: Draft created for Lena Tanaka at Oscorp about the pricing proposal. Waiting for the user to confirm."
  },
  "Email to Liam": {
   "phrases": [
@@ -3146,6 +3643,23 @@
   ],
   "summary": "Task: Draft a reply to Marco Murphy (marco.murphy@wayne.com) about the tax documents | Latest result: Draft created for Marco Murphy at Wayne about the tax documents. Waiting for the user to confirm."
  },
+ "Email to Marco Murphy [8aa934e455]": {
+  "phrases": [
+   "quarterly invoice reply draft",
+   "note to the wayne contact",
+   "message about payment owed",
+   "follow up on billing",
+   "writing to a client",
+   "that wayne invoice message",
+   "correspondence about third quarter bill",
+   "unsent mail for wayne",
+   "business letter draft",
+   "reply waiting on my confirmation",
+   "payment question for wayne",
+   "office messages and correspondence"
+  ],
+  "summary": "Task: Draft a reply to Marco Murphy (marco.murphy@wayne.com) about the Q3 invoice | Latest result: Draft created for Marco Murphy at Wayne about the Q3 invoice. Waiting for the user to confirm."
+ },
  "Email to Marco Schmidt": {
   "phrases": [
    "reply to my colleague's message",
@@ -3175,6 +3689,21 @@
    "agreement tweaks, ready to send"
   ],
   "summary": "Task: Draft a reply to Marco Yilmaz (marco.yilmaz@oscorp.com) about the contract redlines | Latest result: Draft created for Marco Yilmaz at Oscorp about the contract redlines. Waiting for the user to confirm."
+ },
+ "Email to Marco [10ca78fa07]": {
+  "phrases": [
+   "reply about contract edits",
+   "draft note on contract revisions",
+   "correspondence with wayne counsel",
+   "written message about redlines",
+   "contract markup follow-up",
+   "letter to the wayne contact",
+   "pending draft awaiting approval",
+   "writing back on contract changes",
+   "mail draft for legal review",
+   "business correspondence and contract negotiation"
+  ],
+  "summary": "Task: Draft a reply to Marco Murphy (marco.murphy@wayne.com) about the contract redlines | Latest result: Draft created for Marco Murphy at Wayne about the contract redlines. Waiting for the user to confirm."
  },
  "Email to Mateo": {
   "phrases": [
@@ -3282,6 +3811,21 @@
   ],
   "summary": "Task: Draft a reply to Michael Brown (michael.brown@oscorp.com) about the visa paperwork | Latest result: Draft created for Michael Brown at Oscorp about the visa paperwork. Waiting for the user to confirm."
  },
+ "Email to Michael Brown [f241f66c08]": {
+  "phrases": [
+   "oscorp offsite planning message",
+   "draft awaiting my confirmation",
+   "company retreat agenda note",
+   "mike's offsite agenda reply",
+   "unsent note about offsite plans",
+   "team outing schedule message",
+   "write-up for the offsite meeting",
+   "correspondence with oscorp contact",
+   "pending reply on retreat agenda",
+   "offsite agenda draft waiting"
+  ],
+  "summary": "Task: Draft a reply to Michael Brown (michael.brown@oscorp.com) about the offsite agenda | Latest result: Draft created for Michael Brown at Oscorp about the offsite agenda. Waiting for the user to confirm."
+ },
  "Email to Michael Costa": {
   "phrases": [
    "reply draft for the security review",
@@ -3388,6 +3932,21 @@
   ],
   "summary": "Task: Draft a reply to Michael Johansson (michael.johansson@cyberdyne.com) about the travel itinerary | Latest result: Draft created for Michael Johansson at Cyberdyne about the travel itinerary. Waiting for the user to confirm."
  },
+ "Email to Michael Johansson [70cb1e44e6]": {
+  "phrases": [
+   "pricing reply waiting on my okay",
+   "answer about the quote",
+   "cost proposal response draft",
+   "unsent note for the cyberdyne contact",
+   "follow-up on the price offer",
+   "draft awaiting my approval",
+   "message about rates for the client",
+   "cyberdyne pricing message",
+   "writing back on the proposal",
+   "pending reply needing confirmation"
+  ],
+  "summary": "Task: Draft a reply to Michael Johansson (michael.johansson@cyberdyne.com) about the pricing proposal | Latest result: Draft created for Michael Johansson at Cyberdyne about the pricing proposal. Waiting for the user to confirm."
+ },
  "Email to Michael Kim": {
   "phrases": [
    "visa paperwork reply",
@@ -3402,6 +3961,21 @@
    "visa message awaiting confirmation"
   ],
   "summary": "Task: Draft a reply to Michael Kim (michael.kim@initech.com) about the visa paperwork | Latest result: Draft created for Michael Kim at Initech about the visa paperwork. Waiting for the user to confirm."
+ },
+ "Email to Michael Kim [99dc0dddd9]": {
+  "phrases": [
+   "trip schedule reply",
+   "flight plans message for colleague",
+   "answer about the travel plans",
+   "draft for the initech contact",
+   "writing back about my trip",
+   "itinerary response awaiting approval",
+   "work trip plans correspondence",
+   "reply about travel dates",
+   "message regarding the business trip",
+   "pending travel schedule response"
+  ],
+  "summary": "Task: Draft a reply to Michael Kim (michael.kim@initech.com) about the travel itinerary | Latest result: Draft created for Michael Kim at Initech about the travel itinerary. Waiting for the user to confirm."
  },
  "Email to Michael Larsen": {
   "phrases": [
@@ -3509,6 +4083,21 @@
   ],
   "summary": "Task: Draft a reply to Michael Turner (michael.turner@oscorp.com) about the launch timeline | Latest result: Draft created for Michael Turner at Oscorp about the launch timeline. Waiting for the user to confirm."
  },
+ "Email to Michael [e59fa1c274]": {
+  "phrases": [
+   "drafted reply awaiting approval",
+   "tax papers response to send",
+   "message about tax forms",
+   "aperture tax documents follow-up",
+   "write back regarding taxes",
+   "unsent note on tax paperwork",
+   "pending message for accountant",
+   "finance paperwork correspondence",
+   "reply draft needing confirmation",
+   "office correspondence about taxes"
+  ],
+  "summary": "Task: Draft a reply to Michael Gupta (michael.gupta@aperture.com) about the tax documents | Latest result: Draft created for Michael Gupta at Aperture about the tax documents. Waiting for the user to confirm."
+ },
  "Email to Mila": {
   "phrases": [
    "follow-up note for a colleague",
@@ -3599,6 +4188,21 @@
   ],
   "summary": "Task: Draft a reply to Mila Weber (mila.weber@northwind.com) about the podcast interview | Latest result: Draft created for Mila Weber at Northwind about the podcast interview. Waiting for the user to confirm."
  },
+ "Email to Mila [56112283da]": {
+  "phrases": [
+   "trip plans reply draft",
+   "message to the aperture contact",
+   "travel schedule response",
+   "flight itinerary follow-up",
+   "draft note about the trip",
+   "write back about travel plans",
+   "pending message awaiting confirmation",
+   "vacation schedule correspondence",
+   "itinerary reply waiting approval",
+   "unsent letter about my journey"
+  ],
+  "summary": "Task: Draft a reply to Mila Dimitrov (mila.dimitrov@aperture.com) about the travel itinerary | Latest result: Draft created for Mila Dimitrov at Aperture about the travel itinerary. Waiting for the user to confirm."
+ },
  "Email to Nadia": {
   "phrases": [
    "reply about budget sign-off",
@@ -3660,6 +4264,22 @@
    "office correspondence draft"
   ],
   "summary": "Task: Draft a reply to Nadia Hughes (nadia.hughes@globex.com) about the reference check | Latest result: Draft created for Nadia Hughes at Globex about the reference check. Waiting for the user to confirm."
+ },
+ "Email to Nadia [7aaec1ef1d]": {
+  "phrases": [
+   "the insurance claim reply",
+   "that message about my claim",
+   "writing back to the stark contact",
+   "pending draft for the insurance matter",
+   "unsent note on my claim",
+   "answer the claim question for stark",
+   "check the insurance draft i started",
+   "the claim correspondence awaiting confirmation",
+   "office message about the insurance payout",
+   "finish my reply on the claim",
+   "outgoing mail regarding insurance paperwork"
+  ],
+  "summary": "Task: Draft a reply to Nadia Dimitrov (nadia.dimitrov@stark.com) about the insurance claim | Latest result: Draft created for Nadia Dimitrov at Stark about the insurance claim. Waiting for the user to confirm."
  },
  "Email to Nico": {
   "phrases": [
@@ -3751,6 +4371,36 @@
   ],
   "summary": "Task: Draft a reply to Noah Patel (noah.patel@vandelay.com) about the travel itinerary | Latest result: Draft created for Noah Patel at Vandelay about the travel itinerary. Waiting for the user to confirm."
  },
+ "Email to Noah Patel [e9eed8b43a]": {
+  "phrases": [
+   "onboarding plan reply draft",
+   "vandelay onboarding message",
+   "new hire training plan note",
+   "write back about onboarding",
+   "unsent note awaiting my approval",
+   "vandelay onboarding correspondence",
+   "draft message for review",
+   "work note on staff onboarding",
+   "pending message needing confirmation",
+   "business mail about onboarding"
+  ],
+  "summary": "Task: Draft a reply to Noah Patel (noah.patel@vandelay.com) about the onboarding plan | Latest result: Draft created for Noah Patel at Vandelay about the onboarding plan. Waiting for the user to confirm."
+ },
+ "Email to Noah [a81544f78e]": {
+  "phrases": [
+   "unsent message awaiting my sign-off",
+   "office correspondence on staffing growth",
+   "written note for a coworker's recruiting",
+   "headcount expansion message draft",
+   "pending write-up for the staffing lead",
+   "workplace correspondence needing approval",
+   "personnel growth message to review",
+   "recruitment outline for a colleague",
+   "unfinished workplace note for sending",
+   "staffing strategy correspondence, unsent"
+  ],
+  "summary": "Task: Draft a reply to Noah Mwangi (noah.mwangi@tyrell.com) about the hiring plan | Latest result: Draft created for Noah Mwangi at Tyrell about the hiring plan. Waiting for the user to confirm."
+ },
  "Email to Olivia": {
   "phrases": [
    "reply about the hiring plan",
@@ -3825,6 +4475,21 @@
    "pending note about my journey"
   ],
   "summary": "Task: Draft a reply to Olivia Weber (olivia.weber@hooli.com) about the travel itinerary | Latest result: Draft created for Olivia Weber at Hooli about the travel itinerary. Waiting for the user to confirm."
+ },
+ "Email to Olivia Weber [e3f1ccc82d]": {
+  "phrases": [
+   "a draft reply about the venue deal",
+   "that unsent message to hooli",
+   "writing back on the venue paperwork",
+   "hall agreement response waiting approval",
+   "note about the booking contract",
+   "pending reply on the room lease",
+   "venue contract follow-up draft",
+   "correspondence with the hooli contact",
+   "unsent contract reply awaiting sign-off",
+   "venue negotiation message draft"
+  ],
+  "summary": "Task: Draft a reply to Olivia Weber (olivia.weber@hooli.com) about the venue contract | Latest result: Draft created for Olivia Weber at Hooli about the venue contract. Waiting for the user to confirm."
  },
  "Email to Olivia Yilmaz": {
   "phrases": [
@@ -3962,6 +4627,36 @@
    "office writing task, waiting on confirmation"
   ],
   "summary": "Task: Draft a reply to Paige Patel (paige.patel@globex.com) about the pricing proposal | Latest result: Draft created for Paige Patel at Globex about the pricing proposal. Waiting for the user to confirm."
+ },
+ "Email to Paige Patel [e65db11b70]": {
+  "phrases": [
+   "message to the globex contact",
+   "podcast guest reply draft",
+   "answer about the interview",
+   "write back to the host",
+   "pending note awaiting approval",
+   "mail draft for podcast",
+   "follow-up on the interview invitation",
+   "globex correspondence to finish",
+   "unsent reply for review",
+   "drafted message needing confirmation"
+  ],
+  "summary": "Task: Draft a reply to Paige Patel (paige.patel@globex.com) about the podcast interview | Latest result: Draft created for Paige Patel at Globex about the podcast interview. Waiting for the user to confirm."
+ },
+ "Email to Paige [55a0b113cf]": {
+  "phrases": [
+   "reply to the globex contact",
+   "answer my collaboration note",
+   "write back about the joint deal",
+   "respond to the partner pitch",
+   "message for the vendor lead",
+   "follow up on the alliance idea",
+   "draft for the business contact",
+   "correspondence with a company rep",
+   "work proposal response pending",
+   "pending note awaiting my approval"
+  ],
+  "summary": "Task: Draft a reply to Paige Patel (paige.patel@globex.com) about the partnership proposal | Latest result: Draft created for Paige Patel at Globex about the partnership proposal. Waiting for the user to confirm."
  },
  "Email to Priya": {
   "phrases": [
@@ -4143,6 +4838,21 @@
   ],
   "summary": "Task: Draft a reply to Priya Park (priya.park@piedpiper.com) about the contract redlines | Latest result: Draft created for Priya Park at Pied Piper about the contract redlines. Waiting for the user to confirm."
  },
+ "Email to Priya Park [3485a75e4f]": {
+  "phrases": [
+   "q3 invoice reply draft",
+   "write back about the invoice",
+   "unsent note on q3 billing",
+   "draft for the billing question",
+   "invoice follow-up with pied piper",
+   "message to my pied piper contact",
+   "reply about the quarterly bill",
+   "pied piper invoice correspondence",
+   "waiting on invoice draft approval",
+   "write back on payment question"
+  ],
+  "summary": "Task: Draft a reply to Priya Park (priya.park@piedpiper.com) about the Q3 invoice | Latest result: Draft created for Priya Park at Pied Piper about the Q3 invoice. Waiting for the user to confirm."
+ },
  "Email to Priya Schmidt": {
   "phrases": [
    "reply about the design feedback",
@@ -4172,6 +4882,21 @@
    "written reply waiting on confirmation"
   ],
   "summary": "Task: Draft a reply to Priya Yilmaz (priya.yilmaz@aperture.com) about the insurance claim | Latest result: Draft created for Priya Yilmaz at Aperture about the insurance claim. Waiting for the user to confirm."
+ },
+ "Email to Priya [db67b9fb24]": {
+  "phrases": [
+   "wayne contract redlines draft",
+   "reply about contract markup",
+   "message for nguyen at wayne",
+   "contract changes response",
+   "draft letter on redlines",
+   "pending contract redlines reply",
+   "waiting on draft confirmation",
+   "wayne legal contract feedback",
+   "written correspondence about contract edits",
+   "business message drafts"
+  ],
+  "summary": "Task: Draft a reply to Priya Nguyen (priya.nguyen@wayne.com) about the contract redlines | Latest result: Draft created for Priya Nguyen at Wayne about the contract redlines. Waiting for the user to confirm."
  },
  "Email to Quinn": {
   "phrases": [
@@ -4308,6 +5033,21 @@
   ],
   "summary": "Task: Draft a reply to Ravi Schmidt (ravi.schmidt@vandelay.com) about the partnership proposal | Latest result: Draft created for Ravi Schmidt at Vandelay about the partnership proposal. Waiting for the user to confirm."
  },
+ "Email to Ravi [70671d6b45]": {
+  "phrases": [
+   "reply draft about the lease",
+   "rent contract extension note",
+   "lease renewal message to send",
+   "follow-up with the wonka contact",
+   "landlord paperwork response",
+   "unsent note about my lease",
+   "write back on the rental agreement",
+   "lopez lease renewal correspondence",
+   "pending draft awaiting my approval",
+   "office space renewal reply"
+  ],
+  "summary": "Task: Draft a reply to Ravi Lopez (ravi.lopez@wonka.com) about the lease renewal | Latest result: Draft created for Ravi Lopez at Wonka about the lease renewal. Waiting for the user to confirm."
+ },
  "Email to Rosa": {
   "phrases": [
    "pricing proposal reply draft",
@@ -4397,6 +5137,21 @@
    "mail draft awaiting sign-off"
   ],
   "summary": "Task: Draft a reply to Rosa Weber (rosa.weber@acme.com) about the conference talk | Latest result: Draft created for Rosa Weber at Acme about the conference talk. Waiting for the user to confirm."
+ },
+ "Email to Rosa [92300560fe]": {
+  "phrases": [
+   "venue contract reply",
+   "draft for the venue deal",
+   "message about the venue agreement",
+   "umbrella venue contract follow-up",
+   "pending note to umbrella",
+   "confirm venue contract response",
+   "unsent venue contract message",
+   "writing back on the contract",
+   "venue paperwork correspondence",
+   "waiting on my approval draft"
+  ],
+  "summary": "Task: Draft a reply to Rosa Reyes (rosa.reyes@umbrella.com) about the venue contract | Latest result: Draft created for Rosa Reyes at Umbrella about the venue contract. Waiting for the user to confirm."
  },
  "Email to Sarah": {
   "phrases": [
@@ -4532,6 +5287,21 @@
    "unsent message on paperwork"
   ],
   "summary": "Task: Draft a reply to Sarah Zhang (sarah.zhang@vandelay.com) about the visa paperwork | Latest result: Draft created for Sarah Zhang at Vandelay about the visa paperwork. Waiting for the user to confirm."
+ },
+ "Email to Sarah [ed34aeb75c]": {
+  "phrases": [
+   "reply about tax paperwork",
+   "write back on tax forms",
+   "message about the tax files",
+   "unsent note regarding taxes",
+   "vandelay tax documents follow-up",
+   "draft response on tax papers",
+   "tax forms correspondence pending",
+   "that tax paperwork reply",
+   "finish the taxes message",
+   "waiting on confirmation for tax reply"
+  ],
+  "summary": "Task: Draft a reply to Sarah Murphy (sarah.murphy@vandelay.com) about the tax documents | Latest result: Draft created for Sarah Murphy at Vandelay about the tax documents. Waiting for the user to confirm."
  },
  "Email to Sofia": {
   "phrases": [
@@ -4729,6 +5499,21 @@
   ],
   "summary": "Task: Draft a reply to Sven Mendes (sven.mendes@gringotts.com) about the budget approval | Latest result: Draft created for Sven Mendes at Gringotts about the budget approval. Waiting for the user to confirm."
  },
+ "Email to Sven [cff16e6fdf]": {
+  "phrases": [
+   "answer the insurance contact",
+   "writing back about my claim",
+   "that letter for the insurer",
+   "draft message for the wayne contact",
+   "follow-up on claim paperwork",
+   "response about the claim",
+   "insurance guy callback draft",
+   "unsent note about insurance",
+   "message waiting for my approval",
+   "correspondence with the insurance company"
+  ],
+  "summary": "Task: Draft a reply to Sven Brown (sven.brown@wayne.com) about the insurance claim | Latest result: Draft created for Sven Brown at Wayne about the insurance claim. Waiting for the user to confirm."
+ },
  "Email to Tara": {
   "phrases": [
    "tax paperwork follow-up",
@@ -4912,6 +5697,21 @@
   ],
   "summary": "Task: Draft a reply to Umar Dimitrov (umar.dimitrov@tyrell.com) about the job offer | Latest result: Draft created for Umar Dimitrov at Tyrell about the job offer. Waiting for the user to confirm."
  },
+ "Email to Umar Dimitrov [288719a932]": {
+  "phrases": [
+   "reply to the podcast guest",
+   "draft message about the interview",
+   "that podcast interview response",
+   "writing back to tyrell contact",
+   "follow up on interview invite",
+   "note to the podcast host",
+   "correspondence about recording interview",
+   "unsent message for tyrell",
+   "pending reply awaiting my confirmation",
+   "podcast guest correspondence draft"
+  ],
+  "summary": "Task: Draft a reply to Umar Dimitrov (umar.dimitrov@tyrell.com) about the podcast interview | Latest result: Draft created for Umar Dimitrov at Tyrell about the podcast interview. Waiting for the user to confirm."
+ },
  "Email to Umar Okafor": {
   "phrases": [
    "reply draft about the demo",
@@ -4927,6 +5727,21 @@
   ],
   "summary": "Task: Draft a reply to Umar Okafor (umar.okafor@wonka.com) about the product demo | Latest result: Draft created for Umar Okafor at Wonka about the product demo. Waiting for the user to confirm."
  },
+ "Email to Umar Okafor [4e5469685b]": {
+  "phrases": [
+   "lease renewal reply",
+   "write back about the lease",
+   "draft for the lease talks",
+   "reply on the rental contract",
+   "follow up on office rental",
+   "wonka lease response",
+   "pending note on renewal",
+   "unsent message about the lease",
+   "office space contract correspondence",
+   "reply waiting for my approval"
+  ],
+  "summary": "Task: Draft a reply to Umar Okafor (umar.okafor@wonka.com) about the lease renewal | Latest result: Draft created for Umar Okafor at Wonka about the lease renewal. Waiting for the user to confirm."
+ },
  "Email to Umar Turner": {
   "phrases": [
    "security audit reply draft",
@@ -4941,6 +5756,21 @@
    "pending audit reply at gringotts"
   ],
   "summary": "Task: Draft a reply to Umar Turner (umar.turner@gringotts.com) about the security audit | Latest result: Draft created for Umar Turner at Gringotts about the security audit. Waiting for the user to confirm."
+ },
+ "Email to Umar [5e82066067]": {
+  "phrases": [
+   "draft message about the reference",
+   "reference check follow-up note",
+   "written reply awaiting my approval",
+   "note for okafor's reference",
+   "wonka contact message draft",
+   "pending message needing confirmation",
+   "correspondence with okafor about references",
+   "drafted note waiting for sign-off",
+   "writing back on the reference",
+   "unsent message about a reference check"
+  ],
+  "summary": "Task: Draft a reply to Umar Okafor (umar.okafor@wonka.com) about the reference check | Latest result: Draft created for Umar Okafor at Wonka about the reference check. Waiting for the user to confirm."
  },
  "Email to Vera": {
   "phrases": [
@@ -5016,6 +5846,21 @@
    "reply regarding outstanding accounts paperwork"
   ],
   "summary": "Task: Draft a reply to Vera Okafor (vera.okafor@initech.com) about the Q3 invoice | Latest result: Draft created for Vera Okafor at Initech about the Q3 invoice. Waiting for the user to confirm."
+ },
+ "Email to Vera [fdfc91d4ab]": {
+  "phrases": [
+   "draft for the security review",
+   "message waiting on my confirmation",
+   "unsent note to okafor",
+   "written reply for the auditor",
+   "drafted message for initech",
+   "security audit follow-up note",
+   "unsent mail draft ready",
+   "correspondence with initech about audit",
+   "okafor message ready to go",
+   "pending reply for a colleague"
+  ],
+  "summary": "Task: Draft a reply to Vera Okafor (vera.okafor@initech.com) about the security audit | Latest result: Draft created for Vera Okafor at Initech about the security audit. Waiting for the user to confirm."
  },
  "Email to Wei": {
   "phrases": [
@@ -5259,6 +6104,21 @@
   ],
   "summary": "Task: Draft a reply to Zane Park (zane.park@aperture.com) about the pricing proposal | Latest result: Draft created for Zane Park at Aperture about the pricing proposal. Waiting for the user to confirm."
  },
+ "Email to Zane Park [feb409332f]": {
+  "phrases": [
+   "reply about the hiring plan",
+   "draft awaiting my confirmation",
+   "message to aperture contact",
+   "recruitment strategy correspondence",
+   "headcount planning note",
+   "staffing plan response",
+   "unsent note for the hiring team",
+   "pending outgoing message draft",
+   "letter to an aperture colleague",
+   "hiring proposal follow-up"
+  ],
+  "summary": "Task: Draft a reply to Zane Park (zane.park@aperture.com) about the hiring plan | Latest result: Draft created for Zane Park at Aperture about the hiring plan. Waiting for the user to confirm."
+ },
  "Email to Zane Rossi": {
   "phrases": [
    "pricing proposal reply draft",
@@ -5288,6 +6148,21 @@
    "correspondence about contract mark-ups"
   ],
   "summary": "Task: Draft a reply to Zane Tanaka (zane.tanaka@acme.com) about the contract redlines | Latest result: Draft created for Zane Tanaka at Acme about the contract redlines. Waiting for the user to confirm."
+ },
+ "Email to Zane [74531e0468]": {
+  "phrases": [
+   "draft reply for legal contact",
+   "written response to a colleague",
+   "pending message awaiting approval",
+   "unsent note about agreement changes",
+   "contract markup response draft",
+   "follow-up note to a counterpart",
+   "reply waiting for my okay",
+   "correspondence with an outside lawyer",
+   "business message draft needing sign-off",
+   "negotiation correspondence and edits"
+  ],
+  "summary": "Task: Draft a reply to Zane Park (zane.park@aperture.com) about the contract redlines | Latest result: Draft created for Zane Park at Aperture about the contract redlines. Waiting for the user to confirm."
  },
  "Email to Zara": {
   "phrases": [
@@ -6939,6 +7814,23 @@
   ],
   "summary": "Task: Draft a reply to Isaac Nguyen (isaac.nguyen@globex.com) about the launch timeline | Latest result: Draft created for Isaac Nguyen at Globex about the launch timeline. Waiting for the user to confirm."
  },
+ "Globex Launch Timeline [a5582b61a1]": {
+  "phrases": [
+   "email to rosa about dates",
+   "reply draft for rosa",
+   "rollout schedule email",
+   "go-live dates message",
+   "product release schedule reply",
+   "pending email awaiting my okay",
+   "drafted note to rosa",
+   "rosa's schedule question response",
+   "work email drafts to confirm",
+   "release date follow-up email",
+   "rosa abbott message draft",
+   "planning dates email reply"
+  ],
+  "summary": "Task: Draft a reply to Rosa Abbott (rosa.abbott@globex.com) about the launch timeline | Latest result: Draft created for Rosa Abbott at Globex about the launch timeline. Waiting for the user to confirm."
+ },
  "Globex Offsite Agenda": {
   "phrases": [
    "reply to priya's email",
@@ -7196,6 +8088,21 @@
    "unconfirmed email to fernandes"
   ],
   "summary": "Task: Draft a reply to Michael Fernandes (michael.fernandes@stark.com) about the hiring plan | Latest result: Draft created for Michael Fernandes at Stark about the hiring plan. Waiting for the user to confirm."
+ },
+ "Hiring Plan with Michael [451f43c31b]": {
+  "phrases": [
+   "headcount expansion talks with exec",
+   "recruiting approach note to contact",
+   "staff hiring strategy message",
+   "open roles and budget chat",
+   "talent acquisition email pending approval",
+   "workforce planning correspondence",
+   "new employee recruitment outline",
+   "personnel growth proposal for partner",
+   "hr staffing discussion follow-up",
+   "recruitment strategy email to colleague"
+  ],
+  "summary": "Task: Draft a reply to Michael Johansson (michael.johansson@cyberdyne.com) about the hiring plan | Latest result: Draft created for Michael Johansson at Cyberdyne about the hiring plan. Waiting for the user to confirm."
  },
  "Hiring Plan with Sarah": {
   "phrases": [
@@ -7511,6 +8418,21 @@
    "sit-down chat scheduling email"
   ],
   "summary": "Task: Draft a reply to Mila Sato (mila.sato@initech.com) about the podcast interview | Latest result: Draft created for Mila Sato at Initech about the podcast interview. Waiting for the user to confirm."
+ },
+ "Initech Podcast Interview [a18645d176]": {
+  "phrases": [
+   "email to alex about my guest spot",
+   "reply to alex's booking request",
+   "answer alex's message about recording",
+   "media appearance email draft",
+   "show guest invitation response",
+   "unsent email awaiting my approval",
+   "work email to alex larsen",
+   "broadcast chat follow-up message",
+   "sit-down with host reply",
+   "recording appearance confirmation email"
+  ],
+  "summary": "Task: Draft a reply to Alex Larsen (alex.larsen@initech.com) about the podcast interview | Latest result: Draft created for Alex Larsen at Initech about the podcast interview. Waiting for the user to confirm."
  },
  "Initech Product Demo": {
   "phrases": [
@@ -7893,6 +8815,21 @@
   ],
   "summary": "Task: Draft a reply to Emma Patel (emma.patel@monarch.com) about the contract redlines | Latest result: Draft created for Emma Patel at Monarch about the contract redlines. Waiting for the user to confirm."
  },
+ "Monarch Contract Redlines [07f7583639]": {
+  "phrases": [
+   "reply to amara's proposed edits",
+   "email about the agreement changes",
+   "draft response on legal markup",
+   "follow up on tracked changes",
+   "negotiation emails with amara",
+   "feedback on deal terms",
+   "answer to amara's revisions",
+   "pending sign-off on agreement edits",
+   "legal document feedback email",
+   "vendor deal counterproposal reply"
+  ],
+  "summary": "Task: Draft a reply to Amara Zhang (amara.zhang@monarch.com) about the contract redlines | Latest result: Draft created for Amara Zhang at Monarch about the contract redlines. Waiting for the user to confirm."
+ },
  "Monarch Hiring Plan": {
   "phrases": [
    "email to sven about recruiting",
@@ -7999,6 +8936,21 @@
    "career emails to finish"
   ],
   "summary": "Task: Draft a reply to Mila Weber (mila.weber@northwind.com) about the job offer | Latest result: Draft created for Mila Weber at Northwind about the job offer. Waiting for the user to confirm."
+ },
+ "Northwind Job Offer [c32a396762]": {
+  "phrases": [
+   "fatima's hiring email draft",
+   "reply to the recruiter",
+   "response to the employment proposal",
+   "email to fatima park",
+   "candidate's acceptance letter draft",
+   "pending message for the hiring manager",
+   "career opportunity reply",
+   "waiting on my confirmation email",
+   "draft to the northwind recruiter",
+   "work position follow-up message"
+  ],
+  "summary": "Task: Draft a reply to Fatima Park (fatima.park@northwind.com) about the job offer | Latest result: Draft created for Fatima Park at Northwind about the job offer. Waiting for the user to confirm."
  },
  "Northwind Launch Timeline": {
   "phrases": [
@@ -8151,6 +9103,21 @@
    "meeting space arrangement"
   ],
   "summary": "Task: Draft a reply to Mila Weber (mila.weber@northwind.com) about the venue contract | Latest result: Draft created for Mila Weber at Northwind about the venue contract. Waiting for the user to confirm."
+ },
+ "Northwind Venue Contract [3d9877c516]": {
+  "phrases": [
+   "email to leah",
+   "reply draft for leah",
+   "message to leah dubois",
+   "pending email awaiting confirmation",
+   "hall booking agreement paperwork",
+   "event space deal response",
+   "leah's booking terms reply",
+   "draft note to event coordinator",
+   "unsent response to leah",
+   "follow-up on booking paperwork"
+  ],
+  "summary": "Task: Draft a reply to Leah Dubois (leah.dubois@northwind.com) about the venue contract | Latest result: Draft created for Leah Dubois at Northwind about the venue contract. Waiting for the user to confirm."
  },
  "Offsite Agenda with Kofi": {
   "phrases": [
@@ -8307,6 +9274,21 @@
   ],
   "summary": "Task: Draft a reply to Michael Rossi (michael.rossi@tyrell.com) about the onboarding plan | Latest result: Draft created for Michael Rossi at Tyrell about the onboarding plan. Waiting for the user to confirm."
  },
+ "Onboarding Plan with Michael [c33dcfd881]": {
+  "phrases": [
+   "new hire email draft",
+   "welcome plan reply for dubois",
+   "cyberdyne new starter message",
+   "draft to the new employee's contact",
+   "settling in schedule for new joiner",
+   "email awaiting my approval",
+   "new staff orientation outline",
+   "reply to dubois at cyberdyne",
+   "first weeks checklist for newcomer",
+   "pending draft needing confirmation"
+  ],
+  "summary": "Task: Draft a reply to Michael Dubois (michael.dubois@cyberdyne.com) about the onboarding plan | Latest result: Draft created for Michael Dubois at Cyberdyne about the onboarding plan. Waiting for the user to confirm."
+ },
  "Onboarding Plan with Paige": {
   "phrases": [
    "email to nguyen at northwind",
@@ -8444,6 +9426,21 @@
    "workforce strategy follow-up"
   ],
   "summary": "Task: Draft a reply to Sarah Haddad (sarah.haddad@oscorp.com) about the hiring plan | Latest result: Draft created for Sarah Haddad at Oscorp about the hiring plan. Waiting for the user to confirm."
+ },
+ "Oscorp Hiring Plan [4d5bd5f0b3]": {
+  "phrases": [
+   "email to michael",
+   "recruitment strategy reply",
+   "staffing draft for michael",
+   "answer michael's message",
+   "headcount proposal email",
+   "personnel reply draft",
+   "job openings response",
+   "michael brown email draft",
+   "workforce planning follow-up",
+   "drafted note to michael"
+  ],
+  "summary": "Task: Draft a reply to Michael Brown (michael.brown@oscorp.com) about the hiring plan | Latest result: Draft created for Michael Brown at Oscorp about the hiring plan. Waiting for the user to confirm."
  },
  "Oscorp Insurance Claim": {
   "phrases": [
@@ -8761,6 +9758,23 @@
    "legal document for the event location"
   ],
   "summary": "Task: Draft a reply to David Kim (david.kim@piedpiper.com) about the venue contract | Latest result: Draft created for David Kim at Pied Piper about the venue contract. Waiting for the user to confirm."
+ },
+ "Pied Piper Venue Contract [31594bed01]": {
+  "phrases": [
+   "email to leah about the booking",
+   "reply draft for the location deal",
+   "follow up with leah silva",
+   "event space agreement",
+   "hall booking paperwork",
+   "that email i drafted for leah",
+   "the rental terms message",
+   "location lease reply",
+   "leah's note about the space",
+   "meeting space deal email",
+   "unsigned booking agreement",
+   "pending reply to leah"
+  ],
+  "summary": "Task: Draft a reply to Leah Silva (leah.silva@piedpiper.com) about the venue contract | Latest result: Draft created for Leah Silva at Pied Piper about the venue contract. Waiting for the user to confirm."
  },
  "Podcast Interview with Alex": {
   "phrases": [
@@ -10066,6 +11080,21 @@
   ],
   "summary": "Task: Draft a reply to David Kaur (david.kaur@initech.com) about the tax documents | Latest result: Draft created for David Kaur at Initech about the tax documents. Waiting for the user to confirm."
  },
+ "Reply to David re tax documents [731ec9612c]": {
+  "phrases": [
+   "respond to the email draft",
+   "email draft for northwind contact",
+   "write back to northwind",
+   "answer the accountant's message",
+   "finance paperwork follow-up",
+   "draft message awaiting confirmation",
+   "send the filing paperwork answer",
+   "northwind email about forms",
+   "get back to northwind",
+   "year-end financial forms response"
+  ],
+  "summary": "Task: Draft a reply to David Park (david.park@northwind.com) about the tax documents | Latest result: Draft created for David Park at Northwind about the tax documents. Waiting for the user to confirm."
+ },
  "Reply to David re travel itinerary": {
   "phrases": [
    "email draft for the stark contact",
@@ -10794,6 +11823,21 @@
   ],
   "summary": "Task: Draft a reply to Michael Fernandes (michael.fernandes@stark.com) about the venue contract | Latest result: Draft created for Michael Fernandes at Stark about the venue contract. Waiting for the user to confirm."
  },
+ "Reply to Michael re venue contract [97ebeb6aa2]": {
+  "phrases": [
+   "email to mendes at aperture",
+   "get back to the aperture guy",
+   "unsent note awaiting my approval",
+   "follow up on the location deal",
+   "that booking paperwork email",
+   "respond to aperture's agreement question",
+   "the pending email i need to send",
+   "hall rental terms response",
+   "written answer for the event space",
+   "check on the aperture location paperwork"
+  ],
+  "summary": "Task: Draft a reply to Michael Mendes (michael.mendes@aperture.com) about the venue contract | Latest result: Draft created for Michael Mendes at Aperture about the venue contract. Waiting for the user to confirm."
+ },
  "Reply to Mila re pricing proposal": {
   "phrases": [
    "email draft for the client",
@@ -10930,6 +11974,21 @@
    "weber message about meeting slides"
   ],
   "summary": "Task: Draft a reply to Omar Weber (omar.weber@umbrella.com) about the board deck | Latest result: Draft created for Omar Weber at Umbrella about the board deck. Waiting for the user to confirm."
+ },
+ "Reply to Omar re board deck [e2c97c526d]": {
+  "phrases": [
+   "write back to johansson at acme",
+   "answer my colleague's email about slides",
+   "unsent message on the presentation",
+   "email draft awaiting my approval",
+   "presentation slides correspondence with acme",
+   "respond to the meeting slides query",
+   "follow-up email for leadership presentation",
+   "pending message about the director slides",
+   "email draft for an acme contact",
+   "correspondence about the quarterly presentation"
+  ],
+  "summary": "Task: Draft a reply to Omar Johansson (omar.johansson@acme.com) about the board deck | Latest result: Draft created for Omar Johansson at Acme about the board deck. Waiting for the user to confirm."
  },
  "Reply to Omar re conference talk": {
   "phrases": [
@@ -11652,6 +12711,21 @@
    "hiring background inquiry response"
   ],
   "summary": "Task: Draft a reply to David Mendes (david.mendes@soylent.com) about the reference check | Latest result: Draft created for David Mendes at Soylent about the reference check. Waiting for the user to confirm."
+ },
+ "Soylent Reference Check [53077cd62e]": {
+  "phrases": [
+   "email to kai haddad",
+   "reply to kai about the candidate",
+   "background screening response draft",
+   "employment history confirmation message",
+   "former employer vetting email",
+   "hiring verification correspondence",
+   "draft awaiting my approval",
+   "kai's recruiting paperwork reply",
+   "job candidate vouching email",
+   "pending message to kai haddad"
+  ],
+  "summary": "Task: Draft a reply to Kai Haddad (kai.haddad@soylent.com) about the reference check | Latest result: Draft created for Kai Haddad at Soylent about the reference check. Waiting for the user to confirm."
  },
  "Stark Design Review": {
   "phrases": [
@@ -14226,6 +15300,21 @@
   ],
   "summary": "Task: Draft a reply to Sarah Kaur (sarah.kaur@wayne.com) about the contract redlines | Latest result: Draft created for Sarah Kaur at Wayne about the contract redlines. Waiting for the user to confirm."
  },
+ "Wayne Contract Redlines [a7a814f299]": {
+  "phrases": [
+   "reply to hannah about the markup",
+   "email back on the agreement changes",
+   "answer johansson's edits to the terms",
+   "follow up on the marked-up agreement",
+   "legal document revisions reply",
+   "tracked changes response to the lawyer",
+   "draft note about the deal terms",
+   "negotiation emails with hannah",
+   "sign-off pending on the agreement draft",
+   "review of edits to the legal paperwork"
+  ],
+  "summary": "Task: Draft a reply to Hannah Johansson (hannah.johansson@wayne.com) about the contract redlines | Latest result: Draft created for Hannah Johansson at Wayne about the contract redlines. Waiting for the user to confirm."
+ },
  "Wayne Hiring Plan": {
   "phrases": [
    "recruitment strategy email for liam",
@@ -14320,6 +15409,21 @@
   ],
   "summary": "Task: Draft a reply to David Murphy (david.murphy@wayne.com) about the partnership proposal | Latest result: Draft created for David Murphy at Wayne about the partnership proposal. Waiting for the user to confirm."
  },
+ "Wayne Partnership Proposal [bd3d2b42ec]": {
+  "phrases": [
+   "email to leah about the deal",
+   "answer leah's collaboration email",
+   "joint venture follow-up message",
+   "response to the business pitch",
+   "collab offer reply draft",
+   "email draft for leah tanaka",
+   "pending message awaiting approval",
+   "work together agreement correspondence",
+   "reply to my contact's offer",
+   "business alliance email to confirm"
+  ],
+  "summary": "Task: Draft a reply to Leah Tanaka (leah.tanaka@wayne.com) about the partnership proposal | Latest result: Draft created for Leah Tanaka at Wayne about the partnership proposal. Waiting for the user to confirm."
+ },
  "Wayne Podcast Interview": {
   "phrases": [
    "email to david about the show",
@@ -14379,6 +15483,21 @@
    "unsent note about the trip"
   ],
   "summary": "Task: Draft a reply to Yara Schmidt (yara.schmidt@wayne.com) about the travel itinerary | Latest result: Draft created for Yara Schmidt at Wayne about the travel itinerary. Waiting for the user to confirm."
+ },
+ "Wayne Travel Itinerary [84a64d3ac6]": {
+  "phrases": [
+   "email to sven brown",
+   "reply to sven about my trip",
+   "sven's trip schedule draft",
+   "draft message for sven",
+   "journey plans for sven",
+   "sven flight arrangements email",
+   "trip agenda sent to sven",
+   "holiday plans reply to sven",
+   "correspondence with sven brown",
+   "sven's booking details draft"
+  ],
+  "summary": "Task: Draft a reply to Sven Brown (sven.brown@wayne.com) about the travel itinerary | Latest result: Draft created for Sven Brown at Wayne about the travel itinerary. Waiting for the user to confirm."
  },
  "Wayne Vendor Quote": {
   "phrases": [
