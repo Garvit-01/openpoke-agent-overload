@@ -9,6 +9,7 @@ from typing import Optional, Set
 from ..agents.execution_agent.batch_manager import ExecutionBatchManager
 from ..agents.execution_agent.runtime import ExecutionResult
 from ..logging_config import logger
+from .execution.routing import record_agent_request
 from .triggers import TriggerRecord, get_trigger_service
 
 
@@ -89,6 +90,9 @@ class TriggerScheduler:
                     "scheduled_for": trigger.next_trigger,
                 },
             )
+            # The payload is what the trigger is about; the fired-at and metadata lines would only add noise.
+            # A trigger that repeats the same payload keeps one copy (see AgentRegistry.add_request).
+            record_agent_request(trigger.agent_name, trigger.payload or "")
             execution_manager = ExecutionBatchManager()
             result = await execution_manager.execute_agent(
                 trigger.agent_name,

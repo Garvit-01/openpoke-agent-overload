@@ -45,7 +45,32 @@ CREATE TABLE IF NOT EXISTS agent_entities (
     PRIMARY KEY (agent_name, kind, value)
 );
 CREATE INDEX IF NOT EXISTS idx_agent_entities_lookup ON agent_entities (kind, value);
+CREATE TABLE IF NOT EXISTS agent_requests (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    agent_name TEXT NOT NULL REFERENCES agents (name) ON DELETE CASCADE,
+    text TEXT NOT NULL,
+    at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_agent_requests_agent ON agent_requests (agent_name, id);
+CREATE TABLE IF NOT EXISTS registry_meta (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL
+);
 """
+
+# Past requests kept per agent for search (oldest dropped), and the most characters kept of each.
+# The summary only holds the first and latest request; these keep the middle of the history findable.
+# They are a search signal only: nothing in the resolver reads them, so they can never merge agents.
+REQUEST_HISTORY_LIMIT = 20
+REQUEST_MAX_CHARS = 300
+# registry_meta key set once the past requests have been filled in from the agents' logs
+REQUESTS_BACKFILLED_KEY = "requests_backfilled"
+
+
+def clip_request(text: str) -> str:
+    """One line, at most REQUEST_MAX_CHARS characters."""
+    flat = " ".join((text or "").split())
+    return flat if len(flat) <= REQUEST_MAX_CHARS else flat[: REQUEST_MAX_CHARS - 3].rstrip() + "..."
 
 
 def _utc_now() -> datetime:
@@ -80,6 +105,8 @@ class AgentRecord:
     created_at: str = ""
     last_active_at: str = ""
     run_count: int = 0
+    # Requests routed to this agent, oldest first, at most REQUEST_HISTORY_LIMIT. Search only, never a merge signal.
+    requests: List[str] = field(default_factory=list)
 
     @property
     def last_active(self) -> datetime:
@@ -166,6 +193,64 @@ class AgentRegistry:
                     [(name, kind, value) for value in values if value],
                 )
 
+    # Remember a request routed to this agent, for search. A repeat of a stored request moves it to the
+    # end instead of adding a copy, so a daily trigger can't push the rest of the history out.
+    def add_request(self, name: str, text: str, *, at: Optional[datetime] = None) -> bool:
+        """Store one request (clipped), keep only the newest REQUEST_HISTORY_LIMIT. False if nothing stored."""
+
+        clipped = clip_request(text)
+        if not clipped:
+            return False
+        stamp = to_iso(at or self.now())
+        with self._lock, closing(self._connect()) as conn:
+            if conn.execute("SELECT 1 FROM agents WHERE name = ?", (name,)).fetchone() is None:
+                return False
+            conn.execute("BEGIN")
+            try:
+                self._insert_requests(conn, name, [clipped], stamp)
+                conn.execute("COMMIT")
+            except Exception:
+                conn.execute("ROLLBACK")
+                raise
+        return True
+
+    def requests_for(self, name: str) -> List[str]:
+        """Stored requests for one agent, oldest first."""
+        with self._lock, closing(self._connect()) as conn:
+            rows = conn.execute(
+                "SELECT text FROM agent_requests WHERE agent_name = ? ORDER BY id", (name,)
+            ).fetchall()
+        return [row["text"] for row in rows]
+
+    def get_meta(self, key: str) -> Optional[str]:
+        with self._lock, closing(self._connect()) as conn:
+            row = conn.execute("SELECT value FROM registry_meta WHERE key = ?", (key,)).fetchone()
+        return None if row is None else row["value"]
+
+    def set_meta(self, key: str, value: str) -> None:
+        with self._lock, closing(self._connect()) as conn:
+            conn.execute(
+                "INSERT INTO registry_meta (key, value) VALUES (?, ?)"
+                " ON CONFLICT(key) DO UPDATE SET value = excluded.value",
+                (key, value),
+            )
+
+    @staticmethod
+    def _insert_requests(conn: sqlite3.Connection, name: str, texts: Sequence[str], stamp: str) -> None:
+        """Append requests in order (dropping older copies of the same text), then trim to the cap."""
+        for text in texts:
+            if not text:
+                continue
+            conn.execute("DELETE FROM agent_requests WHERE agent_name = ? AND text = ?", (name, text))
+            conn.execute(
+                "INSERT INTO agent_requests (agent_name, text, at) VALUES (?, ?, ?)", (name, text, stamp)
+            )
+        conn.execute(
+            "DELETE FROM agent_requests WHERE agent_name = ? AND id NOT IN"
+            " (SELECT id FROM agent_requests WHERE agent_name = ? ORDER BY id DESC LIMIT ?)",
+            (name, name, REQUEST_HISTORY_LIMIT),
+        )
+
     def set_status(self, name: str, status: str) -> None:
         if status not in ALL_STATUSES:
             raise ValueError(f"Unknown status: {status}")
@@ -206,6 +291,11 @@ class AgentRegistry:
                             " VALUES (?, ?, ?)",
                             [(record.name, kind, value) for value in values if value],
                         )
+                    if record.requests:
+                        self._insert_requests(
+                            conn, record.name, [clip_request(text) for text in record.requests],
+                            record.last_active_at or created_at,
+                        )
                 conn.execute("COMMIT")
             except Exception:
                 conn.execute("ROLLBACK")
@@ -215,6 +305,7 @@ class AgentRegistry:
     def clear(self) -> None:
         with self._lock, closing(self._connect()) as conn:
             conn.execute("DELETE FROM agent_entities")
+            conn.execute("DELETE FROM agent_requests")
             conn.execute("DELETE FROM agents")
         logger.info("Cleared agent registry")
 
@@ -229,21 +320,31 @@ class AgentRegistry:
                 "SELECT agent_name, kind, value FROM agent_entities WHERE agent_name = ?",
                 (name,),
             ).fetchall()
-        return self._build_records([row], entity_rows)[0]
+            request_rows = conn.execute(
+                "SELECT agent_name, text FROM agent_requests WHERE agent_name = ? ORDER BY id", (name,)
+            ).fetchall()
+        return self._build_records([row], entity_rows, request_rows)[0]
 
     def exists(self, name: str) -> bool:
         with self._lock, closing(self._connect()) as conn:
             return conn.execute("SELECT 1 FROM agents WHERE name = ?", (name,)).fetchone() is not None
 
-    # All agents, oldest first (the same order the old roster used)
-    def list_agents(self, statuses: Optional[Sequence[str]] = None) -> List[AgentRecord]:
+    # All agents, oldest first (the same order the old roster used). Past requests only when asked for.
+    def list_agents(
+        self, statuses: Optional[Sequence[str]] = None, *, with_requests: bool = False
+    ) -> List[AgentRecord]:
         where, params = self._status_filter(statuses)
         with self._lock, closing(self._connect()) as conn:
             rows = conn.execute(
                 f"SELECT * FROM agents {where} ORDER BY created_at, rowid", params
             ).fetchall()
             entity_rows = conn.execute("SELECT agent_name, kind, value FROM agent_entities").fetchall()
-        return self._build_records(rows, entity_rows)
+            request_rows = (
+                conn.execute("SELECT agent_name, text FROM agent_requests ORDER BY id").fetchall()
+                if with_requests
+                else []
+            )
+        return self._build_records(rows, entity_rows, request_rows)
 
     def names(self) -> List[str]:
         with self._lock, closing(self._connect()) as conn:
@@ -287,13 +388,18 @@ class AgentRegistry:
 
     @staticmethod
     def _build_records(
-        rows: Sequence[sqlite3.Row], entity_rows: Sequence[sqlite3.Row]
+        rows: Sequence[sqlite3.Row],
+        entity_rows: Sequence[sqlite3.Row],
+        request_rows: Sequence[sqlite3.Row] = (),
     ) -> List[AgentRecord]:
         entities: Dict[str, Dict[str, List[str]]] = {}
         for entity in entity_rows:
             entities.setdefault(entity["agent_name"], {}).setdefault(entity["kind"], []).append(
                 entity["value"]
             )
+        requests: Dict[str, List[str]] = {}
+        for request in request_rows:
+            requests.setdefault(request["agent_name"], []).append(request["text"])
         return [
             AgentRecord(
                 name=row["name"],
@@ -303,6 +409,7 @@ class AgentRegistry:
                 created_at=row["created_at"],
                 last_active_at=row["last_active_at"],
                 run_count=row["run_count"],
+                requests=requests.get(row["name"], []),
             )
             for row in rows
         ]
@@ -312,6 +419,10 @@ __all__ = [
     "ALL_STATUSES",
     "AgentRecord",
     "AgentRegistry",
+    "REQUEST_HISTORY_LIMIT",
+    "REQUEST_MAX_CHARS",
+    "REQUESTS_BACKFILLED_KEY",
+    "clip_request",
     "STATUS_ACTIVE",
     "STATUS_ARCHIVED",
     "STATUS_DORMANT",
