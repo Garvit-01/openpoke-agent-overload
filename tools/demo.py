@@ -36,6 +36,10 @@ DEFAULT_ORIGINAL = HERE.parent / "openpoke-original"
 OURS_URL, ORIGINAL_URL = "http://localhost:8001", "http://localhost:8002"
 OURS_DATA = HERE / "server" / "data"
 PHRASES_CACHE = HERE / "evals" / "results" / "agent_phrases.json"
+# Checked twice a second, so each app's time to its final reply is accurate to about half a second
+POLL_SECONDS = 0.5
+QUIET_AFTER_RESULT = 6.0
+QUIET_AFTER_ONE_REPLY = 25.0
 
 
 def slugify(name: str) -> str:
@@ -134,12 +138,15 @@ def send_and_wait(base: str, message: str, timeout: float) -> Tuple[List[str], O
         return [], f"not reachable ({exc.__class__.__name__}). Is it running?", 0.0
     last_change, seen = time.time(), before
     while time.time() - started < timeout:
-        time.sleep(2)
+        time.sleep(POLL_SECONDS)
         count = len(history(base))
         if count != seen:
             seen, last_change = count, time.time()
         replies = count - before - 1  # minus the user's own message
-        if replies >= 2 and time.time() - last_change > 8:  # the "on it" reply plus the agent's result
+        quiet = time.time() - last_change
+        # Usually two replies: "on it", then the agent's result. A direct answer is a single reply,
+        # so after one reply wait longer, in case an agent is still working
+        if (replies >= 2 and quiet > QUIET_AFTER_RESULT) or (replies == 1 and quiet > QUIET_AFTER_ONE_REPLY):
             break
     new = history(base)[before:]
     return [m["content"] for m in new if m.get("role") != "user"], None, last_change - started

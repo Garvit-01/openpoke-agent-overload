@@ -72,7 +72,7 @@ All of this is configurable in `server/config.py` (see "New settings" below).
 
 ### Unit and integration tests: `python -m pytest`
 
-126 tests, about a minute, no network, no API keys. They cover:
+127 tests, about a minute, no network, no API keys. They cover:
 
 - registry create, reuse, revive, entity lookup, persistence, and migration from `roster.json`
 - agent ids: the four names that used to share `email-to-sarah.log` now keep separate histories, and old slug logs are carried over without overwriting anything
@@ -364,7 +364,7 @@ The same shape shows up anywhere one front agent serves many long-running contex
 
 ```bash
 pip install -r server/requirements.txt pytest
-python -m pytest                       # 126 tests, no keys needed
+python -m pytest                       # 127 tests, no keys needed
 python -m evals.run_eval --quick       # one seed, about 15 seconds
 python -m evals.run_eval               # full run, about 2 minutes, writes evals/results/
 python -m evals.run_eval --router llm --limit 1 --repeats 1    # check the key and model, costs under a cent
@@ -425,7 +425,7 @@ server/services/execution/
 server/agents/execution_agent/batch_manager.py   per-agent run lock
 server/services/safety/outbound.py   send confirmation guard
 evals/            scenario generator (single-turn + conversations), hand-written paraphrase set, baseline copy, harness, stats, real-model mode, results
-tests/            126 tests
+tests/            127 tests
 tools/            run_original.py (the original app, unchanged, port 8002), run_mine.py (this branch, port 8001), demo.py (seed both, ask both the same message), usage_meter.py (tokens, cost, time per call)
 ```
 

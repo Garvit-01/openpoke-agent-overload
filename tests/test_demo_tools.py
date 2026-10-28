@@ -91,6 +91,37 @@ def test_usage_cost_and_time_lines():
     assert "no model calls recorded" in "\n".join(demo.usage_lines([], {}, 1.0))
 
 
+def test_ask_stops_after_a_single_direct_reply(monkeypatch):
+    import time
+
+    import httpx
+
+    demo = load("demo")
+    monkeypatch.setattr(demo, "POLL_SECONDS", 0.02)
+    monkeypatch.setattr(demo, "QUIET_AFTER_ONE_REPLY", 0.2)
+    sent_at = {}
+    conversation = []
+
+    def fake_history(base):
+        # The app answers directly, with one reply, 0.1s after the message arrives
+        if sent_at and time.time() - sent_at["t"] > 0.1 and len(conversation) == 1:
+            conversation.append({"role": "assistant", "content": "Who is Sarha?"})
+        return list(conversation)
+
+    def fake_post(url, json, timeout):
+        sent_at["t"] = time.time()
+        conversation.append({"role": "user", "content": json["messages"][0]["content"]})
+
+    monkeypatch.setattr(demo, "history", fake_history)
+    monkeypatch.setattr(httpx, "post", fake_post)
+
+    started = time.time()
+    replies, error, seconds = demo.send_and_wait("http://app", "send it to Sarha", timeout=30)
+    assert replies == ["Who is Sarha?"] and error is None
+    assert time.time() - started < 2, "didn't wait for a second reply that never comes"
+    assert 0.05 < seconds < 0.5, "time to the reply, accurate to the poll interval"
+
+
 def test_move_aside_never_deletes(tmp_path):
     demo = load("demo")
     data = tmp_path / "data"
