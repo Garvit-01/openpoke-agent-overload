@@ -52,8 +52,9 @@ RETRIEVERS = (RETRIEVER_BM25, RETRIEVER_HYBRID)
 # 3 of 8 keeps keyword ranks 1-5, where the right agent sits when it shares words with the message
 # (see docs/APPROACH_EMBEDDINGS.md), and gives meaning enough room to surface a paraphrased one.
 DENSE_SLOTS = 3
-# Below this cosine similarity a meaning match is noise (bge-small gives unrelated short texts about
-# 0.3-0.5); then the place goes back to keyword results.
+# A floor for clear noise only; the place then goes back to keyword results. With bge-small, real
+# paraphrase matches scored 0.52-0.76 but so did "ok send it" (0.65), so no floor separates them.
+# The fixed slot count is what bounds the cost of a bad meaning match: at most 3 extra agents shown.
 DENSE_MIN_SIMILARITY = 0.5
 
 
