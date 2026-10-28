@@ -39,3 +39,12 @@ def test_every_row_is_main_plus_named_switches():
     assert keys[0] == "main" and compare.CONFIGS[0][2] == {}
     for _, _, values in compare.CONFIGS:
         assert set(values) <= set(compare.OFF)
+
+
+def test_real_model_comparison_reads_the_files_run_eval_writes():
+    from evals import compare_llm
+
+    path = compare_llm.result_path("anthropic/claude-haiku-5.5", "paraphrase", "embeddings", hybrid=True)
+    assert path.name == "llm_results_anthropic-claude-haiku-5-5_paraphrase_phrases_hybrid_cmp_embeddings.json"
+    path = compare_llm.result_path("anthropic/claude-haiku-5.5", "generated", "main", hybrid=False)
+    assert path.name == "llm_results_anthropic-claude-haiku-5-5_phrases_cmp_main.json"
