@@ -4,6 +4,8 @@ This is a fork of [OpenPoke](https://github.com/shlokkhemani/openpoke) by Shlok 
 
 The original is on branch `upstream-main` (upstream commit `5b5f635`). Everything behind the numbers below, run by run, is in [docs/EVALUATION.md](docs/EVALUATION.md).
 
+> **This is branch `fix-plurals-typos`:** `main` plus plural folding ("groceries" finds "Grocery list") and "did you mean ...?" hints for misspelt contact names ("Sarha" lists every Sarah). What changed and the measured results: changes 15 and 16 below, and [docs/EVALUATION.md](docs/EVALUATION.md). The approaches each have their own branch: `fix-plurals-typos`, `approach-past-requests` and `approach-embeddings`. Branch `all-approaches` has all three behind settings and compares them side by side (`python -m evals.compare`).
+
 ## In short
 
 **The problem.** OpenPoke has one interaction agent (the one you talk to) and many execution agents, one per task, like "Email to Sarah". Agents are kept forever so they can own a thread for follow-ups. After a few weeks there are hundreds. The original puts every agent's name into every prompt, and reuses an agent only on an exact name match. With four contacts called Sarah and names like "Email to Sarah", the model can't tell which thread a follow-up belongs to. So it guesses, or creates a duplicate.
@@ -150,7 +152,7 @@ Not fixed, worth knowing:
 
 ```bash
 pip install -r server/requirements.txt pytest
-python -m pytest                                  # 128 tests, about a minute, no keys needed
+python -m pytest                                  # 141 tests, about a minute, no keys needed
 python -m evals.run_eval                          # simulated eval, about 2 minutes, writes evals/results/
 python -m evals.run_eval --router llm --phrases   # real model, needs OPENROUTER_API_KEY, about $0.30 on Haiku 5.5
 python -m evals.run_eval --set paraphrase --router llm --phrases   # the 24 hand-written paraphrases
@@ -198,7 +200,7 @@ server/services/execution/   registry, ids, entities, retrieval, resolver, phras
 server/agents/execution_agent/batch_manager.py   per-agent run lock
 server/services/safety/outbound.py               send confirmation guard
 evals/     scenario generator, hand-written paraphrase set, copy of the original, harness, stats, real-model mode, results/
-tests/     128 tests
+tests/     141 tests
 tools/     run_original.py, run_mine.py, demo.py, usage_meter.py
 docs/      EVALUATION.md
 ```
