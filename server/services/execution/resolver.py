@@ -11,6 +11,7 @@ with split context. This module stops that, but only merges on unambiguous evide
 5. otherwise                        -> create, and report look-alikes as possible duplicates
 
 Fuzzy keyword similarity alone never merges. It is only reported back to the model.
+Meaning similarity (hybrid search) is not used here at all: only keyword_search.
 
 Rule 3 is right for "reply to sarah@acme.com" but wrong for "start a new email to Sarah
 about the audit": same contact, different task. Words cannot reliably tell those apart
@@ -113,7 +114,7 @@ def _possible_duplicates(
     duplicates = list(seed)
     name_terms = {term for term in tokenize(requested_name) if term not in NAME_FILLER}
     if name_terms:
-        for candidate in retriever.search(text, limit=5):
+        for candidate in retriever.keyword_search(text, limit=5):
             shared = name_terms & set(agent_document_tokens(candidate.record))
             if len(shared) / len(name_terms) >= POSSIBLE_DUPLICATE_MIN_OVERLAP and candidate.name not in duplicates:
                 duplicates.append(candidate.name)
@@ -157,7 +158,7 @@ def _owner_by_entity(
         return owners[0], f"email: {email}", False
 
     # Several agents share this contact: keywords decide among them, recency breaks ties
-    ranked = [item.name for item in retriever.search(text, limit=50) if item.name in owners]
+    ranked = [item.name for item in retriever.keyword_search(text, limit=50) if item.name in owners]
     chosen = ranked[0] if ranked else owners[0]
     return chosen, f"email: {email} (best of {len(owners)})", False
 

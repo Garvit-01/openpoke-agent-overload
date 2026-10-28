@@ -67,6 +67,13 @@ class Settings(BaseModel):
     # task, so keyword search can find it by meaning (one cheap call per agent, off the reply path)
     agent_search_phrases: bool = Field(default=os.getenv("OPENPOKE_AGENT_PHRASES", "1") != "0")
     agent_phrases_model: str = Field(default=os.getenv("OPENPOKE_PHRASES_MODEL", "anthropic/claude-haiku-5.5"))
+    # Agent search: "bm25" is keyword search only; "hybrid" also searches by meaning with a small local
+    # embedding model (optional: pip install -r server/requirements-embeddings.txt). Without fastembed,
+    # "hybrid" quietly behaves like "bm25".
+    agent_retriever: str = Field(default=os.getenv("OPENPOKE_AGENT_RETRIEVER", "hybrid"))
+    agent_embedding_model: str = Field(default=os.getenv("OPENPOKE_EMBEDDING_MODEL", "BAAI/bge-small-en-v1.5"))
+    # Where fastembed keeps the downloaded model (about 65 MB); empty = fastembed's default temp folder
+    agent_embedding_cache_dir: Optional[str] = Field(default=os.getenv("OPENPOKE_EMBEDDING_CACHE"))
 
     # Agent lifecycle (idle days before an agent is demoted; agents with active triggers are never demoted)
     agent_dormant_after_days: int = Field(default=_env_int("OPENPOKE_AGENT_DORMANT_DAYS", 14))

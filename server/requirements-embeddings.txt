@@ -1,0 +1,5 @@
+# Optional: search agents by meaning as well as by keywords (OPENPOKE_AGENT_RETRIEVER=hybrid).
+# Without it the app uses keyword search only. Brings onnxruntime (CPU); no torch.
+# The model (BAAI/bge-small-en-v1.5, about 65 MB) downloads from Hugging Face on first use;
+# set OPENPOKE_EMBEDDING_CACHE to choose where it is kept.
+fastembed>=0.7,<1.0

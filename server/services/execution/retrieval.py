@@ -4,6 +4,13 @@ Rule: exact entity matches (same email address, same Gmail thread id) are hard
 signals and always rank first. Keyword similarity (BM25 over name, summary and
 entities) only orders agents within those groups. Similarity can say "what is
 this about", but only an exact entity can say "which thread is this".
+
+Hybrid mode (OPENPOKE_AGENT_RETRIEVER=hybrid, needs the optional fastembed package) adds
+search by meaning without disturbing that order: the keyword ranking keeps its top
+results, and the last DENSE_SLOTS places go to the agents most similar in meaning that
+keyword search did not already pick. Hard matches are never pushed out. Meaning only
+decides what the model gets to see; it never decides a merge (the resolver calls
+keyword_search).
 """
 
 from __future__ import annotations
@@ -12,7 +19,7 @@ import math
 from collections import Counter
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Dict, Iterable, List, Optional, Sequence
+from typing import TYPE_CHECKING, Dict, Iterable, List, Optional, Sequence
 
 from .entities import HARD_KINDS, extract_entities, tokenize
 from .registry import (
@@ -22,6 +29,9 @@ from .registry import (
     AgentRecord,
     AgentRegistry,
 )
+
+if TYPE_CHECKING:  # embeddings needs numpy; import it only when hybrid search is used
+    from .embeddings import Embedder
 
 HARD_MATCH_BONUS = 100.0
 # An email shared by many agents (usually the user's own address) says nothing about which thread
@@ -34,6 +44,17 @@ RECENCY_BOOST = 0.05  # at most +5% for an agent used right now, halving every t
 RECENCY_HALF_LIFE_DAYS = 14.0
 # Words this common (e.g. "latest" in every summary) are not shown as reasons for a match
 MIN_REASON_IDF = 0.5
+
+RETRIEVER_BM25 = "bm25"
+RETRIEVER_HYBRID = "hybrid"
+RETRIEVERS = (RETRIEVER_BM25, RETRIEVER_HYBRID)
+# Hybrid: places in each search result reserved for meaning matches keyword search missed.
+# 3 of 8 keeps keyword ranks 1-5, where the right agent sits when it shares words with the message
+# (see docs/APPROACH_EMBEDDINGS.md), and gives meaning enough room to surface a paraphrased one.
+DENSE_SLOTS = 3
+# Below this cosine similarity a meaning match is noise (bge-small gives unrelated short texts about
+# 0.3-0.5); then the place goes back to keyword results.
+DENSE_MIN_SIMILARITY = 0.5
 
 
 @dataclass
@@ -101,10 +122,41 @@ class BM25Index:
 class AgentRetriever:
     """Search and shortlist agents from the registry for a given message."""
 
-    def __init__(self, registry: AgentRegistry):
+    def __init__(
+        self,
+        registry: AgentRegistry,
+        *,
+        mode: Optional[str] = None,
+        embedder: Optional["Embedder"] = None,
+        dense_slots: int = DENSE_SLOTS,
+        dense_min_similarity: float = DENSE_MIN_SIMILARITY,
+    ):
+        """mode: "bm25" or "hybrid"; None reads OPENPOKE_AGENT_RETRIEVER. embedder: override the shared one."""
         self._registry = registry
+        self._mode = mode
+        self._embedder = embedder
+        self.dense_slots = dense_slots
+        self.dense_min_similarity = dense_min_similarity
 
-    # Rank all agents for a query: hard entity matches first, then BM25 with a small recency boost
+    @property
+    def mode(self) -> str:
+        if self._mode is not None:
+            return self._mode
+        from ...config import get_settings
+
+        return get_settings().agent_retriever
+
+    def _dense_embedder(self) -> Optional["Embedder"]:
+        if self.mode != RETRIEVER_HYBRID:
+            return None
+        if self._embedder is not None:
+            return self._embedder
+        from .embeddings import get_embedder
+
+        return get_embedder()
+
+    # Rank agents for a query. bm25: hard entity matches, then keywords. hybrid: the same, with the
+    # last places given to the best meaning matches keyword search missed (see the module docstring).
     def search(
         self,
         query: str,
@@ -116,7 +168,78 @@ class AgentRetriever:
         records = self._registry.list_agents(statuses)
         if not records or limit <= 0:
             return []
+        keyword = self._keyword_ranking(query, records, now)
+        embedder = self._dense_embedder()
+        if embedder is None or self.dense_slots <= 0:
+            return keyword[:limit]
+        try:
+            from .embeddings import store_for
 
+            similarity = store_for(self._registry.db_path).similarities(query, records, embedder)
+        except Exception as exc:  # meaning search is an extra; never fail routing over it
+            from ...logging_config import logger
+
+            logger.warning(f"Meaning search failed, using keywords only: {exc}")
+            return keyword[:limit]
+        return self._fill_with_dense(keyword, records, similarity, limit)
+
+    # Keyword search only: hard matches, then BM25. The resolver uses this, so similarity never merges.
+    def keyword_search(
+        self,
+        query: str,
+        *,
+        limit: int = 8,
+        statuses: Optional[Sequence[str]] = None,
+        now: Optional[datetime] = None,
+    ) -> List[ScoredAgent]:
+        records = self._registry.list_agents(statuses)
+        if not records or limit <= 0:
+            return []
+        return self._keyword_ranking(query, records, now)[:limit]
+
+    def _fill_with_dense(
+        self,
+        keyword: List[ScoredAgent],
+        records: Sequence[AgentRecord],
+        similarity: Dict[str, float],
+        limit: int,
+    ) -> List[ScoredAgent]:
+        """Keep the keyword top (limit - dense_slots), then the best meaning matches not yet chosen.
+
+        Hard matches always stay. If too few agents pass the similarity floor, the remaining keyword
+        results take the places back, so a message with no meaning match gives today's results.
+        """
+        hard = sum(1 for item in keyword if item.score >= HARD_MATCH_BONUS)
+        head = keyword[: min(limit, max(limit - self.dense_slots, hard))]
+        chosen = {item.name for item in head}
+        by_name = {item.name: item for item in keyword}
+        extras: List[ScoredAgent] = []
+        room = min(self.dense_slots, limit - len(head))
+        for record in sorted(records, key=lambda r: (similarity.get(r.name, 0.0), r.last_active_at), reverse=True):
+            if len(extras) >= room:
+                break
+            value = similarity.get(record.name, 0.0)
+            if value < self.dense_min_similarity:
+                break
+            if record.name in chosen:
+                continue
+            reasons = list(by_name[record.name].reasons) if record.name in by_name else []
+            reasons.append(f"similar meaning ({value:.2f})")
+            extras.append(ScoredAgent(record=record, score=value, reasons=reasons))
+            chosen.add(record.name)
+        results = head + extras
+        for item in keyword[len(head):]:
+            if len(results) >= limit:
+                break
+            if item.name not in chosen:
+                results.append(item)
+                chosen.add(item.name)
+        return results
+
+    # Every agent with a keyword or hard match, best first, with a small recency boost
+    def _keyword_ranking(
+        self, query: str, records: Sequence[AgentRecord], now: Optional[datetime]
+    ) -> List[ScoredAgent]:
         now = now or self._registry.now()
         query_tokens = tokenize(query)
         hard_matches = self._hard_matches(query, records)
@@ -143,7 +266,7 @@ class AgentRetriever:
             results.append(ScoredAgent(record=record, score=score, reasons=reasons))
 
         results.sort(key=lambda item: (item.score, item.record.last_active_at), reverse=True)
-        return results[:limit]
+        return results
 
     # The most recently active agents, used to fill the prompt so "that email" still resolves
     def recent(self, *, limit: int = 4) -> List[ScoredAgent]:
@@ -220,7 +343,12 @@ class AgentRetriever:
 __all__ = [
     "AgentRetriever",
     "BM25Index",
+    "DENSE_MIN_SIMILARITY",
+    "DENSE_SLOTS",
     "HARD_MATCH_BONUS",
+    "RETRIEVERS",
+    "RETRIEVER_BM25",
+    "RETRIEVER_HYBRID",
     "MAX_AGENTS_PER_HARD_ENTITY",
     "STATUS_WEIGHT",
     "ScoredAgent",
