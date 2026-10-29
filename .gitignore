@@ -48,3 +48,6 @@ server/plans/
 # Test / eval artifacts
 .pytest_cache/
 evals/results/results_quick.*
+
+# Demo copies of the app, one per version (tools/demo.py --variants)
+server/data_variants/

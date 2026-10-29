@@ -17,34 +17,17 @@ import json
 import os
 import time
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 
 from server.config import get_settings
 from server.services.execution import entities
 
+from .configs import CONFIGS, OFF
 from .harness import ArmMetrics, run_simulated
 from .scenarios import PAST_REQUEST, build_scenario
 from .stats import mcnemar_exact, paired_flips
 
 RESULTS_DIR = Path(__file__).parent / "results"
-
-OFF = {
-    "OPENPOKE_FOLD_PLURALS": "0",
-    "OPENPOKE_AGENT_NAME_HINTS": "0",
-    "OPENPOKE_AGENT_INDEX_REQUESTS": "0",
-    "OPENPOKE_AGENT_RETRIEVER": "bm25",
-}
-# (key, label, settings on top of OFF)
-CONFIGS: List[Tuple[str, str, Dict[str, str]]] = [
-    ("main", "agent-overload (main)", {}),
-    ("plurals_typos", "+ plurals and typo hints", {"OPENPOKE_FOLD_PLURALS": "1", "OPENPOKE_AGENT_NAME_HINTS": "1"}),
-    ("past_requests", "+ past-request search", {"OPENPOKE_AGENT_INDEX_REQUESTS": "1"}),
-    ("embeddings", "+ meaning search (hybrid)", {"OPENPOKE_AGENT_RETRIEVER": "hybrid"}),
-    ("all", "all three together", {
-        "OPENPOKE_FOLD_PLURALS": "1", "OPENPOKE_AGENT_NAME_HINTS": "1",
-        "OPENPOKE_AGENT_INDEX_REQUESTS": "1", "OPENPOKE_AGENT_RETRIEVER": "hybrid",
-    }),
-]
 
 
 def apply_settings(values: Dict[str, str]) -> None:

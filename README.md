@@ -152,7 +152,7 @@ Not fixed, worth knowing:
 
 ```bash
 pip install -r server/requirements.txt pytest
-python -m pytest                                  # 180 tests, about two minutes, no keys needed
+python -m pytest                                  # 184 tests, about two minutes, no keys needed
 python -m evals.compare                           # the three approaches side by side, about 12 minutes, free
 python -m evals.run_eval                          # simulated eval, about 2 minutes, writes evals/results/
 python -m evals.run_eval --router llm --phrases   # real model, needs OPENROUTER_API_KEY, about $0.30 on Haiku 5.5
@@ -181,6 +181,25 @@ python tools/demo.py status
 
 For a labelled eval case it also prints the right answer. The launchers record each model call by wrapping the one function both apps call the model through, in memory. `run_original.py` runs the original's code unchanged, with two runtime-only patches it needs to start today: a stand-in for `fcntl` on Windows, and a current model name. Both apps run on Haiku 5.5, and a message costs under a cent per app.
 
+#### Every version at once
+
+Each version from the comparison (main, each approach on its own, all three) can run as its own app, with its own port and data folder, next to the original:
+
+```bash
+python tools/demo.py --variants every seed       # the same 300 agents into the original and all five
+python tools/run_mine.py --variant main          # one terminal each, ports 8011 to 8015:
+python tools/run_mine.py --variant plurals_typos #   main, plurals_typos, past_requests, embeddings, all
+python tools/run_mine.py --variant past_requests
+python tools/run_mine.py --variant embeddings    # embeddings and all need server/requirements-embeddings.txt
+python tools/run_mine.py --variant all
+python tools/run_original.py
+python tools/demo.py --variants every ask "Could you send the updated grocery to Sarah"
+python tools/demo.py --variants every cases      # one labelled case per category (10), then a score per app
+python tools/demo.py --variants every status     # the score so far
+```
+
+`ask` then ends with a table: for each app, the agent it used, whether that was right (for a labelled case), how many agents were in its prompt, routing tokens per call, cost and time. `--variants main,all` runs just those two. Each message costs about a cent per app, so `cases` with all six apps is about $0.60. Unlike the evals, each app keeps what it did, so later messages see the agents earlier ones created.
+
 ### New settings (env vars, all optional)
 
 | Variable | Default | What it does |
@@ -206,7 +225,7 @@ server/services/execution/   registry, ids, entities, retrieval, resolver, phras
 server/agents/execution_agent/batch_manager.py   per-agent run lock
 server/services/safety/outbound.py               send confirmation guard
 evals/     scenario generator, hand-written paraphrase set, copy of the original, harness, stats, real-model mode, compare.py, typo_hints.py, results/
-tests/     180 tests
+tests/     184 tests
 tools/     run_original.py, run_mine.py, demo.py, usage_meter.py
 docs/      EVALUATION.md, COMPARISON.md, APPROACH_PAST_REQUESTS.md, APPROACH_EMBEDDINGS.md
 ```

@@ -22,8 +22,8 @@ from .registry import (
     clip_request,
     to_iso,
 )
+from ...paths import DATA_DIR as _DATA_DIR
 
-_DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
 _EXECUTION_DIR = _DATA_DIR / "execution_agents"
 _LEGACY_ROSTER_PATH = _EXECUTION_DIR / "roster.json"
 _REGISTRY_PATH = _EXECUTION_DIR / "registry.db"
