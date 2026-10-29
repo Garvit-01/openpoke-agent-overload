@@ -1,6 +1,6 @@
 """The three approaches side by side on a real model, and write evals/results/comparison_llm.md and .json.
 
-    python -m evals.compare_llm                 # all rows, both sets: about $2.30 on Haiku 5.5, about an hour
+    python -m evals.compare_llm                 # all rows, both sets: about $2.40 on Haiku 5.5, about an hour
     python -m evals.compare_llm --reuse         # build the table from runs already saved, no API calls
 
 Each row is one `python -m evals.run_eval --router llm --phrases` run in its own process, with the row's
