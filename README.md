@@ -183,14 +183,15 @@ For a labelled eval case it also prints the right answer. The launchers record e
 
 #### Every version at once
 
-Each version from the comparison (main, each approach on its own, all three) can run as its own app, with its own port and data folder, next to the original:
+Each version from the comparison (main, each approach on its own, the shipped default, all three) can run as its own app, with its own port and data folder, next to the original:
 
 ```bash
-python tools/demo.py --variants every seed       # the same 300 agents into the original and all five
-python tools/run_mine.py --variant main          # one terminal each, ports 8011 to 8015:
-python tools/run_mine.py --variant plurals_typos #   main, plurals_typos, past_requests, embeddings, all
+python tools/demo.py --variants every seed       # the same 300 agents into the original and all six
+python tools/run_mine.py --variant main          # one terminal each, ports 8011 to 8016:
+python tools/run_mine.py --variant plurals_typos #   main, plurals_typos, past_requests, embeddings, default, all
 python tools/run_mine.py --variant past_requests
 python tools/run_mine.py --variant embeddings    # embeddings and all need server/requirements-embeddings.txt
+python tools/run_mine.py --variant default
 python tools/run_mine.py --variant all
 python tools/run_original.py
 python tools/demo.py --variants every ask "Could you send the updated grocery to Sarah"
@@ -198,7 +199,7 @@ python tools/demo.py --variants every cases      # one labelled case per categor
 python tools/demo.py --variants every status     # the score so far
 ```
 
-`ask` then ends with a table: for each app, the agent it used, whether that was right (for a labelled case), how many agents were in its prompt, routing tokens per call, cost and time. `--variants main,all` runs just those two. Each message costs about a cent per app, so `cases` with all six apps is about $0.60. Unlike the evals, each app keeps what it did, so later messages see the agents earlier ones created.
+`ask` then ends with a table: for each app, the agent it used, whether that was right (for a labelled case), how many agents were in its prompt, routing tokens per call, cost and time. `--variants main,all` runs just those two. Each message costs about a cent per app, so `cases` with all seven apps is about $0.70. Unlike the evals, each app keeps what it did, so later messages see the agents earlier ones created.
 
 ### New settings (env vars, all optional)
 

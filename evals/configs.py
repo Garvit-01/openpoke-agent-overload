@@ -20,6 +20,9 @@ CONFIGS: List[Tuple[str, str, Dict[str, str]]] = [
     ("plurals_typos", "+ plurals and typo hints", {"OPENPOKE_FOLD_PLURALS": "1", "OPENPOKE_AGENT_NAME_HINTS": "1"}),
     ("past_requests", "+ past-request search", {"OPENPOKE_AGENT_INDEX_REQUESTS": "1"}),
     ("embeddings", "+ meaning search (hybrid)", {"OPENPOKE_AGENT_RETRIEVER": "hybrid"}),
+    ("default", "plurals, typos and past requests (meaning search off)", {
+        "OPENPOKE_FOLD_PLURALS": "1", "OPENPOKE_AGENT_NAME_HINTS": "1", "OPENPOKE_AGENT_INDEX_REQUESTS": "1",
+    }),
     ("all", "all three together", {
         "OPENPOKE_FOLD_PLURALS": "1", "OPENPOKE_AGENT_NAME_HINTS": "1",
         "OPENPOKE_AGENT_INDEX_REQUESTS": "1", "OPENPOKE_AGENT_RETRIEVER": "hybrid",

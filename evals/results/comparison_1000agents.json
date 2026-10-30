@@ -1,0 +1,337 @@
+{
+  "generated": {
+    "cases": 197,
+    "agents": 1000,
+    "original": {
+      "metrics": {
+        "arm": "baseline",
+        "cases": 197,
+        "accuracy": 0.5228426395939086,
+        "duplicate_rate": 0.14012738853503184,
+        "wrong_agent_rate": 0.4267515923566879,
+        "false_reuse_rate": 0.125,
+        "roster_tokens_mean": 10709.0,
+        "latency_ms_p50": 3.36169998627156,
+        "latency_ms_p95": 10.426900000311434,
+        "recall_shortlist": null,
+        "recall_search": null,
+        "search_rate": null,
+        "by_category": {
+          "followup_company_topic": 0.5,
+          "followup_email": 0.4,
+          "followup_first_name_topic": 0.4666666666666667,
+          "followup_full_name": 0.4666666666666667,
+          "followup_paraphrase": 0.13333333333333333,
+          "followup_past_request": 0.0,
+          "followup_reminder": 1.0,
+          "followup_stale": 0.3333333333333333,
+          "new_same_first_name": 0.8,
+          "new_task": 0.95
+        },
+        "recall_by_category": {}
+      },
+      "right": 103,
+      "cases": 197
+    },
+    "rows": {
+      "main": {
+        "label": "agent-overload (main)",
+        "settings": {},
+        "metrics": {
+          "arm": "solution",
+          "cases": 197,
+          "accuracy": 0.8578680203045685,
+          "duplicate_rate": 0.03821656050955414,
+          "wrong_agent_rate": 0.1337579617834395,
+          "false_reuse_rate": 0.025,
+          "roster_tokens_mean": 988.8883248730964,
+          "latency_ms_p50": 126.95569999050349,
+          "latency_ms_p95": 320.5581000074744,
+          "recall_shortlist": 0.9426751592356688,
+          "recall_search": 0.8980891719745223,
+          "search_rate": 0.22842639593908629,
+          "by_category": {
+            "followup_company_topic": 1.0,
+            "followup_email": 1.0,
+            "followup_first_name_topic": 1.0,
+            "followup_full_name": 1.0,
+            "followup_paraphrase": 0.0,
+            "followup_past_request": 0.0,
+            "followup_reminder": 1.0,
+            "followup_stale": 1.0,
+            "new_same_first_name": 1.0,
+            "new_task": 0.95
+          },
+          "recall_by_category": {
+            "followup_company_topic": 1.0,
+            "followup_email": 1.0,
+            "followup_first_name_topic": 1.0,
+            "followup_full_name": 1.0,
+            "followup_paraphrase": 0.8666666666666667,
+            "followup_past_request": 0.4166666666666667,
+            "followup_reminder": 1.0,
+            "followup_stale": 1.0
+          }
+        },
+        "right": 169,
+        "cases": 197,
+        "fixed_vs_main": 0,
+        "broke_vs_main": 0,
+        "p_vs_main": 1.0,
+        "conversation_success": 1.0,
+        "seconds": 95.24376320000738
+      },
+      "plurals_typos": {
+        "label": "+ plurals and typo hints",
+        "settings": {
+          "OPENPOKE_FOLD_PLURALS": "1",
+          "OPENPOKE_AGENT_NAME_HINTS": "1"
+        },
+        "metrics": {
+          "arm": "solution",
+          "cases": 197,
+          "accuracy": 0.8578680203045685,
+          "duplicate_rate": 0.03821656050955414,
+          "wrong_agent_rate": 0.1337579617834395,
+          "false_reuse_rate": 0.025,
+          "roster_tokens_mean": 989.8426395939086,
+          "latency_ms_p50": 170.5962000414729,
+          "latency_ms_p95": 478.02089992910624,
+          "recall_shortlist": 0.9426751592356688,
+          "recall_search": 0.8980891719745223,
+          "search_rate": 0.22842639593908629,
+          "by_category": {
+            "followup_company_topic": 1.0,
+            "followup_email": 1.0,
+            "followup_first_name_topic": 1.0,
+            "followup_full_name": 1.0,
+            "followup_paraphrase": 0.0,
+            "followup_past_request": 0.0,
+            "followup_reminder": 1.0,
+            "followup_stale": 1.0,
+            "new_same_first_name": 1.0,
+            "new_task": 0.95
+          },
+          "recall_by_category": {
+            "followup_company_topic": 1.0,
+            "followup_email": 1.0,
+            "followup_first_name_topic": 1.0,
+            "followup_full_name": 1.0,
+            "followup_paraphrase": 0.8666666666666667,
+            "followup_past_request": 0.4166666666666667,
+            "followup_reminder": 1.0,
+            "followup_stale": 1.0
+          }
+        },
+        "right": 169,
+        "cases": 197,
+        "fixed_vs_main": 0,
+        "broke_vs_main": 0,
+        "p_vs_main": 1.0,
+        "conversation_success": 1.0,
+        "seconds": 104.93611309991684
+      },
+      "past_requests": {
+        "label": "+ past-request search",
+        "settings": {
+          "OPENPOKE_AGENT_INDEX_REQUESTS": "1"
+        },
+        "metrics": {
+          "arm": "solution",
+          "cases": 197,
+          "accuracy": 0.9187817258883249,
+          "duplicate_rate": 0.0,
+          "wrong_agent_rate": 0.09554140127388536,
+          "false_reuse_rate": 0.025,
+          "roster_tokens_mean": 998.4060913705583,
+          "latency_ms_p50": 133.3554000593722,
+          "latency_ms_p95": 268.5297999996692,
+          "recall_shortlist": 0.9872611464968153,
+          "recall_search": 0.9617834394904459,
+          "search_rate": 0.19796954314720813,
+          "by_category": {
+            "followup_company_topic": 1.0,
+            "followup_email": 1.0,
+            "followup_first_name_topic": 1.0,
+            "followup_full_name": 1.0,
+            "followup_paraphrase": 0.0,
+            "followup_past_request": 1.0,
+            "followup_reminder": 1.0,
+            "followup_stale": 1.0,
+            "new_same_first_name": 1.0,
+            "new_task": 0.95
+          },
+          "recall_by_category": {
+            "followup_company_topic": 1.0,
+            "followup_email": 1.0,
+            "followup_first_name_topic": 1.0,
+            "followup_full_name": 1.0,
+            "followup_paraphrase": 0.8666666666666667,
+            "followup_past_request": 1.0,
+            "followup_reminder": 1.0,
+            "followup_stale": 1.0
+          }
+        },
+        "right": 181,
+        "cases": 197,
+        "fixed_vs_main": 12,
+        "broke_vs_main": 0,
+        "p_vs_main": 0.00048828125,
+        "conversation_success": 1.0,
+        "seconds": 82.35213470004965
+      },
+      "embeddings": {
+        "label": "+ meaning search (hybrid)",
+        "settings": {
+          "OPENPOKE_AGENT_RETRIEVER": "hybrid"
+        },
+        "metrics": {
+          "arm": "solution",
+          "cases": 197,
+          "accuracy": 0.8578680203045685,
+          "duplicate_rate": 0.03821656050955414,
+          "wrong_agent_rate": 0.1337579617834395,
+          "false_reuse_rate": 0.025,
+          "roster_tokens_mean": 1017.9543147208121,
+          "latency_ms_p50": 198.35419999435544,
+          "latency_ms_p95": 464.9311000248417,
+          "recall_shortlist": 0.9554140127388535,
+          "recall_search": 0.9235668789808917,
+          "search_rate": 0.22842639593908629,
+          "by_category": {
+            "followup_company_topic": 1.0,
+            "followup_email": 1.0,
+            "followup_first_name_topic": 1.0,
+            "followup_full_name": 1.0,
+            "followup_paraphrase": 0.0,
+            "followup_past_request": 0.0,
+            "followup_reminder": 1.0,
+            "followup_stale": 1.0,
+            "new_same_first_name": 1.0,
+            "new_task": 0.95
+          },
+          "recall_by_category": {
+            "followup_company_topic": 1.0,
+            "followup_email": 1.0,
+            "followup_first_name_topic": 1.0,
+            "followup_full_name": 1.0,
+            "followup_paraphrase": 1.0,
+            "followup_past_request": 0.4166666666666667,
+            "followup_reminder": 1.0,
+            "followup_stale": 1.0
+          }
+        },
+        "right": 169,
+        "cases": 197,
+        "fixed_vs_main": 0,
+        "broke_vs_main": 0,
+        "p_vs_main": 1.0,
+        "conversation_success": 1.0,
+        "seconds": 182.3619219000684
+      },
+      "default": {
+        "label": "plurals, typos and past requests (meaning search off)",
+        "settings": {
+          "OPENPOKE_FOLD_PLURALS": "1",
+          "OPENPOKE_AGENT_NAME_HINTS": "1",
+          "OPENPOKE_AGENT_INDEX_REQUESTS": "1"
+        },
+        "metrics": {
+          "arm": "solution",
+          "cases": 197,
+          "accuracy": 0.9187817258883249,
+          "duplicate_rate": 0.0,
+          "wrong_agent_rate": 0.09554140127388536,
+          "false_reuse_rate": 0.025,
+          "roster_tokens_mean": 999.263959390863,
+          "latency_ms_p50": 156.2827000161633,
+          "latency_ms_p95": 319.4673000834882,
+          "recall_shortlist": 0.9872611464968153,
+          "recall_search": 0.9617834394904459,
+          "search_rate": 0.19796954314720813,
+          "by_category": {
+            "followup_company_topic": 1.0,
+            "followup_email": 1.0,
+            "followup_first_name_topic": 1.0,
+            "followup_full_name": 1.0,
+            "followup_paraphrase": 0.0,
+            "followup_past_request": 1.0,
+            "followup_reminder": 1.0,
+            "followup_stale": 1.0,
+            "new_same_first_name": 1.0,
+            "new_task": 0.95
+          },
+          "recall_by_category": {
+            "followup_company_topic": 1.0,
+            "followup_email": 1.0,
+            "followup_first_name_topic": 1.0,
+            "followup_full_name": 1.0,
+            "followup_paraphrase": 0.8666666666666667,
+            "followup_past_request": 1.0,
+            "followup_reminder": 1.0,
+            "followup_stale": 1.0
+          }
+        },
+        "right": 181,
+        "cases": 197,
+        "fixed_vs_main": 12,
+        "broke_vs_main": 0,
+        "p_vs_main": 0.00048828125,
+        "conversation_success": 1.0,
+        "seconds": 95.30726529995445
+      },
+      "all": {
+        "label": "all three together",
+        "settings": {
+          "OPENPOKE_FOLD_PLURALS": "1",
+          "OPENPOKE_AGENT_NAME_HINTS": "1",
+          "OPENPOKE_AGENT_INDEX_REQUESTS": "1",
+          "OPENPOKE_AGENT_RETRIEVER": "hybrid"
+        },
+        "metrics": {
+          "arm": "solution",
+          "cases": 197,
+          "accuracy": 0.9187817258883249,
+          "duplicate_rate": 0.0,
+          "wrong_agent_rate": 0.09554140127388536,
+          "false_reuse_rate": 0.025,
+          "roster_tokens_mean": 1024.9137055837564,
+          "latency_ms_p50": 212.42909994907677,
+          "latency_ms_p95": 411.10939998179674,
+          "recall_shortlist": 1.0,
+          "recall_search": 0.9936305732484076,
+          "search_rate": 0.19796954314720813,
+          "by_category": {
+            "followup_company_topic": 1.0,
+            "followup_email": 1.0,
+            "followup_first_name_topic": 1.0,
+            "followup_full_name": 1.0,
+            "followup_paraphrase": 0.0,
+            "followup_past_request": 1.0,
+            "followup_reminder": 1.0,
+            "followup_stale": 1.0,
+            "new_same_first_name": 1.0,
+            "new_task": 0.95
+          },
+          "recall_by_category": {
+            "followup_company_topic": 1.0,
+            "followup_email": 1.0,
+            "followup_first_name_topic": 1.0,
+            "followup_full_name": 1.0,
+            "followup_paraphrase": 1.0,
+            "followup_past_request": 1.0,
+            "followup_reminder": 1.0,
+            "followup_stale": 1.0
+          }
+        },
+        "right": 181,
+        "cases": 197,
+        "fixed_vs_main": 12,
+        "broke_vs_main": 0,
+        "p_vs_main": 0.00048828125,
+        "conversation_success": 1.0,
+        "seconds": 193.5665861000307
+      }
+    }
+  }
+}

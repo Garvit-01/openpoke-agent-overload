@@ -11,8 +11,8 @@
         "wrong_agent_rate": 0.36942675159235666,
         "false_reuse_rate": 0.1,
         "roster_tokens_mean": 3135.0,
-        "latency_ms_p50": 0.6995999719947577,
-        "latency_ms_p95": 0.8879000088199973,
+        "latency_ms_p50": 0.724000041373074,
+        "latency_ms_p95": 1.2580000329762697,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -45,8 +45,8 @@
           "wrong_agent_rate": 0.11464968152866242,
           "false_reuse_rate": 0.025,
           "roster_tokens_mean": 957.0355329949239,
-          "latency_ms_p50": 24.142400012351573,
-          "latency_ms_p95": 65.60969993006438,
+          "latency_ms_p50": 24.40520003437996,
+          "latency_ms_p95": 79.6695000026375,
           "recall_shortlist": 0.9617834394904459,
           "recall_search": 0.9235668789808917,
           "search_rate": 0.22842639593908629,
@@ -79,7 +79,7 @@
         "broke_vs_main": 0,
         "p_vs_main": 1.0,
         "conversation_success": 1.0,
-        "seconds": 28.385530299972743
+        "seconds": 49.71380470006261
       },
       "plurals_typos": {
         "label": "+ plurals and typo hints",
@@ -95,8 +95,8 @@
           "wrong_agent_rate": 0.11464968152866242,
           "false_reuse_rate": 0.025,
           "roster_tokens_mean": 959.0406091370559,
-          "latency_ms_p50": 29.384199995547533,
-          "latency_ms_p95": 88.89060001820326,
+          "latency_ms_p50": 32.177999964915216,
+          "latency_ms_p95": 79.06219991855323,
           "recall_shortlist": 0.9617834394904459,
           "recall_search": 0.9235668789808917,
           "search_rate": 0.22842639593908629,
@@ -129,7 +129,7 @@
         "broke_vs_main": 0,
         "p_vs_main": 1.0,
         "conversation_success": 1.0,
-        "seconds": 30.341764099895954
+        "seconds": 56.6584233000176
       },
       "past_requests": {
         "label": "+ past-request search",
@@ -144,8 +144,8 @@
           "wrong_agent_rate": 0.07006369426751592,
           "false_reuse_rate": 0.025,
           "roster_tokens_mean": 964.269035532995,
-          "latency_ms_p50": 26.824599946849048,
-          "latency_ms_p95": 62.49749998096377,
+          "latency_ms_p50": 27.627000003121793,
+          "latency_ms_p95": 62.36489990260452,
           "recall_shortlist": 1.0,
           "recall_search": 0.9681528662420382,
           "search_rate": 0.19796954314720813,
@@ -178,7 +178,7 @@
         "broke_vs_main": 0,
         "p_vs_main": 0.000244140625,
         "conversation_success": 1.0,
-        "seconds": 29.269796999986283
+        "seconds": 51.96429359994363
       },
       "embeddings": {
         "label": "+ meaning search (hybrid)",
@@ -193,8 +193,8 @@
           "wrong_agent_rate": 0.11464968152866242,
           "false_reuse_rate": 0.025,
           "roster_tokens_mean": 983.0659898477157,
-          "latency_ms_p50": 61.371900024823844,
-          "latency_ms_p95": 120.85509998723865,
+          "latency_ms_p50": 106.01450002286583,
+          "latency_ms_p95": 190.72329998016357,
           "recall_shortlist": 0.9617834394904459,
           "recall_search": 0.9363057324840764,
           "search_rate": 0.22842639593908629,
@@ -227,7 +227,58 @@
         "broke_vs_main": 0,
         "p_vs_main": 1.0,
         "conversation_success": 1.0,
-        "seconds": 56.803012900054455
+        "seconds": 86.1784719999414
+      },
+      "default": {
+        "label": "plurals, typos and past requests (meaning search off)",
+        "settings": {
+          "OPENPOKE_FOLD_PLURALS": "1",
+          "OPENPOKE_AGENT_NAME_HINTS": "1",
+          "OPENPOKE_AGENT_INDEX_REQUESTS": "1"
+        },
+        "metrics": {
+          "arm": "solution",
+          "cases": 197,
+          "accuracy": 0.9390862944162437,
+          "duplicate_rate": 0.0,
+          "wrong_agent_rate": 0.07006369426751592,
+          "false_reuse_rate": 0.025,
+          "roster_tokens_mean": 966.269035532995,
+          "latency_ms_p50": 38.86750002857298,
+          "latency_ms_p95": 80.23099997080863,
+          "recall_shortlist": 1.0,
+          "recall_search": 0.9681528662420382,
+          "search_rate": 0.19796954314720813,
+          "by_category": {
+            "followup_company_topic": 1.0,
+            "followup_email": 1.0,
+            "followup_first_name_topic": 1.0,
+            "followup_full_name": 1.0,
+            "followup_paraphrase": 0.26666666666666666,
+            "followup_past_request": 1.0,
+            "followup_reminder": 1.0,
+            "followup_stale": 1.0,
+            "new_same_first_name": 1.0,
+            "new_task": 0.95
+          },
+          "recall_by_category": {
+            "followup_company_topic": 1.0,
+            "followup_email": 1.0,
+            "followup_first_name_topic": 1.0,
+            "followup_full_name": 1.0,
+            "followup_paraphrase": 1.0,
+            "followup_past_request": 1.0,
+            "followup_reminder": 1.0,
+            "followup_stale": 1.0
+          }
+        },
+        "right": 185,
+        "cases": 197,
+        "fixed_vs_main": 13,
+        "broke_vs_main": 0,
+        "p_vs_main": 0.000244140625,
+        "conversation_success": 1.0,
+        "seconds": 37.58457010006532
       },
       "all": {
         "label": "all three together",
@@ -245,8 +296,8 @@
           "wrong_agent_rate": 0.07006369426751592,
           "false_reuse_rate": 0.025,
           "roster_tokens_mean": 991.0253807106599,
-          "latency_ms_p50": 36.900099948979914,
-          "latency_ms_p95": 81.09689992852509,
+          "latency_ms_p50": 39.286999963223934,
+          "latency_ms_p95": 89.35049991123378,
           "recall_shortlist": 1.0,
           "recall_search": 0.9872611464968153,
           "search_rate": 0.19796954314720813,
@@ -279,7 +330,7 @@
         "broke_vs_main": 0,
         "p_vs_main": 0.000244140625,
         "conversation_success": 1.0,
-        "seconds": 51.32369669992477
+        "seconds": 71.72388890001457
       }
     }
   },
@@ -295,8 +346,8 @@
         "wrong_agent_rate": 0.5833333333333334,
         "false_reuse_rate": 0.0,
         "roster_tokens_mean": 3409.0,
-        "latency_ms_p50": 0.6993000861257315,
-        "latency_ms_p95": 0.7926999824121594,
+        "latency_ms_p50": 0.7059000199660659,
+        "latency_ms_p95": 0.826600007712841,
         "recall_shortlist": null,
         "recall_search": null,
         "search_rate": null,
@@ -321,8 +372,8 @@
           "wrong_agent_rate": 0.16666666666666666,
           "false_reuse_rate": 0.0,
           "roster_tokens_mean": 860.375,
-          "latency_ms_p50": 64.31259994860739,
-          "latency_ms_p95": 143.1883000768721,
+          "latency_ms_p50": 58.9497999753803,
+          "latency_ms_p95": 134.5712998881936,
           "recall_shortlist": 0.875,
           "recall_search": 0.8333333333333334,
           "search_rate": 0.2916666666666667,
@@ -341,7 +392,7 @@
         "broke_vs_main": 0,
         "p_vs_main": 1.0,
         "conversation_success": null,
-        "seconds": 104.85667639994062
+        "seconds": 200.87061039998662
       },
       "plurals_typos": {
         "label": "+ plurals and typo hints",
@@ -357,8 +408,8 @@
           "wrong_agent_rate": 0.125,
           "false_reuse_rate": 0.0,
           "roster_tokens_mean": 872.5833333333334,
-          "latency_ms_p50": 68.50129994563758,
-          "latency_ms_p95": 139.19289992190897,
+          "latency_ms_p50": 64.60150005295873,
+          "latency_ms_p95": 166.6556999552995,
           "recall_shortlist": 0.9583333333333334,
           "recall_search": 0.9166666666666666,
           "search_rate": 0.2916666666666667,
@@ -377,7 +428,7 @@
         "broke_vs_main": 0,
         "p_vs_main": 1.0,
         "conversation_success": null,
-        "seconds": 106.94599009992089
+        "seconds": 171.4122852999717
       },
       "past_requests": {
         "label": "+ past-request search",
@@ -392,8 +443,8 @@
           "wrong_agent_rate": 0.16666666666666666,
           "false_reuse_rate": 0.0,
           "roster_tokens_mean": 865.8333333333334,
-          "latency_ms_p50": 61.91469996701926,
-          "latency_ms_p95": 136.06539997272193,
+          "latency_ms_p50": 60.75419997796416,
+          "latency_ms_p95": 116.20349995791912,
           "recall_shortlist": 0.875,
           "recall_search": 0.8333333333333334,
           "search_rate": 0.2916666666666667,
@@ -412,7 +463,7 @@
         "broke_vs_main": 0,
         "p_vs_main": 1.0,
         "conversation_success": null,
-        "seconds": 100.9788794000633
+        "seconds": 140.29756609990727
       },
       "embeddings": {
         "label": "+ meaning search (hybrid)",
@@ -427,8 +478,8 @@
           "wrong_agent_rate": 0.16666666666666666,
           "false_reuse_rate": 0.0,
           "roster_tokens_mean": 925.875,
-          "latency_ms_p50": 119.7644000640139,
-          "latency_ms_p95": 184.6329999389127,
+          "latency_ms_p50": 110.55009998381138,
+          "latency_ms_p95": 169.75979995913804,
           "recall_shortlist": 1.0,
           "recall_search": 1.0,
           "search_rate": 0.2916666666666667,
@@ -447,7 +498,44 @@
         "broke_vs_main": 0,
         "p_vs_main": 1.0,
         "conversation_success": null,
-        "seconds": 131.3644598000683
+        "seconds": 144.91072949999943
+      },
+      "default": {
+        "label": "plurals, typos and past requests (meaning search off)",
+        "settings": {
+          "OPENPOKE_FOLD_PLURALS": "1",
+          "OPENPOKE_AGENT_NAME_HINTS": "1",
+          "OPENPOKE_AGENT_INDEX_REQUESTS": "1"
+        },
+        "metrics": {
+          "arm": "solution",
+          "cases": 24,
+          "accuracy": 0.5833333333333334,
+          "duplicate_rate": 0.2916666666666667,
+          "wrong_agent_rate": 0.125,
+          "false_reuse_rate": 0.0,
+          "roster_tokens_mean": 876.2083333333334,
+          "latency_ms_p50": 74.95280005969107,
+          "latency_ms_p95": 140.08699997793883,
+          "recall_shortlist": 0.9583333333333334,
+          "recall_search": 0.9166666666666666,
+          "search_rate": 0.2916666666666667,
+          "by_category": {
+            "handwritten_names_person": 0.875,
+            "handwritten_topic_only": 0.0
+          },
+          "recall_by_category": {
+            "handwritten_names_person": 1.0,
+            "handwritten_topic_only": 0.875
+          }
+        },
+        "right": 14,
+        "cases": 24,
+        "fixed_vs_main": 1,
+        "broke_vs_main": 0,
+        "p_vs_main": 1.0,
+        "conversation_success": null,
+        "seconds": 94.86637479998171
       },
       "all": {
         "label": "all three together",
@@ -465,8 +553,8 @@
           "wrong_agent_rate": 0.125,
           "false_reuse_rate": 0.0,
           "roster_tokens_mean": 933.5,
-          "latency_ms_p50": 81.40439994167536,
-          "latency_ms_p95": 167.82009997405112,
+          "latency_ms_p50": 86.02909999899566,
+          "latency_ms_p95": 150.94079996924847,
           "recall_shortlist": 1.0,
           "recall_search": 1.0,
           "search_rate": 0.2916666666666667,
@@ -485,7 +573,7 @@
         "broke_vs_main": 0,
         "p_vs_main": 1.0,
         "conversation_success": null,
-        "seconds": 135.03109200007748
+        "seconds": 126.43096730008256
       }
     }
   }

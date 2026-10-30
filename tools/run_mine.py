@@ -8,8 +8,8 @@ Same as `python -m server.server`, except every model role (and the search-phras
 set to one model, so the demo compares the two apps on equal terms. The app's own defaults are
 unchanged.
 
---variant runs one version (main, plurals_typos, past_requests, embeddings or all) with only its
-settings on, on its own port (8011 to 8015) and its own data folder (server/data_variants/<name>),
+--variant runs one version (main, plurals_typos, past_requests, embeddings, default or all) with only its
+settings on, on its own port (8011 to 8016) and its own data folder (server/data_variants/<name>),
 so several can run at once. tools/demo.py --variants talks to all of them.
 """
 

@@ -10,7 +10,7 @@ Every version at once (main, each approach on its own, all three), each its own 
 
     python tools/demo.py --variants every seed     # the same history into the original and all five
     python tools/run_mine.py --variant main        # one terminal each: main, plurals_typos,
-    ...                                            #   past_requests, embeddings, all (ports 8011 to 8015)
+    ...                                            #   past_requests, embeddings, default, all (ports 8011 to 8016)
     python tools/run_original.py
     python tools/demo.py --variants every ask "Could you send the updated grocery to Sarah"
     python tools/demo.py --variants every cases    # one labelled case per category, then a score table
@@ -49,7 +49,7 @@ OURS_URL, ORIGINAL_URL = "http://localhost:8001", "http://localhost:8002"
 OURS_DATA = HERE / "server" / "data"
 VARIANTS_DATA = HERE / "server" / "data_variants"
 # Ports for tools/run_mine.py --variant; the keys are the versions in evals/configs.py
-VARIANT_PORTS = {"main": 8011, "plurals_typos": 8012, "past_requests": 8013, "embeddings": 8014, "all": 8015}
+VARIANT_PORTS = {"main": 8011, "plurals_typos": 8012, "past_requests": 8013, "embeddings": 8014, "default": 8016, "all": 8015}
 SCORES_FILE = "demo_scores.jsonl"
 PHRASES_CACHE = HERE / "evals" / "results" / "agent_phrases.json"
 # Checked twice a second, so each app's time to its final reply is accurate to about half a second
