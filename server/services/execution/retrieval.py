@@ -4,17 +4,31 @@ Rule: exact entity matches (same email address, same Gmail thread id) are hard
 signals and always rank first. Keyword similarity (BM25 over name, summary and
 entities) only orders agents within those groups. Similarity can say "what is
 this about", but only an exact entity can say "which thread is this".
+
+Past requests (the last 20 sent to each agent) are a second, weaker field: each
+word counts once, words the name/summary/entities already have are left out, and
+the field has its own BM25 score added at REQUEST_WEIGHT. The resolver never asks
+for them, so they help find an agent but never decide a merge.
+
+Hybrid mode (OPENPOKE_AGENT_RETRIEVER=hybrid, needs the optional fastembed package) adds
+search by meaning without disturbing that order: the keyword ranking keeps its top
+results, and the last DENSE_SLOTS places go to the agents most similar in meaning that
+keyword search did not already pick. Hard matches are never pushed out. Meaning only
+decides what the model gets to see; it never decides a merge (the resolver calls
+keyword_search).
 """
 
 from __future__ import annotations
 
+import difflib
 import math
+import re
 from collections import Counter
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Dict, Iterable, List, Optional, Sequence
+from typing import TYPE_CHECKING, Dict, Iterable, List, Optional, Sequence
 
-from .entities import HARD_KINDS, extract_entities, tokenize
+from .entities import EMAIL_PATTERN, HARD_KINDS, STOPWORDS, extract_entities, fold_plural, tokenize
 from .registry import (
     STATUS_ACTIVE,
     STATUS_ARCHIVED,
@@ -22,6 +36,9 @@ from .registry import (
     AgentRecord,
     AgentRegistry,
 )
+
+if TYPE_CHECKING:  # embeddings needs numpy; import it only when hybrid search is used
+    from .embeddings import Embedder
 
 HARD_MATCH_BONUS = 100.0
 # An email shared by many agents (usually the user's own address) says nothing about which thread
@@ -34,6 +51,75 @@ RECENCY_BOOST = 0.05  # at most +5% for an agent used right now, halving every t
 RECENCY_HALF_LIFE_DAYS = 14.0
 # Words this common (e.g. "latest" in every summary) are not shown as reasons for a match
 MIN_REASON_IDF = 0.5
+# Past requests count for half: one old instruction is weaker evidence than the agent's name or summary
+REQUEST_WEIGHT = 0.5
+# Words of the best-matching past request shown as the reason, so the model can see why the agent is listed
+REQUEST_SNIPPET_WORDS = 14
+
+# Did-you-mean for contact names ("Sarha" -> "Sarah"). difflib ratio: one swapped or wrong
+# letter in a 5-letter name is exactly 0.8. Only words in a name position are checked.
+NAME_SUGGEST_CUTOFF = 0.8
+# One swapped or wrong letter in a 4-letter name ("Noha", "Alxe") scores exactly 0.75, so short words get
+# a lower bar; evals/typo_hints.py checks it still raises no hint on any eval message.
+NAME_SUGGEST_SHORT_CUTOFF = 0.75
+NAME_SUGGEST_MIN_LENGTH = 4
+NAME_SUGGEST_MAX_PEOPLE = 8
+# A lowercase word right after one of these is in a name position ("send it to sarha")
+NAME_CUES = frozenset("to with from for cc ask tell email ping text call message".split())
+# Capitalised mid-sentence but not names
+_CAPITALISED_WORDS = frozenset(
+    """
+    monday tuesday wednesday thursday friday saturday sunday
+    january february march april june july august september october november december
+    """.split()
+)
+_WORD = re.compile(r"[A-Za-z]+")
+
+
+@dataclass
+class NameSuggestion:
+    """A word in the message that looks like a misspelt contact name."""
+
+    typed: str  # as written, e.g. "Sarha"
+    name: str  # the closest known first name, e.g. "Sarah"
+    people: List[str] = field(default_factory=list)  # full names with that first name, most recent first
+
+    def hint(self) -> str:
+        shown = self.people[:NAME_SUGGEST_MAX_PEOPLE]
+        listed = ", ".join(shown)
+        if len(self.people) > len(shown):
+            listed += f" and {len(self.people) - len(shown)} more"
+        closest = f"{self.name} ({listed})" if listed else self.name
+        ask = "which one they mean" if len(self.people) > 1 else "if that is who they mean"
+        return f'"{self.typed}" isn\'t a known contact. Closest: {closest}. Ask the user {ask} before acting.'
+
+
+def with_suggested_names(query: str, suggestions: Sequence[NameSuggestion]) -> str:
+    """The query with suggested names added, so retrieval and the named-people list find them."""
+
+    names = list(dict.fromkeys(suggestion.name for suggestion in suggestions))
+    return f"{query} {' '.join(names)}" if names else query
+
+
+@dataclass
+class PromptCandidates:
+    """Everything the interaction agent's per-turn prompt shows about existing agents."""
+
+    shortlist: List[ScoredAgent]
+    related: List[AgentRecord]
+    suggestions: List[NameSuggestion]
+
+RETRIEVER_BM25 = "bm25"
+RETRIEVER_HYBRID = "hybrid"
+RETRIEVERS = (RETRIEVER_BM25, RETRIEVER_HYBRID)
+# Hybrid: places in each search result reserved for meaning matches keyword search missed.
+# 3 of 8 keeps keyword ranks 1-5, where the right agent sits when it shares words with the message
+# (see docs/APPROACH_EMBEDDINGS.md), and gives meaning enough room to surface a paraphrased one.
+DENSE_SLOTS = 3
+# A floor for clear noise only; the place then goes back to keyword results. With bge-small, real
+# paraphrase matches scored 0.52-0.76 but so did "ok send it" (0.65), so no floor separates them.
+# The fixed slot count is what bounds the cost of a bad meaning match: at most 3 extra agents shown.
+DENSE_MIN_SIMILARITY = 0.5
 
 
 @dataclass
@@ -58,6 +144,40 @@ def agent_document_tokens(record: AgentRecord) -> List[str]:
             continue  # hex ids only matter as exact matches
         parts.extend(values)
     return tokenize(" ".join(parts))
+
+
+def request_tokens(record: AgentRecord, identity: Optional[Iterable[str]] = None) -> List[str]:
+    """Distinct words of the agent's past requests that its name, summary and entities don't already have.
+
+    Each word once, so an agent asked about "invoice" 20 times is not 20 times more about invoices.
+    """
+
+    known = set(agent_document_tokens(record) if identity is None else identity)
+    words = (token for text in record.requests for token in tokenize(text) if token not in known)
+    return list(dict.fromkeys(words))
+
+
+def request_snippet(requests: Sequence[str], terms: Iterable[str], words: int = REQUEST_SNIPPET_WORDS) -> str:
+    """The past request that shares most of `terms` (newest wins ties), cut to a few words around the match."""
+
+    # Request words are compared plural-folded, so the terms are folded the same way
+    wanted = set(tokenize(" ".join(terms)))
+    best, best_hits = "", 0
+    for text in reversed(requests):
+        hits = len(wanted & set(tokenize(text)))
+        if hits > best_hits:
+            best, best_hits = text, hits
+    parts = best.split()
+    first = next((index for index, part in enumerate(parts) if wanted & set(tokenize(part))), 0)
+    start = max(0, first - 4)
+    piece = parts[start : start + words]
+    return ("..." if start else "") + " ".join(piece) + ("..." if start + len(piece) < len(parts) else "")
+
+
+def _index_requests_by_default() -> bool:
+    from ...config import get_settings
+
+    return bool(get_settings().agent_index_requests)
 
 
 class BM25Index:
@@ -101,10 +221,49 @@ class BM25Index:
 class AgentRetriever:
     """Search and shortlist agents from the registry for a given message."""
 
-    def __init__(self, registry: AgentRegistry):
+    def __init__(
+        self,
+        registry: AgentRegistry,
+        *,
+        index_requests: Optional[bool] = None,
+        mode: Optional[str] = None,
+        embedder: Optional["Embedder"] = None,
+        dense_slots: int = DENSE_SLOTS,
+        dense_min_similarity: float = DENSE_MIN_SIMILARITY,
+    ):
+        """index_requests: None follows OPENPOKE_AGENT_INDEX_REQUESTS. mode: "bm25" or "hybrid"; None reads
+        OPENPOKE_AGENT_RETRIEVER. embedder: override the shared one."""
         self._registry = registry
+        self._index_requests = index_requests
+        self._mode = mode
+        self._embedder = embedder
+        self.dense_slots = dense_slots
+        self.dense_min_similarity = dense_min_similarity
 
-    # Rank all agents for a query: hard entity matches first, then BM25 with a small recency boost
+    @property
+    def index_requests(self) -> bool:
+        return _index_requests_by_default() if self._index_requests is None else self._index_requests
+
+    @property
+    def mode(self) -> str:
+        if self._mode is not None:
+            return self._mode
+        from ...config import get_settings
+
+        return get_settings().agent_retriever
+
+    def _dense_embedder(self) -> Optional["Embedder"]:
+        if self.mode != RETRIEVER_HYBRID:
+            return None
+        if self._embedder is not None:
+            return self._embedder
+        from .embeddings import get_embedder
+
+        return get_embedder()
+
+    # Rank agents for a query. bm25: hard entity matches, then keywords (plus past requests when
+    # include_requests). hybrid: the same, with the last places given to the best meaning matches
+    # keyword search missed (see the module docstring).
     def search(
         self,
         query: str,
@@ -112,11 +271,98 @@ class AgentRetriever:
         limit: int = 8,
         statuses: Optional[Sequence[str]] = None,
         now: Optional[datetime] = None,
+        include_requests: Optional[bool] = None,
     ) -> List[ScoredAgent]:
-        records = self._registry.list_agents(statuses)
+        use_requests = self.index_requests if include_requests is None else include_requests
+        records = self._registry.list_agents(statuses, with_requests=use_requests)
         if not records or limit <= 0:
             return []
+        keyword = self._keyword_ranking(query, records, now, use_requests)
+        embedder = self._dense_embedder()
+        if embedder is None or self.dense_slots <= 0:
+            return keyword[:limit]
+        try:
+            from .embeddings import store_for
 
+            similarity = store_for(self._registry.db_path).similarities(query, records, embedder)
+        except Exception as exc:  # meaning search is an extra; never fail routing over it
+            from ...logging_config import logger
+
+            logger.warning(f"Meaning search failed, using keywords only: {exc}")
+            return keyword[:limit]
+        return self._fill_with_dense(keyword, records, similarity, limit)
+
+    # Embed every agent now, blocking (evals do this so every search sees all vectors). No-op for bm25.
+    def prepare(self) -> int:
+        embedder = self._dense_embedder()
+        if embedder is None:
+            return 0
+        from .embeddings import store_for
+
+        store = store_for(self._registry.db_path)
+        before = store.embedded
+        store.vectors(self._registry.list_agents(), embedder)
+        return store.embedded - before
+
+    # Keyword search only: hard matches, then BM25. The resolver uses this with past requests off,
+    # so neither meaning similarity nor an old request ever merges two agents.
+    def keyword_search(
+        self,
+        query: str,
+        *,
+        limit: int = 8,
+        statuses: Optional[Sequence[str]] = None,
+        now: Optional[datetime] = None,
+        include_requests: bool = False,
+    ) -> List[ScoredAgent]:
+        records = self._registry.list_agents(statuses, with_requests=include_requests)
+        if not records or limit <= 0:
+            return []
+        return self._keyword_ranking(query, records, now, include_requests)[:limit]
+
+    def _fill_with_dense(
+        self,
+        keyword: List[ScoredAgent],
+        records: Sequence[AgentRecord],
+        similarity: Dict[str, float],
+        limit: int,
+    ) -> List[ScoredAgent]:
+        """Keep the keyword top (limit - dense_slots), then the best meaning matches not yet chosen.
+
+        Hard matches always stay. If too few agents pass the similarity floor, the remaining keyword
+        results take the places back, so a message with no meaning match gives today's results.
+        """
+        hard = sum(1 for item in keyword if item.score >= HARD_MATCH_BONUS)
+        head = keyword[: min(limit, max(limit - self.dense_slots, hard))]
+        chosen = {item.name for item in head}
+        by_name = {item.name: item for item in keyword}
+        extras: List[ScoredAgent] = []
+        room = min(self.dense_slots, limit - len(head))
+        for record in sorted(records, key=lambda r: (similarity.get(r.name, 0.0), r.last_active_at), reverse=True):
+            if len(extras) >= room:
+                break
+            value = similarity.get(record.name, 0.0)
+            if value < self.dense_min_similarity:
+                break
+            if record.name in chosen:
+                continue
+            reasons = list(by_name[record.name].reasons) if record.name in by_name else []
+            reasons.append(f"similar meaning ({value:.2f})")
+            extras.append(ScoredAgent(record=record, score=value, reasons=reasons))
+            chosen.add(record.name)
+        results = head + extras
+        for item in keyword[len(head):]:
+            if len(results) >= limit:
+                break
+            if item.name not in chosen:
+                results.append(item)
+                chosen.add(item.name)
+        return results
+
+    # Every agent with a keyword or hard match, best first, with a small recency boost
+    def _keyword_ranking(
+        self, query: str, records: Sequence[AgentRecord], now: Optional[datetime], use_requests: bool
+    ) -> List[ScoredAgent]:
         now = now or self._registry.now()
         query_tokens = tokenize(query)
         hard_matches = self._hard_matches(query, records)
@@ -125,9 +371,23 @@ class AgentRetriever:
         keyword_scores = index.score(query_tokens)
         query_terms = {term for term in query_tokens if index.idf(term) >= MIN_REASON_IDF}
 
+        # Past requests: a separate index over agents that have new words in them, so its length
+        # normalisation and word rarity are about request text only and can't dilute the main index
+        request_documents: Dict[str, List[str]] = {}
+        request_scores: Dict[str, float] = {}
+        if use_requests:
+            for record in records:
+                tokens = request_tokens(record, documents[record.name])
+                if tokens:
+                    request_documents[record.name] = tokens
+            if request_documents:
+                request_scores = BM25Index(request_documents).score(query_tokens)
+
         results: List[ScoredAgent] = []
         for record in records:
-            keyword = keyword_scores.get(record.name, 0.0)
+            identity_score = keyword_scores.get(record.name, 0.0)
+            request_score = request_scores.get(record.name, 0.0)
+            keyword = identity_score + REQUEST_WEIGHT * request_score
             hard_reasons = hard_matches.get(record.name, [])
             if keyword <= 0 and not hard_reasons:
                 continue
@@ -136,14 +396,17 @@ class AgentRetriever:
             score = keyword * STATUS_WEIGHT.get(record.status, 1.0)
             score *= 1 + RECENCY_BOOST * self._recency(record, now)
             shared = sorted(query_terms & set(documents[record.name]))[:4]
-            if keyword > 0 and shared:
+            if identity_score > 0 and shared:
                 reasons.append("keywords: " + ", ".join(shared))
+            if request_score > 0:
+                matched = set(query_tokens) & set(request_documents[record.name])
+                reasons.append("past request: " + request_snippet(record.requests, matched))
             if hard_reasons:
                 score += HARD_MATCH_BONUS
             results.append(ScoredAgent(record=record, score=score, reasons=reasons))
 
         results.sort(key=lambda item: (item.score, item.record.last_active_at), reverse=True)
-        return results[:limit]
+        return results
 
     # The most recently active agents, used to fill the prompt so "that email" still resolves
     def recent(self, *, limit: int = 4) -> List[ScoredAgent]:
@@ -185,7 +448,8 @@ class AgentRetriever:
         exclude: Iterable[str] = (),
         limit: int = 12,
     ) -> List[AgentRecord]:
-        query_tokens = set(tokenize(query))
+        # Names as written, not plural-folded: "Lucas" is not "Luca"
+        query_tokens = set(tokenize(query, fold=False))
         if not query_tokens or limit <= 0:
             return []
         skip = set(exclude)
@@ -193,10 +457,95 @@ class AgentRetriever:
             record
             for record in self._registry.list_agents()
             if record.name not in skip
-            and query_tokens & set(tokenize(" ".join(record.entities.get("person", []))))
+            and query_tokens & set(tokenize(" ".join(record.entities.get("person", [])), fold=False))
         ]
         matched.sort(key=lambda record: record.last_active_at, reverse=True)
         return matched[:limit]
+
+    # The per-turn prompt: shortlist, the named people's other agents, and did-you-mean names
+    def prompt_candidates(
+        self,
+        message: str,
+        *,
+        retrieved: int = 8,
+        recent: int = 4,
+        named_people: int = 12,
+        suggest: Optional[bool] = None,
+        now: Optional[datetime] = None,
+    ) -> PromptCandidates:
+        if suggest is None:
+            from ...config import get_settings
+
+            suggest = get_settings().agent_name_hints
+        suggestions = self.suggest_names(message) if suggest else []
+        query = with_suggested_names(message, suggestions)
+        shortlist = self.shortlist(query, retrieved=retrieved, recent=recent, now=now)
+        related = self.named_people_agents(query, exclude=[item.name for item in shortlist], limit=named_people)
+        return PromptCandidates(shortlist=shortlist, related=related, suggestions=suggestions)
+
+    # "Sarha" when no contact is called Sarha but several are called Sarah
+    def suggest_names(self, message: str) -> List[NameSuggestion]:
+        """Words that are probably a misspelt first name of a known contact.
+
+        A word counts only if it is in a name position (capitalised mid-sentence, or right after
+        "to", "with", "ask" and the like), has 4+ letters, isn't a stopword, isn't a word any
+        agent already uses, and starts with the same letter as the name. So an exact name, a
+        normal word ("trace" vs Grace) or a sentence's first word doesn't trigger it.
+        """
+
+        candidates = [
+            match for match in _WORD.finditer(message or "") if _in_name_position(message, match)
+        ]
+        candidates = [
+            match for match in candidates
+            if len(match.group()) >= NAME_SUGGEST_MIN_LENGTH
+            and match.group().lower() not in STOPWORDS
+            and match.group().lower() not in _CAPITALISED_WORDS
+        ]
+        # "Email Nora (nora.k@acme.com)": a name the message also gives an address for is a new contact, not a typo
+        address_words = {word for address in EMAIL_PATTERN.findall(message or "") for word in tokenize(address, fold=False)}
+        candidates = [match for match in candidates if match.group().lower() not in address_words]
+        if not candidates:
+            return []
+
+        name_words: set[str] = set()
+        first_names: Dict[str, str] = {}  # lowercase -> as written
+        people: Dict[str, List[str]] = {}  # lowercase first name -> full names, most recent first
+        for person in self._registry.entity_values("person"):
+            words = person.split()
+            name_words.update(word.lower() for word in words)
+            if not words or not words[0].isalpha():
+                continue
+            first = words[0].lower()
+            first_names.setdefault(first, words[0])
+            if len(words) > 1:
+                people.setdefault(first, []).append(person)
+
+        vocabulary: Optional[set[str]] = None  # built only when a word is close to a name
+        suggestions: List[NameSuggestion] = []
+        for match in candidates:
+            typed = match.group()
+            word = typed.lower()
+            if word in name_words:
+                continue  # a known name
+            pool = [name for name in first_names if name[0] == word[0]]
+            cutoff = NAME_SUGGEST_SHORT_CUTOFF if len(word) <= 4 else NAME_SUGGEST_CUTOFF
+            close = difflib.get_close_matches(word, pool, n=2, cutoff=cutoff)
+            if not close:
+                continue
+            if vocabulary is None:
+                vocabulary = {
+                    token for record in self._registry.list_agents() for token in agent_document_tokens(record)
+                }
+            if word in vocabulary or fold_plural(word) in vocabulary:
+                continue  # a word the agents use, so probably not a misspelt name
+            following = _next_word(message, match)
+            for name in close:
+                full = people.get(name, [])
+                # "Sarha Okafor": the surname says which Sarah
+                narrowed = [person for person in full if following and following in person.lower().split()[1:]]
+                suggestions.append(NameSuggestion(typed=typed, name=first_names[name], people=narrowed or full))
+        return suggestions
 
     @staticmethod
     def _hard_matches(query: str, records: Sequence[AgentRecord]) -> Dict[str, List[str]]:
@@ -217,12 +566,39 @@ class AgentRetriever:
         return 0.5 ** (age_days / RECENCY_HALF_LIFE_DAYS)
 
 
+def _in_name_position(text: str, match: re.Match) -> bool:
+    """Capitalised and not the first word of a sentence, or right after a word like "to"."""
+
+    before = text[: match.start()].rstrip()
+    previous = _WORD.findall(before[-20:])
+    if previous and previous[-1].lower() in NAME_CUES:
+        return True
+    starts_sentence = not before or before[-1] in ".!?:;\n\"'(" or not previous
+    return match.group()[0].isupper() and not starts_sentence
+
+
+def _next_word(text: str, match: re.Match) -> str:
+    following = _WORD.match(text[match.end():].lstrip())
+    return following.group().lower() if following else ""
+
+
 __all__ = [
     "AgentRetriever",
     "BM25Index",
+    "DENSE_MIN_SIMILARITY",
+    "DENSE_SLOTS",
     "HARD_MATCH_BONUS",
+    "RETRIEVERS",
+    "RETRIEVER_BM25",
+    "RETRIEVER_HYBRID",
     "MAX_AGENTS_PER_HARD_ENTITY",
+    "NameSuggestion",
+    "PromptCandidates",
+    "REQUEST_WEIGHT",
     "STATUS_WEIGHT",
     "ScoredAgent",
     "agent_document_tokens",
+    "request_snippet",
+    "request_tokens",
+    "with_suggested_names",
 ]

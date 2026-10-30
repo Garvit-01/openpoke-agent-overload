@@ -94,9 +94,10 @@ HANDWRITTEN: List[Handwritten] = [
 def handwritten_agent(item: Handwritten, thread_id: str) -> SyntheticAgent:
     """The agent as the generator would have recorded it, so its summary looks like every other one."""
     contact = Contact(item.first, item.last, item.company)
+    request = f"Draft a reply to {contact.full_name} ({contact.email}) about the {item.topic}"
     summary, entities = _digest(
         item.name,
-        f"Draft a reply to {contact.full_name} ({contact.email}) about the {item.topic}",
+        request,
         f'Calling gmail_create_draft with: {{"recipient_email": "{contact.email}", '
         f'"subject": "Re: {item.topic}", "thread_id": "{thread_id}"}}',
         f"Draft created for {contact.full_name} at {contact.company} about the {item.topic}. "
@@ -105,7 +106,7 @@ def handwritten_agent(item: Handwritten, thread_id: str) -> SyntheticAgent:
     return SyntheticAgent(
         name=item.name, kind="thread", summary=summary, entities=entities,
         created_days_ago=item.active_days_ago + 5, active_days_ago=item.active_days_ago,
-        contact=contact, topic=item.topic, thread_id=thread_id,
+        contact=contact, topic=item.topic, thread_id=thread_id, requests=[request],
     )
 
 

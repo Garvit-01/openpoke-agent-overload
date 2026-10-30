@@ -1,0 +1,56 @@
+# LLM routing evaluation (anthropic/claude-haiku-5.5)
+
+24 cases (spread across categories) x 3 repeats, 300 agents, seed 7.
+Past requests indexed (OPENPOKE_AGENT_INDEX_REQUESTS): on.
+
+| Metric | Original OpenPoke | This change |
+|---|---|---|
+| Accuracy (all runs, pass^1) | 55.6% | 90.3% |
+| Cases right on all 3 repeats (pass^3) | 54.2% | 87.5% |
+| Duplicate created | 44.4% | 5.6% |
+| False reuse | 0.0% | 0.0% |
+| Model did not route at all | 0.0% | 4.2% |
+| Used search_agents | 0.0% | 12.5% |
+| Prompt tokens, first call (from API usage) | 10,333 | 6,851 |
+| Seconds per routing decision, p50 / p95 | 3.3 / 4.3 | 3.2 / 5.5 |
+
+Seconds cover every model call for the decision and depend on the provider's load that day, so compare the two columns with each other, not with other runs.
+
+## Is the difference real?
+
+A case counts as right when more than half of its 3 runs were right.
+
+| | Right | 95% interval |
+|---|---|---|
+| Original OpenPoke | 13/24 (54.2%) | 35.1% to 72.1% |
+| This change | 22/24 (91.7%) | 74.2% to 97.7% |
+
+Same cases, both versions: this change fixed 10 and broke 1 (McNemar's exact test, p = 0.012, unlikely to be chance).
+
+## By category
+
+| Category | Cases | Original OpenPoke | This change |
+|---|---|---|---|
+| handwritten_names_person | 16 | 39.6% | 93.8% |
+| handwritten_topic_only | 8 | 87.5% | 83.3% |
+
+## Cost on anthropic/claude-haiku-5.5
+
+| | Original OpenPoke | This change |
+|---|---|---|
+| Input tokens per routing decision | 10,333 | 7,844 |
+| Output tokens per routing decision | 452 | 407 |
+| of which thinking tokens | 163 | 135 |
+| Model calls per routing decision | 1.00 | 1.14 |
+| Cost per 1,000 routing decisions | $1.26 | $0.99 |
+| Cost of this run | $0.09 | $0.07 |
+
+## Same traffic on other models
+
+The token counts measured on anthropic/claude-haiku-5.5, priced at each model's list price. Another model could make a different number of calls (for example use search_agents more), so this is an estimate.
+
+| Model | Input / output $ per million | Original, per 1,000 decisions | This change, per 1,000 decisions | Saving |
+|---|---|---|---|---|
+| anthropic/claude-haiku-5.5 | $0.10 / $0.50 | $1.26 | $0.99 | 22% |
+| anthropic/claude-sonnet-5.5 | $2.00 / $10.00 | $25.18 | $19.76 | 22% |
+| anthropic/claude-opus-5.5 | $4.00 / $20.00 | $50.36 | $39.52 | 22% |

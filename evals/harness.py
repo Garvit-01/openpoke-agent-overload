@@ -29,13 +29,14 @@ from datetime import timedelta
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Set, Tuple
 
-from server.agents.interaction_agent.agent import agent_topic, render_agent_shortlist
-from server.services.execution.entities import EMAIL_PATTERN, extract_entities, tokenize
+from server.agents.interaction_agent.agent import agent_topic, render_agent_shortlist, render_name_hints
+from server.services.execution.entities import EMAIL_PATTERN, extract_entities
+from server.services.execution.entities import tokenize as _app_tokenize
 from server.services.execution.lifecycle import LifecyclePolicy, apply_lifecycle
 from server.services.execution.phrases import PHRASE_KIND
 from server.services.execution.registry import AgentRecord, AgentRegistry, to_iso
 from server.services.execution.resolver import resolve_agent
-from server.services.execution.retrieval import AgentRetriever, ScoredAgent
+from server.services.execution.retrieval import AgentRetriever, PromptCandidates, ScoredAgent
 from server.services.execution.routing import route_to_agent
 
 from .baseline import original_reuse, render_original_roster
@@ -53,6 +54,12 @@ from .scenarios import (
     Scenario,
     Turn,
 )
+
+
+# The simulated router stands in for the model, so it reads words as written whatever OPENPOKE_FOLD_PLURALS
+# says: a setting of the app's search must not also change the judge (evals/compare.py flips it per row).
+def tokenize(text: str):
+    return _app_tokenize(text, fold=False)
 
 SHORTLIST_RETRIEVED = 8
 SHORTLIST_RECENT = 4
@@ -237,6 +244,7 @@ def build_registry(scenario: Scenario, path: Path) -> AgentRegistry:
             entities=agent.entities,
             created_at=to_iso(scenario.now - timedelta(days=agent.created_days_ago)),
             last_active_at=to_iso(scenario.now - timedelta(days=agent.active_days_ago)),
+            requests=agent.requests,
         )
         for agent in scenario.agents
     )
@@ -249,6 +257,21 @@ def build_registry(scenario: Scenario, path: Path) -> AgentRegistry:
     return registry
 
 
+def prompt_candidates(retriever: AgentRetriever, message: str) -> PromptCandidates:
+    """What the app's per-turn prompt would show for a user message (same call as agent.py)."""
+    return retriever.prompt_candidates(
+        message, retrieved=SHORTLIST_RETRIEVED, recent=SHORTLIST_RECENT, named_people=NAMED_PEOPLE_LIMIT
+    )
+
+
+def render_roster(candidates: PromptCandidates, total: int) -> str:
+    roster = render_agent_shortlist(
+        candidates.shortlist, total=total, summary_chars=SUMMARY_CHARS, related=candidates.related
+    )
+    hints = render_name_hints(candidates.suggestions)
+    return f"{roster}\n\n{hints}" if hints else roster
+
+
 def visible_text(item: ScoredAgent) -> str:
     """What the solution prompt shows for one agent (name, summary, why it matched)."""
     return " ".join([item.name, item.record.summary, *item.reasons])
@@ -257,27 +280,28 @@ def visible_text(item: ScoredAgent) -> str:
 class SolutionArm:
     label = "solution"
 
-    def __init__(self, scenario: Scenario, workdir: Path, phrases: Optional[Dict[str, List[str]]] = None):
+    def __init__(
+        self,
+        scenario: Scenario,
+        workdir: Path,
+        phrases: Optional[Dict[str, List[str]]] = None,
+        retriever: Optional[str] = None,
+    ):
         self.registry = build_registry(scenario, workdir / "registry.db")
         # Search phrases as the app would have written them after each agent's first run
         for name, values in (phrases or {}).items():
             if values and self.registry.get(name):
                 self.registry.update_profile(name, entities={PHRASE_KIND: values})
-        self.retriever = AgentRetriever(self.registry)
+        self.retriever = AgentRetriever(self.registry, mode=retriever)  # None: OPENPOKE_AGENT_RETRIEVER
+        # Hybrid: embed all agents up front, as the app's start-up warm-up would have (bm25: no-op)
+        self.retriever.prepare()
         self.total = self.registry.count()
 
-    def shortlist(self, message: str) -> List[ScoredAgent]:
-        return self.retriever.shortlist(message, retrieved=SHORTLIST_RETRIEVED, recent=SHORTLIST_RECENT)
-
-    def related(self, message: str, shortlist: Sequence[ScoredAgent]) -> List[AgentRecord]:
-        exclude = [item.name for item in shortlist]
-        return self.retriever.named_people_agents(message, exclude=exclude, limit=NAMED_PEOPLE_LIMIT)
+    def candidates(self, message: str) -> PromptCandidates:
+        return prompt_candidates(self.retriever, message)
 
     def roster_section(self, message: str) -> str:
-        shortlist = self.shortlist(message)
-        return render_agent_shortlist(
-            shortlist, total=self.total, summary_chars=SUMMARY_CHARS, related=self.related(message, shortlist)
-        )
+        return render_roster(self.candidates(message), self.total)
 
     def search(self, query: str) -> List[ScoredAgent]:
         return self.retriever.search(query, limit=8)
@@ -288,9 +312,9 @@ class SolutionArm:
 
     def route(self, case: Case, router: SimulatedRouter) -> Decision:
         started = time.perf_counter()
-        shortlist = self.shortlist(case.message)
-        related = self.related(case.message, shortlist)
-        roster = render_agent_shortlist(shortlist, total=self.total, summary_chars=SUMMARY_CHARS, related=related)
+        candidates = self.candidates(case.message)
+        shortlist, related = candidates.shortlist, candidates.related
+        roster = render_roster(candidates, self.total)
         visible = [(item.name, visible_text(item)) for item in shortlist]
         visible += [(record.name, f"{record.name} {agent_topic(record)}") for record in related]
         choice = router.choose(case.message, visible)
@@ -384,6 +408,7 @@ def run_solution_conversation(
     workdir: Path,
     *,
     use_new_task: bool = True,
+    retriever_mode: Optional[str] = None,
 ) -> List[TurnDecision]:
     """New behaviour over several turns, through the real route_to_agent on a copy of the registry.
 
@@ -394,7 +419,7 @@ def run_solution_conversation(
     db_path = workdir / f"{conversation.id}{'' if use_new_task else '-noflag'}.db"
     shutil.copyfile(template_db, db_path)
     registry = AgentRegistry(db_path, clock=lambda: scenario.now)
-    retriever = AgentRetriever(registry)
+    retriever = AgentRetriever(registry, mode=retriever_mode)
     memory: List[str] = []
     created_at: Dict[int, str] = {}
     decisions: List[TurnDecision] = []
@@ -407,12 +432,9 @@ def run_solution_conversation(
             seen = [registry.get(name) for name in dict.fromkeys(memory)]
             choice = router.choose(turn.message, [(r.name, f"{r.name} {r.summary}") for r in seen if r])
         if choice is None and not new_task:
-            shortlist = retriever.shortlist(turn.message, retrieved=SHORTLIST_RETRIEVED, recent=SHORTLIST_RECENT)
-            visible = [(item.name, visible_text(item)) for item in shortlist]
-            related = retriever.named_people_agents(
-                turn.message, exclude=[item.name for item in shortlist], limit=NAMED_PEOPLE_LIMIT
-            )
-            visible += [(record.name, f"{record.name} {agent_topic(record)}") for record in related]
+            candidates = prompt_candidates(retriever, turn.message)
+            visible = [(item.name, visible_text(item)) for item in candidates.shortlist]
+            visible += [(record.name, f"{record.name} {agent_topic(record)}") for record in candidates.related]
             choice = router.choose(turn.message, visible)
         if choice is None and not new_task:
             found = retriever.search(turn.message, limit=8)
@@ -543,14 +565,21 @@ def score(arm: str, decisions: Sequence[Decision]) -> ArmMetrics:
 
 
 def run_simulated(
-    scenario: Scenario, *, threshold: float = 0.6, phrases: Optional[Dict[str, List[str]]] = None
+    scenario: Scenario,
+    *,
+    threshold: float = 0.6,
+    phrases: Optional[Dict[str, List[str]]] = None,
+    retriever: Optional[str] = None,
 ) -> Dict[str, object]:
-    """Run both arms on one scenario. Returns metrics plus every decision for inspection."""
+    """Run both arms on one scenario. Returns metrics plus every decision for inspection.
+
+    retriever: "bm25" or "hybrid" for the solution arm; None uses OPENPOKE_AGENT_RETRIEVER.
+    """
 
     router = SimulatedRouter(scenario.vocabulary, threshold=threshold)
     baseline = BaselineArm(scenario)
     with tempfile.TemporaryDirectory() as workdir:
-        solution = SolutionArm(scenario, Path(workdir), phrases=phrases)
+        solution = SolutionArm(scenario, Path(workdir), phrases=phrases, retriever=retriever)
         base_decisions = [baseline.route(case, router) for case in scenario.cases]
         new_decisions = [solution.route(case, router) for case in scenario.cases]
         # Each conversation starts from the same history; the solution arm gets a fresh copy
@@ -560,10 +589,11 @@ def run_simulated(
         for conversation in scenario.conversations:
             base_turns += run_baseline_conversation(scenario, conversation, router)
             new_turns += run_solution_conversation(
-                scenario, conversation, router, solution.registry.db_path, Path(workdir)
+                scenario, conversation, router, solution.registry.db_path, Path(workdir), retriever_mode=retriever
             )
             no_flag_turns += run_solution_conversation(
-                scenario, conversation, router, solution.registry.db_path, Path(workdir), use_new_task=False
+                scenario, conversation, router, solution.registry.db_path, Path(workdir), use_new_task=False,
+                retriever_mode=retriever,
             )
     return {
         "agents": len(scenario.agents),

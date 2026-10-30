@@ -14,9 +14,16 @@ from typing import List, Optional
 
 from ...logging_config import logger
 from .digest import build_digest
-from .registry import AgentRecord, AgentRegistry, to_iso
+from .registry import (
+    REQUEST_HISTORY_LIMIT,
+    REQUESTS_BACKFILLED_KEY,
+    AgentRecord,
+    AgentRegistry,
+    clip_request,
+    to_iso,
+)
+from ...paths import DATA_DIR as _DATA_DIR
 
-_DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
 _EXECUTION_DIR = _DATA_DIR / "execution_agents"
 _LEGACY_ROSTER_PATH = _EXECUTION_DIR / "roster.json"
 _REGISTRY_PATH = _EXECUTION_DIR / "registry.db"
@@ -67,6 +74,28 @@ def migrate_legacy_roster(registry: AgentRegistry, roster_path: Path, log_store=
     return inserted
 
 
+# Fill each agent's searchable request history from its log, once per registry (marked in registry_meta).
+# Agents that already have stored requests are left alone, so a rerun can't duplicate anything.
+def backfill_requests_from_logs(registry: AgentRegistry, log_store) -> int:
+    """Returns how many agents got requests. Reads every agent's log once, the first time only."""
+
+    if registry.get_meta(REQUESTS_BACKFILLED_KEY):
+        return 0
+    filled = 0
+    for name in registry.names():
+        if registry.requests_for(name):
+            continue
+        texts = [clip_request(payload) for tag, _stamp, payload in log_store.iter_entries(name) if tag == "agent_request"]
+        # Same rule as add_request: a repeated request counts at its latest position
+        newest = list(dict.fromkeys(reversed([text for text in texts if text])))[:REQUEST_HISTORY_LIMIT]
+        stored = [registry.add_request(name, text) for text in reversed(newest)]
+        filled += any(stored)
+    registry.set_meta(REQUESTS_BACKFILLED_KEY, to_iso(registry.now()))
+    if filled:
+        logger.info("Backfilled past requests from agent logs", extra={"agents": filled})
+    return filled
+
+
 class AgentRoster:
     """Old roster interface, now a thin view over the registry."""
 
@@ -103,6 +132,10 @@ def get_agent_registry() -> AgentRegistry:
                 migrate_legacy_roster(_registry, _LEGACY_ROSTER_PATH, logs)
             # Cheap when there is nothing to move: one exists() check per agent, once per process
             logs.adopt_legacy_logs(_registry.names())
+            try:
+                backfill_requests_from_logs(_registry, logs)
+            except Exception as exc:  # pragma: no cover - search history must never stop the server
+                logger.warning(f"Could not backfill past requests: {exc}")
         return _registry
 
 
@@ -120,6 +153,7 @@ def get_agent_roster() -> AgentRoster:
 
 __all__ = [
     "AgentRoster",
+    "backfill_requests_from_logs",
     "get_agent_registry",
     "get_agent_roster",
     "load_legacy_roster",

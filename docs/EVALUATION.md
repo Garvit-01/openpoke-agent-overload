@@ -6,7 +6,7 @@ Everything behind the numbers in the [README](../README.md): the tests, how the 
 
 ### Unit and integration tests: `python -m pytest`
 
-128 tests, about a minute, no network, no API keys. They cover:
+184 tests, about two minutes, no network, no API keys. They cover:
 
 - registry create, reuse, revive, entity lookup, persistence, and migration from `roster.json`
 - agent ids: the four names that used to share `email-to-sarah.log` now keep separate histories, and old slug logs are carried over without overwriting anything
@@ -223,6 +223,15 @@ The generated cases have a weakness: the same code wrote the agent summaries and
 | Right agent in the shortlist (simulated, recall@12) | 100% (shows all) | | | 87.5% (21/24) |
 
 The majority score (24/24) is the headline, but the stricter numbers matter too. Four cases were right on 2 of 3 runs, not all 3. And for 3 of the 24 the right agent isn't in the shortlist at all, so the model only finds it by searching. Those three are synonym gaps that the phrases didn't cover: "kids get a place at the academy" for a school enrollment agent, a Japanese manual translation, and a laptop refresh. They're the cases the comparison branch's other retrievers are meant to test.
+
+**After plural folding and typo hints (changes 15 and 16).** Folding plurals put two of those three in the shortlist: "kids" now matches the phrase "kid's registration", and "computers" matches "computer upgrade". Simulated recall@12 went from 87.5% to 95.8% (23/24), and nothing that was found before was lost. A real-model rerun with the same cached phrases: 23/24 cases right (13/24 for the original), fixed 10 and broke 0 against the original (p = 0.002). 97.2% of runs right (was 94.4%), and 23 of 24 cases right on all 3 runs (pass^3 95.8%, was 83.3%). The one case short of 24/24 is "Alex Moreau": the model didn't route at all in 2 of 3 runs, and its prompt is the same as before the change, so that is run-to-run noise. No typo hint fires on any eval message, so the routing evals can't score the hint. A separate labelled check does (`python -m evals.typo_hints`, results in [evals/results/typo_hints.md](../evals/results/typo_hints.md)), described below. The main 185 simulated cases and 26 conversations give the same decisions as before. I also reran the main 40 real-model cases, but the phrase cache had been overwritten by the 800-agent run, so 74 agents got newly written phrases and the run isn't a clean comparison. It scored 95.8% of runs and 39/40 cases (fixed 18, broke 0 against the original). For the five cases that moved, the prompt with the old phrases is identical before and after this change, so the dip comes from the new phrases and run-to-run noise, not from plurals or typos. That run is not committed; the run 4 file still holds the earlier result.
+
+**The typo hint, checked on labelled typos.** Each of the 35 contact first names (4+ letters) in the 300-agent history is misspelt once per edit type, in a name position ("Send the updated list to Noha."):
+- **Caught:** with the first version (difflib cutoff 0.8), 92 of 124 typos got the right hint. All 32 misses were 4-letter names with one letter swapped or replaced ("Noha", "Alxe"), which score exactly 0.75. With 0.75 for 4-letter words, 124/124 are caught, and on two more typo seeds (not used to pick the cutoff) also 124/124.
+- **Narrowed:** with the surname after the typo ("Sarha Okafor"), the hint lists only that person in 22/22 cases.
+- **False alarms:** 0 of the 301 eval messages, and 0 of 140 template messages with names spelt right.
+- **The cost:** 3 of 36 common first names that no contact has get a hint. "Sara" gets "Sarah" (that happens at 0.8 too), "Nora" gets "Noah" and "Rose" gets "Rosa", so the model asks "did you mean ...?" once. A name given with its email address ("Email Nora (nora.lind@acme.com)") gets no hint.
+- **Not caught:** typos in the first letter, because only names with the same first letter are compared.
 
 What this showed:
 

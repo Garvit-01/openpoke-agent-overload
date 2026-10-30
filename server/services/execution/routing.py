@@ -62,6 +62,8 @@ def route_to_agent(
             summary=f"Task: {' '.join(instructions.split())[:SUMMARY_MAX_CHARS - 6]}",
             entities=extract_entities(f"{record.name}\n{instructions}"),
         )
+    # Searchable right away, before the run finishes (the summary only updates after it)
+    record_agent_request(record.name, instructions, registry=registry)
 
     record_routing_decision(
         {
@@ -83,6 +85,16 @@ def route_to_agent(
             extra={"reason": resolution.reason},
         )
     return resolution
+
+
+# Keep a request in the agent's searchable history (chat turns via route_to_agent, triggers directly).
+# Stored even when indexing is off, so turning it on later has the history.
+def record_agent_request(agent_name: str, text: str, *, registry: Optional[AgentRegistry] = None) -> bool:
+    try:
+        return (registry or get_agent_registry()).add_request(agent_name, text)
+    except Exception as exc:  # pragma: no cover - search history must never break routing
+        logger.warning(f"Failed to store request for {agent_name}: {exc}")
+        return False
 
 
 # Rebuild an agent's searchable summary and entities from its full log after a run
@@ -132,6 +144,7 @@ def resolution_payload(resolution: Resolution) -> Dict[str, Any]:
 
 __all__ = [
     "maybe_apply_lifecycle",
+    "record_agent_request",
     "record_routing_decision",
     "refresh_agent_profile",
     "resolution_payload",

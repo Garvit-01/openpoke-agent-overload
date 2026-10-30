@@ -157,6 +157,48 @@ def test_a_wrong_first_turn_carries_over(scenario):
     assert not _turn_correct(follow_up, "Email to Sarah", False, {})
 
 
+def test_past_request_cases_can_only_be_answered_from_a_middle_request(scenario):
+    from evals.scenarios import PAST_REQUEST
+    from server.services.execution.entities import tokenize
+
+    cases = [case for case in scenario.cases if case.category == PAST_REQUEST]
+    assert len(cases) == 12
+    agents = {agent.name: agent for agent in scenario.agents}
+    for case in cases:
+        gold = agents[case.gold]
+        item_words = set(tokenize(case.message)) - {"ever", "come", "through", "sent", "yet", gold.contact.first.lower()}
+        assert item_words, case.message
+        positions = [i for i, text in enumerate(gold.requests) if item_words <= set(tokenize(text))]
+        assert len(positions) == 1 and 0 < positions[0] < len(gold.requests) - 1, gold.requests
+        assert not item_words & set(tokenize(" ".join([gold.name, gold.summary])))
+        for other in scenario.agents:
+            if other.name != case.gold:
+                assert not item_words & set(tokenize(" ".join([other.name, other.summary, *other.requests])))
+
+
+def test_the_added_words_change_nothing_for_the_other_cases(scenario):
+    from evals.paraphrase_set import HANDWRITTEN
+    from evals.scenarios import PAST_REQUEST, PAST_REQUEST_ITEMS
+    from server.services.execution.entities import tokenize
+
+    item_words = set(tokenize(" ".join(PAST_REQUEST_ITEMS)))
+    messages = [case.message for case in scenario.cases if case.category != PAST_REQUEST]
+    messages += [turn.message for conversation in scenario.conversations for turn in conversation.turns]
+    messages += [item.message for item in HANDWRITTEN]
+    assert not item_words & set(tokenize(" ".join(messages)))
+
+
+def test_llm_sample_is_unchanged_by_added_categories(scenario):
+    from evals.llm import added_cases
+    from evals.scenarios import PAST_REQUEST
+
+    sample = sample_cases(scenario, 40, seed=7)
+    assert len(sample) == 40 and not any(case.category == PAST_REQUEST for case in sample)
+    extra = added_cases(scenario, 6)
+    assert len(extra) == 6 and {case.category for case in extra} == {PAST_REQUEST}
+    assert sum("Has " in case.message for case in extra) == 3  # half name the person
+
+
 def test_conversation_comparison(scenario):
     conversations = run_simulated(scenario)["conversations"]
     base, new, no_flag = conversations["baseline"], conversations["solution"], conversations["solution_without_new_task"]

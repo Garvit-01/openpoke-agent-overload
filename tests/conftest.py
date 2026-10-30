@@ -57,6 +57,14 @@ def no_background_model_calls(monkeypatch):
     monkeypatch.setattr(get_settings(), "agent_search_phrases", False)
 
 
+@pytest.fixture(autouse=True)
+def keyword_search_by_default(monkeypatch):
+    """Tests use keyword search unless they ask for hybrid, so the suite never loads an embedding model."""
+    from server.config import get_settings
+
+    monkeypatch.setattr(get_settings(), "agent_retriever", "bm25")
+
+
 @pytest.fixture
 def clock() -> FakeClock:
     return FakeClock()

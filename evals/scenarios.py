@@ -21,7 +21,13 @@ from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Optional, Sequence, Set, Tuple
 
 from server.services.execution.digest import build_digest
-from server.services.execution.entities import tokenize
+from server.services.execution.entities import tokenize as _app_tokenize
+
+
+# The simulated router stands in for the model, so it reads words as written whatever OPENPOKE_FOLD_PLURALS
+# says: a setting of the app's search must not also change the judge (evals/compare.py flips it per row).
+def tokenize(text: str):
+    return _app_tokenize(text, fold=False)
 
 NEW = "__NEW__"
 DEFAULT_NOW = datetime(2026, 10, 26, 12, 0, tzinfo=timezone.utc)
@@ -131,6 +137,9 @@ class SyntheticAgent:
     contact: Optional[Contact] = None
     topic: str = ""
     thread_id: str = ""
+    # Every request sent to the agent, oldest first. The summary above is built from the first one only
+    # (see _add_request_histories for why the later ones are left out of it).
+    requests: List[str] = field(default_factory=list)
 
 
 @dataclass
@@ -235,9 +244,10 @@ def build_scenario(n_agents: int = 300, seed: int = 7, now: datetime = DEFAULT_N
             continue
         pairs.add((contact.full_name, topic))
         thread_id = "%016x" % rng.getrandbits(64)
+        request = f"Draft a reply to {contact.full_name} ({contact.email}) about the {topic}"
         summary, entities = _digest(
             name,
-            f"Draft a reply to {contact.full_name} ({contact.email}) about the {topic}",
+            request,
             f'Calling gmail_create_draft with: {{"recipient_email": "{contact.email}", '
             f'"subject": "Re: {topic}", "thread_id": "{thread_id}"}}',
             f"Draft created for {contact.full_name} at {contact.company} about the {topic}. Waiting for the user to confirm.",
@@ -247,7 +257,7 @@ def build_scenario(n_agents: int = 300, seed: int = 7, now: datetime = DEFAULT_N
             SyntheticAgent(
                 name=name, kind="thread", summary=summary, entities=entities,
                 created_days_ago=active + rng.uniform(0, 20), active_days_ago=active,
-                contact=contact, topic=topic, thread_id=thread_id,
+                contact=contact, topic=topic, thread_id=thread_id, requests=[request],
             )
         )
 
@@ -255,9 +265,10 @@ def build_scenario(n_agents: int = 300, seed: int = 7, now: datetime = DEFAULT_N
     rng.shuffle(things)
     for thing in things[:n_reminders]:
         name = f"Reminder: {thing}"
+        request = f"Remind the user to {thing}"
         summary, entities = _digest(
             name,
-            f"Remind the user to {thing}",
+            request,
             'Calling createTrigger with: {"payload": "' + thing + '"}',
             f"Reminder set: {thing}.",
         )
@@ -266,7 +277,7 @@ def build_scenario(n_agents: int = 300, seed: int = 7, now: datetime = DEFAULT_N
             SyntheticAgent(
                 name=name, kind="reminder", summary=summary, entities=entities,
                 created_days_ago=active + rng.uniform(0, 20), active_days_ago=active,
-                has_trigger=rng.random() < 0.7, topic=thing,
+                has_trigger=rng.random() < 0.7, topic=thing, requests=[request],
             )
         )
 
@@ -288,6 +299,7 @@ def build_scenario(n_agents: int = 300, seed: int = 7, now: datetime = DEFAULT_N
             SyntheticAgent(
                 name=name, kind="search", summary=summary, entities=entities,
                 created_days_ago=active + rng.uniform(0, 20), active_days_ago=active, topic=topic,
+                requests=[request],
             )
         )
 
@@ -295,6 +307,8 @@ def build_scenario(n_agents: int = 300, seed: int = 7, now: datetime = DEFAULT_N
     cases = _build_cases(rng, agents, contacts)
     # A separate generator, so adding conversations never changes the single-turn cases
     conversations = _build_conversations(random.Random(seed * 1009 + 1), agents, contacts)
+    # And another one for request histories, so they change neither of the above
+    cases += _add_request_histories(random.Random(seed * 7907 + 3), agents, len(cases))
     return Scenario(
         seed=seed, now=now, agents=agents, cases=cases, vocabulary=_vocabulary(), conversations=conversations
     )
@@ -304,7 +318,73 @@ def _vocabulary() -> Set[str]:
     """Words that name people, companies, topics and tasks: what a follow-up is "about"."""
     words: List[str] = [*COMMON_FIRST, *OTHER_FIRST, *LAST_NAMES, *NEW_LAST_NAMES, *COMPANIES]
     words += TOPICS + REMINDER_THINGS + NEW_REMINDER_THINGS + NEW_TOPICS
+    # No earlier case or conversation message uses these words (a test checks), so adding them
+    # changes nothing for the other categories
+    words += PAST_REQUEST_ITEMS
     return set(tokenize(" ".join(words)))
+
+
+PAST_REQUEST = "followup_past_request"
+PAST_REQUEST_CASES = 12
+# Things asked for in the middle of a thread. Their words appear nowhere else in the scenario.
+PAST_REQUEST_ITEMS = [
+    "seating chart", "dietary restrictions", "wifi password", "shipping labels", "notarized copy",
+    "cloakroom tokens", "wire receipt", "allergy list", "floor measurements", "fabric swatches",
+    "loading dock hours", "spare keys", "projector cables", "visitor badges",
+]
+# Everyday follow-ups that make up most of a real history: noise for every other category.
+# Some mention another contact, the way "cc Sarah" does in real requests.
+HISTORY_NOISE = [
+    "Ask {first} whether Thursday works for a call about the {topic}",
+    "Send {first} a short nudge about the {topic}",
+    "Move the {topic} call with {first} to next week",
+    "Cc {other} on the next reply",
+    "Check if {first} replied and summarise what they said",
+]
+HISTORY_SHARE = 0.2  # share of thread agents with more than one request
+
+
+def _add_request_histories(rng: random.Random, agents: Sequence[SyntheticAgent], first_id: int) -> List[Case]:
+    """Give some thread agents a longer history, and label follow-ups that only a middle request can answer.
+
+    Every agent already holds its first request. About HISTORY_SHARE of the thread agents get one to
+    three everyday follow-up requests (noise). PAST_REQUEST_CASES of them also get a request for a
+    specific item in the middle of their history, and a case asks about that item later: half by item
+    only ("Did the seating chart ever come through?"), half with the person's first name.
+
+    Assumption: summaries stay as generated (first request and result), so every other category is
+    measured on the same profiles as before. In the app the summary would also show the latest ask.
+    That is why the item request is never the latest one: the summary would not show it either way.
+    """
+
+    threads = [agent for agent in agents if agent.kind == "thread"]
+    if not threads:
+        return []
+    pool = list(threads)
+    rng.shuffle(pool)
+    with_history = pool[: max(PAST_REQUEST_CASES, int(len(threads) * HISTORY_SHARE))]
+    targets = with_history[: min(PAST_REQUEST_CASES, len(PAST_REQUEST_ITEMS))]
+    others = [agent.contact.full_name for agent in threads]
+
+    def noise(agent: SyntheticAgent) -> str:
+        template = rng.choice(HISTORY_NOISE)
+        other = rng.choice([name for name in others if name != agent.contact.full_name] or others)
+        return template.format(first=agent.contact.first, topic=agent.topic, other=other)
+
+    cases: List[Case] = []
+    for agent in with_history:
+        middle = [noise(agent) for _ in range(rng.randint(0, 2))]
+        if agent in targets:
+            item = PAST_REQUEST_ITEMS[targets.index(agent)]
+            middle.insert(rng.randint(0, len(middle)), f"Ask {agent.contact.first} to also send the {item} for the {agent.topic}")
+            if len(cases) % 2 == 0:
+                message = f"Did the {item} ever come through?"
+            else:
+                message = f"Has {agent.contact.first} sent the {item} yet?"
+            cases.append(Case(id=f"{PAST_REQUEST}-{first_id + len(cases):03d}", category=PAST_REQUEST, message=message, gold=agent.name))
+        # The latest request is always everyday noise, never the item
+        agent.requests = [*agent.requests, *middle, noise(agent)]
+    return cases
 
 
 def _build_cases(rng: random.Random, agents: Sequence[SyntheticAgent], contacts: Sequence[Contact]) -> List[Case]:
@@ -495,6 +575,8 @@ __all__ = [
     "DEFAULT_NOW",
     "NEW",
     "PARAPHRASES",
+    "PAST_REQUEST",
+    "PAST_REQUEST_ITEMS",
     "Scenario",
     "SyntheticAgent",
     "Turn",

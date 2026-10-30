@@ -11,9 +11,9 @@ from typing import Dict, Iterable, Iterator, List, Optional, Tuple
 from ...logging_config import logger
 from ...utils.timezones import now_in_user_timezone
 from .ids import agent_id_for
+from ...paths import DATA_DIR as _DATA_DIR
 
 
-_DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
 _EXECUTION_LOG_DIR = _DATA_DIR / "execution_agents"
 
 

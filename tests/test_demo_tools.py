@@ -144,3 +144,51 @@ def test_move_aside_never_deletes(tmp_path):
     assert not data.exists()
     assert (backup / "execution_agents" / "registry.db").read_text(encoding="utf-8") == "keep me"
     assert demo.move_aside(tmp_path / "missing") is None
+
+
+def test_data_folder_setting_moves_every_store(tmp_path):
+    # Several copies of the app run side by side only if none of them writes into server/data
+    import os
+    import subprocess
+    import sys
+
+    code = (
+        "from server.services.execution import roster, routing; from server.services import timezone_store; "
+        "import server.services.triggers as triggers; from server.services.conversation import log; "
+        "print(roster._REGISTRY_PATH, routing._ROUTING_LOG_PATH, timezone_store._TIMEZONE_PATH, "
+        "triggers._default_db_path, log._CONVERSATION_LOG_PATH, sep=chr(10))"
+    )
+    root = Path(__file__).resolve().parent.parent
+    env = {**os.environ, "OPENPOKE_DATA_DIR": str(tmp_path)}
+    result = subprocess.run([sys.executable, "-c", code], cwd=root, env=env, capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    paths = result.stdout.splitlines()
+    assert len(paths) == 5 and all(Path(path).is_relative_to(tmp_path) for path in paths)
+
+
+def test_variants_get_their_own_port_and_data():
+    import argparse
+
+    from evals.configs import CONFIGS
+
+    demo = load("demo")
+    assert set(demo.VARIANT_PORTS) == {key for key, _, _ in CONFIGS}
+    apps = demo.apps_for(argparse.Namespace(variants="every"))
+    assert len({app.url for app in apps}) == len({app.data for app in apps}) == len(CONFIGS)
+    assert all(app.data != demo.OURS_DATA for app in apps)
+    assert [app.label for app in demo.apps_for(argparse.Namespace(variants="main,all"))] == ["agent-overload (main)", "all three together"]
+    assert demo.apps_for(argparse.Namespace(variants=None))[0].settings is None
+
+
+def test_demo_scores_new_and_existing_answers():
+    from evals.scenarios import NEW
+
+    demo = load("demo")
+    assert demo.is_right("Email to Sarah Okafor", [("email to sarah okafor", False)]) is True
+    assert demo.is_right("Email to Sarah Okafor", [("Email to Sarah Murphy", False)]) is False
+    assert demo.is_right(NEW, [("Email to Sarah Lee", True)]) is True
+    assert demo.is_right(NEW, [("Email to Sarah Okafor", False)]) is False
+    assert demo.is_right("Email to Sarah Okafor", []) is False
+    assert demo.is_right(None, [("anything", False)]) is None
+    text = "\n".join(demo.score_lines([{"original": False, "all": True}, {"original": True, "all": True}, {"original": None, "all": None}], "x"))
+    assert "original  1/2" in text and "all       2/2" in text

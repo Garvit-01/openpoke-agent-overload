@@ -1,31 +1,39 @@
 # OpenPoke: fixing agent overload
 
-This is a fork of [OpenPoke](https://github.com/shlokkhemani/openpoke) by Shlok Khemani, an open source take on the Poke assistant. I changed how the main agent finds and reuses its helper agents, so it keeps routing to the right one as helpers pile up. There are tests, an evaluator that runs the original code and my version on the same data, and a live demo that runs both apps side by side.
+This is a fork of [OpenPoke](https://github.com/shlokkhemani/openpoke) by Shlok Khemani, an open source take on the Poke assistant. I changed how the main agent finds and reuses its helper agents, so it keeps routing to the right one as helpers pile up. There are tests, an evaluator that runs the original code and this version on the same data, and a live demo that runs them side by side.
 
-The original is on branch `upstream-main` (upstream commit `5b5f635`). Everything behind the numbers below, run by run, is in [docs/EVALUATION.md](docs/EVALUATION.md). Three further approaches, each on its own branch and compared side by side, are summarised in [Three alternative approaches](#three-alternative-approaches-other-branches).
+The original is on branch `upstream-main` (upstream commit `5b5f635`). Run-by-run detail is in [docs/EVALUATION.md](docs/EVALUATION.md), and the approaches I measured against each other are in [docs/COMPARISON.md](docs/COMPARISON.md).
 
 ## In short
 
 **The problem.** OpenPoke has one interaction agent (the one you talk to) and many execution agents, one per task, like "Email to Sarah". Agents are kept forever so they can own a thread for follow-ups. After a few weeks there are hundreds. The original puts every agent's name into every prompt, and reuses an agent only on an exact name match. With four contacts called Sarah and names like "Email to Sarah", the model can't tell which thread a follow-up belongs to. So it guesses, or creates a duplicate.
 
-**The fix.** Treat "which agent is this about?" as a retrieval problem. An SQLite registry keeps a summary, contacts, thread ids and status for each agent. Each turn the prompt shows a fixed shortlist of 12 (8 found for the message, 4 recently used), plus the other agents of any person the message names. An exact email or thread match always wins. A resolver stops duplicates when an agent is created, and idle agents are retired but stay searchable.
+**The fix.** Treat "which agent is this about?" as a retrieval problem. An SQLite registry keeps a summary, contacts, thread ids, past requests and status for each agent. Each turn the prompt shows a fixed shortlist of 12 (8 found for the message, 4 recently used), plus the other agents of any person the message names. An exact email or thread match always wins. A resolver stops duplicates when an agent is created, and idle agents are retired but stay searchable.
 
-**The result.** On the same data and the same model, routing goes from about 58% right to 99%, duplicates mostly disappear, and the prompt stops growing with the roster.
+**The result.** Claude Haiku 5.5, 300 agents, the same cases and the same day for both columns, 3 runs per case:
 
 | | Original | This branch |
 |---|---|---|
-| **Real model** (Claude Haiku 5.5), 300 agents, 40 cases × 3 runs: runs routed right | 58.3% | **99.2%** |
-| Cases right (2 of 3 runs), with 95% interval | 24/40 (45% to 74%) | **40/40** (91% to 100%) |
-| Real model, **800 agents**: runs routed right | 54.2% | **100%** |
-| 800 agents: duplicate agent created when the right one existed | **44.8%** | 0.0% |
-| 800 agents: input tokens per routing decision | 19,471 | 7,287 |
-| 24 **hand-written paraphrases** (no shared words with their agent): cases right | 15/24 | **24/24** |
-| same, right on all 3 runs (pass^3) | 54.2% | 83.3% |
-| **Second model** (Gemma 4 26B), 40 cases: cases right | 19/40 | **29/40** |
-| Simulated router, 185 labelled cases: right | 57.8% | 93.0% |
-| Simulated, 26 multi-turn conversations: every turn right | 34.6% | 100% |
+| 46 follow-up cases (40 usual + 6 about a request made mid-history): cases right | 22/46 (34% to 62%) | **45/46** (89% to 100%) |
+| same, runs right / right on all 3 runs | 49.3% / 45.7% | **97.8% / 95.7%** |
+| same, duplicate agent created when the right one existed | 29.8% | **0%** |
+| 24 hand-written paraphrases (no shared words with their agent): cases right | 13/24 | **24/24** |
+| same, right on all 3 runs | 45.8% | **100%** |
+| Input tokens per routing decision | 9,853 | **7,483** |
 
-**Is the difference real?** On the 40 real-model cases this branch fixed 16 and broke 0 at 300 agents (McNemar's exact test, p = 3e-5), and 19 and 0 at 800 agents (p = 4e-6). On the 185 simulated cases it fixed 65 and broke 0 (p = 5e-20). The data is synthetic, so read [Limitations](#limitations) before quoting any of this.
+Cases right means right on at least 2 of 3 runs; the ranges are 95% Wilson intervals. On the 46 cases this branch fixed 23 and broke 0 against the original (McNemar's exact test, p = 2e-7), and on the paraphrases 11 and 0 (p = 0.001).
+
+As the roster grows:
+
+| | Original | This branch |
+|---|---|---|
+| Real model, **800 agents**, 40 cases: runs right (core fix, before the additions below) | 54.2% | **100%** |
+| 800 agents: duplicate agent created when the right one existed | 44.8% | **0%** |
+| 800 agents: input tokens per routing decision | 19,471 | **7,287** |
+| Simulated router, **1000 agents**, 197 cases: right | 103/197 | **181/197** |
+| 1000 agents: tokens of agent list in each prompt | 10,709 | **999** |
+
+The data is synthetic. Read [Limitations](#limitations) before quoting any of this.
 
 ## What was wrong in the original
 
@@ -57,12 +65,16 @@ The author names the first problems himself in his [explainer](https://www.shlok
 | 12 | When the message names a person, list that person's other agents by name and topic | `retrieval.py` |
 | 13 | Prompt: search for the name a task was probably filed under, not the user's words | `system_prompt.md` |
 | 14 | Search phrases: after an agent's first run, a cheap model writes about 10 ways a user might refer to it, and search indexes them | `phrases.py` |
+| 15 | Plurals folded in search and in the dedup key, so "groceries" finds "Grocery list" | `entities.py` |
+| 16 | A misspelt contact name ("Sarha") gets a hint listing every Sarah, and the model asks which one | `retrieval.py`, `system_prompt.md` |
+| 17 | Search also reads each agent's last 20 requests, at half weight, so "did the seating chart come through?" finds the agent it was asked of | `retrieval.py` |
+| 18 | Optional search by meaning with a small local model, off by default | `embeddings.py` |
 
-Changes 12 to 14 were each added after an eval showed the original doing better on some cases. [docs/EVALUATION.md](docs/EVALUATION.md) shows the before and after of each.
+Changes 12 to 17 were each added after an eval showed a gap. The tests that pin the routing behaviour are `test_retrieval.py`, `test_resolver.py`, `test_registry.py`, `test_lifecycle.py` and `test_outbound_guard.py`.
 
 ## What the live demo showed
 
-`tools/demo.py` loads the same 300 synthetic agents into both apps and sends each the same message (see [Running it](#running-it)). Both apps ran on Haiku 5.5. Gmail wasn't connected, so neither app could send anything. Which agent each one picked is real. Among the 300 agents are four Sarahs: Okafor (job offer), Murphy (tax documents), Dubois and Evans.
+`tools/demo.py` loads the same 300 synthetic agents into the apps and sends each the same message (see [Running it](#running-it)). Both apps ran on Haiku 5.5. Gmail wasn't connected, so neither app could send anything, but which agent each one picked is real. Among the 300 agents are four Sarahs: Okafor (job offer), Murphy (tax documents), Dubois and Evans.
 
 | You type | Original | This branch |
 |---|---|---|
@@ -70,45 +82,38 @@ Changes 12 to 14 were each added after an eval showed the original doing better 
 | "**Sarah Okafor**" | Stayed on Murphy's agent. It couldn't find Okafor's address, and its draft left out one of the three items | Created "Grocery list email to Sarah Okafor" with her right address and all three items |
 | "message sarah regarding the movie..." | Murphy's agent again, without asking | Asked which Sarah |
 
-For the movie message, measured on each app's real model calls:
+For the movie message, the original made 6 model calls with 70,233 input tokens ($0.0078, 17.1 s). This branch made 1 call with 10,760 tokens ($0.0013, 8.6 s). Most of that gap is because it asked instead of doing the wrong work, so it isn't a like-for-like saving.
 
-| | Original | This branch |
-|---|---|---|
-| Model calls | 6 (4 routing, 2 in Murphy's agent) | 1 |
-| Input tokens | 70,233 | 10,760 |
-| Cost | $0.0078 | $0.0013 |
-| Time to final reply | 17.1 s | 8.6 s |
-| Routing input tokens **per call** | 14,219 | 10,760 |
-
-Most of that gap is because this branch asked a question instead of doing the wrong work. It isn't a like-for-like saving. Per routing call the original used about 3,500 more input tokens, roughly the size of its 300-name list. At 800 agents the eval measured 19,471 vs 7,287 input tokens per decision.
+In a second live run, 10 labelled messages (one per category) went to the original and to each version at once. The original got 5 right, the core fix 8, and all three additions together 10. Ten messages is an illustration, not evidence: the intervals overlap.
 
 ## Design choices
 
-**One agent per task, not one per person.** The explainer's example has one agent own everything about Alice. I kept the original's per-task agents and added `new_task`. Three reasons:
-- The original prompt already says to start a new agent when tasks can run in parallel.
-- With the run lock, one agent per person would make Emma's new audit email wait behind her lease work.
-- An agent about one topic gets a summary that search can match.
-
-The cost is more agents, which retrieval and lifecycle have to carry.
+**One agent per task, not one per person.** The explainer's example has one agent own everything about Alice. I kept the original's per-task agents and added `new_task`, because the original prompt already says to start a new agent when tasks can run in parallel, and with the run lock one agent per person would make Emma's new audit email wait behind her lease work. The cost is more agents, which retrieval and lifecycle have to carry.
 
 **Hard matches before similarity.** An email address or Gmail thread id says which thread a message belongs to. Keyword or meaning similarity only says what it's about. So exact matches decide, similarity only ranks, and similarity never merges two agents.
 
-**SQLite and in-process BM25, not Elasticsearch or a vector database.** One user has hundreds of agents, maybe a few thousand. The registry needs exact lookups ("who owns this thread?") and safe writes. SQLite does both and ships with Python. All of this branch's routing work (search, shortlist, prompt) takes about 26 ms per turn at 300 agents (70 ms at p95), in plain Python. One model call takes about 3 seconds.
+**SQLite and in-process BM25, not Elasticsearch or a vector database.** One user has hundreds of agents, maybe a few thousand. The registry needs exact lookups ("who owns this thread?") and safe writes. SQLite does both and ships with Python. Routing work takes about 39 ms per turn at 300 agents and 156 ms at 1000, against about 3 seconds for one model call. Elasticsearch would need Docker and 1 to 4 GB of memory on a laptop, and it ranks with BM25 too. A search server makes sense with many users on one deployment.
 
-I looked at the alternatives:
-- **Elasticsearch / OpenSearch.** Running either locally on Windows needs Docker and WSL and about 1 to 4 GB of memory. Elasticsearch also ranks with BM25, so it wouldn't change the core ranking. Its extras (stemming, typo matching, hybrid search) each have an in-process equivalent: SQLite FTS5, `difflib`, numpy.
-- **Embeddings.** On a 43,000-tool retrieval benchmark, plain BM25 beat small embedders such as all-MiniLM and e5-small ([ToolRet, 2025](https://arxiv.org/abs/2503.01763)). The gain over BM25 with written search phrases is unproven at this scale.
+**Meaning search is measured, but off by default.** It needs a 110 MB model. With it on, the right agent is in the prompt for all 24 paraphrases (95.8% without it), and the one case below is fixed. Turn it on with `OPENPOKE_AGENT_RETRIEVER=hybrid` where the download is fine.
 
-A search server would make sense with many users on one deployment. The [comparison branch](#next-steps) tests the cheap alternatives on the same eval.
+## Alternatives I measured
 
-**How this lines up with the author's suggestions:**
+The additions (changes 15 to 18) were each built on their own branch first, then measured on the same cases, model and seed (`python -m evals.compare_llm`). Real model, 46 follow-up cases:
 
-| Author's suggestion | Here |
-|---|---|
-| Semantic search over agent descriptions | Mostly: summaries, entities and search phrases, searched with BM25 plus exact matches, not embeddings |
-| Archive dormant agents | Yes (change 7) |
-| Cluster related agents | No. Duplicates are prevented on create, but existing ones aren't merged |
-| Hot cache of recent agents | Yes, the 4 most recent are always shown (change 2) |
+| Version | Cases right | 6 mid-history cases | Paraphrases right | Duplicates | Fixed / broke vs core fix |
+|---|---|---|---|---|---|
+| Core fix (changes 1 to 14) | 39/46 | 0/6 | 23/24 | 13.2% | |
+| + plurals and typo hints | 39/46 | 0/6 | 24/24 | 13.2% | 0 / 0 |
+| + past-request search | 44/46 | 6/6 | 22/24 | 0% | 6 / 1 |
+| + meaning search | 40/46 | 0/6 | 24/24 | 14.0% | 1 / 0 |
+| **This branch: plurals, typos and past requests** | **45/46** | **6/6** | **24/24** | **0%** | **7 / 1** (p = 0.07) |
+| All of them, meaning search on | 46/46 | 6/6 | 24/24 | 0% | 7 / 0 (p = 0.016) |
+
+The core fix and single-addition rows ran on 2026-10-28, and this branch's row on 2026-10-29. The original runs inside every row, and its range across those runs (22 to 24 of 46) shows how much identical runs vary.
+
+**The one break.** "Write to Ibrahim Holloway about the launch timeline" should create a new agent. Past-request search puts 10 "launch timeline" agents next to another Ibrahim, and the model asked a question instead of acting in 2 of 3 runs. It never picked a wrong agent. The same case broke with past-request search alone, so I count it as a real cost, not noise.
+
+Branch map: `baseline` is the core fix alone, frozen. `fix-plurals-typos`, `approach-past-requests` and `approach-embeddings` hold each addition on its own with its write-up. `all-approaches` is where they were compared.
 
 ## Other gaps I found
 
@@ -124,90 +129,59 @@ Not fixed, worth knowing:
 
 ## Limitations
 
-- **The data is synthetic.** I generated the 300 agents and labelled messages to contain known failure modes. The 24 hand-written paraphrases avoid the generator's wording, but one author wrote them with Claude's help. Real users will be messier.
-- **One model family does most of the work.** Haiku routes, Haiku writes the search phrases, and a Claude model helped write the test messages. Gemma checks the routing side only.
-- **The sample is small.** 40 main cases and 24 paraphrases. The headline difference is significant, but per-category numbers move 20 points when one case flips.
-- **Paraphrases are still the weak spot.** For 3 of the 24 the right agent isn't in the shortlist, and the model only finds it by searching. 4 cases were right on 2 of 3 runs, not all 3. Branches `fix-plurals-typos` and `approach-embeddings` close most of this gap (see below).
-- **No stemming or typo matching on this branch.** "grocery" doesn't match "groceries", and "Sarha" doesn't match "Sarah". In the demo the model asked who "Sarha" was, which is safe but not smart. Branch `fix-plurals-typos` fixes both.
-- **It asks "which Sarah?" even right after you named one.** One turn after "Sarah Okafor", it asked again for a new topic. That's a deliberate lean towards asking before an email goes out, but a person would guess Okafor.
-- **Gmail isn't tested live.** Routing never needs Gmail, so none of the numbers above depend on it. Incoming-email routing by thread id, drafting and the send guard are unit-tested with fakes, not run against a real inbox.
-- **Prompt caching isn't measured.** The original's list changes only when an agent is created, so with a warm cache it costs less than the token counts suggest. Caching doesn't change its accuracy.
+- **The data is synthetic.** I generated the agents and labelled messages to contain known failure modes. The 24 hand-written paraphrases avoid the generator's wording, but one author wrote them with Claude's help. Real users will be messier.
+- **One model family does most of the work.** Haiku routes, Haiku writes the search phrases, and a Claude model helped write the test messages. Gemma 4 checked the core fix's routing only (29/40 against 19/40 for the original).
+- **The sample is small.** 46 cases and 24 paraphrases. The difference from the original is large and significant. The difference from the core fix (7 fixed, 1 broken) is not significant on its own.
+- **The suite is now nearly saturated.** At 45/46 and 24/24 it catches regressions, but it can't show further gains. Harder cases are the next step.
+- **It asks "which Sarah?" even right after you named one.** That's a deliberate lean towards asking before an email goes out, but a person would guess the Sarah from the last turn.
+- **Typo matching is simple.** It catches one-letter typos in a name position that keep the first letter (all 124 in a labelled check, with no hint on any of 301 eval messages). 3 of 36 common names no contact has ("Sara", "Nora", "Rose") also get a "did you mean".
+- **Gmail isn't tested end to end.** Agreed with General Magic: routing never needs Gmail, so none of the numbers above depend on it. Incoming-email routing by thread id, drafting and the send guard are unit-tested with fakes.
+- **It isn't faster for the user.** The final answer arrives 11 to 16 seconds after a message, as with the original. See next steps.
 
 ## Next steps
 
-1. **Merge the alternatives into this branch** once someone has looked at them, then rerun the real-model comparison once more to see which 1-case differences repeat. Not tried yet: the router seeing 30 candidates instead of 12, and the original full list with prompt caching on, to answer "with caching, why retrieve?".
-2. Run the real-model eval on the multi-turn conversations, mainly to see how often the model sets `new_task`.
-3. Use recent context for first names: prefer the Sarah from the last few turns, but still ask before sending.
-4. Turn routing-log mistakes into eval cases.
-5. A merge tool for duplicates that already exist.
-
-## Three alternative approaches (other branches)
-
-After this fix I tried three more ideas, each on its own branch on top of this one:
-
-- **`fix-plurals-typos`**: plural folding ("groceries" finds "Grocery list") and "did you mean ...?" hints for misspelt contact names ("Sarha" lists every Sarah).
-- **`approach-past-requests`**: keyword search also reads each agent's last 20 requests, at half weight, so a follow-up about something asked mid-history still finds the agent.
-- **`approach-embeddings`**: optional search by meaning with a small local embedding model, next to keyword search.
-
-Branch **`all-approaches`** has all three behind settings, and `python -m evals.compare` runs each one on the same cases. Simulated router, 300 agents, seed 7:
-
-| Version | Generated (197 cases) right | Fixed / broke vs this branch | Paraphrases: right agent in prompt | Roster tokens | Routing p50 |
-|---|---|---|---|---|---|
-| Original OpenPoke | 108 | | all shown | 3,135 | 1 ms |
-| This branch (`main`) | 172 | | 87.5% | 957 | 24 ms |
-| + plurals and typo hints | 172 | 0 / 0 | 95.8% | 959 | 29 ms |
-| + past-request search | 185 | 13 / 0 (p = 0.00024) | 87.5% | 964 | 27 ms |
-| + meaning search | 172 | 0 / 0 | 100% | 983 | 61 ms |
-| all three together | 185 | 13 / 0 | 100% | 991 | 37 ms |
-
-None of them breaks a case this branch gets right. Past requests fix 12 follow-ups about a mid-history request, and the 13th fix is a coincidental word match. Plurals and meaning search close the paraphrase gap.
-
-On the real model (Haiku 5.5, all rows on the same day, 3 runs per case, `python -m evals.compare_llm`, $2.36 in total):
-
-| Version | Usual 40 cases right | 6 mid-history cases | Paraphrases right | Paraphrases right on all 3 runs | Input tokens per decision |
-|---|---|---|---|---|---|
-| Original OpenPoke (5 identical runs) | 22 to 24 | 0 | 12 to 15 | 41.7% to 54.2% | 9,853 |
-| This branch (`main`) | 39 | 0 | 23 | 87.5% | 8,666 |
-| + plurals and typo hints | 39 | 0 | 24 | 95.8% | 8,356 |
-| + past-request search | 38 | 6 | 22 | 87.5% | 7,655 |
-| + meaning search | 40 | 0 | 24 | 95.8% | 8,775 |
-| all three together | **40** | **6** | **24** | **100%** | **7,322** |
-
-All three together were right on every case and every run of both sets. On the 46 generated cases they fixed 7 and broke 0 against this branch (p = 0.016). Past requests alone broke 2 cases where the model didn't route at all. Both cases are right with all three on, so I read them as model noise, but they are reported as breaks.
-
-My verdict: all three together. Meaning search stays optional because it needs about 110 MB of downloads. Full tables, method and caveats: [docs/COMPARISON.md on branch `all-approaches`](https://github.com/Garvit-01/openpoke-agent-overload/blob/all-approaches/docs/COMPARISON.md).
+1. **Speed.** The main agent makes about 4 model calls per message, and 2 of them do nothing: the loop asks the model "anything else?" after a step that already ends the turn. Ending the loop there saves about 40% of its tokens. Half of its output is thinking; turning that off could cut 2 to 3 seconds, but needs the routing eval rerun. Prompt caching would cut cost more than time.
+2. **Real traffic.** Turn routing-log mistakes into eval cases, and add harder cases now that the suite is nearly saturated.
+3. **A second model family** for writing test cases, to rule out same-family bias.
+4. **Recent context for first names:** prefer the Sarah from the last few turns, but still ask before sending.
+5. **A merge tool** for duplicates that already exist.
 
 ## Running it
 
 ```bash
 pip install -r server/requirements.txt pytest
-python -m pytest                                  # 128 tests, about a minute, no keys needed
-python -m evals.run_eval                          # simulated eval, about 2 minutes, writes evals/results/
-python -m evals.run_eval --router llm --phrases   # real model, needs OPENROUTER_API_KEY, about $0.30 on Haiku 5.5
+python -m pytest                                  # all tests, about two minutes, no keys needed
+python -m evals.run_eval                          # simulated eval, about 2 minutes, free, writes evals/results/
+python -m evals.compare                           # every version side by side, simulated, about 12 minutes, free
+python -m evals.run_eval --router llm --phrases   # real model, needs OPENROUTER_API_KEY in .env, about $0.30 on Haiku 5.5
 python -m evals.run_eval --set paraphrase --router llm --phrases   # the 24 hand-written paraphrases
-python -m evals.run_eval --router llm --agents 800 --phrases       # the overload at 800 agents
-python -m evals.run_eval --router llm --rescore   # re-report a saved run, no model calls
+python -m evals.compare_llm --reuse               # rebuild the real-model comparison from the saved runs, no calls
 ```
 
-The real-model eval uses `anthropic/claude-haiku-5.5` unless you pass `--model`. More options are in [docs/EVALUATION.md](docs/EVALUATION.md).
+The real-model eval uses `anthropic/claude-haiku-5.5` unless you pass `--model`. More options are in [docs/EVALUATION.md](docs/EVALUATION.md). Meaning search needs `pip install -r server/requirements-embeddings.txt`; without it the tests that need the model are skipped.
 
-### Live demo: both apps side by side
+### Live demo: side by side
 
 ```bash
 git worktree add ../openpoke-original 5b5f635   # the original (branch upstream-main), in its own folder
-python tools/demo.py seed                    # the same 300 agents into both apps (moves existing data aside)
-python tools/run_mine.py                     # this branch on port 8001, in its own terminal
-python tools/run_original.py                 # the original on port 8002, in another terminal
+python tools/demo.py seed                       # the same 300 agents into both apps (moves existing data aside)
+python tools/run_mine.py                        # this branch on port 8001, in its own terminal
+python tools/run_original.py                    # the original on port 8002, in another terminal
 python tools/demo.py ask "Could you send the updated grocery to Sarah"
 python tools/demo.py status
 ```
 
-`ask` prints, for each app:
-- its replies, and which agent it used (new or existing, and for this branch the reason);
-- how many agents were in its prompt;
-- its model calls, tokens, cost and time.
+`ask` prints, for each app, its replies, which agent it used (and for this branch why), how many agents were in its prompt, and its model calls, tokens, cost and time. For a labelled eval case it also prints the right answer. `run_original.py` runs the original's code unchanged, with two runtime-only patches it needs to start today: a stand-in for `fcntl` on Windows, and a current model name. Both apps run on Haiku 5.5, and a message costs under a cent per app.
 
-For a labelled eval case it also prints the right answer. The launchers record each model call by wrapping the one function both apps call the model through, in memory. `run_original.py` runs the original's code unchanged, with two runtime-only patches it needs to start today: a stand-in for `fcntl` on Windows, and a current model name. Both apps run on Haiku 5.5, and a message costs under a cent per app.
+To compare every version at once, each as its own app with its own port and data folder:
+
+```bash
+python tools/demo.py --variants every seed       # the original plus main, plurals_typos, past_requests, embeddings, default, all
+python tools/run_mine.py --variant default       # one terminal per version, ports 8011 to 8016
+python tools/demo.py --variants every cases      # one labelled case per category (10), then a score per app
+```
+
+`--variants main,default` runs just those two. Each message costs about a cent per app.
 
 ### New settings (env vars, all optional)
 
@@ -217,21 +191,27 @@ For a labelled eval case it also prints the right answer. The launchers record e
 | `OPENPOKE_AGENT_SUMMARY_CHARS` | 200 | Summary length shown per agent |
 | `OPENPOKE_AGENT_NAMED_PEOPLE` | 12 | A named person's other agents listed (0 = off) |
 | `OPENPOKE_AGENT_PHRASES` / `OPENPOKE_PHRASES_MODEL` | 1 / `anthropic/claude-haiku-5.5` | Search phrases after an agent's first run (0 = off) |
+| `OPENPOKE_FOLD_PLURALS` | 1 | Fold plurals in search (0 = off) |
+| `OPENPOKE_AGENT_NAME_HINTS` | 1 | "Did you mean ...?" hints for misspelt contact names (0 = off) |
+| `OPENPOKE_AGENT_INDEX_REQUESTS` | 1 | Search each agent's last 20 requests at half weight (0 = off) |
+| `OPENPOKE_AGENT_RETRIEVER` | bm25 | `hybrid` adds search by meaning (needs the embeddings install) |
+| `OPENPOKE_EMBEDDING_MODEL` / `OPENPOKE_EMBEDDING_CACHE` | `BAAI/bge-small-en-v1.5` / fastembed's default | Embedding model and where its files go |
 | `OPENPOKE_AGENT_DORMANT_DAYS` / `OPENPOKE_AGENT_ARCHIVE_DAYS` | 14 / 45 | Idle days before demotion |
 | `OPENPOKE_EXECUTION_HISTORY_LIMIT` | 10 | Past requests an execution agent sees (0 = all) |
 | `OPENPOKE_OUTBOUND_GUARD` | enforce | `off` disables the send guard |
+| `OPENPOKE_DATA_DIR` | `server/data` | Where the app keeps its data (the demo runs several copies) |
 | `OPENPOKE_INTERACTION_MODEL`, `_EXECUTION_MODEL`, `_SEARCH_MODEL`, `_SUMMARIZER_MODEL`, `_CLASSIFIER_MODEL` | `anthropic/claude-sonnet-5.5` | Model per role |
 
 ### What's new in the repo
 
 ```
-server/services/execution/   registry, ids, entities, retrieval, resolver, phrases, digest, lifecycle, routing, roster (migration)
+server/services/execution/   registry, ids, entities, retrieval, resolver, phrases, digest, lifecycle, routing, roster (migration), embeddings
 server/agents/execution_agent/batch_manager.py   per-agent run lock
 server/services/safety/outbound.py               send confirmation guard
-evals/     scenario generator, hand-written paraphrase set, copy of the original, harness, stats, real-model mode, results/
-tests/     128 tests
+evals/     scenario generator, hand-written paraphrase set, copy of the original, harness, stats, real-model mode, compare, typo check, results/
+tests/     unit and behaviour tests
 tools/     run_original.py, run_mine.py, demo.py, usage_meter.py
-docs/      EVALUATION.md
+docs/      EVALUATION.md, COMPARISON.md, APPROACH_PAST_REQUESTS.md, APPROACH_EMBEDDINGS.md
 ```
 
 ---

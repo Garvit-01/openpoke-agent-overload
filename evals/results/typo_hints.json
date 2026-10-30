@@ -1,0 +1,58 @@
+{
+  "first_names": 35,
+  "by_edit": {
+    "swap": {
+      "cases": 35,
+      "named": 35,
+      "listed": 35,
+      "other_names": 1
+    },
+    "double": {
+      "cases": 35,
+      "named": 35,
+      "listed": 35,
+      "other_names": 0
+    },
+    "neighbour": {
+      "cases": 35,
+      "named": 35,
+      "listed": 35,
+      "other_names": 0
+    },
+    "first_letter": {
+      "cases": 35,
+      "named": 0,
+      "listed": 0,
+      "other_names": 2
+    },
+    "drop": {
+      "cases": 19,
+      "named": 19,
+      "listed": 19,
+      "other_names": 0
+    }
+  },
+  "narrowed": {
+    "cases": 22,
+    "right": 22
+  },
+  "misses": [],
+  "false_alarms": {
+    "real_messages": 301,
+    "real_with_hint": [],
+    "spelt_right": 140,
+    "spelt_right_with_hint": [],
+    "unknown_names": 36,
+    "unknown_with_hint": {
+      "Sara": [
+        "Sarah"
+      ],
+      "Nora": [
+        "Noah"
+      ],
+      "Rose": [
+        "Rosa"
+      ]
+    }
+  }
+}

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import asyncio
 from datetime import datetime, timezone, timedelta
-from pathlib import Path
 from typing import List, Optional, TYPE_CHECKING
 
 from .client import execute_gmail_tool, get_active_gmail_user_id
@@ -13,6 +12,7 @@ from .seen_store import GmailSeenStore
 from .importance_classifier import classify_email_importance
 from ...logging_config import logger
 from ...utils.timezones import convert_to_user_timezone
+from ...paths import DATA_DIR as _DATA_DIR
 
 
 if TYPE_CHECKING:  # pragma: no cover - typing only
@@ -31,7 +31,6 @@ DEFAULT_MAX_RESULTS = 50
 DEFAULT_SEEN_LIMIT = 300
 
 
-_DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
 _DEFAULT_SEEN_PATH = _DATA_DIR / "gmail_seen.json"
 
 
