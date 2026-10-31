@@ -77,7 +77,7 @@ python -m evals.compare_llm --reuse  # rebuild the tables from the saved runs, n
 
 Each row is one real-model run in its own process with that row's settings, on the same cases, seed and model. The rows ran on 2026-10-28, except the shipped default's, which I added on 2026-10-29 once the other rows showed it was the one to check. The original runs in every row too, so its range shows how much the model varies between identical runs. Full tables: [evals/results/comparison_llm.md](../evals/results/comparison_llm.md). The first ten runs cost $2.36 together, and the added row $0.46.
 
-![Cases right per version, real model, 300 agents](charts/alternatives.svg)
+[![Cases right per version, real model, 300 agents](charts/alternatives.svg)](charts/alternatives.svg)
 
 | Version | Usual 40 cases, runs right | Usual 40, cases right | 6 mid-history cases | Paraphrases, cases right | Paraphrases, right on all 3 runs | Input tokens per decision (generated set) |
 |---|---|---|---|---|---|---|

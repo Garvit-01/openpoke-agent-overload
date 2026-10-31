@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="960" height="560" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+    </marker>
+  </defs>
+  <rect width="960" height="560" fill="#ffffff"/>
+
+  <text x="32" y="44" font-size="22" font-weight="700" fill="#0f172a">Before: the original OpenPoke</text>
+  <text x="32" y="70" font-size="15" fill="#475569">Every message, the main agent reads the name of every agent ever created.</text>
+
+  <!-- You -->
+  <rect x="32" y="110" width="150" height="70" rx="10" fill="#f8fafc" stroke="#64748b" stroke-width="1.5"/>
+  <text x="107" y="140" font-size="16" font-weight="700" fill="#0f172a" text-anchor="middle">You</text>
+  <text x="107" y="162" font-size="14" fill="#475569" text-anchor="middle">chat message</text>
+
+  <!-- Email monitor -->
+  <rect x="32" y="220" width="150" height="80" rx="10" fill="#f8fafc" stroke="#64748b" stroke-width="1.5"/>
+  <text x="107" y="250" font-size="15" font-weight="700" fill="#0f172a" text-anchor="middle">Email monitor</text>
+  <text x="107" y="272" font-size="13.5" fill="#475569" text-anchor="middle">checks the inbox</text>
+  <text x="107" y="290" font-size="13.5" fill="#475569" text-anchor="middle">every minute</text>
+
+  <!-- Interaction agent -->
+  <rect x="232" y="100" width="300" height="222" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="252" y="130" font-size="17" font-weight="700" fill="#5b21b6">Interaction agent (LLM)</text>
+  <text x="252" y="152" font-size="14" fill="#1e293b">The one you talk to. Its prompt holds:</text>
+  <rect x="252" y="166" width="260" height="138" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="266" y="190" font-size="14" font-weight="700" fill="#b91c1c">The roster: every agent name</text>
+  <g font-size="13.5" fill="#1e293b">
+    <text x="266" y="212">Email to Sarah</text>
+    <text x="266" y="231">Email to Sarah Chen</text>
+    <text x="266" y="250">Sarah Chen thread</text>
+    <text x="266" y="269">Reminder: pay rent   ... 300 more</text>
+  </g>
+  <text x="266" y="292" font-size="12.5" fill="#b91c1c">names only, no summary or contacts</text>
+
+  <!-- Execution agents stack -->
+  <g>
+    <rect x="610" y="134" width="300" height="160" rx="12" fill="#ecfdf5" stroke="#059669" stroke-width="1.2" opacity="0.5"/>
+    <rect x="600" y="122" width="300" height="160" rx="12" fill="#ecfdf5" stroke="#059669" stroke-width="1.2" opacity="0.75"/>
+    <rect x="590" y="110" width="300" height="160" rx="12" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+  </g>
+  <text x="610" y="140" font-size="17" font-weight="700" fill="#047857">Execution agents</text>
+  <g font-size="14" fill="#1e293b">
+    <text x="610" y="164">One per task, kept forever so each</text>
+    <text x="610" y="184">owns a thread for follow-ups.</text>
+    <text x="610" y="210">Each keeps its full log, and</text>
+    <text x="610" y="230">reads all of it on every run.</text>
+    <text x="610" y="254" fill="#047857" font-weight="600">Gmail tools (Composio), reminders</text>
+  </g>
+
+  <!-- Trigger scheduler -->
+  <rect x="610" y="330" width="280" height="62" rx="10" fill="#f8fafc" stroke="#64748b" stroke-width="1.5"/>
+  <text x="750" y="356" font-size="15" font-weight="700" fill="#0f172a" text-anchor="middle">Trigger scheduler</text>
+  <text x="750" y="377" font-size="13.5" fill="#475569" text-anchor="middle">wakes the agent that owns a reminder</text>
+
+  <!-- arrows -->
+  <g stroke="#475569" stroke-width="2" fill="none">
+    <line x1="182" y1="145" x2="228" y2="145" marker-end="url(#a)"/>
+    <line x1="182" y1="260" x2="228" y2="260" marker-end="url(#a)"/>
+    <line x1="532" y1="175" x2="586" y2="175" marker-end="url(#a)"/>
+    <line x1="586" y1="215" x2="536" y2="215" marker-end="url(#a)"/>
+    <line x1="750" y1="330" x2="750" y2="298" marker-end="url(#a)"/>
+  </g>
+  <text x="540" y="166" font-size="12.5" fill="#475569">task</text>
+  <text x="540" y="232" font-size="12.5" fill="#475569">result</text>
+
+  <!-- Problems -->
+  <rect x="32" y="420" width="896" height="118" rx="12" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+  <text x="52" y="448" font-size="16" font-weight="700" fill="#c2410c">What goes wrong as agents pile up</text>
+  <g font-size="14" fill="#1e293b">
+    <text x="52" y="474">1  The list grows forever: about 19,500 input tokens per decision at 800 agents.</text>
+    <text x="52" y="496">2  Reuse needs an exact name match, so "Sarah Chen thread" and "Email to Sarah Chen" become two agents.</text>
+    <text x="52" y="518">3  Many names look alike ("Email to Sarah" x 4), so the model guesses or starts a duplicate. Nothing is retired.</text>
+  </g>
+</svg>

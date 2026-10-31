@@ -1,57 +1,57 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1290 440" width="1290" height="440" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif">
-<rect width="1290" height="440" fill="#ffffff"/>
-<text x="30" y="40" font-size="23" font-weight="700" fill="#0f172a">Every version on the same cases: real model (Claude Haiku 5.5), 300 agents</text>
-<text x="30" y="66" font-size="14" fill="#64748b">Cases right on at least 2 of 3 runs. Source: evals/results/comparison_llm.md</text>
-<text x="330" y="96" font-size="15" font-weight="700" fill="#0f172a">46 follow-up cases</text>
-<rect x="330" y="110" width="420" height="24" rx="4" fill="#f1f5f9"/>
-<rect x="330" y="110" width="200.9" height="24" rx="4" fill="#dc2626"/>
-<text x="538.9" y="127" font-size="13.5" font-weight="600" fill="#0f172a" text-anchor="start">22/46</text>
-<rect x="330" y="150" width="420" height="24" rx="4" fill="#f1f5f9"/>
-<rect x="330" y="150" width="356.1" height="24" rx="4" fill="#64748b"/>
-<text x="694.1" y="167" font-size="13.5" font-weight="600" fill="#0f172a" text-anchor="start">39/46</text>
-<rect x="330" y="190" width="420" height="24" rx="4" fill="#f1f5f9"/>
-<rect x="330" y="190" width="356.1" height="24" rx="4" fill="#94a3b8"/>
-<text x="694.1" y="207" font-size="13.5" font-weight="600" fill="#0f172a" text-anchor="start">39/46</text>
-<rect x="330" y="230" width="420" height="24" rx="4" fill="#f1f5f9"/>
-<rect x="330" y="230" width="401.7" height="24" rx="4" fill="#94a3b8"/>
-<text x="723.7" y="247" font-size="13.5" font-weight="600" fill="#0f172a" text-anchor="end">44/46</text>
-<rect x="330" y="270" width="420" height="24" rx="4" fill="#f1f5f9"/>
-<rect x="330" y="270" width="365.2" height="24" rx="4" fill="#94a3b8"/>
-<text x="687.2" y="287" font-size="13.5" font-weight="600" fill="#0f172a" text-anchor="end">40/46</text>
-<rect x="330" y="310" width="420" height="24" rx="4" fill="#f1f5f9"/>
-<rect x="330" y="310" width="410.9" height="24" rx="4" fill="#16a34a"/>
-<text x="732.9" y="327" font-size="13.5" font-weight="600" fill="#ffffff" text-anchor="end">45/46</text>
-<rect x="330" y="350" width="420" height="24" rx="4" fill="#f1f5f9"/>
-<rect x="330" y="350" width="420.0" height="24" rx="4" fill="#86efac"/>
-<text x="742.0" y="367" font-size="13.5" font-weight="600" fill="#0f172a" text-anchor="end">46/46</text>
-<text x="810" y="96" font-size="15" font-weight="700" fill="#0f172a">24 hand-written paraphrases</text>
-<rect x="810" y="110" width="420" height="24" rx="4" fill="#f1f5f9"/>
-<rect x="810" y="110" width="227.5" height="24" rx="4" fill="#dc2626"/>
-<text x="1045.5" y="127" font-size="13.5" font-weight="600" fill="#0f172a" text-anchor="start">13/24</text>
-<rect x="810" y="150" width="420" height="24" rx="4" fill="#f1f5f9"/>
-<rect x="810" y="150" width="402.5" height="24" rx="4" fill="#64748b"/>
-<text x="1204.5" y="167" font-size="13.5" font-weight="600" fill="#ffffff" text-anchor="end">23/24</text>
-<rect x="810" y="190" width="420" height="24" rx="4" fill="#f1f5f9"/>
-<rect x="810" y="190" width="420.0" height="24" rx="4" fill="#94a3b8"/>
-<text x="1222.0" y="207" font-size="13.5" font-weight="600" fill="#0f172a" text-anchor="end">24/24</text>
-<rect x="810" y="230" width="420" height="24" rx="4" fill="#f1f5f9"/>
-<rect x="810" y="230" width="385.0" height="24" rx="4" fill="#94a3b8"/>
-<text x="1187.0" y="247" font-size="13.5" font-weight="600" fill="#0f172a" text-anchor="end">22/24</text>
-<rect x="810" y="270" width="420" height="24" rx="4" fill="#f1f5f9"/>
-<rect x="810" y="270" width="420.0" height="24" rx="4" fill="#94a3b8"/>
-<text x="1222.0" y="287" font-size="13.5" font-weight="600" fill="#0f172a" text-anchor="end">24/24</text>
-<rect x="810" y="310" width="420" height="24" rx="4" fill="#f1f5f9"/>
-<rect x="810" y="310" width="420.0" height="24" rx="4" fill="#16a34a"/>
-<text x="1222.0" y="327" font-size="13.5" font-weight="600" fill="#ffffff" text-anchor="end">24/24</text>
-<rect x="810" y="350" width="420" height="24" rx="4" fill="#f1f5f9"/>
-<rect x="810" y="350" width="420.0" height="24" rx="4" fill="#86efac"/>
-<text x="1222.0" y="367" font-size="13.5" font-weight="600" fill="#0f172a" text-anchor="end">24/24</text>
-<text x="316" y="127" font-size="14" font-weight="400" fill="#0f172a" text-anchor="end">Original OpenPoke (same run as ours)</text>
-<text x="316" y="167" font-size="14" font-weight="400" fill="#0f172a" text-anchor="end">Core fix</text>
-<text x="316" y="207" font-size="14" font-weight="400" fill="#0f172a" text-anchor="end">+ plurals and typo hints</text>
-<text x="316" y="247" font-size="14" font-weight="400" fill="#0f172a" text-anchor="end">+ past-request search</text>
-<text x="316" y="287" font-size="14" font-weight="400" fill="#0f172a" text-anchor="end">+ meaning search</text>
-<text x="316" y="327" font-size="14" font-weight="700" fill="#0f172a" text-anchor="end">Shipped: plurals, typos, past requests</text>
-<text x="316" y="367" font-size="14" font-weight="400" fill="#0f172a" text-anchor="end">All three, meaning search on</text>
-<text x="30" y="422" font-size="13" fill="#64748b">The original runs inside every row; its range across runs was 22 to 24 of 46 and 12 to 15 of 24.</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 504" width="960" height="504" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif">
+<rect width="960" height="504" fill="#ffffff"/>
+<text x="32" y="42" font-size="21" font-weight="700" fill="#0f172a">Every version on the same cases</text>
+<text x="32" y="66" font-size="14.5" fill="#64748b">Real model (Claude Haiku 5.5), 300 agents. Cases right on at least 2 of 3 runs.</text>
+<text x="300" y="124" font-size="15" font-weight="700" fill="#0f172a">46 follow-up cases</text>
+<rect x="300" y="140" width="290" height="26" rx="5" fill="#f1f5f9"/>
+<rect x="300" y="140" width="138.7" height="26" rx="5" fill="#dc2626"/>
+<text x="446.7" y="158" font-size="13.5" font-weight="700" fill="#0f172a" text-anchor="start">22/46</text>
+<rect x="300" y="184" width="290" height="26" rx="5" fill="#f1f5f9"/>
+<rect x="300" y="184" width="245.9" height="26" rx="5" fill="#64748b"/>
+<text x="537.9" y="202" font-size="13.5" font-weight="700" fill="#ffffff" text-anchor="end">39/46</text>
+<rect x="300" y="228" width="290" height="26" rx="5" fill="#f1f5f9"/>
+<rect x="300" y="228" width="245.9" height="26" rx="5" fill="#94a3b8"/>
+<text x="537.9" y="246" font-size="13.5" font-weight="700" fill="#0f172a" text-anchor="end">39/46</text>
+<rect x="300" y="272" width="290" height="26" rx="5" fill="#f1f5f9"/>
+<rect x="300" y="272" width="277.4" height="26" rx="5" fill="#94a3b8"/>
+<text x="569.4" y="290" font-size="13.5" font-weight="700" fill="#0f172a" text-anchor="end">44/46</text>
+<rect x="300" y="316" width="290" height="26" rx="5" fill="#f1f5f9"/>
+<rect x="300" y="316" width="252.2" height="26" rx="5" fill="#94a3b8"/>
+<text x="544.2" y="334" font-size="13.5" font-weight="700" fill="#0f172a" text-anchor="end">40/46</text>
+<rect x="300" y="360" width="290" height="26" rx="5" fill="#f1f5f9"/>
+<rect x="300" y="360" width="283.7" height="26" rx="5" fill="#16a34a"/>
+<text x="575.7" y="378" font-size="13.5" font-weight="700" fill="#ffffff" text-anchor="end">45/46</text>
+<rect x="300" y="404" width="290" height="26" rx="5" fill="#f1f5f9"/>
+<rect x="300" y="404" width="290.0" height="26" rx="5" fill="#86efac"/>
+<text x="582.0" y="422" font-size="13.5" font-weight="700" fill="#0f172a" text-anchor="end">46/46</text>
+<text x="630" y="124" font-size="15" font-weight="700" fill="#0f172a">24 paraphrases</text>
+<rect x="630" y="140" width="290" height="26" rx="5" fill="#f1f5f9"/>
+<rect x="630" y="140" width="157.1" height="26" rx="5" fill="#dc2626"/>
+<text x="795.1" y="158" font-size="13.5" font-weight="700" fill="#0f172a" text-anchor="start">13/24</text>
+<rect x="630" y="184" width="290" height="26" rx="5" fill="#f1f5f9"/>
+<rect x="630" y="184" width="277.9" height="26" rx="5" fill="#64748b"/>
+<text x="899.9" y="202" font-size="13.5" font-weight="700" fill="#ffffff" text-anchor="end">23/24</text>
+<rect x="630" y="228" width="290" height="26" rx="5" fill="#f1f5f9"/>
+<rect x="630" y="228" width="290.0" height="26" rx="5" fill="#94a3b8"/>
+<text x="912.0" y="246" font-size="13.5" font-weight="700" fill="#0f172a" text-anchor="end">24/24</text>
+<rect x="630" y="272" width="290" height="26" rx="5" fill="#f1f5f9"/>
+<rect x="630" y="272" width="265.8" height="26" rx="5" fill="#94a3b8"/>
+<text x="887.8" y="290" font-size="13.5" font-weight="700" fill="#0f172a" text-anchor="end">22/24</text>
+<rect x="630" y="316" width="290" height="26" rx="5" fill="#f1f5f9"/>
+<rect x="630" y="316" width="290.0" height="26" rx="5" fill="#94a3b8"/>
+<text x="912.0" y="334" font-size="13.5" font-weight="700" fill="#0f172a" text-anchor="end">24/24</text>
+<rect x="630" y="360" width="290" height="26" rx="5" fill="#f1f5f9"/>
+<rect x="630" y="360" width="290.0" height="26" rx="5" fill="#16a34a"/>
+<text x="912.0" y="378" font-size="13.5" font-weight="700" fill="#ffffff" text-anchor="end">24/24</text>
+<rect x="630" y="404" width="290" height="26" rx="5" fill="#f1f5f9"/>
+<rect x="630" y="404" width="290.0" height="26" rx="5" fill="#86efac"/>
+<text x="912.0" y="422" font-size="13.5" font-weight="700" fill="#0f172a" text-anchor="end">24/24</text>
+<text x="286" y="158" font-size="14" font-weight="400" fill="#0f172a" text-anchor="end">Original OpenPoke</text>
+<text x="286" y="202" font-size="14" font-weight="400" fill="#0f172a" text-anchor="end">Core fix</text>
+<text x="286" y="246" font-size="14" font-weight="400" fill="#0f172a" text-anchor="end">+ plurals and typo hints</text>
+<text x="286" y="290" font-size="14" font-weight="400" fill="#0f172a" text-anchor="end">+ past-request search</text>
+<text x="286" y="334" font-size="14" font-weight="400" fill="#0f172a" text-anchor="end">+ meaning search</text>
+<text x="286" y="378" font-size="14" font-weight="700" fill="#0f172a" text-anchor="end">Shipped: plurals, typos, past requests</text>
+<text x="286" y="422" font-size="14" font-weight="400" fill="#0f172a" text-anchor="end">All three, meaning search on</text>
+<text x="32" y="484" font-size="13" fill="#64748b">The original runs inside every row; across runs it got 22 to 24 of 46 and 12 to 15 of 24. Source: evals/results/comparison_llm.md</text>
 </svg>

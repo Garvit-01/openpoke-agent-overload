@@ -10,7 +10,9 @@ The original is on branch `upstream-main` (upstream commit `5b5f635`). Run-by-ru
 
 **The fix.** Treat "which agent is this about?" as a retrieval problem. An SQLite registry keeps a summary, contacts, thread ids, past requests and status for each agent. Each turn the prompt shows a fixed shortlist of 12 (8 found for the message, 4 recently used), plus the other agents of any person the message names. An exact email or thread match always wins. A resolver stops duplicates when an agent is created, and idle agents are retired but stay searchable.
 
-![How a message finds its agent: message, retriever, main agent, resolver, execution agent, with the SQLite agent registry underneath](docs/architecture.svg)
+[![After: how a message finds its agent, in six steps (message, retriever, main agent, resolver, execution agent, after each run), next to the SQLite agent registry](docs/architecture.svg)](docs/architecture.svg)
+
+Click any diagram or chart to open it full size. The original's design is drawn under [What was wrong in the original](#what-was-wrong-in-the-original).
 
 **The result.** Claude Haiku 5.5, 300 agents, the same cases and the same day for both columns, 3 runs per case:
 
@@ -35,13 +37,15 @@ As the roster grows:
 | Simulated router, **1000 agents**, 197 cases: right | 103/197 | **181/197** |
 | 1000 agents: tokens of agent list in each prompt | 10,709 | **999** |
 
-![Three charts, real model at 50, 300 and 800 agents: the original picks the right agent about 53 to 58% of the time, this change 93 to 100%; the original creates duplicates in up to 48% of cases, this change 0 to 7%; the original's prompt grows from 5.3k to 19.5k tokens, this change stays at 7 to 8k](docs/charts/roster_growth.svg)
+[![Three charts, real model at 50, 300 and 800 agents: the original picks the right agent about 53 to 58% of the time, this change 93 to 100%; the original creates duplicates in up to 48% of cases, this change 0 to 7%; the original's prompt grows from 5.3k to 19.5k tokens, this change stays at 7 to 8k](docs/charts/roster_growth.svg)](docs/charts/roster_growth.svg)
 
 Core fix without search phrases at 50, 300 and 800 agents; with search phrases (dashed) at 300 and 800. From `evals/results/llm_results_anthropic-claude-haiku-5-5*.md`.
 
 The data is synthetic. Read [Limitations](#limitations) before quoting any of this.
 
 ## What was wrong in the original
+
+[![Before: you and the email monitor send messages to the interaction agent, whose prompt holds every agent name; it hands tasks to execution agents, kept forever; a trigger scheduler wakes them](docs/architecture_original.svg)](docs/architecture_original.svg)
 
 1. **The roster is only names.** `roster.py` stored a JSON list of strings: no summary, contacts, timestamps or status.
 2. **Every name goes into every prompt.** The prompt grows forever, and most entries look alike.
@@ -51,7 +55,7 @@ The data is synthetic. Read [Limitations](#limitations) before quoting any of th
 6. **Agents could share a history.** Log files were named by a slug, so "Email to Sarah" and "email to sarah" read and wrote the same file.
 7. **The same agent could run twice at once**, for example a reminder firing while you're talking to it. Both runs read the same history and both could act.
 
-The author names the first problems himself in his [explainer](https://www.shloked.com/openpoke).
+The author names the first problems himself in his [explainer](https://www.shloked.com/writing/openpoke).
 
 ## What I changed
 
@@ -115,7 +119,7 @@ The additions (changes 15 to 18) were each built on their own branch first, then
 | **This branch: plurals, typos and past requests** | **45/46** | **6/6** | **24/24** | **0%** | **7 / 1** (p = 0.07) |
 | All of them, meaning search on | 46/46 | 6/6 | 24/24 | 0% | 7 / 0 (p = 0.016) |
 
-![Cases right per version, real model, 300 agents: original 22/46 and 13/24, core fix 39/46 and 23/24, shipped version 45/46 and 24/24, all three with meaning search 46/46 and 24/24](docs/charts/alternatives.svg)
+[![Cases right per version, real model, 300 agents: original 22/46 and 13/24, core fix 39/46 and 23/24, shipped version 45/46 and 24/24, all three with meaning search 46/46 and 24/24](docs/charts/alternatives.svg)](docs/charts/alternatives.svg)
 
 The core fix and single-addition rows ran on 2026-10-28, and this branch's row on 2026-10-29. The original runs inside every row, and its range across those runs (22 to 24 of 46) shows how much identical runs vary.
 
