@@ -35,6 +35,10 @@ As the roster grows:
 | Simulated router, **1000 agents**, 197 cases: right | 103/197 | **181/197** |
 | 1000 agents: tokens of agent list in each prompt | 10,709 | **999** |
 
+![Three charts, real model at 50, 300 and 800 agents: the original picks the right agent about 53 to 58% of the time, this change 93 to 100%; the original creates duplicates in up to 48% of cases, this change 0 to 7%; the original's prompt grows from 5.3k to 19.5k tokens, this change stays at 7 to 8k](docs/charts/roster_growth.svg)
+
+Core fix without search phrases at 50, 300 and 800 agents; with search phrases (dashed) at 300 and 800. From `evals/results/llm_results_anthropic-claude-haiku-5-5*.md`.
+
 The data is synthetic. Read [Limitations](#limitations) before quoting any of this.
 
 ## What was wrong in the original
@@ -110,6 +114,8 @@ The additions (changes 15 to 18) were each built on their own branch first, then
 | + meaning search | 40/46 | 0/6 | 24/24 | 14.0% | 1 / 0 |
 | **This branch: plurals, typos and past requests** | **45/46** | **6/6** | **24/24** | **0%** | **7 / 1** (p = 0.07) |
 | All of them, meaning search on | 46/46 | 6/6 | 24/24 | 0% | 7 / 0 (p = 0.016) |
+
+![Cases right per version, real model, 300 agents: original 22/46 and 13/24, core fix 39/46 and 23/24, shipped version 45/46 and 24/24, all three with meaning search 46/46 and 24/24](docs/charts/alternatives.svg)
 
 The core fix and single-addition rows ran on 2026-10-28, and this branch's row on 2026-10-29. The original runs inside every row, and its range across those runs (22 to 24 of 46) shows how much identical runs vary.
 
