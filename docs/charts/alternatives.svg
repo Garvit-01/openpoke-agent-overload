@@ -19,11 +19,11 @@
 <rect x="300" y="316" width="252.2" height="26" rx="5" fill="#94a3b8"/>
 <text x="544.2" y="334" font-size="13.5" font-weight="700" fill="#0f172a" text-anchor="end">40/46</text>
 <rect x="300" y="360" width="290" height="26" rx="5" fill="#f1f5f9"/>
-<rect x="300" y="360" width="283.7" height="26" rx="5" fill="#16a34a"/>
-<text x="575.7" y="378" font-size="13.5" font-weight="700" fill="#ffffff" text-anchor="end">45/46</text>
+<rect x="300" y="360" width="283.7" height="26" rx="5" fill="#86efac"/>
+<text x="575.7" y="378" font-size="13.5" font-weight="700" fill="#0f172a" text-anchor="end">45/46</text>
 <rect x="300" y="404" width="290" height="26" rx="5" fill="#f1f5f9"/>
-<rect x="300" y="404" width="290.0" height="26" rx="5" fill="#86efac"/>
-<text x="582.0" y="422" font-size="13.5" font-weight="700" fill="#0f172a" text-anchor="end">46/46</text>
+<rect x="300" y="404" width="290.0" height="26" rx="5" fill="#16a34a"/>
+<text x="582.0" y="422" font-size="13.5" font-weight="700" fill="#ffffff" text-anchor="end">46/46</text>
 <text x="630" y="124" font-size="15" font-weight="700" fill="#0f172a">24 paraphrases</text>
 <rect x="630" y="140" width="290" height="26" rx="5" fill="#f1f5f9"/>
 <rect x="630" y="140" width="157.1" height="26" rx="5" fill="#dc2626"/>
@@ -41,17 +41,17 @@
 <rect x="630" y="316" width="290.0" height="26" rx="5" fill="#94a3b8"/>
 <text x="912.0" y="334" font-size="13.5" font-weight="700" fill="#0f172a" text-anchor="end">24/24</text>
 <rect x="630" y="360" width="290" height="26" rx="5" fill="#f1f5f9"/>
-<rect x="630" y="360" width="290.0" height="26" rx="5" fill="#16a34a"/>
-<text x="912.0" y="378" font-size="13.5" font-weight="700" fill="#ffffff" text-anchor="end">24/24</text>
+<rect x="630" y="360" width="290.0" height="26" rx="5" fill="#86efac"/>
+<text x="912.0" y="378" font-size="13.5" font-weight="700" fill="#0f172a" text-anchor="end">24/24</text>
 <rect x="630" y="404" width="290" height="26" rx="5" fill="#f1f5f9"/>
-<rect x="630" y="404" width="290.0" height="26" rx="5" fill="#86efac"/>
-<text x="912.0" y="422" font-size="13.5" font-weight="700" fill="#0f172a" text-anchor="end">24/24</text>
+<rect x="630" y="404" width="290.0" height="26" rx="5" fill="#16a34a"/>
+<text x="912.0" y="422" font-size="13.5" font-weight="700" fill="#ffffff" text-anchor="end">24/24</text>
 <text x="286" y="158" font-size="14" font-weight="400" fill="#0f172a" text-anchor="end">Original OpenPoke</text>
 <text x="286" y="202" font-size="14" font-weight="400" fill="#0f172a" text-anchor="end">Core fix</text>
 <text x="286" y="246" font-size="14" font-weight="400" fill="#0f172a" text-anchor="end">+ plurals and typo hints</text>
 <text x="286" y="290" font-size="14" font-weight="400" fill="#0f172a" text-anchor="end">+ past-request search</text>
 <text x="286" y="334" font-size="14" font-weight="400" fill="#0f172a" text-anchor="end">+ meaning search</text>
-<text x="286" y="378" font-size="14" font-weight="700" fill="#0f172a" text-anchor="end">Shipped: plurals, typos, past requests</text>
-<text x="286" y="422" font-size="14" font-weight="400" fill="#0f172a" text-anchor="end">All three, meaning search on</text>
+<text x="286" y="378" font-size="14" font-weight="400" fill="#0f172a" text-anchor="end">Fallback without the install</text>
+<text x="286" y="422" font-size="14" font-weight="700" fill="#0f172a" text-anchor="end">Shipped: all three</text>
 <text x="32" y="484" font-size="13" fill="#64748b">The original runs inside every row; across runs it got 22 to 24 of 46 and 12 to 15 of 24. Source: evals/results/comparison_llm.md</text>
 </svg>

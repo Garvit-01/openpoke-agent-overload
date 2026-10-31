@@ -8,7 +8,7 @@ After the main fix (branch `main`, which is `agent-overload`), I tried three mor
 | `approach-past-requests` | Keyword search also reads each agent's last 20 requests, at half weight | [APPROACH_PAST_REQUESTS.md](APPROACH_PAST_REQUESTS.md) |
 | `approach-embeddings` | Optional search by meaning with a small local embedding model (bge-small), next to keyword search | [APPROACH_EMBEDDINGS.md](APPROACH_EMBEDDINGS.md) |
 
-`main` now has all three, each behind its own setting (meaning search off by default), so one command can measure them on the same cases:
+`main` now has all three, each behind its own setting (all on by default; meaning search falls back to keywords without its optional install), so one command can measure them on the same cases:
 
 ```bash
 python -m evals.compare                 # about 12 minutes, free, no API key
@@ -22,9 +22,9 @@ It prints the tables below and writes them to [evals/results/comparison.md](../e
 | `OPENPOKE_FOLD_PLURALS` | words as written | plurals folded (default) |
 | `OPENPOKE_AGENT_NAME_HINTS` | no hints | "did you mean" hints (default) |
 | `OPENPOKE_AGENT_INDEX_REQUESTS` | past requests not searched | searched at half weight (default) |
-| `OPENPOKE_AGENT_RETRIEVER` | `bm25`: keywords only (default) | `hybrid`: keywords plus meaning |
+| `OPENPOKE_AGENT_RETRIEVER` | `bm25`: keywords only | `hybrid`: keywords plus meaning (default) |
 
-Meaning search is off by default only because it needs an extra 110 MB install. On the real model it helped and broke nothing (see below).
+Meaning search needs an extra package and a one-time model download (about 110 MB); without them the app falls back to keyword search. On the real model it helped and broke nothing (see below).
 
 ## Simulated results (free, run on 2026-10-29)
 
@@ -86,12 +86,12 @@ Each row is one real-model run in its own process with that row's settings, on t
 | + plurals and typo hints | 116/120 | 39/40 | 0/6 | 24/24 | 95.8% | 8,356 |
 | + past-request search | 114/120 | 38/40 | 6/6 | 22/24 | 87.5% | 7,655 |
 | + meaning search | **120/120** | **40/40** | 0/6 | 24/24 | 95.8% | 8,775 |
-| **plurals, typos and past requests (what `main` ships; run 2026-10-29)** | 117/120 | 39/40 | **6/6** | **24/24** | **100%** | 7,483 |
-| **all three together** | **120/120** | **40/40** | **6/6** | **24/24** | **100%** | **7,322** |
+| plurals, typos and past requests (the fallback without meaning search; run 2026-10-29) | 117/120 | 39/40 | **6/6** | **24/24** | **100%** | 7,483 |
+| **all three together (what `main` ships)** | **120/120** | **40/40** | **6/6** | **24/24** | **100%** | **7,322** |
 
 On all 46 generated cases together, all three get 46/46, right on every one of the 3 runs (pass^3 100%), against 39/46 for `main`: fixed 7, broke 0 (McNemar's exact p = 0.016). The original got 22 to 24 of 46 across its five runs.
 
-The shipped default (plurals, typos and past requests, meaning search off) gets 45/46, right on all 3 runs for 95.7%: fixed 7, broke 1 (p = 0.07). The break is `new_same_first_name-152` again, right on 1 of 3 runs; in the other 2 the model asked instead of creating a new agent. Past-request search puts 10 "launch timeline" agents next to another Ibrahim, and the model gets cautious. On the paraphrases it gets 24/24, right on every run. Against the original in the same run: fixed 23, broke 0 (p = 2e-7) on the 46 cases, and fixed 11, broke 0 (p = 0.001) on the paraphrases.
+The keyword-only fallback (plurals, typos and past requests, meaning search off) gets 45/46, right on all 3 runs for 95.7%: fixed 7, broke 1 (p = 0.07). The break is `new_same_first_name-152` again, right on 1 of 3 runs; in the other 2 the model asked instead of creating a new agent. Past-request search puts 10 "launch timeline" agents next to another Ibrahim, and the model gets cautious. On the paraphrases it gets 24/24, right on every run. Against the original in the same run: fixed 23, broke 0 (p = 2e-7) on the 46 cases, and fixed 11, broke 0 (p = 0.001) on the paraphrases.
 
 **Every case that moved, against `main`:**
 - **Plurals and typos:** fixed `hw17` ("kids" now finds the "kid's registration" agent, right on 3 of 3 runs, was 1 of 3). Nothing broke.
@@ -118,10 +118,10 @@ The simulated numbers on `fix-plurals-typos` were measured before this fix, with
 
 ## What I'd ship
 
-`main` ships plurals, typo hints and past-request search on, and meaning search off.
+`main` ships all three on. Meaning search falls back to keyword search when its optional install is missing.
 - **Past requests:** the only approach that fixes follow-ups about a mid-history request (6 of 6, from 0), and duplicates drop to 0. Its cost is one case where the model asks instead of creating a new agent.
 - **Plurals and typo hints:** cheap. They fix the "groceries" and "Sarha" cases from the live demo, and raised paraphrase pass^3 from 87.5% to 95.8%.
-- **Meaning search:** with it on, all three together are right on every case and every run, the Ibrahim case included. It needs about 110 MB of downloads and 50 to 80 ms more per turn, so it stays opt-in (`OPENPOKE_AGENT_RETRIEVER=hybrid`) for installs where that's fine.
+- **Meaning search:** with it on, all three together are right on every case and every run, the Ibrahim case included. It needs a one-time download of about 110 MB and adds 50 to 80 ms per turn. Without the install the app keeps working with keyword search (45/46 and 24/24); `OPENPOKE_AGENT_RETRIEVER=bm25` turns it off.
 
 ## Limitations
 

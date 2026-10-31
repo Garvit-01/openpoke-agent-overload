@@ -10,7 +10,8 @@ word counts once, words the name/summary/entities already have are left out, and
 the field has its own BM25 score added at REQUEST_WEIGHT. The resolver never asks
 for them, so they help find an agent but never decide a merge.
 
-Hybrid mode (OPENPOKE_AGENT_RETRIEVER=hybrid, needs the optional fastembed package) adds
+Hybrid mode (the default, OPENPOKE_AGENT_RETRIEVER=hybrid; needs the optional fastembed package and
+falls back to keyword search without it) adds
 search by meaning without disturbing that order: the keyword ranking keeps its top
 results, and the last DENSE_SLOTS places go to the agents most similar in meaning that
 keyword search did not already pick. Hard matches are never pushed out. Meaning only

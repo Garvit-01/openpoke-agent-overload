@@ -74,10 +74,10 @@ class Settings(BaseModel):
     # the prompt list the matching contacts, so the model asks "did you mean ...?" instead of guessing.
     # Plural folding has its own switch, OPENPOKE_FOLD_PLURALS, read in entities.py.
     agent_name_hints: bool = Field(default=os.getenv("OPENPOKE_AGENT_NAME_HINTS", "1") != "0")
-    # Agent search: "bm25" is keyword search only; "hybrid" also searches by meaning with a small local
-    # embedding model (optional: pip install -r server/requirements-embeddings.txt). Without fastembed,
-    # "hybrid" quietly behaves like "bm25".
-    agent_retriever: str = Field(default=os.getenv("OPENPOKE_AGENT_RETRIEVER", "bm25"))
+    # Agent search: "hybrid" (default) is keyword search plus search by meaning with a small local
+    # embedding model (pip install -r server/requirements-embeddings.txt). Without fastembed or its
+    # model, "hybrid" quietly behaves like "bm25", keyword search only.
+    agent_retriever: str = Field(default=os.getenv("OPENPOKE_AGENT_RETRIEVER", "hybrid"))
     agent_embedding_model: str = Field(default=os.getenv("OPENPOKE_EMBEDDING_MODEL", "BAAI/bge-small-en-v1.5"))
     # Where fastembed keeps the downloaded model (about 65 MB); empty = fastembed's default temp folder
     agent_embedding_cache_dir: Optional[str] = Field(default=os.getenv("OPENPOKE_EMBEDDING_CACHE"))

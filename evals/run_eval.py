@@ -294,14 +294,13 @@ def parse_args(argv=None):
     parser.add_argument("--tag", default="", help="appended to the results file names, e.g. requests_off")
     parser.add_argument(
         "--retriever", choices=["bm25", "hybrid"], default=None,
-        help="agent search for this change: bm25 (keywords) or hybrid (keywords + local embeddings); "
-             "default OPENPOKE_AGENT_RETRIEVER. Hybrid results get a _hybrid file suffix",
+        help="agent search for this change: bm25 (keywords, the default here so the eval runs without the "
+             "optional install and reproduces the committed results) or hybrid (keywords + local embeddings, "
+             "the app's default). Hybrid results get a _hybrid file suffix",
     )
     args = parser.parse_args(argv)
     if args.retriever is None:
-        from server.config import get_settings
-
-        args.retriever = get_settings().agent_retriever
+        args.retriever = "bm25"
     return args
 
 

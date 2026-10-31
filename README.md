@@ -12,22 +12,22 @@ The original is on branch `upstream-main` (upstream commit `5b5f635`). Run-by-ru
 
 [![After: how a message finds its agent, in six steps (message, retriever, main agent, resolver, execution agent, after each run), next to the SQLite agent registry](docs/architecture.svg)](docs/architecture.svg)
 
-**Built in two steps.** First the core fix: the registry, the shortlist, exact matches, the duplicate check and the rest of changes 1 to 14 in [What I changed](#what-i-changed), kept on branch `baseline`. On its own it took the original from 22 to 39 of 46 cases right and cut duplicate agents from about 30% to 13%. Then I tried three additions on top of it, each on its own branch, measured each on the same cases, and kept the two that helped: 45 of 46 and no duplicates. See [Alternatives I measured](#alternatives-i-measured).
+**Built in two steps.** First the core fix: the registry, the shortlist, exact matches, the duplicate check and the rest of changes 1 to 14 in [What I changed](#what-i-changed), kept on branch `baseline`. On its own it took the original from 22 to 39 of 46 cases right and cut duplicate agents from about 30% to 13%. Then I tried three additions on top of it, each on its own branch, measured each on the same cases, and kept all three: 46 of 46 and no duplicates. The third, meaning search, needs an optional install; without it the app falls back to keyword search and got 45 of 46. See [Alternatives I measured](#alternatives-i-measured).
 
 Click any diagram or chart to open it full size. The original's design is drawn under [What was wrong in the original](#what-was-wrong-in-the-original).
 
-**The result.** Claude Haiku 5.5, 300 agents, the same cases and the same day for both columns, 3 runs per case:
+**The result.** Claude Haiku 5.5, 300 agents, the same cases and the same run for both columns, 3 runs per case, with the optional meaning-search install:
 
 | | Original | This branch |
 |---|---|---|
-| 46 follow-up cases (40 usual + 6 about a request made mid-history): cases right | 22/46 (34% to 62%) | **45/46** (89% to 100%) |
-| same, runs right / right on all 3 runs | 49.3% / 45.7% | **97.8% / 95.7%** |
-| same, duplicate agent created when the right one existed | 29.8% | **0%** |
-| 24 hand-written paraphrases (no shared words with their agent): cases right | 13/24 | **24/24** |
-| same, right on all 3 runs | 45.8% | **100%** |
-| Input tokens per routing decision | 9,853 | **7,483** |
+| 46 follow-up cases (40 usual + 6 about a request made mid-history): cases right | 24/46 (38% to 66%) | **46/46** (92% to 100%) |
+| same, runs right / right on all 3 runs | 50.7% / 45.7% | **100% / 100%** |
+| same, duplicate agent created when the right one existed | 33.3% | **0%** |
+| 24 hand-written paraphrases (no shared words with their agent): cases right | 12/24 | **24/24** |
+| same, right on all 3 runs | 41.7% | **100%** |
+| Input tokens per routing decision | 9,853 | **7,322** |
 
-Cases right means right on at least 2 of 3 runs; the ranges are 95% Wilson intervals. On the 46 cases this branch fixed 23 and broke 0 against the original (McNemar's exact test, p = 2e-7), and on the paraphrases 11 and 0 (p = 0.001).
+Cases right means right on at least 2 of 3 runs; the ranges are 95% Wilson intervals. On the 46 cases this branch fixed 22 and broke 0 against the original (McNemar's exact test, p = 5e-7), and on the paraphrases 12 and 0 (p = 0.0005). Without the optional install it falls back to keyword search; that version got 45/46 and 24/24 in its own run, fixing 23 and breaking 0 against the original (p = 2e-7).
 
 As the roster grows:
 
@@ -37,7 +37,7 @@ As the roster grows:
 | 800 agents: duplicate agent created when the right one existed | 44.8% | **0%** |
 | 800 agents: input tokens per routing decision | 19,471 | **7,287** |
 | Simulated router, **1000 agents**, 197 cases: right | 103/197 | **181/197** |
-| 1000 agents: tokens of agent list in each prompt | 10,709 | **999** |
+| 1000 agents: tokens of agent list in each prompt | 10,709 | **1,025** |
 
 [![Three charts, real model at 50, 300 and 800 agents: the original picks the right agent about 53 to 58% of the time, this change 93 to 100%; the original creates duplicates in up to 48% of cases, this change 0 to 7%; the original's prompt grows from 5.3k to 19.5k tokens, this change stays at 7 to 8k](docs/charts/roster_growth.svg)](docs/charts/roster_growth.svg)
 
@@ -84,7 +84,7 @@ The author names the first problems himself in his [explainer](https://www.shlok
 | 15 | Plurals folded in search and in the dedup key, so "groceries" finds "Grocery list" | `entities.py` |
 | 16 | A misspelt contact name ("Sarha") gets a hint listing every Sarah, and the model asks which one | `retrieval.py`, `system_prompt.md` |
 | 17 | Search also reads each agent's last 20 requests, at half weight, so "did the seating chart come through?" finds the agent it was asked of | `retrieval.py` |
-| 18 | Optional search by meaning: a small embedding model (`BAAI/bge-small-en-v1.5` via fastembed) runs on your computer, no API calls, and fills 3 of the 8 retrieved slots. Off by default | `embeddings.py` |
+| 18 | Optional search by meaning: a small embedding model (`BAAI/bge-small-en-v1.5` via fastembed) runs on your computer, no API calls, and fills 3 of the 8 retrieved slots. On by default; without the optional install it falls back to keyword search | `embeddings.py` |
 
 Changes 12 to 17 were each added after an eval showed a gap. The tests that pin the routing behaviour are `test_retrieval.py`, `test_resolver.py`, `test_registry.py`, `test_lifecycle.py` and `test_outbound_guard.py`.
 
@@ -108,9 +108,9 @@ In a second live run, 10 labelled messages (one per category) went to the origin
 
 **Hard matches before similarity.** An email address or Gmail thread id says which thread a message belongs to. Keyword or meaning similarity only says what it's about. So exact matches decide, similarity only ranks, and similarity never merges two agents.
 
-**SQLite and in-process BM25, not Elasticsearch or a vector database.** One user has hundreds of agents, maybe a few thousand. The registry needs exact lookups ("who owns this thread?") and safe writes. SQLite does both and ships with Python. Routing work takes about 39 ms per turn at 300 agents and 156 ms at 1000, against about 3 seconds for one model call. Elasticsearch would need Docker and 1 to 4 GB of memory on a laptop, and it ranks with BM25 too. A search server makes sense with many users on one deployment.
+**SQLite and in-process BM25, not Elasticsearch or a vector database.** One user has hundreds of agents, maybe a few thousand. The registry needs exact lookups ("who owns this thread?") and safe writes. SQLite does both and ships with Python. Routing work takes about 39 ms per turn at 300 agents and 212 ms at 1000, against about 3 seconds for one model call. Elasticsearch would need Docker and 1 to 4 GB of memory on a laptop, and it ranks with BM25 too. A search server makes sense with many users on one deployment.
 
-**Meaning search is measured, but off by default.** It needs a 110 MB model. With it on, the right agent is in the prompt for all 24 paraphrases (95.8% without it), and the one case below is fixed. Turn it on with `OPENPOKE_AGENT_RETRIEVER=hybrid` where the download is fine.
+**Meaning search is on, with a fallback.** It needs the `fastembed` package and a one-time model download (about 110 MB in all). Each agent's meaning is computed once and stored in the registry, so each message only adds 50 to 80 ms. If the package or model is missing, the app logs one line and uses keyword search only, so nothing breaks. With it, the right agent is in the prompt for all 24 paraphrases (95.8% without), and the Ibrahim case below is fixed. `OPENPOKE_AGENT_RETRIEVER=bm25` turns it off.
 
 ## Alternatives I measured
 
@@ -122,16 +122,16 @@ The additions (changes 15 to 18) were each built on their own branch first, then
 | + plurals and typo hints | 39/46 | 0/6 | 24/24 | 13.2% | 0 / 0 |
 | + past-request search | 44/46 | 6/6 | 22/24 | 0% | 6 / 1 |
 | + meaning search | 40/46 | 0/6 | 24/24 | 14.0% | 1 / 0 |
-| **This branch: plurals, typos and past requests** | **45/46** | **6/6** | **24/24** | **0%** | **7 / 1** (p = 0.07) |
-| All of them, meaning search on | 46/46 | 6/6 | 24/24 | 0% | 7 / 0 (p = 0.016) |
+| Plurals, typos and past requests (the fallback without the install) | 45/46 | 6/6 | 24/24 | 0% | 7 / 1 (p = 0.07) |
+| **This branch: all three, meaning search on** | **46/46** | **6/6** | **24/24** | **0%** | **7 / 0** (p = 0.016) |
 
-[![Cases right per version, real model, 300 agents: original 22/46 and 13/24, core fix 39/46 and 23/24, shipped version 45/46 and 24/24, all three with meaning search 46/46 and 24/24](docs/charts/alternatives.svg)](docs/charts/alternatives.svg)
+[![Cases right per version, real model, 300 agents: original 22/46 and 13/24, core fix 39/46 and 23/24, keyword-only fallback 45/46 and 24/24, shipped version with all three 46/46 and 24/24](docs/charts/alternatives.svg)](docs/charts/alternatives.svg)
 
-The core fix and single-addition rows ran on 2026-10-28, and this branch's row on 2026-10-29. The original runs inside every row, and its range across those runs (22 to 24 of 46) shows how much identical runs vary.
+The rows ran on 2026-10-28, except the keyword-only fallback row, run on 2026-10-29. The original runs inside every row, and its range across those runs (22 to 24 of 46) shows how much identical runs vary.
 
-**The one break.** "Write to Ibrahim Holloway about the launch timeline" should create a new agent. Past-request search puts 10 "launch timeline" agents next to another Ibrahim, and the model asked a question instead of acting in 2 of 3 runs. It never picked a wrong agent. The same case broke with past-request search alone, so I count it as a real cost, not noise.
+**The one break without meaning search.** "Write to Ibrahim Holloway about the launch timeline" should create a new agent. Past-request search puts 10 "launch timeline" agents next to another Ibrahim, and the model asked a question instead of acting in 2 of 3 runs. It never picked a wrong agent. The same case broke with past-request search alone, so I count it as a real cost, not noise. With meaning search on, it is right on all 3 runs.
 
-**Why not ship all three, when that row got everything right?** Meaning search needs an extra package and a one-time 110 MB model download (without them the app quietly falls back to keyword search), and it adds 50 to 80 ms per message. On these tests it bought one case, and that case fails safely without it: the model asks instead of acting. So the default stays light, and the best result is one setting away (`OPENPOKE_AGENT_RETRIEVER=hybrid` after `pip install -r server/requirements-embeddings.txt`).
+**Why meaning search is on by default.** It is the only version right on every case and every run of both sets. Its costs are a one-time install and 50 to 80 ms per message, and without the install the app still works, with keyword search.
 
 Branch map: `baseline` is the core fix alone, frozen. `fix-plurals-typos`, `approach-past-requests` and `approach-embeddings` hold each addition on its own with its write-up. `all-approaches` is where they were compared.
 
@@ -151,8 +151,8 @@ Not fixed, worth knowing:
 
 - **The data is synthetic.** A script generated the agents and most test messages, built around known failure modes. The 24 paraphrases were written separately, with Claude, so they don't reuse the script's wording. Neither comes from real users, who will be messier.
 - **One model family does most of the work.** Haiku routes, Haiku writes the search phrases, and the paraphrases were written with Claude, which is the same family and could make them easier for it. Gemma 4 checked the core fix's routing only (29/40 against 19/40 for the original).
-- **The sample is small.** 46 cases and 24 paraphrases. The difference from the original is large and significant. The difference from the core fix (7 fixed, 1 broken) is not significant on its own.
-- **The suite is now nearly saturated.** At 45/46 and 24/24 it catches regressions, but it can't show further gains. Harder cases are the next step.
+- **The sample is small.** 46 cases and 24 paraphrases. The difference from the original is large and significant. The difference from the core fix (7 fixed, 0 broken, p = 0.016) is one of several comparisons, so treat it as likely, not proven.
+- **The suite is now nearly saturated.** At 46/46 and 24/24 it catches regressions, but it can't show further gains. Harder cases are the next step.
 - **It asks "which Sarah?" even right after you named one.** That's a deliberate lean towards asking before an email goes out, but a person would guess the Sarah from the last turn.
 - **Typo matching is simple.** It catches one-letter typos in a name position that keep the first letter (all 124 in a labelled check, with no hint on any of 301 eval messages). 3 of 36 common names no contact has ("Sara", "Nora", "Rose") also get a "did you mean".
 - **Gmail isn't tested end to end.** Agreed with General Magic: routing never needs Gmail, so none of the numbers above depend on it. Incoming-email routing by thread id, drafting and the send guard are unit-tested with fakes.
@@ -169,16 +169,16 @@ Not fixed, worth knowing:
 ## Running it
 
 ```bash
-pip install -r server/requirements.txt pytest
+pip install -r server/requirements.txt -r server/requirements-embeddings.txt pytest   # the second file is optional (meaning search)
 python -m pytest                                  # all tests, about two minutes, no keys needed
-python -m evals.run_eval                          # simulated eval, about 2 minutes, free, writes evals/results/
+python -m evals.run_eval                          # simulated eval, keyword search, about 2 minutes, free (add --retriever hybrid for meaning search)
 python -m evals.compare                           # every version side by side, simulated, about 12 minutes, free
 python -m evals.run_eval --router llm --phrases   # real model, needs OPENROUTER_API_KEY in .env, about $0.30 on Haiku 5.5
 python -m evals.run_eval --set paraphrase --router llm --phrases   # the 24 hand-written paraphrases
 python -m evals.compare_llm --reuse               # rebuild the real-model comparison from the saved runs, no calls
 ```
 
-The real-model eval uses `anthropic/claude-haiku-5.5` unless you pass `--model`. More options are in [docs/EVALUATION.md](docs/EVALUATION.md). Meaning search needs `pip install -r server/requirements-embeddings.txt`; without it the tests that need the model are skipped.
+The real-model eval uses `anthropic/claude-haiku-5.5` unless you pass `--model`. More options are in [docs/EVALUATION.md](docs/EVALUATION.md). The evals use keyword search unless you pass `--retriever hybrid`, so they run without the optional install and reproduce the committed results. Without the install the app falls back to keyword search, and the tests that need the model are skipped.
 
 ### Live demo: side by side
 
@@ -214,7 +214,7 @@ python tools/demo.py --variants every cases      # one labelled case per categor
 | `OPENPOKE_FOLD_PLURALS` | 1 | Fold plurals in search (0 = off) |
 | `OPENPOKE_AGENT_NAME_HINTS` | 1 | "Did you mean ...?" hints for misspelt contact names (0 = off) |
 | `OPENPOKE_AGENT_INDEX_REQUESTS` | 1 | Search each agent's last 20 requests at half weight (0 = off) |
-| `OPENPOKE_AGENT_RETRIEVER` | bm25 | `hybrid` adds search by meaning (needs the embeddings install) |
+| `OPENPOKE_AGENT_RETRIEVER` | hybrid | Keyword search plus search by meaning (needs the embeddings install, falls back to keywords without it); `bm25` for keywords only |
 | `OPENPOKE_EMBEDDING_MODEL` / `OPENPOKE_EMBEDDING_CACHE` | `BAAI/bge-small-en-v1.5` / fastembed's default | Embedding model and where its files go |
 | `OPENPOKE_AGENT_DORMANT_DAYS` / `OPENPOKE_AGENT_ARCHIVE_DAYS` | 14 / 45 | Idle days before demotion |
 | `OPENPOKE_EXECUTION_HISTORY_LIMIT` | 10 | Past requests an execution agent sees (0 = all) |

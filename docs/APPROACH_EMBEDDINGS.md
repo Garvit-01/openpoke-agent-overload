@@ -1,6 +1,6 @@
 # Approach: search agents by meaning, next to keyword search
 
-Branch `approach-embeddings`, cut from `agent-overload` at `104bc97`. Merged into `main` on 2026-10-29, off by default (see [COMPARISON.md](COMPARISON.md)).
+Branch `approach-embeddings`, cut from `agent-overload` at `104bc97`. Merged into `main` on 2026-10-29, and on by default since 2026-10-31, with a fallback to keyword search (see [COMPARISON.md](COMPARISON.md)).
 
 ## What it does
 
@@ -116,7 +116,7 @@ Doesn't fix:
 
 ## Merge verdict
 
-Merge it as an **opt-in setting, with `bm25` as the default**, not as the default yet.
+Merge it as an **opt-in setting, with `bm25` as the default**, not as the default yet. (Later, after the real-model comparison, `main` made it the default, since it falls back to keywords without the install.)
 
 For it:
 - It closes the retrieval gap it was built for: 24/24 paraphrases in the prompt, against 21/24.

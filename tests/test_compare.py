@@ -48,3 +48,23 @@ def test_real_model_comparison_reads_the_files_run_eval_writes():
     assert path.name == "llm_results_anthropic-claude-haiku-5-5_paraphrase_phrases_hybrid_cmp_embeddings.json"
     path = compare_llm.result_path("anthropic/claude-haiku-5.5", "generated", "main", hybrid=False)
     assert path.name == "llm_results_anthropic-claude-haiku-5-5_phrases_cmp_main.json"
+
+
+def test_app_searches_by_meaning_by_default_but_evals_use_keywords():
+    # The app turns meaning search on (it falls back to keywords without fastembed); the eval
+    # defaults to keywords so it runs anywhere and reproduces the committed result files
+    import os
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    from evals.run_eval import parse_args
+
+    # A fresh process without the setting, since other tests change the environment
+    env = {key: value for key, value in os.environ.items() if key != "OPENPOKE_AGENT_RETRIEVER"}
+    code = "from server.config import Settings; print(Settings().agent_retriever)"
+    root = Path(__file__).resolve().parent.parent
+    result = subprocess.run([sys.executable, "-c", code], cwd=root, env=env, capture_output=True, text=True)
+    assert result.stdout.strip() == "hybrid", result.stderr
+    assert parse_args([]).retriever == "bm25"
+    assert parse_args(["--retriever", "hybrid"]).retriever == "hybrid"
