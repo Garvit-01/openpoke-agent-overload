@@ -33,17 +33,18 @@ As the roster grows:
 
 | | Original | This branch |
 |---|---|---|
-| Real model, **800 agents**, 40 cases: runs right (core fix, before the additions below) | 54.2% | **100%** |
-| 800 agents: duplicate agent created when the right one existed | 44.8% | **0%** |
-| 800 agents: input tokens per routing decision | 19,471 | **7,287** |
+| Real model, **800 agents**, the same 46 cases: runs right | 46.4% | **97.8%** |
+| 800 agents: cases right (2 of 3 runs) | 22/46 | **45/46** |
+| 800 agents: duplicate agent created when the right one existed | 57.0% | **0.9%** |
+| 800 agents: input tokens / cost per 1,000 decisions | 19,471 / $2.18 | **7,723 / $0.98** |
 | Simulated router, **1000 agents**, 197 cases: right | 103/197 | **181/197** |
 | 1000 agents: tokens of agent list in each prompt | 10,709 | **1,025** |
 
-[![Three charts, real model at 50, 300 and 800 agents: the original picks the right agent about 53 to 58% of the time, this change 93 to 100%; the original creates duplicates in up to 48% of cases, this change 0 to 7%; the original's prompt grows from 5.3k to 19.5k tokens, this change stays at 7 to 8k](docs/charts/roster_growth.svg)](docs/charts/roster_growth.svg)
+[![Three charts, real model at 50, 300 and 800 agents: the original picks the right agent 53 to 58% of the time, the core fix 93 to 100%, the shipped version 100% and 97.5%; the original creates duplicates in up to 48% of cases, the shipped version 0 to 1%; the original's prompt grows from 5.3k to 19.5k tokens, the others stay at 7 to 8k](docs/charts/roster_growth.svg)](docs/charts/roster_growth.svg)
 
-"Core fix" is changes 1 to 13, measured at 50, 300 and 800 agents; the dashed line adds search phrases (change 14), measured at 300 and 800. From `evals/results/llm_results_anthropic-claude-haiku-5-5*.md`.
+"Core fix" is changes 1 to 13, measured at 50, 300 and 800 agents; the dashed line adds search phrases (change 14). "Shipped" (blue) is this branch, with all three additions and meaning search on, measured at 300 and 800. Every line uses the same 40 cases (the 6 mid-history cases are left out here, since the older runs didn't have them). At 800 agents the shipped version got 39 of 40: in 2 of 3 runs it asked about a new contact who shares a first name, instead of creating the agent. From `evals/results/llm_results_anthropic-claude-haiku-5-5*.md`.
 
-[![Two charts at 50, 300 and 800 agents: cost per 1,000 decisions rises from $0.74 to $2.19 for the original and stays at $0.89 to $1.05 for the core fix ($0.94 with search phrases); time per decision stays about 3 to 3.6 seconds for both](docs/charts/cost_speed.svg)](docs/charts/cost_speed.svg)
+[![Two charts at 50, 300 and 800 agents: cost per 1,000 decisions rises from $0.74 to $2.19 for the original and stays near $0.90 to $1.05 for the core fix and the shipped version; time per decision stays about 3 to 3.6 seconds for all](docs/charts/cost_speed.svg)](docs/charts/cost_speed.svg)
 
 Time per decision is almost all the model's own time: our routing work adds about 0.04 s. Time to first token wasn't measured, because the app doesn't stream replies; it waits for each full answer.
 

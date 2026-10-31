@@ -4,13 +4,16 @@
 <text x="32" y="66" font-size="14.5" fill="#64748b">Same runs as above. Haiku 5.5 at $0.10 / $0.50 per million input / output tokens.</text>
 <line x1="32" y1="96" x2="62" y2="96" stroke="#dc2626" stroke-width="2.5" stroke-dasharray=""/>
 <circle cx="47" cy="96" r="4.5" fill="#dc2626" stroke="#dc2626" stroke-width="2"/>
-<text x="70" y="101" font-size="14" fill="#0f172a">Original OpenPoke</text>
-<line x1="213.0" y1="96" x2="243.0" y2="96" stroke="#16a34a" stroke-width="2.5" stroke-dasharray=""/>
-<circle cx="228.0" cy="96" r="4.5" fill="#16a34a" stroke="#16a34a" stroke-width="2"/>
-<text x="251.0" y="101" font-size="14" fill="#0f172a">Core fix, without search phrases</text>
-<line x1="499.0" y1="96" x2="529.0" y2="96" stroke="#15803d" stroke-width="2.5" stroke-dasharray="5 4"/>
-<circle cx="514.0" cy="96" r="4.5" fill="#ffffff" stroke="#15803d" stroke-width="2"/>
-<text x="537.0" y="101" font-size="14" fill="#0f172a">Core fix, with search phrases</text>
+<text x="70" y="101" font-size="14" fill="#0f172a">Original</text>
+<line x1="143.2" y1="96" x2="173.2" y2="96" stroke="#16a34a" stroke-width="2.5" stroke-dasharray=""/>
+<circle cx="158.2" cy="96" r="4.5" fill="#16a34a" stroke="#16a34a" stroke-width="2"/>
+<text x="181.2" y="101" font-size="14" fill="#0f172a">Core fix</text>
+<line x1="254.39999999999998" y1="96" x2="284.4" y2="96" stroke="#15803d" stroke-width="2.5" stroke-dasharray="5 4"/>
+<circle cx="269.4" cy="96" r="4.5" fill="#ffffff" stroke="#15803d" stroke-width="2"/>
+<text x="292.4" y="101" font-size="14" fill="#0f172a">Core fix + search phrases</text>
+<line x1="482.9" y1="96" x2="512.9" y2="96" stroke="#2563eb" stroke-width="2.5" stroke-dasharray=""/>
+<circle cx="497.9" cy="96" r="4.5" fill="#2563eb" stroke="#2563eb" stroke-width="2"/>
+<text x="520.9" y="101" font-size="14" fill="#0f172a">Shipped: all three, with meaning search</text>
 <rect x="32" y="124" width="444" height="330" rx="10" fill="#f8fafc"/>
 <text x="42" y="150" font-size="16" font-weight="700" fill="#0f172a">Cost per 1,000 decisions</text>
 <text x="42" y="170" font-size="13" fill="#64748b">US dollars</text>
@@ -41,9 +44,13 @@
 <path d="M 210.6 328.4 L 408.2 325.0" fill="none" stroke="#15803d" stroke-width="2.5" stroke-dasharray="5 4"/>
 <circle cx="210.6" cy="328.4" r="4.5" fill="#ffffff" stroke="#15803d" stroke-width="2"/>
 <circle cx="408.2" cy="325.0" r="4.5" fill="#ffffff" stroke="#15803d" stroke-width="2"/>
+<path d="M 210.6 325.0 L 408.2 320.8" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-dasharray=""/>
+<circle cx="210.6" cy="325.0" r="4.5" fill="#2563eb" stroke="#2563eb" stroke-width="2"/>
+<circle cx="408.2" cy="320.8" r="4.5" fill="#2563eb" stroke="#2563eb" stroke-width="2"/>
 <text x="417.2" y="224.5" font-size="12.5" font-weight="700" fill="#dc2626">$2.19</text>
 <text x="417.2" y="320.3" font-size="12.5" font-weight="700" fill="#16a34a">$1.05</text>
-<text x="417.2" y="335.3" font-size="12.5" font-weight="700" fill="#15803d">$0.94</text>
+<text x="417.2" y="335.3" font-size="12.5" font-weight="700" fill="#2563eb">$0.99</text>
+<text x="417.2" y="350.3" font-size="12.5" font-weight="700" fill="#15803d">$0.94</text>
 <rect x="502" y="124" width="444" height="330" rx="10" fill="#f8fafc"/>
 <text x="512" y="150" font-size="16" font-weight="700" fill="#0f172a">Time per decision</text>
 <text x="512" y="170" font-size="13" fill="#64748b">seconds, median</text>
@@ -72,7 +79,11 @@
 <path d="M 680.6 241.2 L 878.2 225.5" fill="none" stroke="#15803d" stroke-width="2.5" stroke-dasharray="5 4"/>
 <circle cx="680.6" cy="241.2" r="4.5" fill="#ffffff" stroke="#15803d" stroke-width="2"/>
 <circle cx="878.2" cy="225.5" r="4.5" fill="#ffffff" stroke="#15803d" stroke-width="2"/>
+<path d="M 680.6 241.2 L 878.2 220.2" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-dasharray=""/>
+<circle cx="680.6" cy="241.2" r="4.5" fill="#2563eb" stroke="#2563eb" stroke-width="2"/>
+<circle cx="878.2" cy="220.2" r="4.5" fill="#2563eb" stroke="#2563eb" stroke-width="2"/>
 <text x="887.2" y="219.5" font-size="12.5" font-weight="700" fill="#dc2626">3.6 s</text>
-<text x="887.2" y="234.5" font-size="12.5" font-weight="700" fill="#15803d">3.4 s</text>
-<text x="887.2" y="249.5" font-size="12.5" font-weight="700" fill="#16a34a">3.1 s</text>
+<text x="887.2" y="234.5" font-size="12.5" font-weight="700" fill="#2563eb">3.5 s</text>
+<text x="887.2" y="249.5" font-size="12.5" font-weight="700" fill="#15803d">3.4 s</text>
+<text x="887.2" y="264.5" font-size="12.5" font-weight="700" fill="#16a34a">3.1 s</text>
 </svg>

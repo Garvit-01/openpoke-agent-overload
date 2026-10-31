@@ -4,13 +4,16 @@
 <text x="32" y="66" font-size="14.5" fill="#64748b">Real model (Claude Haiku 5.5), the same 40 cases at each size, 3 runs per case.</text>
 <line x1="32" y1="96" x2="62" y2="96" stroke="#dc2626" stroke-width="2.5" stroke-dasharray=""/>
 <circle cx="47" cy="96" r="4.5" fill="#dc2626" stroke="#dc2626" stroke-width="2"/>
-<text x="70" y="101" font-size="14" fill="#0f172a">Original OpenPoke</text>
-<line x1="213.0" y1="96" x2="243.0" y2="96" stroke="#16a34a" stroke-width="2.5" stroke-dasharray=""/>
-<circle cx="228.0" cy="96" r="4.5" fill="#16a34a" stroke="#16a34a" stroke-width="2"/>
-<text x="251.0" y="101" font-size="14" fill="#0f172a">Core fix, without search phrases</text>
-<line x1="499.0" y1="96" x2="529.0" y2="96" stroke="#15803d" stroke-width="2.5" stroke-dasharray="5 4"/>
-<circle cx="514.0" cy="96" r="4.5" fill="#ffffff" stroke="#15803d" stroke-width="2"/>
-<text x="537.0" y="101" font-size="14" fill="#0f172a">Core fix, with search phrases</text>
+<text x="70" y="101" font-size="14" fill="#0f172a">Original</text>
+<line x1="143.2" y1="96" x2="173.2" y2="96" stroke="#16a34a" stroke-width="2.5" stroke-dasharray=""/>
+<circle cx="158.2" cy="96" r="4.5" fill="#16a34a" stroke="#16a34a" stroke-width="2"/>
+<text x="181.2" y="101" font-size="14" fill="#0f172a">Core fix</text>
+<line x1="254.39999999999998" y1="96" x2="284.4" y2="96" stroke="#15803d" stroke-width="2.5" stroke-dasharray="5 4"/>
+<circle cx="269.4" cy="96" r="4.5" fill="#ffffff" stroke="#15803d" stroke-width="2"/>
+<text x="292.4" y="101" font-size="14" fill="#0f172a">Core fix + search phrases</text>
+<line x1="482.9" y1="96" x2="512.9" y2="96" stroke="#2563eb" stroke-width="2.5" stroke-dasharray=""/>
+<circle cx="497.9" cy="96" r="4.5" fill="#2563eb" stroke="#2563eb" stroke-width="2"/>
+<text x="520.9" y="101" font-size="14" fill="#0f172a">Shipped: all three, with meaning search</text>
 <rect x="32" y="124" width="290" height="330" rx="10" fill="#f8fafc"/>
 <text x="42" y="150" font-size="16" font-weight="700" fill="#0f172a">Picked the right agent</text>
 <text x="42" y="170" font-size="13" fill="#64748b">share of all decisions</text>
@@ -39,8 +42,12 @@
 <path d="M 156.2 195.7 L 263.3 194.0" fill="none" stroke="#15803d" stroke-width="2.5" stroke-dasharray="5 4"/>
 <circle cx="156.2" cy="195.7" r="4.5" fill="#ffffff" stroke="#15803d" stroke-width="2"/>
 <circle cx="263.3" cy="194.0" r="4.5" fill="#ffffff" stroke="#15803d" stroke-width="2"/>
+<path d="M 156.2 194.0 L 263.3 199.2" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-dasharray=""/>
+<circle cx="156.2" cy="194.0" r="4.5" fill="#2563eb" stroke="#2563eb" stroke-width="2"/>
+<circle cx="263.3" cy="199.2" r="4.5" fill="#2563eb" stroke="#2563eb" stroke-width="2"/>
 <text x="272.3" y="198.5" font-size="12.5" font-weight="700" fill="#15803d">100%</text>
-<text x="272.3" y="213.5" font-size="12.5" font-weight="700" fill="#16a34a">93.3%</text>
+<text x="272.3" y="213.5" font-size="12.5" font-weight="700" fill="#2563eb">97.5%</text>
+<text x="272.3" y="228.5" font-size="12.5" font-weight="700" fill="#16a34a">93.3%</text>
 <text x="272.3" y="296.6" font-size="12.5" font-weight="700" fill="#dc2626">53.3%</text>
 <rect x="339" y="124" width="290" height="330" rx="10" fill="#f8fafc"/>
 <text x="349" y="150" font-size="16" font-weight="700" fill="#0f172a">Made a duplicate agent</text>
@@ -68,9 +75,13 @@
 <path d="M 463.2 404.0 L 570.3 404.0" fill="none" stroke="#15803d" stroke-width="2.5" stroke-dasharray="5 4"/>
 <circle cx="463.2" cy="404.0" r="4.5" fill="#ffffff" stroke="#15803d" stroke-width="2"/>
 <circle cx="570.3" cy="404.0" r="4.5" fill="#ffffff" stroke="#15803d" stroke-width="2"/>
+<path d="M 463.2 404.0 L 570.3 400.5" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-dasharray=""/>
+<circle cx="463.2" cy="404.0" r="4.5" fill="#2563eb" stroke="#2563eb" stroke-width="2"/>
+<circle cx="570.3" cy="400.5" r="4.5" fill="#2563eb" stroke="#2563eb" stroke-width="2"/>
 <text x="579.3" y="240.8" font-size="12.5" font-weight="700" fill="#dc2626">47.9%</text>
 <text x="579.3" y="382.9" font-size="12.5" font-weight="700" fill="#16a34a">7.3%</text>
-<text x="579.3" y="408.5" font-size="12.5" font-weight="700" fill="#15803d">0%</text>
+<text x="579.3" y="405.0" font-size="12.5" font-weight="700" fill="#2563eb">1%</text>
+<text x="579.3" y="420.0" font-size="12.5" font-weight="700" fill="#15803d">0%</text>
 <rect x="646" y="124" width="290" height="330" rx="10" fill="#f8fafc"/>
 <text x="656" y="150" font-size="16" font-weight="700" fill="#0f172a">Prompt size</text>
 <text x="656" y="170" font-size="13" fill="#64748b">input tokens per decision</text>
@@ -99,7 +110,11 @@
 <path d="M 770.2 333.6 L 877.3 331.1" fill="none" stroke="#15803d" stroke-width="2.5" stroke-dasharray="5 4"/>
 <circle cx="770.2" cy="333.6" r="4.5" fill="#ffffff" stroke="#15803d" stroke-width="2"/>
 <circle cx="877.3" cy="331.1" r="4.5" fill="#ffffff" stroke="#15803d" stroke-width="2"/>
+<path d="M 770.2 330.0 L 877.3 325.4" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-dasharray=""/>
+<circle cx="770.2" cy="330.0" r="4.5" fill="#2563eb" stroke="#2563eb" stroke-width="2"/>
+<circle cx="877.3" cy="325.4" r="4.5" fill="#2563eb" stroke="#2563eb" stroke-width="2"/>
 <text x="886.3" y="213.8" font-size="12.5" font-weight="700" fill="#dc2626">19.5k</text>
 <text x="886.3" y="324.8" font-size="12.5" font-weight="700" fill="#16a34a">8.4k</text>
-<text x="886.3" y="339.8" font-size="12.5" font-weight="700" fill="#15803d">7.3k</text>
+<text x="886.3" y="339.8" font-size="12.5" font-weight="700" fill="#2563eb">7.9k</text>
+<text x="886.3" y="354.8" font-size="12.5" font-weight="700" fill="#15803d">7.3k</text>
 </svg>
