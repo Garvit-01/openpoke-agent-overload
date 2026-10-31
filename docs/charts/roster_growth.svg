@@ -5,12 +5,12 @@
 <line x1="32" y1="96" x2="62" y2="96" stroke="#dc2626" stroke-width="2.5" stroke-dasharray=""/>
 <circle cx="47" cy="96" r="4.5" fill="#dc2626" stroke="#dc2626" stroke-width="2"/>
 <text x="70" y="101" font-size="14" fill="#0f172a">Original OpenPoke</text>
-<line x1="227.8" y1="96" x2="257.8" y2="96" stroke="#16a34a" stroke-width="2.5" stroke-dasharray=""/>
-<circle cx="242.8" cy="96" r="4.5" fill="#16a34a" stroke="#16a34a" stroke-width="2"/>
-<text x="265.8" y="101" font-size="14" fill="#0f172a">This change</text>
-<line x1="379.20000000000005" y1="96" x2="409.20000000000005" y2="96" stroke="#15803d" stroke-width="2.5" stroke-dasharray="5 4"/>
-<circle cx="394.20000000000005" cy="96" r="4.5" fill="#ffffff" stroke="#15803d" stroke-width="2"/>
-<text x="417.20000000000005" y="101" font-size="14" fill="#0f172a">This change + search phrases</text>
+<line x1="213.0" y1="96" x2="243.0" y2="96" stroke="#16a34a" stroke-width="2.5" stroke-dasharray=""/>
+<circle cx="228.0" cy="96" r="4.5" fill="#16a34a" stroke="#16a34a" stroke-width="2"/>
+<text x="251.0" y="101" font-size="14" fill="#0f172a">Core fix, without search phrases</text>
+<line x1="499.0" y1="96" x2="529.0" y2="96" stroke="#15803d" stroke-width="2.5" stroke-dasharray="5 4"/>
+<circle cx="514.0" cy="96" r="4.5" fill="#ffffff" stroke="#15803d" stroke-width="2"/>
+<text x="537.0" y="101" font-size="14" fill="#0f172a">Core fix, with search phrases</text>
 <rect x="32" y="124" width="290" height="330" rx="10" fill="#f8fafc"/>
 <text x="42" y="150" font-size="16" font-weight="700" fill="#0f172a">Picked the right agent</text>
 <text x="42" y="170" font-size="13" fill="#64748b">share of all decisions</text>

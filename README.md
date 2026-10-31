@@ -12,6 +12,8 @@ The original is on branch `upstream-main` (upstream commit `5b5f635`). Run-by-ru
 
 [![After: how a message finds its agent, in six steps (message, retriever, main agent, resolver, execution agent, after each run), next to the SQLite agent registry](docs/architecture.svg)](docs/architecture.svg)
 
+**Built in two steps.** First the core fix (changes 1 to 14, kept on branch `baseline`). On its own it took the original from 22 to 39 of 46 cases right and cut duplicate agents from about 30% to 13%. Then I tried three additions on top of it, each on its own branch, measured each on the same cases, and kept the two that helped: 45 of 46 and no duplicates. See [Alternatives I measured](#alternatives-i-measured).
+
 Click any diagram or chart to open it full size. The original's design is drawn under [What was wrong in the original](#what-was-wrong-in-the-original).
 
 **The result.** Claude Haiku 5.5, 300 agents, the same cases and the same day for both columns, 3 runs per case:
@@ -39,7 +41,7 @@ As the roster grows:
 
 [![Three charts, real model at 50, 300 and 800 agents: the original picks the right agent about 53 to 58% of the time, this change 93 to 100%; the original creates duplicates in up to 48% of cases, this change 0 to 7%; the original's prompt grows from 5.3k to 19.5k tokens, this change stays at 7 to 8k](docs/charts/roster_growth.svg)](docs/charts/roster_growth.svg)
 
-Core fix without search phrases at 50, 300 and 800 agents; with search phrases (dashed) at 300 and 800. From `evals/results/llm_results_anthropic-claude-haiku-5-5*.md`.
+"Core fix" is changes 1 to 13, measured at 50, 300 and 800 agents; the dashed line adds search phrases (change 14), measured at 300 and 800. From `evals/results/llm_results_anthropic-claude-haiku-5-5*.md`.
 
 The data is synthetic. Read [Limitations](#limitations) before quoting any of this.
 
