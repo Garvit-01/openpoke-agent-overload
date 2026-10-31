@@ -43,6 +43,10 @@ As the roster grows:
 
 "Core fix" is changes 1 to 13, measured at 50, 300 and 800 agents; the dashed line adds search phrases (change 14), measured at 300 and 800. From `evals/results/llm_results_anthropic-claude-haiku-5-5*.md`.
 
+[![Two charts at 50, 300 and 800 agents: cost per 1,000 decisions rises from $0.74 to $2.19 for the original and stays at $0.89 to $1.05 for the core fix ($0.94 with search phrases); time per decision stays about 3 to 3.6 seconds for both](docs/charts/cost_speed.svg)](docs/charts/cost_speed.svg)
+
+Time per decision is almost all the model's own time: our routing work adds about 0.04 s. Time to first token wasn't measured, because the app doesn't stream replies; it waits for each full answer.
+
 The data is synthetic. Read [Limitations](#limitations) before quoting any of this.
 
 ## What was wrong in the original
@@ -80,7 +84,7 @@ The author names the first problems himself in his [explainer](https://www.shlok
 | 15 | Plurals folded in search and in the dedup key, so "groceries" finds "Grocery list" | `entities.py` |
 | 16 | A misspelt contact name ("Sarha") gets a hint listing every Sarah, and the model asks which one | `retrieval.py`, `system_prompt.md` |
 | 17 | Search also reads each agent's last 20 requests, at half weight, so "did the seating chart come through?" finds the agent it was asked of | `retrieval.py` |
-| 18 | Optional search by meaning with a small local model, off by default | `embeddings.py` |
+| 18 | Optional search by meaning: a small embedding model (`BAAI/bge-small-en-v1.5` via fastembed) runs on your computer, no API calls, and fills 3 of the 8 retrieved slots. Off by default | `embeddings.py` |
 
 Changes 12 to 17 were each added after an eval showed a gap. The tests that pin the routing behaviour are `test_retrieval.py`, `test_resolver.py`, `test_registry.py`, `test_lifecycle.py` and `test_outbound_guard.py`.
 
@@ -127,7 +131,7 @@ The core fix and single-addition rows ran on 2026-10-28, and this branch's row o
 
 **The one break.** "Write to Ibrahim Holloway about the launch timeline" should create a new agent. Past-request search puts 10 "launch timeline" agents next to another Ibrahim, and the model asked a question instead of acting in 2 of 3 runs. It never picked a wrong agent. The same case broke with past-request search alone, so I count it as a real cost, not noise.
 
-**Why not ship all three, when that row got everything right?** Meaning search needs an extra package and a 110 MB model, so every fresh install, a reviewer's included, would have to download it before the default works, and it adds 50 to 80 ms per message. On these tests it bought one case, and that case fails safely without it: the model asks instead of acting. So the default stays light, and the best result is one setting away (`OPENPOKE_AGENT_RETRIEVER=hybrid` after `pip install -r server/requirements-embeddings.txt`).
+**Why not ship all three, when that row got everything right?** Meaning search needs an extra package and a one-time 110 MB model download (without them the app quietly falls back to keyword search), and it adds 50 to 80 ms per message. On these tests it bought one case, and that case fails safely without it: the model asks instead of acting. So the default stays light, and the best result is one setting away (`OPENPOKE_AGENT_RETRIEVER=hybrid` after `pip install -r server/requirements-embeddings.txt`).
 
 Branch map: `baseline` is the core fix alone, frozen. `fix-plurals-typos`, `approach-past-requests` and `approach-embeddings` hold each addition on its own with its write-up. `all-approaches` is where they were compared.
 
