@@ -12,7 +12,7 @@ The original is on branch `upstream-main` (upstream commit `5b5f635`). Run-by-ru
 
 [![After: how a message finds its agent, in six steps (message, retriever, main agent, resolver, execution agent, after each run), next to the SQLite agent registry](docs/architecture.svg)](docs/architecture.svg)
 
-**Built in two steps.** First the core fix (changes 1 to 14, kept on branch `baseline`). On its own it took the original from 22 to 39 of 46 cases right and cut duplicate agents from about 30% to 13%. Then I tried three additions on top of it, each on its own branch, measured each on the same cases, and kept the two that helped: 45 of 46 and no duplicates. See [Alternatives I measured](#alternatives-i-measured).
+**Built in two steps.** First the core fix: the registry, the shortlist, exact matches, the duplicate check and the rest of changes 1 to 14 in [What I changed](#what-i-changed), kept on branch `baseline`. On its own it took the original from 22 to 39 of 46 cases right and cut duplicate agents from about 30% to 13%. Then I tried three additions on top of it, each on its own branch, measured each on the same cases, and kept the two that helped: 45 of 46 and no duplicates. See [Alternatives I measured](#alternatives-i-measured).
 
 Click any diagram or chart to open it full size. The original's design is drawn under [What was wrong in the original](#what-was-wrong-in-the-original).
 
@@ -126,6 +126,8 @@ The additions (changes 15 to 18) were each built on their own branch first, then
 The core fix and single-addition rows ran on 2026-10-28, and this branch's row on 2026-10-29. The original runs inside every row, and its range across those runs (22 to 24 of 46) shows how much identical runs vary.
 
 **The one break.** "Write to Ibrahim Holloway about the launch timeline" should create a new agent. Past-request search puts 10 "launch timeline" agents next to another Ibrahim, and the model asked a question instead of acting in 2 of 3 runs. It never picked a wrong agent. The same case broke with past-request search alone, so I count it as a real cost, not noise.
+
+**Why not ship all three, when that row got everything right?** Meaning search needs an extra package and a 110 MB model, so every fresh install, a reviewer's included, would have to download it before the default works, and it adds 50 to 80 ms per message. On these tests it bought one case, and that case fails safely without it: the model asks instead of acting. So the default stays light, and the best result is one setting away (`OPENPOKE_AGENT_RETRIEVER=hybrid` after `pip install -r server/requirements-embeddings.txt`).
 
 Branch map: `baseline` is the core fix alone, frozen. `fix-plurals-typos`, `approach-past-requests` and `approach-embeddings` hold each addition on its own with its write-up. `all-approaches` is where they were compared.
 
