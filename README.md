@@ -10,6 +10,8 @@ The original is on branch `upstream-main` (upstream commit `5b5f635`). Run-by-ru
 
 **The fix.** Treat "which agent is this about?" as a retrieval problem. An SQLite registry keeps a summary, contacts, thread ids, past requests and status for each agent. Each turn the prompt shows a fixed shortlist of 12 (8 found for the message, 4 recently used), plus the other agents of any person the message names. An exact email or thread match always wins. A resolver stops duplicates when an agent is created, and idle agents are retired but stay searchable.
 
+![How a message finds its agent: message, retriever, main agent, resolver, execution agent, with the SQLite agent registry underneath](docs/architecture.svg)
+
 **The result.** Claude Haiku 5.5, 300 agents, the same cases and the same day for both columns, 3 runs per case:
 
 | | Original | This branch |
@@ -129,8 +131,8 @@ Not fixed, worth knowing:
 
 ## Limitations
 
-- **The data is synthetic.** I generated the agents and labelled messages to contain known failure modes. The 24 hand-written paraphrases avoid the generator's wording, but one author wrote them with Claude's help. Real users will be messier.
-- **One model family does most of the work.** Haiku routes, Haiku writes the search phrases, and a Claude model helped write the test messages. Gemma 4 checked the core fix's routing only (29/40 against 19/40 for the original).
+- **The data is synthetic.** A script generated the agents and most test messages, built around known failure modes. The 24 paraphrases were written separately, with Claude, so they don't reuse the script's wording. Neither comes from real users, who will be messier.
+- **One model family does most of the work.** Haiku routes, Haiku writes the search phrases, and the paraphrases were written with Claude, which is the same family and could make them easier for it. Gemma 4 checked the core fix's routing only (29/40 against 19/40 for the original).
 - **The sample is small.** 46 cases and 24 paraphrases. The difference from the original is large and significant. The difference from the core fix (7 fixed, 1 broken) is not significant on its own.
 - **The suite is now nearly saturated.** At 45/46 and 24/24 it catches regressions, but it can't show further gains. Harder cases are the next step.
 - **It asks "which Sarah?" even right after you named one.** That's a deliberate lean towards asking before an email goes out, but a person would guess the Sarah from the last turn.

@@ -1,0 +1,174 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1290 830" width="1290" height="830" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1290" height="830" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="30" y="46" font-size="25" font-weight="700" fill="#0f172a">How a message finds its agent</text>
+  <text x="30" y="74" font-size="15" fill="#475569">Each turn the main agent sees about 12 relevant agents, instead of every agent ever created.</text>
+
+  <!-- ===== Step boxes ===== -->
+  <!-- 1 Message -->
+  <rect x="30" y="100" width="222" height="290" rx="10" fill="#f8fafc" stroke="#64748b" stroke-width="1.5"/>
+  <path d="M 40 100 h 202 a 10 10 0 0 1 10 10 v 30 h -222 v -30 a 10 10 0 0 1 10 -10 z" fill="#64748b"/>
+  <text x="44" y="127" font-size="16" font-weight="700" fill="#ffffff">1  Your message</text>
+  <g font-size="14" fill="#1e293b">
+    <text x="44" y="166" font-style="italic">"Did Sarah Okafor reply</text>
+    <text x="44" y="185" font-style="italic">about the offer?"</text>
+    <text x="44" y="220">Goes to the main</text>
+    <text x="44" y="239">(interaction) agent, the</text>
+    <text x="44" y="258">one you talk to.</text>
+    <text x="44" y="293">Incoming email arrives</text>
+    <text x="44" y="312">the same way, with its</text>
+    <text x="44" y="331">Gmail thread id.</text>
+  </g>
+
+  <!-- 2 Retriever -->
+  <rect x="282" y="100" width="222" height="290" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+  <path d="M 292 100 h 202 a 10 10 0 0 1 10 10 v 30 h -222 v -30 a 10 10 0 0 1 10 -10 z" fill="#2563eb"/>
+  <text x="296" y="127" font-size="16" font-weight="700" fill="#ffffff">2  Retriever</text>
+  <g font-size="14" fill="#1e293b">
+    <text x="296" y="164">• Exact email or thread</text>
+    <text x="296" y="182">  match always wins</text>
+    <text x="296" y="204">• Keyword search (BM25)</text>
+    <text x="296" y="222">  over name, summary,</text>
+    <text x="296" y="240">  contacts, search phrases</text>
+    <text x="296" y="258">  and the last 20 requests</text>
+    <text x="296" y="280">• Plurals folded; typo hint</text>
+    <text x="296" y="298">  ("Sarha" lists every Sarah)</text>
+  </g>
+  <rect x="294" y="314" width="198" height="62" rx="6" fill="#dbeafe"/>
+  <text x="304" y="336" font-size="14" font-weight="600" fill="#1e3a8a">Shortlist: 8 found</text>
+  <text x="304" y="354" font-size="14" font-weight="600" fill="#1e3a8a">+ 4 recently used</text>
+  <text x="304" y="372" font-size="14" font-weight="600" fill="#1e3a8a">+ that person's agents</text>
+
+  <!-- 3 Main agent -->
+  <rect x="534" y="100" width="222" height="290" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <path d="M 544 100 h 202 a 10 10 0 0 1 10 10 v 30 h -222 v -30 a 10 10 0 0 1 10 -10 z" fill="#7c3aed"/>
+  <text x="548" y="127" font-size="16" font-weight="700" fill="#ffffff">3  Main agent (LLM)</text>
+  <g font-size="14" fill="#1e293b">
+    <text x="548" y="164">Sees about 12 agents,</text>
+    <text x="548" y="182">each with its summary,</text>
+    <text x="548" y="200">status and why it matched.</text>
+    <text x="548" y="218" font-weight="600">Not all 300.</text>
+    <text x="548" y="252">Then it either:</text>
+    <text x="548" y="274">• hands the task to one</text>
+    <text x="548" y="296">• calls search_agents to</text>
+    <text x="548" y="314">  look past the shortlist</text>
+    <text x="548" y="336">• asks "Which Sarah?"</text>
+    <text x="548" y="354">  when it can't tell</text>
+  </g>
+
+  <!-- 4 Resolver -->
+  <rect x="786" y="100" width="222" height="290" rx="10" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+  <path d="M 796 100 h 202 a 10 10 0 0 1 10 10 v 30 h -222 v -30 a 10 10 0 0 1 10 -10 z" fill="#ea580c"/>
+  <text x="800" y="127" font-size="16" font-weight="700" fill="#ffffff">4  Resolver</text>
+  <g font-size="14" fill="#1e293b">
+    <text x="800" y="164">Checks before any new</text>
+    <text x="800" y="182">agent is created:</text>
+    <text x="800" y="206">• same name, thread or</text>
+    <text x="800" y="224">  email: reuse that agent</text>
+    <text x="800" y="248">• similar wording alone</text>
+    <text x="800" y="266">  never merges two agents</text>
+    <text x="800" y="290">• new_task flag: a new</text>
+    <text x="800" y="308">  topic with a known person</text>
+    <text x="800" y="342">Every decision is written</text>
+    <text x="800" y="360">to the routing log.</text>
+  </g>
+
+  <!-- 5 Execution agent -->
+  <rect x="1038" y="100" width="222" height="290" rx="10" fill="#ecfdf5" stroke="#059669" stroke-width="1.5"/>
+  <path d="M 1048 100 h 202 a 10 10 0 0 1 10 10 v 30 h -222 v -30 a 10 10 0 0 1 10 -10 z" fill="#059669"/>
+  <text x="1052" y="127" font-size="16" font-weight="700" fill="#ffffff">5  Execution agent</text>
+  <g font-size="14" fill="#1e293b">
+    <text x="1052" y="164">Does the work: email,</text>
+    <text x="1052" y="182">reminders, searches.</text>
+    <text x="1052" y="210">• one run at a time per</text>
+    <text x="1052" y="228">  agent (run lock)</text>
+    <text x="1052" y="252">• sees its last 10</text>
+    <text x="1052" y="270">  requests + a summary</text>
+    <text x="1052" y="294">• sends email only after</text>
+    <text x="1052" y="312">  you saw the draft and</text>
+    <text x="1052" y="330">  replied (send guard)</text>
+  </g>
+
+  <!-- Horizontal flow arrows -->
+  <g stroke="#475569" stroke-width="2" fill="none" marker-end="url(#arrow)">
+    <line x1="252" y1="245" x2="279" y2="245"/>
+    <line x1="504" y1="245" x2="531" y2="245"/>
+    <line x1="756" y1="245" x2="783" y2="245"/>
+    <line x1="1008" y1="245" x2="1035" y2="245"/>
+  </g>
+
+  <!-- ===== Bottom row ===== -->
+  <!-- 7 Lifecycle -->
+  <rect x="30" y="470" width="222" height="140" rx="10" fill="#fefce8" stroke="#a16207" stroke-width="1.5"/>
+  <text x="44" y="497" font-size="16" font-weight="700" fill="#a16207">7  Lifecycle</text>
+  <g font-size="14" fill="#1e293b">
+    <text x="44" y="522">Idle 14 days: dormant.</text>
+    <text x="44" y="540">Idle 45 days: archived.</text>
+    <text x="44" y="558">Never while it owns a</text>
+    <text x="44" y="576">reminder. Nothing deleted;</text>
+    <text x="44" y="594">archived stays searchable.</text>
+  </g>
+
+  <!-- Registry (database) -->
+  <path d="M 282 482 a 363 14 0 0 1 726 0 v 116 a 363 14 0 0 1 -726 0 z" fill="#f1f5f9" stroke="#334155" stroke-width="1.5"/>
+  <ellipse cx="645" cy="482" rx="363" ry="14" fill="#e2e8f0" stroke="#334155" stroke-width="1.5"/>
+  <text x="645" y="522" font-size="17" font-weight="700" fill="#0f172a" text-anchor="middle">Agent registry (SQLite)</text>
+  <g font-size="14" fill="#1e293b" text-anchor="middle">
+    <text x="645" y="548">One row per agent: name, summary, contacts, emails, Gmail thread ids,</text>
+    <text x="645" y="567">search phrases, last 20 requests, status and last use.</text>
+    <text x="645" y="590" fill="#64748b">The original kept only a list of names.</text>
+  </g>
+
+  <!-- 6 After each run -->
+  <rect x="1038" y="470" width="222" height="140" rx="10" fill="#ecfeff" stroke="#0891b2" stroke-width="1.5"/>
+  <text x="1052" y="497" font-size="16" font-weight="700" fill="#0891b2">6  After each run</text>
+  <g font-size="14" fill="#1e293b">
+    <text x="1052" y="522">The agent's summary is</text>
+    <text x="1052" y="540">rebuilt from its log.</text>
+    <text x="1052" y="558">A cheap model writes about</text>
+    <text x="1052" y="576">10 ways a user might refer</text>
+    <text x="1052" y="594">to a new agent.</text>
+  </g>
+
+  <!-- Vertical arrows to and from the registry -->
+  <g stroke="#475569" stroke-width="2" fill="none">
+    <line x1="393" y1="468" x2="393" y2="394" marker-end="url(#arrow)"/>
+    <line x1="645" y1="394" x2="645" y2="465" stroke-dasharray="6 5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+    <line x1="897" y1="394" x2="897" y2="466" marker-end="url(#arrow)"/>
+    <line x1="1149" y1="394" x2="1149" y2="466" marker-end="url(#arrow)"/>
+    <line x1="1036" y1="540" x2="1012" y2="540" marker-end="url(#arrow)"/>
+    <line x1="254" y1="540" x2="278" y2="540" marker-end="url(#arrow)"/>
+  </g>
+  <g font-size="13" fill="#475569">
+    <text x="401" y="436">reads</text>
+    <text x="653" y="436">search_agents</text>
+    <text x="905" y="436">create or reuse</text>
+    <text x="1157" y="436">when done</text>
+  </g>
+
+  <!-- ===== Before / after strip ===== -->
+  <rect x="30" y="650" width="600" height="150" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="48" y="679" font-size="17" font-weight="700" fill="#b91c1c">Before: the original OpenPoke</text>
+  <g font-size="14.5" fill="#1e293b">
+    <text x="48" y="707">• Every agent name goes into every prompt:</text>
+    <text x="48" y="727">   about 10,700 tokens of names at 1000 agents.</text>
+    <text x="48" y="751">• An agent is reused only on an exact name match,</text>
+    <text x="48" y="771">   so the model guesses or makes a duplicate.</text>
+  </g>
+
+  <rect x="660" y="650" width="600" height="150" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="678" y="679" font-size="17" font-weight="700" fill="#15803d">After: this version</text>
+  <g font-size="14.5" fill="#1e293b">
+    <text x="678" y="707">• About 12 agents per prompt: under 1,000 tokens</text>
+    <text x="678" y="727">   of agents at any roster size.</text>
+    <text x="678" y="751">• Real model, 300 agents: right on 45 of 46 cases</text>
+    <text x="678" y="771">   (original 22), and 0 duplicates (original 30%).</text>
+  </g>
+</svg>

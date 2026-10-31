@@ -128,6 +128,6 @@ Against making it the default now:
 - The real-model run that would show whether this changes routing wasn't done, for lack of credit. With keywords alone Haiku already scores 24/24 by majority, so the gain may be small.
 - It adds about 110 MB on disk and a model download on first use, and on this machine the install changed a shared package (protobuf).
 - It adds 45 to 100 ms per turn and minutes of background CPU for a large registry.
-- On a 43,000-tool benchmark, plain BM25 beat small embedders ([ToolRet, 2025](https://arxiv.org/abs/2503.01763)). Here it helped recall at a few hundred agents, but on synthetic data and 24 hand-written messages from one author.
+- On a 43,000-tool benchmark, plain BM25 beat small embedders ([ToolRet, 2025](https://arxiv.org/abs/2503.01763)). Here it helped recall at a few hundred agents, but on synthetic data and 24 paraphrases written with Claude, not by real users.
 
 If the two paid runs show a better pass^3 on the paraphrases and no loss on the main 40 cases, I'd make `hybrid` the default.
