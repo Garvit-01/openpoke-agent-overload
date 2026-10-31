@@ -22,9 +22,9 @@
   <text x="84" y="240" font-size="17" font-weight="700" fill="#1e3a8a">Retriever</text>
   <text x="180" y="240" font-size="13.5" fill="#475569">retrieval.py</text>
   <g font-size="14.5" fill="#1e293b">
-    <text x="84" y="266">An exact email or thread match wins outright. Otherwise, keyword</text>
-    <text x="84" y="286">search (BM25) over each agent's name, summary, contacts, search</text>
-    <text x="84" y="306">phrases and last 20 requests. Plurals folded; "Sarha" lists every Sarah.</text>
+    <text x="84" y="266">An exact email or thread match wins. Otherwise keyword search (BM25)</text>
+    <text x="84" y="286">over name, summary, contacts, search phrases and last 20 requests,</text>
+    <text x="84" y="306">plus search by meaning with a small local model. Typo hints for names.</text>
   </g>
   <rect x="84" y="320" width="490" height="38" rx="8" fill="#dbeafe"/>
   <text x="100" y="344" font-size="14.5" font-weight="700" fill="#1e3a8a">Shortlist: 8 found + 4 recently used + that person's other agents</text>
@@ -87,10 +87,11 @@
     <text x="684" y="400">• Gmail thread ids</text>
     <text x="684" y="424">• search phrases</text>
     <text x="684" y="448">• last 20 requests</text>
-    <text x="684" y="472">• status and last use</text>
+    <text x="684" y="472">• meaning vectors (once)</text>
+    <text x="684" y="496">• status and last use</text>
   </g>
-  <text x="684" y="508" font-size="13" fill="#64748b">The original kept only a</text>
-  <text x="684" y="526" font-size="13" fill="#64748b">list of names.</text>
+  <text x="684" y="532" font-size="13" fill="#64748b">The original kept only a</text>
+  <text x="684" y="550" font-size="13" fill="#64748b">list of names.</text>
 
   <rect x="676" y="732" width="238" height="112" rx="10" fill="#fefce8" stroke="#a16207" stroke-width="1.5"/>
   <text x="692" y="758" font-size="15.5" font-weight="700" fill="#a16207">Lifecycle</text>
@@ -115,6 +116,6 @@
     <text x="602" y="832">updates</text>
   </g>
 
-  <text x="32" y="930" font-size="14" fill="#475569">Real model, 300 agents: right on 45 of 46 cases (original 22), 0 duplicate agents (original 30%),</text>
-  <text x="32" y="950" font-size="14" fill="#475569">and under 1,000 tokens of agents per prompt at any roster size (original: 10,700 at 1000 agents).</text>
+  <text x="32" y="930" font-size="14" fill="#475569">Real model, 300 agents: right on 46 of 46 cases (original 24), 0 duplicate agents (original 33%),</text>
+  <text x="32" y="950" font-size="14" fill="#475569">and about 1,000 tokens of agents per prompt at any roster size (original: 10,700 at 1000 agents).</text>
 </svg>
